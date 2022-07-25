@@ -6,20 +6,27 @@
   ++  noun  action:radio
   ++  json
     |=  jon=^json
-    ~&  >  jon
     %-  action:radio
     =<  (action-noun jon)
     |%
     ++  action-noun
       %-  of:dejs
       :~
-        [%tune sa:dejs]
+        [%tune (se:dejs %p)]
       ==
     --
   --  
 ++  grow
   |%  
   ++  noun  act 
+::  ++  json
+::    ?-  -.act
+::    %tune
+::      %+  frond:enjs
+::      %tune
+::      :-  %s
+::      (scow %p who.act)
+::    ==
   --  
 ++  grad  %noun
 --

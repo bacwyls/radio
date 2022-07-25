@@ -33,7 +33,6 @@
 ++  on-load   on-load:def
 ++  on-agent
   |=  [=wire =sign:agent:gall]
-  ~&  >  ["tenna on-agent:" [wire sign]]
   ^-  (quip card _this)
   ?.  ?&  =(/radio-listen wire)
           ?=(%fact -.sign)
@@ -47,7 +46,6 @@
   ==
 ++  on-poke
   |=  [=mark =vase]
-  ~&  >>  ["tenna on-poke" mark vase]
   ^-  (quip card _this)
   ?+  mark  (on-poke:def mark vase)
       %noun
