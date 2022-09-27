@@ -4,16 +4,9 @@
 +$  action
   $%
     [%tune tune=@p]
-    :: initialize streaming for frontend
-    :: [%init ~]
-    ::
-    :: unsubscribe for frontend
-    :: TODO
-    :: [%shut ~]
-  ==
-+$  update
-  $%
-    [%spin spin=tape]
-    [%talk talk=tape]
+    [%spin spin=cord]
+    [%talk talk=cord]
+    [%chat message=cord from=ship]
+    [%power ison=?]
   ==
 --

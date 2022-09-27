@@ -1,4 +1,4 @@
-/-  *radio
+/-  store=radio
 /+  radio
 /+  default-agent, dbug, agentio
 =,  format
@@ -9,8 +9,9 @@
   ==
 +$  state-0  $:
   %0
-  talk=tape
-  spin=tape
+  talk=cord
+  spin=cord
+  ison=?
   ==
 +$  card     card:agent:gall
 --
@@ -28,11 +29,34 @@
 ++  on-fail   on-fail:def
 ++  on-leave  on-leave:def
 ++  on-peek   on-peek:def
-++  on-save   on-save:def
-++  on-arvo   on-arvo:def
 ++  on-agent  on-agent:def
-++  on-init   on-init:def
-++  on-load   on-load:def
+++  on-arvo
+  |=  [=wire =sign-arvo]
+  ^-  (quip card _this)
+  :: ~&  >  [%on-arvo %tower wire]
+  `this
+++  on-save
+  ^-  vase
+  !>(state)
+++  on-init
+  ^-  (quip card _this)
+  `this
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+    %0  `this(state old)
+  ==  
+::  TODO something like this.
+::  ^-  (quip card _this)
+::  =/  tup=update  [%talk "welcome to your bit radio"]
+::  =/  sup=update  [%spin "https://youtu.be/G68Q4lCM5pQ"]
+::  :_  this
+::  :~
+::    (poke-self:io radio-update+!>(tup))
+::    (poke-self:io radio-update+!>(sup))
+::  ==
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
@@ -41,44 +65,53 @@
     `this
     ::
     :: :: radio
-      %radio-update
-    ?.  =(src.bowl our.bowl)
+      %radio-action
+    =/  act  !<(action:store vase)
+    :: ~&  >>  [%on-poke-tower -.act]
+    ?-  -.act
+      :: ::
+          %tune  `this
+      :: ::
+          %power
+      ?.  =(src.bowl our.bowl)
+        !!
+      =.  ison.state
+          ison.act
       `this
-    =/  upd  !<(update vase)
-    ?-  -.upd
       :: ::
           %talk
+      ?.  ison  !!
       =.  talk.state
-          talk.upd
-      =/  tup=update  [%talk talk.state]
+          talk.act
       :_  this
-      :~
-        (fact:io radio-update+!>(tup) ~[/radio-listen])
-      ==
-      :: ::
+      (transmit act)
+      :: :: ::
           %spin
+      ?.  ison  !!
       =.  spin.state
-          spin.upd
-      =/  sup=update  [%spin spin.state]
+          spin.act
       :_  this
-      :~
-        (fact:io radio-update+!>(sup) ~[/radio-listen])
-      ==
+      (transmit act)
+      :: ::
+          %chat
+      ?.  ison  !!
+      :_  this
+      (transmit act)
     ==
   ==
 ++  on-watch
   |=  =path
   ^-  (quip card _this)
+  :: ~&  >  [%on-watch %tower path]
   ?+    path
     (on-watch:def path)
       [%radio-listen ~]
-    =/  sup=update  [%spin spin.state]
-    =/  tup=update  [%talk talk.state]
+    =/  sac=action:store  [%spin spin.state]
+    =/  tac=action:store  [%talk talk.state]
     :_  this
       :~
-        :: hmm this doesnt seem to reach the client? TODO
-        (fact:io radio-update+!>(tup) ~[/radio-listen])
-        (fact:io radio-update+!>(sup) ~[/radio-listen])
+        (fact:io radio-action+!>(tac) ~[/radio-listen])
+        (fact:io radio-action+!>(sac) ~[/radio-listen])
       ==
   ==
 --
@@ -86,6 +119,12 @@
 :: :: helper core
 :: ::
 |_  bowl=bowl:gall
-++  test  0
+++  nil  0
+++  transmit
+  |=  act=action:store
+  :: ~&  >>>  [%tower-transmitting act]
+  :~
+    (fact:agentio radio-action+!>(act) ~[/radio-listen])
+  ==
 -- 
 

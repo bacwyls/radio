@@ -1,4 +1,4 @@
-/-  *radio
+/-  store=radio
 /+  radio
 /+  default-agent, dbug, agentio
 =,  format
@@ -9,7 +9,7 @@
   ==
 +$  state-0  $:
   %0
-  tune=@p
+  tune=(unit ship)
   ==
 +$  card     card:agent:gall
 --
@@ -27,21 +27,42 @@
 ++  on-fail   on-fail:def
 ++  on-leave  on-leave:def
 ++  on-peek   on-peek:def
-++  on-save   on-save:def
-++  on-arvo   on-arvo:def
-++  on-init   on-init:def
-++  on-load   on-load:def
+++  on-arvo
+  |=  [=wire =sign-arvo]
+  ^-  (quip card _this)
+  :: ~&  >  [%on-arvo %tower wire]
+  `this
+++  on-save
+  ^-  vase
+  !>(state)
+++  on-init
+  ^-  (quip card _this)
+  =.  tune
+  [~ ~bep]  :: DEFAULT PROVIDER
+  `this
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+    %0  `this(state old)
+  ==  
 ++  on-agent
   |=  [=wire =sign:agent:gall]
+  :: ~&  >  [%on-agent %tenna wire sign]
+
   ^-  (quip card _this)
   ?.  ?&  =(/radio-listen wire)
           ?=(%fact -.sign)
-          =(%radio-update p.cage.sign)
-          =(src.bowl tune.state)
+          =(%radio-action p.cage.sign)
+          =(src.bowl (need tune.state))
       ==
+    :: ~&  >  [%on-agent %tenna %b]
     (on-agent:def wire sign)
+  :: ~&  >  [%on-agent %tenna %c]
   :_  this
   :~
+    :: fwd to client (frontend) subscription
     (fact:io cage.sign ~[/radio-listen/client])
   ==
 ++  on-poke
@@ -55,25 +76,41 @@
       %radio-action
     ?.  =(src.bowl our.bowl)
       `this
-    =/  act  !<(action vase)
+    =/  act  !<(action:store vase)
+    :: ~&  >>  [%on-poke-tenna -.act]
     ?-  -.act
+      :: ::
+          %power  `this
+      :: ::
+          %spin   :_  this  (fwd act)
+          %talk   :_  this  (fwd act)
+          %chat   :_  this  (fwd act)
       :: ::
       :: ::
       :: ::
           %tune
-      =/  out=@p  tune.state
-      =.  tune.state
-          tune.act
-      :_  this
       =/  wire  /radio-listen
-      :~
-        [%pass wire %agent [out %tower] %leave ~]
-        [%pass wire %agent [tune.state %tower] %watch wire]
-      ==
+      =/  leave-cards=(list card)
+        ?~  tune  ~
+        :~
+        [%pass wire %agent [u.tune %tower] %leave ~]
+        ==
+      =.  tune.state
+          [~ tune.act]
+      =/  cards=(list card)
+        :: ~&  >  [%tenna-watching-tower tune.act]
+        :~
+          [%pass wire %agent [tune.act %tower] %watch wire]
+        ==
+      :_  this
+      ?~  leave-cards
+        cards
+      (weld leave-cards cards)
     ==
   ==
 ++  on-watch
   |=  =path
+  :: ~&  >  [%on-watch %tenna path]
   ^-  (quip card _this)
   ?+    path
     (on-watch:def path)
@@ -86,5 +123,13 @@
 :: ::
 |_  bowl=bowl:gall
 ++  test  0
+++  fwd
+  |=  [act=action:store]
+  :~
+    %+  poke:pass:agentio
+      [(need tune.state) %tower]
+      :-  %radio-action
+      !>  act
+  ==
 -- 
 
