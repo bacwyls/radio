@@ -1,9 +1,10 @@
 :~  title+'radio'
     info+'An Urbit app that does great things'
-    color+0x2e.4347
+    color+0x0
     glob-ames+[~bep 0v0]
     base+'radio'
     version+[0 0 1]
+    image+'https://0x0.st/o4--.png'
     website+'https://github.com'
     license+'MIT'
 ==

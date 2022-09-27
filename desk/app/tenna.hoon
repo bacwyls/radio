@@ -84,6 +84,7 @@
       :: ::
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
+          %view   :_  this  (fwd act)
           %chat   :_  this  (fwd act)
       :: ::
       :: ::

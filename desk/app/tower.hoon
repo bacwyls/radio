@@ -9,9 +9,10 @@
   ==
 +$  state-0  $:
   %0
-  talk=cord
-  spin=cord
-  ison=?
+  talk=_'welcome to urbit radio'
+  spin=_'https://youtu.be/jfKfPfyJRdk'
+  view=_'https://0x0.st/oS_V.png'
+  ison=_|
   ==
 +$  card     card:agent:gall
 --
@@ -48,15 +49,10 @@
   ?-  -.old
     %0  `this(state old)
   ==  
-::  TODO something like this.
-::  ^-  (quip card _this)
-::  =/  tup=update  [%talk "welcome to your bit radio"]
-::  =/  sup=update  [%spin "https://youtu.be/G68Q4lCM5pQ"]
-::  :_  this
-::  :~
-::    (poke-self:io radio-update+!>(tup))
-::    (poke-self:io radio-update+!>(sup))
-::  ==
+::  TODO defaults something like this
+::  [%talk "welcome to your bit radio"]
+::  [%spin "https://youtu.be/G68Q4lCM5pQ"]
+::  [%view "https://www.youtube.com/watch?v=KGAAhzreGWw"]
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
@@ -85,7 +81,7 @@
           talk.act
       :_  this
       (transmit act)
-      :: :: ::
+      :: ::
           %spin
       ?.  ison  !!
       =.  spin.state
@@ -93,8 +89,17 @@
       :_  this
       (transmit act)
       :: ::
+      %view
+      ?.  ison  !!
+      =.  view.state
+          view.act
+      :_  this
+      (transmit act)
+      :: ::
           %chat
       ?.  ison  !!
+      ?.  =(from.act src.bowl)
+        !!
       :_  this
       (transmit act)
     ==
@@ -108,10 +113,14 @@
       [%radio-listen ~]
     =/  sac=action:store  [%spin spin.state]
     =/  tac=action:store  [%talk talk.state]
+    =/  vac=action:store  [%view view.state]
+    =/  tuc=action:store  [%tune our.bowl]
     :_  this
       :~
         (fact:io radio-action+!>(tac) ~[/radio-listen])
         (fact:io radio-action+!>(sac) ~[/radio-listen])
+        (fact:io radio-action+!>(tuc) ~[/radio-listen])
+        (fact:io radio-action+!>(vac) ~[/radio-listen])
       ==
   ==
 --

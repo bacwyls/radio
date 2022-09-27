@@ -29,6 +29,8 @@
       [%s spin.act]
     %talk
       [%s talk.act]
+    %view
+      [%s view.act]
     ==
   --
 ::
@@ -46,6 +48,7 @@
       :~
         [%talk so]
         [%spin so]
+        [%view so]
         [%chat chat]
         [%tune patp]
       ==
