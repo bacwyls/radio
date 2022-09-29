@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Urbit from '@urbit/http-api';
 import ReactPlayer from "react-player";
 
@@ -9,8 +9,52 @@ export function App() {
 
   const [talkMsg, setTalkMsg] = useState("");
   const [spinUrl, setSpinUrl] = useState("");
+  const [spinTime, setSpinTime] = useState(0);
   const [tunePatP, setTunePatP] = useState("");
   const [radioSub, setRadioSub] = useState(0);
+
+
+  let player : any;
+  let playerRef = (p:any) => {
+    player = p;
+  }
+
+  useEffect(() => {
+      seekToDelta(spinTime);
+  }, [spinTime]);
+
+  function seekToDelta(startedTime:number) {
+    if(startedTime === 0) return;
+
+    if(!player) {
+      console.log('reactplayer ref is undefined')
+      return;
+    }
+
+    var currentUnixTime = Date.now() / 1000;
+
+    var delta = currentUnixTime - startedTime;
+
+    // this is a hacky patch
+    // lol
+
+    var duration = player.getDuration();
+    // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
+
+    if(!duration) {
+
+      player.seekTo(delta);
+      return;
+    }
+
+
+    player.seekTo((delta % duration))
+  }
+
+  useEffect(() => {
+    if(!player) return
+      player.url = spinUrl
+  }, [spinUrl]);
 
   useEffect(() => {
     if (!api || radioSub) return;
@@ -48,7 +92,17 @@ export function App() {
       switch(mark) {
         case "spin":
           var updateSpin = update["spin"];
-          setSpinUrl(updateSpin);
+          setSpinUrl(updateSpin.url);
+          
+
+          setSpinTime(updateSpin.time);
+          // if(!player) {
+          //   console.log("FUCK")
+          // } else {
+          //   console.log("SHIT")
+
+          //   player.seekTo(delta)
+          // }
           break;
         case "talk":
           let synth = window.speechSynthesis;
@@ -65,7 +119,6 @@ export function App() {
           setTalkMsg(updateTalk);
           break;
         case "tune":
-          console.log("tune");
           setTunePatP(update['tune'])
           break;
         case "chat":
@@ -120,7 +173,12 @@ export function App() {
         api.poke({
           app: 'tenna',
           mark: 'radio-action',
-          json: {spin : spinUrl}
+          json: {spin :
+                  {
+                    url: spinUrl,
+                    time: 0
+                  }
+                }
           });
         break;
       case 'tune':
@@ -141,6 +199,7 @@ export function App() {
           mark: 'radio-action',
           json: {view : viewUrl}
           });
+        sendChat(chat)
         break;
       case 'datboi':
         sendChat(datboiURL)
@@ -150,6 +209,11 @@ export function App() {
         break;
       case 'wojak':
         sendChat(wojakURL)
+        break;
+      case 'time':
+        seekToDelta(spinTime)
+        sendChat(chat)
+
         break;
     }
     
@@ -182,13 +246,15 @@ export function App() {
     if(splitIdx === -1) return {'command':chat.slice(1), 'arg':''};
     let command = chat.slice(1,splitIdx);
     let arg = chat.slice(splitIdx+1);
-    console.log('command', command)
-    console.log('arg', arg)
+    // console.log('command', command)
+    // console.log('arg', arg)
     return {'command': command, 'arg':arg}
   }
 
   const our = '~'+window.ship
-  const tuneInitial = '~bep';
+  // const tuneInitial = '~nodmyn-dosrux';
+  const tuneInitial = our;
+
   useEffect(() => {
     async function init() {
       console.log("init");
@@ -203,19 +269,21 @@ export function App() {
   }, []);
 
 
-  const initChats = [ 'image links will render in the chatbox. there are some presets for this: !datboi !pepe !wojak',
-                      'or just send any message to chat',
-                      '---------------------------',
+  const initChats = [ 'set player to current time: `!time`',
+                      'OTHER:',
+                      '-----------',
                       '.... (!spin supports youtube, soundcloud, twitch, vimeo, or arbitrary audio/video files)',
-                      '!spin https://www.youtube.com/watch?v=KGAAhzreGWw',
-                      '!view https://images.hdqwalls.com/download/2017-blade-runner-2049-movie-4k-de-2560x1080.jpg',
+                      '!spin https://www.youtube.com/watch?v=3vLHelBuTRM',
+                      '!view https://512pixels.net/downloads/macos-wallpapers-thumbs/10-5--thumb.png',
                       '!talk hello world',
-                      '!tune ~sampel-palnet',
-                      'URBIT RADIO:',
+                      'DJ COMMANDS:',
+                      '-----------',
+                      '!tune ~nodmyn-dosrux',
+                      'NAVIGATION:',
                       '================================'];
 
   const [chats, setChats] = useState<Array<string>>(initChats)
-  const maxChats = 12;
+  const maxChats = 16;
   useEffect(() => {
     // maximum chats
     if(chats.length > maxChats) {
@@ -246,7 +314,7 @@ export function App() {
       let from = chat.slice(0, split+2)
       let message = chat.slice(split+2)
 
-      console.log(`processing chat from ${from} with message ${message}`)
+      // console.log(`processing chat from ${from} with message ${message}`)
 
       if(checkURL(message)) {
         return chatToHTML_image(key, from, message);
@@ -289,7 +357,8 @@ export function App() {
           </p>
           )
   }
-  
+
+
   return (
     <main className="flex justify-center h-screen overflow-scroll"
            style={{
@@ -309,27 +378,31 @@ export function App() {
         your bit radio
       </h1> */}
       <div
-        className="bg-white mt-2 rounded w-full flex-none relative overflow-wrap bg-opacity-70 p-1"
+        className="bg-white mt-2 rounded w-full flex-none relative overflow-wrap bg-opacity-70 p-1 py-2"
         style={{
         //     boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
             backdropFilter: 'blur(32px)'
         }}
         >
-          <p className="font-mono ml-2" >{'radio://'}{our}{'/station/'}{tunePatP}</p>
+          <p className="font-mono ml-3 text-sm" >{'radio://'}{our}{'/station/'}{tunePatP}</p>
           {/* <p className="font-mono" >{'tenna: '}{our}</p> */}
         </div>
           
         <div
-        className="bg-black mt-2 rounded w-full flex-none relative p-3 mr-3 overflow-wrap font-bold"
+        className="bg-black mt-2 rounded w-full flex-none relative py-3 mr-3 overflow-wrap font-bold font-mono text-sm"
         style={{
             // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
             backdropFilter: 'blur(32px)'
         }}>
           <p className="text-center pt-2 pb-5 text-white" >{talkMsg}</p>
           <ReactPlayer
+            ref={playerRef}
             url={spinUrl}
             playing={true} // TODO autoplay is inconsistent
             width='100%'
+            controls={true}
+            loop={true}
+
           />
 
         </div>
@@ -344,8 +417,8 @@ export function App() {
 
           <div className="flex">
             <input type="text"
-              className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-1 outline-none border-none placeholder-gray-800 bg-opacity-70 focus:bg-opacity-90"
-              placeholder="!talk you smell like cheese"
+              className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-1 outline-none border-none placeholder-gray-800 bg-opacity-70 focus:bg-opacity-90 font-mono text-sm"
+              placeholder="sup guys"
               style={{
                 // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
                 backdropFilter: 'blur(32px)'
@@ -357,11 +430,13 @@ export function App() {
                 }
               }}
             />
-              <button className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-initial ml-2 outline-none border-none placeholder-gray-800 bg-opacity-70 hover:bg-opacity-90"
+              <button className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-initial ml-2 outline-none border-none placeholder-gray-800 bg-opacity-70 hover:bg-opacity-90 font-mono text-sm"
                       style={{
                         backdropFilter: 'blur(32px)'
                       }}
-                      onClick={handleChat}
+                      onClick={() => {
+                        player.seekTo(30, 'seconds')
+                      }}
               >
               send
             </button>

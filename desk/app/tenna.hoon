@@ -38,7 +38,7 @@
 ++  on-init
   ^-  (quip card _this)
   =.  tune
-  [~ ~bep]  :: DEFAULT PROVIDER
+  [~ our.bowl]  :: DEFAULT PROVIDER
   `this
 ++  on-load
   |=  old-state=vase
@@ -77,7 +77,7 @@
     ?.  =(src.bowl our.bowl)
       `this
     =/  act  !<(action:store vase)
-    :: ~&  >>  [%on-poke-tenna -.act]
+    :: ~&  >  [%on-poke-tenna -.act]
     ?-  -.act
       :: ::
           %power  `this

@@ -26,7 +26,11 @@
     %tune
       [%s (scot %p tune.act)]
     %spin
-      [%s spin.act]
+     %-  pairs
+      :~
+      ['url' %s url.act]
+      ['time' (sect time.act)]
+      ==
     %talk
       [%s talk.act]
     %view
@@ -47,7 +51,7 @@
       %-  of
       :~
         [%talk so]
-        [%spin so]
+        [%spin spin]
         [%view so]
         [%chat chat]
         [%tune patp]
@@ -59,6 +63,12 @@
       :~  
           [%message so]
           [%from patp]
+      ==
+    ++  spin
+      %-  ot
+      :~  
+          [%url so]
+          [%time di]
       ==
     :: ::
     :: ++  game

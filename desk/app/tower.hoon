@@ -10,9 +10,11 @@
 +$  state-0  $:
   %0
   talk=_'welcome to urbit radio'
-  spin=_'https://youtu.be/jfKfPfyJRdk'
-  view=_'https://0x0.st/oS_V.png'
-  ison=_|
+  spin=_'https://youtu.be/ubFq-wV3Eic'
+  spin-time=@da
+  test=@
+  view=_'' :: https://0x0.st/oS_V.png
+  ison=_&
   ==
 +$  card     card:agent:gall
 --
@@ -41,18 +43,16 @@
   !>(state)
 ++  on-init
   ^-  (quip card _this)
+  =.  spin  'https://youtu.be/ubFq-wV3Eic'
+  =.  spin-time  now.bowl
   `this
-++  on-load
-  |=  old-state=vase
-  ^-  (quip card _this)
-  =/  old  !<(versioned-state old-state)
-  ?-  -.old
-    %0  `this(state old)
-  ==  
-::  TODO defaults something like this
-::  [%talk "welcome to your bit radio"]
-::  [%spin "https://youtu.be/G68Q4lCM5pQ"]
-::  [%view "https://www.youtube.com/watch?v=KGAAhzreGWw"]
+++  on-load  on-load:def
+  :: |=  old-state=vase
+  :: ^-  (quip card _this)
+  :: =/  old  !<(versioned-state old-state)
+  :: ?-  -.old
+  ::   %0  `this(state old)
+  :: ==
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
@@ -77,6 +77,8 @@
       :: ::
           %talk
       ?.  ison  !!
+      ?.  =(src.bowl our.bowl)
+        !!
       =.  talk.state
           talk.act
       :_  this
@@ -84,13 +86,22 @@
       :: ::
           %spin
       ?.  ison  !!
+      ?.  =(src.bowl our.bowl)
+        !!
       =.  spin.state
-          spin.act
+          url.act
+      ::
+      =.  time.act
+          now.bowl
+      =.  spin-time.state
+          time.act
       :_  this
       (transmit act)
       :: ::
       %view
       ?.  ison  !!
+      ?.  =(src.bowl our.bowl)
+        !!
       =.  view.state
           view.act
       :_  this
@@ -111,7 +122,7 @@
   ?+    path
     (on-watch:def path)
       [%radio-listen ~]
-    =/  sac=action:store  [%spin spin.state]
+    =/  sac=action:store  [%spin spin.state spin-time.state]
     =/  tac=action:store  [%talk talk.state]
     =/  vac=action:store  [%view view.state]
     =/  tuc=action:store  [%tune our.bowl]
