@@ -52,7 +52,9 @@
   :: ~&  >  [%on-agent %tenna wire sign]
 
   ^-  (quip card _this)
-  ?.  ?&  =(/radio-listen wire)
+  ?.  ?&  ?|  =(/global wire)
+              =(/personal wire)
+            ==
           ?=(%fact -.sign)
           =(%radio-action p.cage.sign)
           =(src.bowl (need tune.state))
@@ -63,7 +65,7 @@
   :_  this
   :~
     :: fwd to client (frontend) subscription
-    (fact:io cage.sign ~[/radio-listen/client])
+    (fact:io cage.sign ~[/frontend])
   ==
 ++  on-poke
   |=  [=mark =vase]
@@ -90,7 +92,7 @@
       :: ::
       :: ::
           %tune
-      =/  wire  /radio-listen
+      =/  wire  /global
       =/  leave-cards=(list card)
         ?~  tune  ~
         :~
@@ -101,7 +103,8 @@
       =/  cards=(list card)
         :: ~&  >  [%tenna-watching-tower tune.act]
         :~
-          [%pass wire %agent [tune.act %tower] %watch wire]
+          [%pass /personal %agent [tune.act %tower] %watch /personal]
+          [%pass /global %agent [tune.act %tower] %watch /global]
         ==
       :_  this
       ?~  leave-cards
@@ -112,10 +115,11 @@
 ++  on-watch
   |=  =path
   :: ~&  >  [%on-watch %tenna path]
+  ::
   ^-  (quip card _this)
   ?+    path
     (on-watch:def path)
-      [%radio-listen %client ~]
+      [%frontend ~]
     `this
   ==
 --

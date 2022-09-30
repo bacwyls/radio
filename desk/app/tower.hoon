@@ -121,17 +121,17 @@
   :: ~&  >  [%on-watch %tower path]
   ?+    path
     (on-watch:def path)
-      [%radio-listen ~]
-    =/  sac=action:store  [%spin spin.state spin-time.state]
-    =/  tac=action:store  [%talk talk.state]
-    =/  vac=action:store  [%view view.state]
-    =/  tuc=action:store  [%tune our.bowl]
+      [%global ~]
+    :: no initial updates on the group path
+    `this
+      [%personal ~]
     :_  this
       :~
-        (fact:io radio-action+!>(tac) ~[/radio-listen])
-        (fact:io radio-action+!>(sac) ~[/radio-listen])
-        (fact:io radio-action+!>(tuc) ~[/radio-listen])
-        (fact:io radio-action+!>(vac) ~[/radio-listen])
+        (init-fact [%spin spin spin-time])
+        (init-fact [%talk talk])
+        (init-fact [%view view])
+        (init-fact [%tune our.bowl])
+        (kick:io ~[/personal])
       ==
   ==
 --
@@ -140,11 +140,14 @@
 :: ::
 |_  bowl=bowl:gall
 ++  nil  0
+++  init-fact
+  |=  act=action:store
+  (fact:agentio radio-action+!>(act) ~[/personal])
 ++  transmit
   |=  act=action:store
   :: ~&  >>>  [%tower-transmitting act]
   :~
-    (fact:agentio radio-action+!>(act) ~[/radio-listen])
+    (fact:agentio radio-action+!>(act) ~[/global])
   ==
 -- 
 

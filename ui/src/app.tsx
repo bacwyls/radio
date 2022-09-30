@@ -13,42 +13,53 @@ export function App() {
   const [tunePatP, setTunePatP] = useState("");
   const [radioSub, setRadioSub] = useState(0);
 
+  const [userInteracted, setUserInteracted] = useState(false);
+
 
   let player : any;
   let playerRef = (p:any) => {
     player = p;
   }
 
-  useEffect(() => {
-      seekToDelta(spinTime);
-  }, [spinTime]);
+  // useEffect(() => {
+  //     seekToDelta(spinTime);
+  // }, [spinTime, spinUrl]);
 
   function seekToDelta(startedTime:number) {
     if(startedTime === 0) return;
 
+
     if(!player) {
-      console.log('reactplayer ref is undefined')
+      // console.log('reactplayer ref is undefined')
       return;
     }
+    // } else {
+    //   console.log('reactplayer is defined')
+    // }
 
     var currentUnixTime = Date.now() / 1000;
 
+    // console.log('1')
+
     var delta = currentUnixTime - startedTime;
 
-    // this is a hacky patch
-    // lol
+
 
     var duration = player.getDuration();
     // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
 
+    if(delta < 1) delta = 1;
+    let res;
     if(!duration) {
 
-      player.seekTo(delta);
-      return;
+      res = player.seekTo(delta, 'seconds');
+    } else {
+
+      res = player.seekTo((delta % duration))
     }
 
 
-    player.seekTo((delta % duration))
+   
   }
 
   useEffect(() => {
@@ -61,7 +72,7 @@ export function App() {
       api
         .subscribe({
             app: "tenna",
-            path: "/radio-listen/client",
+            path: "/frontend",
             event: handleSub,
             quit: subFail,
             err: subFail
@@ -93,16 +104,8 @@ export function App() {
         case "spin":
           var updateSpin = update["spin"];
           setSpinUrl(updateSpin.url);
-          
-
           setSpinTime(updateSpin.time);
-          // if(!player) {
-          //   console.log("FUCK")
-          // } else {
-          //   console.log("SHIT")
 
-          //   player.seekTo(delta)
-          // }
           break;
         case "talk":
           let synth = window.speechSynthesis;
@@ -115,8 +118,8 @@ export function App() {
           // const voices  = speechSynthesis.getVoices();
           // var voice = voices[Math.floor(Math.random() * voices.length)];
           // utterThis.voice = voice;
+          setTalkMsg('🗣️ '+updateTalk);
           synth.speak(utterThis);
-          setTalkMsg(updateTalk);
           break;
         case "tune":
           setTunePatP(update['tune'])
@@ -256,6 +259,10 @@ export function App() {
   const tuneInitial = our;
 
   useEffect(() => {
+    // TODO ugly duplication
+    let our = '~'+window.ship
+    let tuneInitial = our;
+
     async function init() {
       console.log("init");
       // setTunePatP(tuneTarget);
@@ -274,7 +281,7 @@ export function App() {
                       '-----------',
                       '.... (!spin supports youtube, soundcloud, twitch, vimeo, or arbitrary audio/video files)',
                       '!spin https://www.youtube.com/watch?v=3vLHelBuTRM',
-                      '!view https://512pixels.net/downloads/macos-wallpapers-thumbs/10-5--thumb.png',
+                      '!view https://wallpapercave.com/wp/5w05B2R.jpg',
                       '!talk hello world',
                       'DJ COMMANDS:',
                       '-----------',
@@ -358,7 +365,29 @@ export function App() {
           )
   }
 
+  if(!userInteracted) {
+    return (
+      <main className="flex justify-center overflow-scroll bg-black items-center">
 
+        <div
+        className="bg-white mt-2 rounded p-2 lg:w-1/2 mx-6 content-center"
+        >
+          <h1 className="text-lg font-bold m-2">urbit radio</h1>
+          <p className="m-2">first, interact with the webpage so we can autoplay videos</p>
+          <button
+              className="button border-black border rounded p-1 text-center m-2"
+
+            onClick={()=>
+            {
+              setUserInteracted(true);
+            }}
+          >
+            continue
+          </button> 
+        </div>
+      </main>
+    )
+   }
   return (
     <main className="flex justify-center h-screen overflow-scroll"
            style={{
@@ -369,14 +398,7 @@ export function App() {
                   backgroundColor:'black'
                  }}>
       <div className="inline-block lg:w-1/2">
-      {/* <h1 className="text-3xl font-bold text-center py-5"
-          style={{
 
-          textShadow: "1px 1px 2px gray",
-
-        }}>
-        your bit radio
-      </h1> */}
       <div
         className="bg-white mt-2 rounded w-full flex-none relative overflow-wrap bg-opacity-70 p-1 py-2"
         style={{
@@ -402,6 +424,10 @@ export function App() {
             width='100%'
             controls={true}
             loop={true}
+            onReady={() => {
+              // console.log('onReady')
+              seekToDelta(spinTime);
+            }}
 
           />
 
@@ -435,7 +461,7 @@ export function App() {
                         backdropFilter: 'blur(32px)'
                       }}
                       onClick={() => {
-                        player.seekTo(30, 'seconds')
+                        handleChat();
                       }}
               >
               send
