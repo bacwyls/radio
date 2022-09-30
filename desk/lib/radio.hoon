@@ -55,6 +55,7 @@
         [%view so]
         [%chat chat]
         [%tune patp]
+        [%public bo]
       ==
     ++  patp
       (su ;~(pfix sig fed:ag))

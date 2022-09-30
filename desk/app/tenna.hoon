@@ -82,7 +82,8 @@
     :: ~&  >  [%on-poke-tenna -.act]
     ?-  -.act
       :: ::
-          %power  `this
+          %online  `this
+          %public  `this
       :: ::
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
@@ -92,6 +93,7 @@
       :: ::
       :: ::
           %tune
+      :: leave the old, watch the new
       =/  wire  /global
       =/  leave-cards=(list card)
         ?~  tune  ~

@@ -12,9 +12,9 @@
   talk=_'welcome to urbit radio'
   spin=_'https://youtu.be/ubFq-wV3Eic'
   spin-time=@da
-  test=@
   view=_'' :: https://0x0.st/oS_V.png
-  ison=_&
+  online=_&
+  public=_&
   ==
 +$  card     card:agent:gall
 --
@@ -63,31 +63,39 @@
     :: :: radio
       %radio-action
     =/  act  !<(action:store vase)
-    :: ~&  >>  [%on-poke-tower -.act]
+    :: ~&  >>  [%on-poke-tower act]
     ?-  -.act
       :: ::
           %tune  `this
       :: ::
-          %power
+          %public
       ?.  =(src.bowl our.bowl)
         !!
-      =.  ison.state
-          ison.act
+      =.  public.state
+          public.act
+      `this
+      :: ::
+          %online
+      ?.  =(src.bowl our.bowl)
+        !!
+      =.  online.state
+          online.act
+      ?.  online
+        :_  this
+        :~
+          (kick:io ~[/global /personal])
+        ==
       `this
       :: ::
           %talk
-      ?.  ison  !!
-      ?.  =(src.bowl our.bowl)
-        !!
+      ?.  permitted:hc  !!
       =.  talk.state
           talk.act
       :_  this
       (transmit act)
       :: ::
           %spin
-      ?.  ison  !!
-      ?.  =(src.bowl our.bowl)
-        !!
+      ?.  permitted:hc  !!
       =.  spin.state
           url.act
       ::
@@ -99,18 +107,16 @@
       (transmit act)
       :: ::
       %view
-      ?.  ison  !!
-      ?.  =(src.bowl our.bowl)
-        !!
+      ?.  permitted:hc  !!
       =.  view.state
           view.act
       :_  this
       (transmit act)
       :: ::
           %chat
-      ?.  ison  !!
-      ?.  =(from.act src.bowl)
-        !!
+      :: ?.  permitted:hc  !!
+      ?.  online  !!
+      =.  from.act  src.bowl
       :_  this
       (transmit act)
     ==
@@ -119,6 +125,10 @@
   |=  =path
   ^-  (quip card _this)
   :: ~&  >  [%on-watch %tower path]
+  ?.  online
+    :_  this
+    :~  (kick:io ~[/global /personal])
+    ==
   ?+    path
     (on-watch:def path)
       [%global ~]
@@ -140,6 +150,11 @@
 :: ::
 |_  bowl=bowl:gall
 ++  nil  0
+++  permitted
+  ^-  ?
+  ?:  =(src.bowl our.bowl)
+    &
+  ?&(online public)
 ++  init-fact
   |=  act=action:store
   (fact:agentio radio-action+!>(act) ~[/personal])
@@ -150,4 +165,3 @@
     (fact:agentio radio-action+!>(act) ~[/global])
   ==
 -- 
-

@@ -1,8 +1,8 @@
 /-  *radio
 :-  %say
 |=  $:  [* eny=@uv *]
-        [[ison=? ~] ~]
+        [[public=? ~] ~]
     ==
 :-  %radio-action
 ^-  action
-[%power ison]
+[%public public]

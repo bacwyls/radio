@@ -1,19 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Urbit from '@urbit/http-api';
 import ReactPlayer from "react-player";
+import { HelpMenu } from './components/HelpMenu';
 
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
 
 export function App() {
 
-  const [talkMsg, setTalkMsg] = useState("");
-  const [spinUrl, setSpinUrl] = useState("");
+  const [talkMsg, setTalkMsg]   = useState("");
+  const [spinUrl, setSpinUrl]   = useState("");
   const [spinTime, setSpinTime] = useState(0);
   const [tunePatP, setTunePatP] = useState("");
   const [radioSub, setRadioSub] = useState(0);
 
+  const [update, setUpdate] = useState();
+
   const [userInteracted, setUserInteracted] = useState(false);
+
+  const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+
 
 
   let player : any;
@@ -79,6 +85,11 @@ export function App() {
         })
         .then((subscriptionId) => {
           setRadioSub(subscriptionId);
+          api.poke({
+            app: 'tenna',
+            mark: 'radio-action',
+          json: {'tune': tuneInitial}  // TODO tune based on whats in state
+          });
           });
   }, [api]);
 
@@ -98,6 +109,14 @@ export function App() {
 
 
   function handleSub(update:any) {
+    setUpdate(update);
+  }
+  useEffect(() => {
+    if(!update) return;
+    handleUpdate(update);
+  }, [update]);
+
+  function handleUpdate(update:any) {
       console.log("update", update);
       let mark = Object.keys(update)[0]
       switch(mark) {
@@ -119,6 +138,7 @@ export function App() {
           // var voice = voices[Math.floor(Math.random() * voices.length)];
           // utterThis.voice = voice;
           setTalkMsg('🗣️ '+updateTalk);
+          if(!userInteracted) return;
           synth.speak(utterThis);
           break;
         case "tune":
@@ -170,7 +190,7 @@ export function App() {
           json: {talk : talkMsg}
           });
         break;
-      case 'spin':
+      case 'play':
         let spinUrl = arg;
         sendChat(chat)
         api.poke({
@@ -193,8 +213,12 @@ export function App() {
           json: {tune : tuneTo}
           });
         setChats(initChats);
+        setTunePatP('')
+        setTalkMsg('')
+        setBgImage('')
+        setSpinUrl('')
         break;
-      case 'view':
+      case 'background':
         let viewUrl = arg
 
         api.poke({
@@ -217,6 +241,28 @@ export function App() {
         seekToDelta(spinTime)
         sendChat(chat)
 
+        break;
+      case 'public':
+        if(tunePatP !== our) {
+          return;
+        }
+        api.poke({
+          app: 'tower',
+          mark: 'radio-action',
+          json: {public : true}
+          });
+        sendChat(chat)
+        break;
+      case 'private':
+        if(tunePatP !== our) {
+          return;
+        }
+        api.poke({
+          app: 'tower',
+          mark: 'radio-action',
+          json: {public : false}
+          });
+        sendChat(chat)
         break;
     }
     
@@ -266,28 +312,26 @@ export function App() {
     async function init() {
       console.log("init");
       // setTunePatP(tuneTarget);
-      api.poke({
-          app: 'tenna',
-          mark: 'radio-action',
-        json: {'tune': tuneInitial}  // TODO tune based on whats in state
-        });
+
     }
     init();
   }, []);
 
 
-  const initChats = [ 'set player to current time: `!time`',
-                      'OTHER:',
-                      '-----------',
-                      '.... (!spin supports youtube, soundcloud, twitch, vimeo, or arbitrary audio/video files)',
-                      '!spin https://www.youtube.com/watch?v=3vLHelBuTRM',
-                      '!view https://wallpapercave.com/wp/5w05B2R.jpg',
-                      '!talk hello world',
-                      'DJ COMMANDS:',
-                      '-----------',
-                      '!tune ~nodmyn-dosrux',
-                      'NAVIGATION:',
-                      '================================'];
+  // const initChats = [ 'set player to current time: `!time`',
+  //                     'OTHER:',
+  //                     '-----------',
+  //                     '.... (!spin supports youtube, soundcloud, twitch, vimeo, or arbitrary audio/video files)',
+  //                     '!spin https://www.youtube.com/watch?v=3vLHelBuTRM',
+  //                     '!view https://wallpapercave.com/wp/5w05B2R.jpg',
+  //                     '!talk hello world',
+  //                     'DJ COMMANDS:',
+  //                     '-----------',
+  //                     '!tune ~nodmyn-dosrux',
+  //                     'NAVIGATION:',
+  //                     '================================'];
+
+  const initChats = ['']
 
   const [chats, setChats] = useState<Array<string>>(initChats)
   const maxChats = 16;
@@ -400,22 +444,43 @@ export function App() {
       <div className="inline-block lg:w-1/2">
 
       <div
-        className="bg-white mt-2 rounded w-full flex-none relative overflow-wrap bg-opacity-70 p-1 py-2"
-        style={{
-        //     boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
-            backdropFilter: 'blur(32px)'
-        }}
+        className="flex mt-2"
         >
-          <p className="font-mono ml-3 text-sm" >{'radio://'}{our}{'/station/'}{tunePatP}</p>
-          {/* <p className="font-mono" >{'tenna: '}{our}</p> */}
+          {/* header */}
+      
+        <button
+        className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-initial mr-2 outline-none border-none placeholder-gray-800 bg-opacity-70 hover:bg-opacity-90 font-mono font-bold text-sm "
+          style={{
+            backdropFilter: 'blur(32px)',
+            backgroundColor: helpMenuOpen ? 'lightblue' : ''
+          }}
+          onClick={() => {
+            setHelpMenuOpen(!helpMenuOpen)
+          }}
+              >
+              ?
+            </button>
+            <span 
+            className="bg-white rounded w-full flex-full pl-4 font-mono relative overflow-wrap bg-opacity-70 p-1 py-2 text-sm"
+            // style={{
+            //   userSelect:'none'
+            // }}
+
+            
+            >{'current station: '}{tunePatP}</span>
+
         </div>
+
+        {helpMenuOpen && 
+         <HelpMenu />
+        }
           
         <div
         className="bg-black mt-2 rounded w-full flex-none relative py-3 mr-3 overflow-wrap font-bold font-mono text-sm"
         style={{
-            // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
             backdropFilter: 'blur(32px)'
         }}>
+          {/* player */}
           <p className="text-center pt-2 pb-5 text-white" >{talkMsg}</p>
           <ReactPlayer
             ref={playerRef}
@@ -434,19 +499,15 @@ export function App() {
         </div>
 
         <div className="my-2 bg-white rounded w-full bg-opacity-0"
-            // style={{
-            //     // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
-            //     backdropFilter: 'blur(32px)'
-
             // }}
           >
+            {/* user input */}
 
           <div className="flex">
             <input type="text"
               className="hover:pointer px-4 py-2 inline-block bg-white rounded flex-1 outline-none border-none placeholder-gray-800 bg-opacity-70 focus:bg-opacity-90 font-mono text-sm"
               placeholder="sup guys"
               style={{
-                // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
                 backdropFilter: 'blur(32px)'
                }}
               id={chatInputId}
@@ -469,21 +530,20 @@ export function App() {
             </div>
           </div>
 
-          <div
+      <div
         className="bg-white mt-2 rounded w-full flex-none relative p-3 mr-3 overflow-wrap font-bold bg-opacity-70 mb-2"
         style={{
-        //     boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(0,0,0,0.1), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)",
             backdropFilter: 'blur(32px)'
         }}
         >
+      {/* chatbox */}
       {chats.map((x, i) => 
                           chatToHTML(i, chats[chats.length-1-i])
                       )}
-        </div>
+     </div>
 
-      </div>
 
-      
+    </div>
     </main>
   );
 }
