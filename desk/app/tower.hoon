@@ -10,8 +10,9 @@
 +$  state-0  $:
   %0
   talk=_'welcome to urbit radio'
-  spin=_'https://youtu.be/ubFq-wV3Eic'
-  spin-time=@da
+  spin=_'https://youtu.be/XGC80iRS7tw' :: classical music
+  :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
+  spin-time=_~2022.10.3..20.40.15..7021
   view=_'' :: https://0x0.st/oS_V.png
   online=_&
   public=_&
@@ -43,8 +44,9 @@
   !>(state)
 ++  on-init
   ^-  (quip card _this)
-  =.  spin  'https://youtu.be/ubFq-wV3Eic'
-  =.  spin-time  now.bowl
+  ::
+  :: annoyance: now.bowl here is wrong!
+  :: =.  spin-time  now.bowl
   `this
 ++  on-load  on-load:def
   :: |=  old-state=vase
@@ -99,8 +101,6 @@
       =.  spin.state
           url.act
       ::
-      =.  time.act
-          now.bowl
       =.  spin-time.state
           time.act
       :_  this
@@ -140,7 +140,7 @@
         (init-fact [%spin spin spin-time])
         (init-fact [%talk talk])
         (init-fact [%view view])
-        (init-fact [%tune our.bowl])
+        (init-fact [%tune `our.bowl])
         (kick:io ~[/personal])
       ==
   ==

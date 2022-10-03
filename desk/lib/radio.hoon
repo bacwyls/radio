@@ -24,7 +24,7 @@
       ['from' %s (scot %p from.act)]
       ==
     %tune
-      [%s (scot %p tune.act)]
+      (unit-ship tune.act)
     %spin
      %-  pairs
       :~
@@ -37,6 +37,12 @@
       [%s view.act]
     ==
   --
+++  unit-ship
+    |=  who=(unit @p)
+    ^-  json
+    ?~  who
+      ~
+    [%s (scot %p u.who)]
 ::
 ++  dejs
   =,  dejs:format
@@ -54,7 +60,7 @@
         [%spin spin]
         [%view so]
         [%chat chat]
-        [%tune patp]
+        [%tune (mu patp)]
         [%public bo]
       ==
     ++  patp
@@ -71,17 +77,7 @@
           [%url so]
           [%time di]
       ==
-    :: ::
-    :: ++  game
-    ::   %-  ot
-    ::   :~  [%from patp]
-    ::       [%data so]
-    ::   ==
-    :: ++  slop
-    ::   %-  ot
-    ::   :~  [%to (ar patp)]
-    ::       [%data so]
-    ::   ==
+    ::
     --
   --
 --

@@ -30,7 +30,6 @@
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
-  :: ~&  >  [%on-arvo %tower wire]
   `this
 ++  on-save
   ^-  vase
@@ -49,19 +48,13 @@
   ==  
 ++  on-agent
   |=  [=wire =sign:agent:gall]
-  :: ~&  >  [%on-agent %tenna wire sign]
-
+  :: TODO secure? retarded?
   ^-  (quip card _this)
-  ?.  ?&  ?|  =(/global wire)
-              =(/personal wire)
-            ==
-          ?=(%fact -.sign)
+  ?.  ?&  ?=(%fact -.sign)
           =(%radio-action p.cage.sign)
           =(src.bowl (need tune.state))
       ==
-    :: ~&  >  [%on-agent %tenna %b]
     (on-agent:def wire sign)
-  :: ~&  >  [%on-agent %tenna %c]
   :_  this
   :~
     :: fwd to client (frontend) subscription
@@ -79,7 +72,6 @@
     ?.  =(src.bowl our.bowl)
       `this
     =/  act  !<(action:store vase)
-    :: ~&  >  [%on-poke-tenna -.act]
     ?-  -.act
       :: ::
           %online  `this
@@ -94,29 +86,30 @@
       :: ::
           %tune
       :: leave the old, watch the new
-      =/  wire  /global
-      =/  leave-cards=(list card)
-        ?~  tune  ~
-        :~
-        [%pass wire %agent [u.tune %tower] %leave ~]
-        ==
-      =.  tune.state
-          [~ tune.act]
-      =/  cards=(list card)
-        :: ~&  >  [%tenna-watching-tower tune.act]
-        :~
-          [%pass /personal %agent [tune.act %tower] %watch /personal]
-          [%pass /global %agent [tune.act %tower] %watch /global]
-        ==
+      :: (or dont leave =(old ~))
+      :: (or dont watch =(old new))
+      :: (or just leave =(new ~))
+      =*  new-tune  tune.act
+      =/  old-tune  tune
+      ::
+      =.  tune  new-tune
+      ::
+      =/  watt
+        (watch new-tune)
+      =/  love
+        (leave old-tune)
+      ::
+      ::
       :_  this
-      ?~  leave-cards
-        cards
-      (weld leave-cards cards)
+      ?:  =(old-tune new-tune)
+        ~
+      :: watch new AND/OR leave old
+      (weld love watt)
+    :: ::
     ==
   ==
 ++  on-watch
   |=  =path
-  :: ~&  >  [%on-watch %tenna path]
   ::
   ^-  (quip card _this)
   ?+    path
@@ -129,12 +122,31 @@
 :: :: helper core
 :: ::
 |_  bowl=bowl:gall
-++  test  0
+++  provider  %tower
+++  personal
+  [%personal ~]
+++  global
+  [%global ~]
+++  leave
+  |=  old-tune=(unit ship)
+  ^-  (list card)
+  ?~  old-tune  ~
+  :~
+  [%pass global %agent [u.old-tune provider] %leave ~]
+  ==
+++  watch
+  |=  new-tune=(unit ship)
+  ^-  (list card)
+  ?~  new-tune  ~
+  :~
+  [%pass personal %agent [u.new-tune provider] %watch personal]
+  [%pass global %agent [u.new-tune provider] %watch global]
+  ==
 ++  fwd
   |=  [act=action:store]
   :~
     %+  poke:pass:agentio
-      [(need tune.state) %tower]
+      [(need tune.state) provider]
       :-  %radio-action
       !>  act
   ==

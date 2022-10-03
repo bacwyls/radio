@@ -15,12 +15,20 @@ NAVIGATION:
 
 <p className="font-bold">
 
-!tune ~nodmyn-dosrux
+!tune ~sampel-palnet
 </p>
 <div className="ml-4 mb-4">
 
-<p>the !tune command is for changing radio stations.</p>
-<p> enter the patp of your desired radio station.</p>
+<p> change radio stations. try ~nodmyn-dosrux </p>
+</div>
+
+<p className="font-bold">
+
+!tune
+</p>
+<div className="ml-4 mb-4">
+
+<p> (no argument) brings you to your home station </p>
 </div>
 <p>
 -----------
@@ -36,9 +44,9 @@ DJ COMMANDS:
 </p>
 
 <div className="ml-4 mb-4">
-<p>the !play command changes the current song / video / livestream</p>
+<p>change the current song / video / livestream</p>
 <p>
-.... (!play supports youtube, soundcloud, twitch, vimeo, or arbitrary audio/video links)
+(youtube, soundcloud, twitch, vimeo, audio/video URLs)
 </p>
 </div>
 
@@ -48,17 +56,24 @@ DJ COMMANDS:
 </p>
 <div className="ml-4 mb-4">
 
-<p>the !talk command broadcasts text-to-speech</p>
+<p>broadcast text-to-speech</p>
 {/* <p>everyone in the audience will hear this text spoken from their device</p> */}
 </div>
 
 <p className="font-bold">
 !background https://wallpapercave.com/wp/5w05B2R.jpg
-
 </p>
 <div className="ml-4 mb-4">
 
-<p>the !background command changes the background image</p>
+<p>change the background image</p>
+</div>
+
+<p className="font-bold">
+!set-time
+</p>
+<div className="ml-4 mb-4">
+
+<p>set the shared timestamp to your current timestamp</p>
 </div>
 <p>
 -----------
@@ -98,7 +113,7 @@ OTHER COMMANDS:
 </p>
 <div className="ml-4 mb-4">
 
-<p>the !time command sets your player to the shared timestamp in case you go out of sync</p>
+<p>auto scrub to the shared timestamp</p>
 </div>
 
       </div>

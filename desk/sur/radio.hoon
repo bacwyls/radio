@@ -3,7 +3,7 @@
 :: ::
 +$  action
   $%
-    [%tune tune=@p]
+    [%tune tune=(unit @p)]
     [%talk talk=cord]
     [%view view=cord]
     [%spin url=cord time=@da]
