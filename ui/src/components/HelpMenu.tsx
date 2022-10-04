@@ -60,13 +60,13 @@ DJ COMMANDS:
 {/* <p>everyone in the audience will hear this text spoken from their device</p> */}
 </div>
 
-<p className="font-bold">
+{/* <p className="font-bold">
 !background https://wallpapercave.com/wp/5w05B2R.jpg
 </p>
 <div className="ml-4 mb-4">
 
 <p>change the background image</p>
-</div>
+</div> */}
 
 <p className="font-bold">
 !set-time

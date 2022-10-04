@@ -2,7 +2,7 @@
 /+  radio
 /+  default-agent, dbug, agentio
 =,  format
-::
+:: ::
 |%
 +$  versioned-state
   $%  state-0
@@ -10,6 +10,7 @@
 +$  state-0  $:
   %0
   tune=(unit ship)
+  wack=_|
   ==
 +$  card     card:agent:gall
 --
@@ -39,17 +40,15 @@
   =.  tune
   [~ our.bowl]  :: DEFAULT PROVIDER
   `this
-++  on-load
-  |=  old-state=vase
-  ^-  (quip card _this)
-  =/  old  !<(versioned-state old-state)
-  ?-  -.old
-    %0  `this(state old)
-  ==  
+++  on-load  on-load:def
 ++  on-agent
   |=  [=wire =sign:agent:gall]
   :: TODO secure? retarded?
   ^-  (quip card _this)
+  ?:  ?&  =(%watch-ack -.sign)
+      ==
+    =.  wack  &
+    `this
   ?.  ?&  ?=(%fact -.sign)
           =(%radio-action p.cage.sign)
           =(src.bowl (need tune.state))
@@ -63,6 +62,7 @@
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
+
   ?+  mark  (on-poke:def mark vase)
       %noun
     `this
@@ -72,14 +72,15 @@
     ?.  =(src.bowl our.bowl)
       `this
     =/  act  !<(action:store vase)
+    :: ~&  >  [%tenna %on-poke act]
     ?-  -.act
       :: ::
           %online  `this
           %public  `this
+          %viewers  `this  :: TODO ugly
       :: ::
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
-          %view   :_  this  (fwd act)
           %chat   :_  this  (fwd act)
       :: ::
       :: ::
@@ -98,12 +99,26 @@
         (watch new-tune)
       =/  love
         (leave old-tune)
+
       ::
       ::
-      :_  this
-      ?:  =(old-tune new-tune)
-        ~
+      :: ?:  =(old-tune new-tune)
+      ::   `this
+     :: 
+     :: dont love if not wack
+     :: dont leave if never got the watch ack
+     ::  handles alien and unbooted providers
+     ::  circumvents ames cork crash
+      =.  love
+          ?:  wack
+            love
+          ~
+      ::
+      =.  wack  |
       :: watch new AND/OR leave old
+::      ~&  >>>  [%watt watt]
+::      ~&  >>>  [%love love]
+      :_  this
       (weld love watt)
     :: ::
     ==
@@ -111,6 +126,7 @@
 ++  on-watch
   |=  =path
   ::
+  :: ~&  >  [%tenna %on-watch path]
   ^-  (quip card _this)
   ?+    path
     (on-watch:def path)
@@ -133,6 +149,7 @@
   ?~  old-tune  ~
   :~
   [%pass global %agent [u.old-tune provider] %leave ~]
+  [%pass personal %agent [u.old-tune provider] %leave ~]
   ==
 ++  watch
   |=  new-tune=(unit ship)

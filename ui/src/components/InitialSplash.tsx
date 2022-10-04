@@ -16,7 +16,7 @@ interface ISplash {
     }, []);
 
   return (
-    <main className="flex justify-center overflow-scroll bg-black items-center">
+    <main className="flex justify-center overflow-scroll items-center">
 
     <div
     className="bg-white mt-2 rounded p-2 lg:w-1/2 mx-6 content-center"

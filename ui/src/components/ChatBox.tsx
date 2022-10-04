@@ -35,7 +35,7 @@ interface IChatBox {
         key={key}
         style={{
           fontFamily:'monospace',
-          marginTop:8
+          marginBottom:8
         }}
         >
         {chat}
@@ -50,7 +50,7 @@ interface IChatBox {
         key={key}
         style={{
           fontFamily:'monospace',
-          marginTop:8
+          marginBottom:8
         }}
         >
         <span>
@@ -64,15 +64,12 @@ interface IChatBox {
 
   return (
     <div
-        className="bg-white mt-2 rounded w-full flex-none relative \
-                   p-3 mr-3 overflow-wrap font-bold bg-opacity-70 mb-2"
-        style={{
-            backdropFilter: 'blur(32px)'
-        }}
+        className="w-full \
+                   mr-3 overflow-wrap mb-2"
         >
       {/* chatbox */}
       {chats.map((x, i) => 
-            chatToHTML(i, chats[chats.length-1-i])
+            chatToHTML(i, chats[i])
         )}
      </div>
   );

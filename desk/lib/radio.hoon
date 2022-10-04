@@ -23,6 +23,10 @@
       ['message' %s message.act]
       ['from' %s (scot %p from.act)]
       ==
+    %viewers
+      :: ~&  >  [%json %vs act]
+      ::
+      (set-ship viewers.act)
     %tune
       (unit-ship tune.act)
     %spin
@@ -33,8 +37,8 @@
       ==
     %talk
       [%s talk.act]
-    %view
-      [%s view.act]
+    :: %view
+    ::   [%s view.act]
     ==
   --
 ++  unit-ship
@@ -43,6 +47,14 @@
     ?~  who
       ~
     [%s (scot %p u.who)]
+++  set-ship
+  |=  ships=(set @p)
+  ^-  json
+  :-  %a
+  %+  turn
+    ~(tap in ships)
+    |=  her=@p
+    [%s (scot %p her)]
 ::
 ++  dejs
   =,  dejs:format
@@ -58,7 +70,7 @@
       :~
         [%talk so]
         [%spin spin]
-        [%view so]
+        :: [%view so]
         [%chat chat]
         [%tune (mu patp)]
         [%public bo]

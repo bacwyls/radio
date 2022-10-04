@@ -13,9 +13,10 @@
   spin=_'https://youtu.be/XGC80iRS7tw' :: classical music
   :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
   spin-time=_~2022.10.3..20.40.15..7021
-  view=_'' :: https://0x0.st/oS_V.png
+  :: view=_'' :: https://0x0.st/oS_V.png
   online=_&
   public=_&
+  viewers=(set ship)
   ==
 +$  card     card:agent:gall
 --
@@ -31,7 +32,13 @@
     io    ~(. agentio bowl)
 ::
 ++  on-fail   on-fail:def
-++  on-leave  on-leave:def
+++  on-leave
+  |=  [=path]
+  :: ~&  >>>  [%on-leave src.bowl]
+  =.  viewers
+    (~(del in viewers) src.bowl)
+  :_  this
+  (transmit [%viewers viewers])
 ++  on-peek   on-peek:def
 ++  on-agent  on-agent:def
 ++  on-arvo
@@ -69,6 +76,7 @@
     ?-  -.act
       :: ::
           %tune  `this
+          %viewers  `this  :: TODO ugly
       :: ::
           %public
       ?.  =(src.bowl our.bowl)
@@ -106,12 +114,12 @@
       :_  this
       (transmit act)
       :: ::
-      %view
-      ?.  permitted:hc  !!
-      =.  view.state
-          view.act
-      :_  this
-      (transmit act)
+      :: %view
+      :: ?.  permitted:hc  !!
+      :: =.  view.state
+      ::     view.act
+      :: :_  this
+      :: (transmit act)
       :: ::
           %chat
       :: ?.  permitted:hc  !!
@@ -135,12 +143,18 @@
     :: no initial updates on the group path
     `this
       [%personal ~]
+    =.  viewers
+      (~(put in viewers) src.bowl)
+    :: ~&  >  [%tower %personal viewers]
     :_  this
       :~
         (init-fact [%spin spin spin-time])
-        (init-fact [%talk talk])
-        (init-fact [%view view])
+        :: (init-fact [%talk talk])
+        :: (init-fact [%view view])
         (init-fact [%tune `our.bowl])
+        (transmit-card [%viewers viewers])
+        (init-fact [%viewers viewers])
+        ::
         (kick:io ~[/personal])
       ==
   ==
@@ -158,6 +172,9 @@
 ++  init-fact
   |=  act=action:store
   (fact:agentio radio-action+!>(act) ~[/personal])
+++  transmit-card
+  |=  act=action:store
+  (fact:agentio radio-action+!>(act) ~[/global])
 ++  transmit
   |=  act=action:store
   :: ~&  >>>  [%tower-transmitting act]

@@ -16,12 +16,16 @@ export function App() {
   const [spinTime, setSpinTime] = useState(0);
   const [tunePatP, setTunePatP] = useState("");
   const [radioSub, setRadioSub] = useState(0);
-  const [bgImage, setBgImage] = useState('')
+  // const [bgImage, setBgImage] = useState('')
+
+  const [viewers, setViewers] = useState([])
 
   const [update, setUpdate] = useState();
 
   const [userInteracted, setUserInteracted] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+
+  const [playerReady, setPlayerReady] = useState(false);
 
   const inputReference = useRef<HTMLInputElement>(null);
 
@@ -49,7 +53,6 @@ export function App() {
     }
   }, [chats])
 
-
   const our = '~'+window.ship;
   const tuneInitial = our;
 
@@ -60,13 +63,25 @@ export function App() {
     player = p;
   }
 
+  useEffect(()=>{
+    seekToDelta(spinTime)
+  }, [playerReady])
+
   useEffect(() => {
     if(!player) return;
       player.url = spinUrl;
   }, [spinUrl]);
 
   useEffect(() => {
+    // display voice in chat
+    if(talkMsg === '') return;
+    if(!userInteracted) return;
+    // setChats(prevChats => [...prevChats, `🗣️  ${talkMsg}`])  ;
+  }, [talkMsg])
+
+  useEffect(() => {
     if(!player) return;
+    if(!playerReady) return;
     seekToDelta(spinTime)
   }, [spinTime]);
 
@@ -76,19 +91,20 @@ export function App() {
     if(startedTime === 0) return;
 
     if(!player) {
+      console.log('player is not defined :(')
       return;
     }
+
     var currentUnixTime = Date.now() / 1000;
-    var delta = currentUnixTime - startedTime;
+    var delta = Math.ceil(currentUnixTime - startedTime);
     var duration = player.getDuration();
+
     // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
 
-    if(delta < 1) delta = 1;
-    let res;
-    if(!duration) {
-      res = player.seekTo(delta, 'seconds');
+    if(duration && delta > duration) {
+      player.seekTo((delta % duration));
     } else {
-      res = player.seekTo((delta % duration));
+      player.seekTo(delta, 'seconds');
     }
   }
 
@@ -150,7 +166,7 @@ export function App() {
           var updateTalk = update["talk"];
           var utterThis = new SpeechSynthesisUtterance(updateTalk);
           
-          setTalkMsg('🗣️ '+updateTalk);
+          setTalkMsg(updateTalk);
           
           if(!userInteracted) return;
           synth.speak(utterThis);
@@ -162,8 +178,8 @@ export function App() {
           let chat = update['chat'];
           setChats(prevChats => [...prevChats, `${chat.from}: ${chat.message}`])  ;
           break;
-        case 'view':
-          setBgImage(update['view']);
+        case 'viewers':
+          setViewers(update['viewers'])
           break;
       }
   };
@@ -194,8 +210,8 @@ export function App() {
     let arg = got.arg;
     switch(command) {
       case 'talk':
-        Radio.talk(arg);
         Radio.chat(chat);
+        Radio.talk(arg);
         break;
       case 'play':
         Radio.spin(arg);
@@ -252,9 +268,10 @@ export function App() {
   }
 
   function resetPage() {
+    setPlayerReady(false);
     setChats(['']);
     setTalkMsg('');
-    setBgImage('');
+    setViewers([])
     setSpinUrl('');
   }
 
@@ -276,118 +293,139 @@ export function App() {
     return <InitialSplash onClick={ ()=>{
                   setUserInteracted(true);
                 } } />
-   }
+  }
+  
   return (
-    <main className="flex justify-center h-screen overflow-scroll"
-           style={{
-                  backgroundImage: `url(${bgImage})`,
-                  backgroundPosition: 'center center',
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundColor:'black'
-                 }}>
-      <div className="inline-block lg:w-1/2 md:w-3/4 w-full mx-2">
-
-        <div
-          className="flex mt-2"
-          >
-            {/* header */}
-        
-          <button
-          className="hover:pointer px-4 py-2 inline-block bg-white rounded \
-                    flex-initial mr-2 outline-none border-none \
-                    placeholder-gray-800 bg-opacity-70 \
-                    hover:bg-opacity-90 font-mono font-bold text-sm "
-            style={{
-              backdropFilter: 'blur(32px)',
-              backgroundColor: helpMenuOpen ? 'lightblue' : ''
-            }}
-            onClick={() => {
-              setHelpMenuOpen(!helpMenuOpen)
-            }}
-                >
-                ?
-              </button>
-              <span 
-              className="bg-white rounded w-full flex-full pl-4 font-mono \
-                        relative overflow-wrap bg-opacity-70 p-1 py-2 text-sm"
-              >{'current station: '}{tunePatP}{tunePatP===our?' (YOU)':''}
-              </span>
-
-        </div>
-
-        {helpMenuOpen && 
-        <HelpMenu />
-        }
-            
-        <div
-          className="bg-black mt-2 rounded w-full flex-none relative pb-3 pt-1 \
-                    mr-3 overflow-wrap font-bold font-mono text-sm"
-          style={{
-              backdropFilter: 'blur(32px)'
-          }}>
-          {/* player */}
-          <p className="text-center pt-2 pb-5 text-white mr-5" >{talkMsg}</p>
-          <ReactPlayer
-            ref={playerRef}
-            url={spinUrl}
-            playing={true}
-            width='100%'
-            controls={true}
-            loop={true}
-            onReady={() => {
-              seekToDelta(spinTime);
-            }}
-
-          />
-
-        </div>
-
-        <div className="my-2 bg-white rounded w-full bg-opacity-0"
-          >
-            {/* user input */}
-
-          <div className="flex">
-            <input type="text"
-              ref={inputReference}
-              className="hover:pointer px-4 py-2 inline-block bg-white rounded \
-                        flex-1 outline-none border-none placeholder-gray-800 \
-                        bg-opacity-70 focus:bg-opacity-90 font-mono text-sm"
-              autoCorrect={'off'}
-              autoCapitalize={'off'}
-              autoComplete={'off'}
-              // autoFocus={false}
-              placeholder="sup guys"
+    <div className="mx-20 text-xs font-mono">
+      <div className="flex flex-row">
+        <div className="inline-block mr-4 flex-1">
+          <div
+            className="flex my-2"
+            >
+              {/* header */}
+          
+            <button
+            className="hover:pointer px-4 py-2 \
+                      flex-initial mr-2 outline-none \
+                      font-bold underline "
               style={{
-                backdropFilter: 'blur(32px)'
+                backdropFilter: 'blur(32px)',
+                backgroundColor: helpMenuOpen ? 'lightblue' : ''
               }}
-              id={chatInputId}
-              onKeyDown={(e:any)=> {
-                if( e.key == 'Enter' ){
-                  handleUserInput();
-                }
+              onClick={() => {
+                setHelpMenuOpen(!helpMenuOpen)
               }}
-            />
-              <button className="hover:pointer px-4 py-2 inline-block bg-white rounded \
-                                flex-initial ml-2 outline-none border-none \
-                                placeholder-gray-800 bg-opacity-70 hover:bg-opacity-90 \
-                                font-mono text-sm"
-                      style={{
-                        backdropFilter: 'blur(32px)'
-                      }}
-                      onClick={() => {
-                        handleUserInput();
-                      }}
-              >
-              send
+            >
+              help
             </button>
+            <span 
+            className="bg-white rounded w-full flex-inital pl-4 \
+                      relative overflow-wrap bg-opacity-70 p-1 py-2 "
+            >
+            {tunePatP}
+            </span>
+
+            <span 
+            className="flex-end text-right w-full py-2 relative"
+            >
+            {viewers.length}{' viewers'}
+            </span>
+
+              
+          </div>
+    
+
+          <div
+          >
+            {!playerReady &&
+              <p className="text-center" >
+                loading media player ...
+              </p>
+            }
+            <ReactPlayer
+              ref={playerRef}
+              url={spinUrl}
+              playing={true}
+              width='100%'
+              
+              controls={true}
+              loop={true}
+          
+              onReady={() => {
+                // useEffect :
+                // seektodelta()
+                setPlayerReady(true);
+              }}
+
+            />
+      
+          </div>
+            
+
+        </div>
+
+        <div
+          className="flex-1 flex-col flex"
+        >
+
+          <div
+            className="flex-full h-full"
+          >
+            <ChatBox chats={chats} />
+          </div>
+          <div className="flex-1"
+            >
+              {/* user input */}
+
+            <hr/>
+            <div className="flex">
+              <input type="text"
+                ref={inputReference}
+                className="hover:pointer px-4 py-2 inline-block \
+                          flex-1 outline-none border-none placeholder-gray-800 "
+                autoCorrect={'off'}
+                autoCapitalize={'off'}
+                autoComplete={'off'}
+                // autoFocus={false}
+                placeholder="write your message..."
+                id={chatInputId}
+                onKeyDown={(e:any)=> {
+                  if( e.key == 'Enter' ){
+                    handleUserInput();
+                  }
+                }}
+              />
+                <button className="hover:pointer px-4 py-2\
+                                  flex-initial ml-2 outline-none border-none"
+                        style={{
+                          backdropFilter: 'blur(32px)'
+                        }}
+                        onClick={() => {
+                          handleUserInput();
+                        }}
+                >
+                send
+              </button>
+            </div>
           </div>
         </div>
 
-        <ChatBox chats={chats} />
-
       </div>
-    </main>
+
+      <div
+        className="w-full \
+                   mr-3 overflow-wrap mb-2"
+        >
+      {/* chatbox */}
+      <p className={'mt-2'}>viewers:</p>
+      {viewers.map((x, i) => 
+            <span className={'mr-3'}>{x}</span>
+        )}
+     </div>
+      {helpMenuOpen &&
+        <HelpMenu />
+        }
+    </div>
   );
 }
 
