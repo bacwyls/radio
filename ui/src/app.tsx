@@ -16,7 +16,7 @@ export function App() {
   const [spinTime, setSpinTime] = useState(0);
   const [tunePatP, setTunePatP] = useState("");
   const [radioSub, setRadioSub] = useState(0);
-  // const [bgImage, setBgImage] = useState('')
+  const [bgImage, setBgImage] = useState('https://i.imgur.com/vzkOwHY.gif')
 
   const [viewers, setViewers] = useState([])
 
@@ -296,7 +296,15 @@ export function App() {
   }
   
   return (
-    <div className="mx-20 text-xs font-mono">
+    <div className="mx-2 md:mx-20 mt-2 text-xs font-mono">
+      {/* <img src={bgImage} 
+        className="w-full h-20"
+        style={{
+          objectFit:'cover',
+        }}
+      />
+      <marquee class Name="absolute top-10 text-white"
+      >{talkMsg}</marquee>  */}
       <div className="flex flex-row">
         <div className="inline-block mr-4 flex-1">
           <div
@@ -336,6 +344,7 @@ export function App() {
     
 
           <div
+            className=""
           >
             {!playerReady &&
               <p className="text-center" >
@@ -358,7 +367,19 @@ export function App() {
               }}
 
             />
-      
+            <div>
+              <p className={'mt-2'}>viewers:</p>
+              {viewers.map((x, i) => 
+                    <span className={'mr-3'}>{x}{', '}</span>
+                )}
+            </div>
+            {helpMenuOpen &&
+              <div>
+              <hr className="mt-2 "
+              />
+              <HelpMenu />
+              </div>
+              }
           </div>
             
 
@@ -369,11 +390,12 @@ export function App() {
         >
 
           <div
-            className="flex-full h-full"
+            // className="flex-full h-full "
           >
             <ChatBox chats={chats} />
           </div>
-          <div className="flex-1"
+          <div
+          // className="flex-1"
             >
               {/* user input */}
 
@@ -412,19 +434,12 @@ export function App() {
 
       </div>
 
-      <div
+      {/* <div 
         className="w-full \
                    mr-3 overflow-wrap mb-2"
         >
-      {/* chatbox */}
-      <p className={'mt-2'}>viewers:</p>
-      {viewers.map((x, i) => 
-            <span className={'mr-3'}>{x}</span>
-        )}
-     </div>
-      {helpMenuOpen &&
-        <HelpMenu />
-        }
+     </div> */}
+
     </div>
   );
 }

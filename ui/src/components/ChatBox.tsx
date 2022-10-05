@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 interface IChatBox {
   chats: string[]
 }
@@ -6,6 +6,15 @@ interface IChatBox {
   export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   const {chats} = props;
+
+  const chatboxId = 'chatbox-radio';
+
+  useEffect(()=>{
+    let chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
+    var xH = chatWindow.scrollHeight; 
+    chatWindow.scrollTo(0, xH);
+  }, [chats])
+
   function checkURL(url : string) {
     return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|webp)(\?(.*))?$/gmi) != null);
 
@@ -33,10 +42,11 @@ interface IChatBox {
     return (
       <p
         key={key}
-        style={{
-          fontFamily:'monospace',
-          marginBottom:8
-        }}
+        className="mb-2"
+        // style={{
+        //   fontFamily:'monospace',
+        //   marginBottom:8
+        // }}
         >
         {chat}
       </p>
@@ -48,15 +58,23 @@ interface IChatBox {
     return (
       <p
         key={key}
-        style={{
-          fontFamily:'monospace',
-          marginBottom:8
-        }}
+        className="mb-2"
+
+        // style={{
+        //   fontFamily:'monospace',
+        //   marginBottom:8
+        // }}
         >
         <span>
           {from}
         </span>
-        <img src={imageUrl} className={'ml-2'} />
+        <img src={imageUrl} className={'ml-2'}
+          style={{
+            height:'100px',
+            maxWidth:'100px',
+            objectFit:'cover',
+          }}
+        />
         
     </p>
     )
@@ -65,7 +83,13 @@ interface IChatBox {
   return (
     <div
         className="w-full \
-                   mr-3 overflow-wrap mb-2"
+                   mr-3 overflow-scroll mt-2"
+        style={{
+          height:'388px',
+          maxHeight:'388px',
+          justifyContent:'flex-end',
+        }}
+        id={chatboxId}
         >
       {/* chatbox */}
       {chats.map((x, i) => 

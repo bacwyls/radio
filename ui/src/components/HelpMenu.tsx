@@ -4,10 +4,7 @@ export const HelpMenu = () => {
 
   return (
     <div
-    className="bg-white mt-2 rounded w-full flex-none relative p-3 mr-3 overflow-wrap font-mono bg-opacity-70 mb-2 text-sm"
-    style={{
-        backdropFilter: 'blur(32px)'
-    }}
+    className="mt-4"
     >
 <p className='italic mb-2'>
 NAVIGATION:
