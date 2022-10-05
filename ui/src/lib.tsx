@@ -61,6 +61,7 @@ export class Radio {
     }
 
     public static setTime(playUrl:string, time:number) {
+        time = time * 1000;
         let customStartTime = Date.now() - time;
         customStartTime = Math.ceil(customStartTime);
         api.poke({

@@ -101,7 +101,7 @@ export function App() {
 
     // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
 
-    if(duration && delta > duration) {
+    if(duration) {
       player.seekTo((delta % duration));
     } else {
       player.seekTo(delta, 'seconds');
@@ -233,7 +233,7 @@ export function App() {
         Radio.chat(chat);
         break;
       case 'set-time':
-        let time = player.getCurrentTime() * 1000;
+        let time = player.getCurrentTime();
         if(!time) return;
         if(!spinUrl) return;
         Radio.setTime(spinUrl, time);
@@ -286,6 +286,27 @@ export function App() {
     let command = chat.slice(1,splitIdx);
     let arg = chat.slice(splitIdx+1);
     return {'command': command, 'arg':arg};
+  }
+
+  function handleProgress(progress:any) {
+    // autoscrubbing
+
+    var currentUnixTime = Date.now() / 1000;
+    var delta = Math.ceil(currentUnixTime - spinTime);
+    var duration = player.getDuration();
+    let diff = Math.abs((delta % duration) - progress.playedSeconds)
+
+    if(diff > 2) {
+
+      if(!(our===tunePatP)) {
+        // client scrub to host
+        seekToDelta(spinTime);
+        return;
+      }
+
+      // host assert new time
+      Radio.setTime(spinUrl, progress.playedSeconds);
+    }
   }
 
 
@@ -345,6 +366,9 @@ export function App() {
 
           <div
             className=""
+            style={{
+              pointerEvents: our===tunePatP ? 'auto' : 'none'
+            }}
           >
             {!playerReady &&
               <p className="text-center" >
@@ -365,12 +389,19 @@ export function App() {
                 // seektodelta()
                 setPlayerReady(true);
               }}
+              onSeek={e => console.log('onSeek', e)}
+              onProgress={e => handleProgress(e)}
+
 
             />
             <div>
               <p className={'mt-2'}>viewers:</p>
               {viewers.map((x, i) => 
-                    <span className={'mr-3'}>{x}{', '}</span>
+                    <span className={'mr-3'}
+                      key={i}
+                    >
+                      {x}{', '}
+                    </span>
                 )}
             </div>
             {helpMenuOpen &&
