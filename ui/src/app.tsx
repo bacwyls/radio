@@ -9,12 +9,18 @@ import { Radio } from './lib';
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
 
+const our = '~'+window.ship;
+const tuneInitial = our;
+
+let radio : Radio;
+radio = new Radio(our, api);
+
+
 export function App() {
 
   // should probably move this state into a radio object
   //  and split the usestate stuff into components
   //
-
   const [talkMsg, setTalkMsg]   = useState("");
   const [spinUrl, setSpinUrl]   = useState("");
   const [spinTime, setSpinTime] = useState(0);
@@ -22,12 +28,6 @@ export function App() {
   const [isPublic, setIsPublic] = useState(false);
 
   const [radioSub, setRadioSub] = useState(0);
-
-  const whitebg = 'https://0x0.st/oJ62.png'
-  const blackbg = 'https://0x0.st/oJEy.png'
-  const funnygif = 'https://i.imgur.com/vzkOwHY.gif'
-  const vaporwave = 'https://0x0.st/oJ6_.png'
-  const [bgImage, setBgImage] = useState(vaporwave)
 
   const [viewers, setViewers] = useState([])
 
@@ -46,8 +46,6 @@ export function App() {
     if(!inputReference.current) return;
     window.setTimeout(()=>{
       // use a slight delay for better UX
-      // if(!inputReference) return;
-      // if(!inputReference.current) return;
       // @ts-ignore
       inputReference.current.focus();
     }, 250);
@@ -64,60 +62,21 @@ export function App() {
     }
   }, [chats])
 
-  const our = '~'+window.ship;
-  const tuneInitial = our;
-
-
-  // ReactPlayer npm react-player
-  let player : any;
-  let playerRef = (p:any) => {
-    player = p;
-  }
-
   useEffect(()=>{
-    seekToDelta(spinTime)
+    radio.seekToDelta(spinTime)
   }, [playerReady])
 
   useEffect(() => {
-    if(!player) return;
-      player.url = spinUrl;
+    if(!radio.player) return;
+      radio.player.url = spinUrl;
   }, [spinUrl]);
 
   useEffect(() => {
-    // display voice in chat
-    if(talkMsg === '') return;
-    if(!userInteracted) return;
-    // setChats(prevChats => [...prevChats, `🗣️  ${talkMsg}`])  ;
-  }, [talkMsg])
-
-  useEffect(() => {
-    if(!player) return;
+    if(!radio.player) return;
     if(!playerReady) return;
-    seekToDelta(spinTime)
+    radio.seekToDelta(spinTime)
   }, [spinTime]);
 
-  function seekToDelta(startedTime:number) {
-    // respond to !time command or seek from update
-    // this sets the player to the appropriate time
-    if(startedTime === 0) return;
-
-    if(!player) {
-      console.log('player is not defined :(')
-      return;
-    }
-
-    var currentUnixTime = Date.now() / 1000;
-    var delta = Math.ceil(currentUnixTime - startedTime);
-    var duration = player.getDuration();
-
-    // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
-
-    if(duration) {
-      player.seekTo((delta % duration));
-    } else {
-      player.seekTo(delta, 'seconds');
-    }
-  }
 
 
   // initialize subscription
@@ -128,12 +87,12 @@ export function App() {
             app: "tenna",
             path: "/frontend",
             event: handleSub,
-            quit: subFail,
-            err: subFail
+            quit: ()=> console.log('radio quit'),
+            err: (e)=> console.log('radio err',e ),
         })
         .then((subscriptionId) => {
           setRadioSub(subscriptionId);
-          Radio.tune(tuneInitial);
+          radio.tune(tuneInitial);
           });
   }, [api]);
 
@@ -146,7 +105,7 @@ export function App() {
   }, [radioSub]);
   //
   const unsubFunc = () => {
-    Radio.tune(null);
+    radio.tune(null);
     api.unsubscribe(radioSub);
     api.delete();
   };
@@ -197,10 +156,6 @@ export function App() {
           break;
       }
   };
-  function subFail() {
-      console.log("fail!");
-  };
-
 
   const chatInputId ='radio-chat-input';
   function handleUserInput() {
@@ -215,7 +170,7 @@ export function App() {
     let got = getCommandArg(chat);
     if(!got) {
       // just a regular chat message
-      Radio.chat(chat);
+      radio.chat(chat);
       return;
     }
 
@@ -224,12 +179,12 @@ export function App() {
     let arg = got.arg;
     switch(command) {
       case 'talk':
-        Radio.chat(chat);
-        Radio.talk(arg);
+        radio.chat(chat);
+        radio.talk(arg);
         break;
       case 'play':
-        Radio.spin(arg);
-        Radio.chat(chat);
+        radio.spin(arg);
+        radio.chat(chat);
         break;
       case 'tune':
         if(arg===tunePatP) return;
@@ -237,44 +192,44 @@ export function App() {
         tuneTo(arg)
         break;
       case 'background':
-        Radio.background(arg);
-        Radio.chat(chat);
+        radio.background(arg);
+        radio.chat(chat);
         break;
       case 'time':
-        seekToDelta(spinTime);
-        Radio.chat(chat);
+        radio.seekToDelta(spinTime);
+        radio.chat(chat);
         break;
       case 'set-time':
-        let time = player.getCurrentTime();
+        let time = radio.player.getCurrentTime();
         if(!time) return;
         if(!spinUrl) return;
-        Radio.setTime(spinUrl, time);
-        Radio.chat(chat);
+        radio.setTime(spinUrl, time);
+        radio.chat(chat);
         break;
       case 'public':
         if(tunePatP !== our) {
           return;
         }
-        Radio.public();
-        Radio.chat(chat);
+        radio.public();
+        radio.chat(chat);
         break;
       case 'private':
         if(tunePatP !== our) {
           return;
         }
-        Radio.private();
-        Radio.chat(chat);
+        radio.private();
+        radio.chat(chat);
         break;
       //
       // image commands
       case 'datboi':
-        Radio.datboi();
+        radio.datboi();
         break;
       case 'pepe':
-        Radio.pepe();
+        radio.pepe();
         break;
       case 'wojak':
-        Radio.wojak();
+        radio.wojak();
         break;
     }
   }
@@ -305,7 +260,7 @@ export function App() {
 
     var currentUnixTime = Date.now() / 1000;
     var delta = Math.ceil(currentUnixTime - spinTime);
-    var duration = player.getDuration();
+    var duration = radio.player.getDuration();
     let diff = Math.abs((delta % duration) - progress.playedSeconds)
 
     if(diff > 2) {
@@ -313,13 +268,13 @@ export function App() {
       if(!(our===tunePatP)) {
         // client scrub to host
         console.log('client scrubbing to host')
-        seekToDelta(spinTime);
+        radio.seekToDelta(spinTime);
         return;
       }
 
       // host assert new time
       console.log('host broadcasting new time')
-      Radio.setTime(spinUrl, progress.playedSeconds);
+      radio.setTime(spinUrl, progress.playedSeconds);
     }
   }
 
@@ -331,7 +286,7 @@ export function App() {
   }
   
 function tuneTo(patp:string) {
-  Radio.tune(patp)
+  radio.tune(patp)
   // setTunePatP(patp+' (LOADING)');
   setTunePatP(patp);
   resetPage();
@@ -348,8 +303,13 @@ const watchParty = '~nodmyn-dosrux'
           objectFit:'cover',
         }}
       />
+      
       <marquee className="absolute top-9 text-white text-lg"
-      >{talkMsg}</marquee>  */}
+      >
+        {talkMsg}
+      </marquee>
+      
+      */}
 
       <div className="flex flex-row">
 
@@ -395,11 +355,10 @@ const watchParty = '~nodmyn-dosrux'
 
                 onClick={()=>
                 {
-                  // console.log('watch party')
                   tuneTo(watchParty)
                 }}
               >
-                watch party?
+                🎉 watch party 🎉
               </button> 
             }
             {tunePatP!==our && 
@@ -419,7 +378,6 @@ const watchParty = '~nodmyn-dosrux'
                 home
               </button> 
             }
-
 
 
               {/* number of viewers */}
@@ -452,7 +410,7 @@ const watchParty = '~nodmyn-dosrux'
               </p>
             }
             <ReactPlayer
-              ref={playerRef}
+              ref={radio.playerRef}
               url={spinUrl}
               playing={true}
               width='100%'
@@ -462,7 +420,6 @@ const watchParty = '~nodmyn-dosrux'
           
               onReady={() => {
                 // useEffect :
-                // seektodelta()
                 setPlayerReady(true);
               }}
               // onSeek={e => console.log('onSeek', e)}
@@ -474,6 +431,7 @@ const watchParty = '~nodmyn-dosrux'
 
               config={{
                 file: {
+                  // makes the audio player look nice
                   attributes: { style: {height:'50%', width:'100%',}}
                 },
               }}

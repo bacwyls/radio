@@ -1,54 +1,98 @@
 import Urbit from "@urbit/http-api";
 
-const api = new Urbit('', '', window.desk);
-api.ship = window.ship;
-
 const datboiURL = 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp'
 const pepeURL = 'https://i.imgur.com/IGaYzV6.gif'
 const wojakURL = 'https://i.imgur.com/gsTARXr.gif'
 
+
+  // const whitebg = 'https://0x0.st/oJ62.png'
+  // const blackbg = 'https://0x0.st/oJEy.png'
+  // const funnygif = 'https://i.imgur.com/vzkOwHY.gif'
+  // const vaporwave = 'https://0x0.st/oJ6_.png'
+
+
 export class Radio {
 
-    public static chat(chat:string) {
-        api.poke({
+    our: string;
+    api: Urbit;
+    //
+    //
+    player: any;
+
+    constructor(our: string, api:Urbit) {
+        this.our = our;
+        this.api = api
+    }
+
+
+    public playerRef = (p:any) => {
+        this.player = p;
+      }
+
+    public seekToDelta(startedTime:number) {
+        // respond to !time command or seek from update
+        // this sets the player to the appropriate time
+        if(startedTime === 0) return;
+    
+        if(!this.player) {
+            console.log('player is not defined :(')
+            return;
+        }
+    
+        var currentUnixTime = Date.now() / 1000;
+        var delta = Math.ceil(currentUnixTime - startedTime);
+        var duration = this.player.getDuration();
+    
+        // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
+    
+        if(duration) {
+            this.player.seekTo((delta % duration));
+        } else {
+            this.player.seekTo(delta, 'seconds');
+        }
+    }
+    
+    // api hits
+    public chat(chat:string) {
+        this.api.poke({
           app: 'tenna',
           mark: 'radio-action',
           json: {'chat': {
-                         'from':'~'+api.ship,
+                         'from':this.our,
                          'message':chat
                          } 
                 }
          });
     }
 
-    public static public() {
-        api.poke({
+    public public() {
+        this.api.poke({
             app: 'tower',
             mark: 'radio-action',
             json: {public : true}
             });
     }
 
-    public static private() {
-        api.poke({
+    public private() {
+        this.api.poke({
             app: 'tower',
             mark: 'radio-action',
             json: {public : false}
             });
     }
 
-    public static background(viewUrl:string) {
-        api.poke({
+    public background(viewUrl:string) {
+        this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
             json: {view : viewUrl}
             });
     }
 
-    public static spin(playUrl:string) {
+    public spin(playUrl:string) {
         let currentUnixTime = Date.now()
         currentUnixTime = Math.ceil(currentUnixTime);
-        api.poke({
+        this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
             json: {spin :
@@ -60,11 +104,11 @@ export class Radio {
             });
     }
 
-    public static setTime(playUrl:string, time:number) {
+    public setTime(playUrl:string, time:number) {
         time = time * 1000;
         let customStartTime = Date.now() - time;
         customStartTime = Math.ceil(customStartTime);
-        api.poke({
+        this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
             json: {spin :
@@ -76,29 +120,29 @@ export class Radio {
             });
     }
 
-    public static talk(talkMsg:string) {
-        api.poke({
+    public talk(talkMsg:string) {
+        this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
             json: {talk : talkMsg}
             });
     }
 
-    public static tune(tuneTo:string | null) {
-        api.poke({
+    public tune(tuneTo:string | null) {
+        this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
             json: {tune : tuneTo}
             });
     }
 
-    public static datboi() {
+    public datboi() {
         this.chat(datboiURL);
     }
-    public static pepe() {
+    public pepe() {
         this.chat(pepeURL);
     }
-    public static wojak() {
+    public wojak() {
         this.chat(wojakURL);
     }
     
