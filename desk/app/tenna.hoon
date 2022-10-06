@@ -43,16 +43,21 @@
 ++  on-leave
   |=  [=path]
   :: ~&  >>>  [%tenna %on-leave src.bowl]
-  :_  this
+  `this
   ::
-  :: this is another layer of protection to clear out stale viewers
-  :: poke yourself to tune out
-  :~
-    %+  poke:pass:agentio
-      [our.bowl %tenna]
-      :-  %radio-action
-      !>  [%tune ~]
-  ==
+  ::
+  ::  actually... this breaks everything
+  ::
+  :: :_  this
+  :: ::
+  :: :: this is another layer of protection to clear out stale viewers
+  :: :: poke yourself to tune out
+  :: :~
+  ::   %+  poke:pass:agentio
+  ::     [our.bowl %tenna]
+  ::     :-  %radio-action
+  ::     !>  [%tune ~]
+  :: ==
 ++  on-agent
   |=  [=wire =sign:agent:gall]
   :: TODO secure? retarded?
@@ -74,7 +79,6 @@
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
-
   ?+  mark  (on-poke:def mark vase)
       %noun
     `this
