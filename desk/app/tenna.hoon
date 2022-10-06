@@ -26,8 +26,8 @@
     io    ~(. agentio bowl)
 ::
 ++  on-fail   on-fail:def
-++  on-leave  on-leave:def
 ++  on-peek   on-peek:def
+++  on-load  on-load:def
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
@@ -37,10 +37,22 @@
   !>(state)
 ++  on-init
   ^-  (quip card _this)
-  =.  tune
-  [~ our.bowl]  :: DEFAULT PROVIDER
+  :: =.  tune
+  :: [~ our.bowl]  :: DEFAULT PROVIDER
   `this
-++  on-load  on-load:def
+++  on-leave
+  |=  [=path]
+  :: ~&  >>>  [%tenna %on-leave src.bowl]
+  :_  this
+  ::
+  :: this is another layer of protection to clear out stale viewers
+  :: poke yourself to tune out
+  :~
+    %+  poke:pass:agentio
+      [our.bowl %tenna]
+      :-  %radio-action
+      !>  [%tune ~]
+  ==
 ++  on-agent
   |=  [=wire =sign:agent:gall]
   :: TODO secure? retarded?
@@ -99,8 +111,6 @@
         (watch new-tune)
       =/  love
         (leave old-tune)
-
-      ::
       ::
       :: ?:  =(old-tune new-tune)
       ::   `this

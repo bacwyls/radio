@@ -83,7 +83,8 @@
         !!
       =.  public.state
           public.act
-      `this
+      :_  this
+      (transmit act)
       :: ::
           %online
       ?.  =(src.bowl our.bowl)
@@ -98,14 +99,18 @@
       `this
       :: ::
           %talk
-      ?.  permitted:hc  !!
+      ?.  permitted:hc
+        :: permission denied
+        `this
       =.  talk.state
           talk.act
       :_  this
       (transmit act)
       :: ::
           %spin
-      ?.  permitted:hc  !!
+      ?.  permitted:hc
+        :: permission denied
+        `this
       =.  spin.state
           url.act
       ::
@@ -151,9 +156,10 @@
         (init-fact [%spin spin spin-time])
         :: (init-fact [%talk talk])
         :: (init-fact [%view view])
+        (init-fact [%public public])
         (init-fact [%tune `our.bowl])
-        (transmit-card [%viewers viewers])
         (init-fact [%viewers viewers])
+        (transmit-card [%viewers viewers])
         ::
         (kick:io ~[/personal])
       ==

@@ -6,6 +6,7 @@ export const HelpMenu = () => {
     <div
     className="mt-4"
     >
+      <p className="mb-4">to interact with radio, enter commands in the bottom right</p>
 <p className='italic mb-2'>
 NAVIGATION:
 </p>

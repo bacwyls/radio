@@ -11,12 +11,23 @@ api.ship = window.ship;
 
 export function App() {
 
+  // should probably move this state into a radio object
+  //  and split the usestate stuff into components
+  //
+
   const [talkMsg, setTalkMsg]   = useState("");
   const [spinUrl, setSpinUrl]   = useState("");
   const [spinTime, setSpinTime] = useState(0);
   const [tunePatP, setTunePatP] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+
   const [radioSub, setRadioSub] = useState(0);
-  const [bgImage, setBgImage] = useState('https://i.imgur.com/vzkOwHY.gif')
+
+  const whitebg = 'https://0x0.st/oJ62.png'
+  const blackbg = 'https://0x0.st/oJEy.png'
+  const funnygif = 'https://i.imgur.com/vzkOwHY.gif'
+  const vaporwave = 'https://0x0.st/oJ6_.png'
+  const [bgImage, setBgImage] = useState(vaporwave)
 
   const [viewers, setViewers] = useState([])
 
@@ -181,6 +192,9 @@ export function App() {
         case 'viewers':
           setViewers(update['viewers'])
           break;
+        case "public":
+          setIsPublic(update['public'])
+          break;
       }
   };
   function subFail() {
@@ -220,9 +234,7 @@ export function App() {
       case 'tune':
         if(arg===tunePatP) return;
         if(arg==='') arg=our;
-        Radio.tune(arg);
-        setTunePatP(arg+' (LOADING)');
-        resetPage();
+        tuneTo(arg)
         break;
       case 'background':
         Radio.background(arg);
@@ -300,11 +312,13 @@ export function App() {
 
       if(!(our===tunePatP)) {
         // client scrub to host
+        console.log('client scrubbing to host')
         seekToDelta(spinTime);
         return;
       }
 
       // host assert new time
+      console.log('host broadcasting new time')
       Radio.setTime(spinUrl, progress.playedSeconds);
     }
   }
@@ -316,29 +330,44 @@ export function App() {
                 } } />
   }
   
+function tuneTo(patp:string) {
+  Radio.tune(patp)
+  // setTunePatP(patp+' (LOADING)');
+  setTunePatP(patp);
+  resetPage();
+}
+
+const watchParty = '~nodmyn-dosrux'
+
   return (
-    <div className="mx-2 md:mx-20 mt-2 text-xs font-mono">
+    <div className="mx-2 md:mx-20 text-xs font-mono">
+      
       {/* <img src={bgImage} 
         className="w-full h-20"
         style={{
           objectFit:'cover',
         }}
       />
-      <marquee class Name="absolute top-10 text-white"
+      <marquee className="absolute top-9 text-white text-lg"
       >{talkMsg}</marquee>  */}
+
       <div className="flex flex-row">
-        <div className="inline-block mr-4 flex-1">
-          <div
-            className="flex my-2"
-            >
-              {/* header */}
+
+        <div className="inline-block mr-4 w-2/3"
+          // player column
+        >
           
+          <div
+            className="flex my-2 align-middle table"
+            // header above player
+          >
+          
+          {/* help button */}
             <button
             className="hover:pointer px-4 py-2 \
-                      flex-initial mr-2 outline-none \
+                      flex-2 mr-2 outline-none \
                       font-bold underline "
               style={{
-                backdropFilter: 'blur(32px)',
                 backgroundColor: helpMenuOpen ? 'lightblue' : ''
               }}
               onClick={() => {
@@ -347,28 +376,75 @@ export function App() {
             >
               help
             </button>
+            {/* tuned to */}
             <span 
-            className="bg-white rounded w-full flex-inital pl-4 \
-                      relative overflow-wrap bg-opacity-70 p-1 py-2 "
+            className="flex-inital"
             >
-            {tunePatP}
+              {tunePatP}{' '} {isPublic ? '(public)' : '(private)'}
             </span>
 
-            <span 
-            className="flex-end text-right w-full py-2 relative"
+
+            {tunePatP!==watchParty && 
+              <button
+                className="hover:pointer button border-black \
+                          border rounded p-1 text-center m-2
+                          flex-initial ml-4"
+                style={{
+                  whiteSpace:'nowrap'
+                }}
+
+                onClick={()=>
+                {
+                  // console.log('watch party')
+                  tuneTo(watchParty)
+                }}
+              >
+                watch party?
+              </button> 
+            }
+            {tunePatP!==our && 
+              <button
+                className="hover:pointer button border-black \
+                          border rounded p-1 text-center m-2
+                          flex-initial ml-4"
+                style={{
+                  whiteSpace:'nowrap'
+                }}
+
+                onClick={()=>
+                {
+                  tuneTo(our)
+                }}
+              >
+                home
+              </button> 
+            }
+
+
+
+              {/* number of viewers */}
+            {/* <span 
+            className="flex-end text-right w-full py-2 relative align-right"
             >
-            {viewers.length}{' viewers'}
-            </span>
+             {viewers.length}{' viewers'}
+            </span> */}
 
               
           </div>
-    
 
+          {helpMenuOpen &&
+            <div>
+            <hr className="mt-2 "
+            />
+            <HelpMenu />
+            </div>
+          }
+    
           <div
-            className=""
-            style={{
-              pointerEvents: our===tunePatP ? 'auto' : 'none'
-            }}
+            // className="content-center align-middle justify-center"
+            // style={{
+            //   // pointerEvents: our===tunePatP ? 'auto' : 'none',
+            // }}
           >
             {!playerReady &&
               <p className="text-center" >
@@ -380,7 +456,7 @@ export function App() {
               url={spinUrl}
               playing={true}
               width='100%'
-              
+              height='80vh'
               controls={true}
               loop={true}
           
@@ -389,13 +465,27 @@ export function App() {
                 // seektodelta()
                 setPlayerReady(true);
               }}
-              onSeek={e => console.log('onSeek', e)}
+              // onSeek={e => console.log('onSeek', e)}
               onProgress={e => handleProgress(e)}
+              
+              style={{
+                backgroundColor:'lightgray'
+              }}
 
+              config={{
+                file: {
+                  attributes: { style: {height:'50%', width:'100%',}}
+                },
+              }}
 
             />
+            <div
+            className={'flex-row'}
+              // player footer
+            >
+            
             <div>
-              <p className={'mt-2'}>viewers:</p>
+              <p className={'mt-2'}>{viewers.length}{' viewers:'}</p>
               {viewers.map((x, i) => 
                     <span className={'mr-3'}
                       key={i}
@@ -404,13 +494,7 @@ export function App() {
                     </span>
                 )}
             </div>
-            {helpMenuOpen &&
-              <div>
-              <hr className="mt-2 "
-              />
-              <HelpMenu />
-              </div>
-              }
+            </div>
           </div>
             
 
@@ -418,6 +502,10 @@ export function App() {
 
         <div
           className="flex-1 flex-col flex"
+          style={{
+            maxWidth:'33%'
+          }}
+          // chatbox column
         >
 
           <div
@@ -461,6 +549,14 @@ export function App() {
               </button>
             </div>
           </div>
+
+          {/* <div
+          className="text-lg font-bold my-20 text-right"
+          >
+              <h1>urbit radio</h1>
+              <p className="text-xs font-normal">by assembly capital research</p>
+          </div> */}
+
         </div>
 
       </div>

@@ -43,10 +43,6 @@ interface IChatBox {
       <p
         key={key}
         className="mb-2"
-        // style={{
-        //   fontFamily:'monospace',
-        //   marginBottom:8
-        // }}
         >
         {chat}
       </p>
@@ -59,11 +55,6 @@ interface IChatBox {
       <p
         key={key}
         className="mb-2"
-
-        // style={{
-        //   fontFamily:'monospace',
-        //   marginBottom:8
-        // }}
         >
         <span>
           {from}
@@ -73,21 +64,23 @@ interface IChatBox {
             height:'100px',
             maxWidth:'100px',
             objectFit:'cover',
+            // backgroundColor:'black'
           }}
         />
         
     </p>
     )
   }
-
+  const height="85vh"
   return (
     <div
         className="w-full \
                    mr-3 overflow-scroll mt-2"
         style={{
-          height:'388px',
-          maxHeight:'388px',
-          justifyContent:'flex-end',
+          height:height,
+          maxHeight:height,
+          overflowWrap:'break-word',
+          // justifyContent:'end'
         }}
         id={chatboxId}
         >

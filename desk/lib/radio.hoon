@@ -39,6 +39,8 @@
       [%s talk.act]
     :: %view
     ::   [%s view.act]
+    %public
+      [%b public.act]
     ==
   --
 ++  unit-ship
