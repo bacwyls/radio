@@ -74,14 +74,16 @@ interface IChatBox {
   const height="85vh"
   return (
     <div
-        className="w-full \
+        className="flex flex-col w-full \
                    mr-3 overflow-scroll mt-2"
         style={{
           height:height,
           maxHeight:height,
           overflowWrap:'break-word',
-          // justifyContent:'end'
+          verticalAlign:'bottom',
+          justifyContent:'flex-end',
         }}
+        
         id={chatboxId}
         >
       {/* chatbox */}

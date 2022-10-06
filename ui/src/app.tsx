@@ -508,13 +508,8 @@ const watchParty = '~nodmyn-dosrux'
           // chatbox column
         >
 
+          <ChatBox chats={chats} />
           <div
-            // className="flex-full h-full "
-          >
-            <ChatBox chats={chats} />
-          </div>
-          <div
-          // className="flex-1"
             >
               {/* user input */}
 
@@ -549,24 +544,8 @@ const watchParty = '~nodmyn-dosrux'
               </button>
             </div>
           </div>
-
-          {/* <div
-          className="text-lg font-bold my-20 text-right"
-          >
-              <h1>urbit radio</h1>
-              <p className="text-xs font-normal">by assembly capital research</p>
-          </div> */}
-
         </div>
-
       </div>
-
-      {/* <div 
-        className="w-full \
-                   mr-3 overflow-wrap mb-2"
-        >
-     </div> */}
-
     </div>
   );
 }
