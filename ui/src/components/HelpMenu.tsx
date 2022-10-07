@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+interface IHelpMenu {
+  top: number;
+  left:number;
+}
 
-export const HelpMenu = () => {
+export const HelpMenu: FC<IHelpMenu> = (props: IHelpMenu) => {
+
+  const {top, left} = props;
+
 
   return (
-    <div
-    className="mt-4"
-    >
-      <p className="mb-4">to interact with radio, enter commands in the bottom right</p>
+<div
+className="p-4 bg-white"
+style={{
+  position:'absolute',
+  top:top - 30,
+  left:left,
+  transform: 'translate(-100%, -100%)'
+}}
+>
+<p className="mb-4">to interact with radio, enter commands in the bottom right</p>
 <p className='italic mb-2'>
 NAVIGATION:
 </p>

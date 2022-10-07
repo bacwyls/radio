@@ -34,7 +34,10 @@ export function App() {
   const [update, setUpdate] = useState();
 
   const [userInteracted, setUserInteracted] = useState(false);
+
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const [helpMenuTop, setHelpMenuTop] = useState(0);
+  const [helpMenuLeft, setHelpMenuLeft] = useState(0);
 
   const [playerReady, setPlayerReady] = useState(false);
 
@@ -54,7 +57,7 @@ export function App() {
 
 
   const [chats, setChats] = useState<Array<string>>([''])
-  const maxChats = 16;
+  const maxChats = 100;
   useEffect(() => {
     // maximum chats
     if(chats.length > maxChats) {
@@ -318,27 +321,16 @@ const watchParty = '~nodmyn-dosrux'
         >
           
           <div
-            className="flex my-2 align-middle table"
+            className="flex my-2 align-middle table w-full"
             // header above player
           >
-          
-          {/* help button */}
-            <button
-            className="hover:pointer px-4 py-2 \
-                      flex-2 mr-2 outline-none \
-                      font-bold underline "
-              style={{
-                backgroundColor: helpMenuOpen ? 'lightblue' : ''
-              }}
-              onClick={() => {
-                setHelpMenuOpen(!helpMenuOpen)
-              }}
-            >
-              help
-            </button>
+
+            <span className="flex-initial text-2xl align-middle">
+              📻
+            </span> 
             {/* tuned to */}
             <span 
-            className="flex-inital"
+            className="table-cell flex-full ml-4 px-2 align-middle"
             >
               {tunePatP}{' '} {isPublic ? '(public)' : '(private)'}
             </span>
@@ -347,8 +339,8 @@ const watchParty = '~nodmyn-dosrux'
             {tunePatP!==watchParty && 
               <button
                 className="hover:pointer button border-black \
-                          border rounded p-1 text-center m-2
-                          flex-initial ml-4"
+                          border p-1 text-center m-2
+                          flex-initial ml-4 justify-right"
                 style={{
                   whiteSpace:'nowrap'
                 }}
@@ -358,13 +350,13 @@ const watchParty = '~nodmyn-dosrux'
                   tuneTo(watchParty)
                 }}
               >
-                🎉 watch party 🎉
+                🎉 !tune {watchParty} 🎉
               </button> 
             }
             {tunePatP!==our && 
               <button
                 className="hover:pointer button border-black \
-                          border rounded p-1 text-center m-2
+                          border p-1 text-center m-2
                           flex-initial ml-4"
                 style={{
                   whiteSpace:'nowrap'
@@ -375,7 +367,7 @@ const watchParty = '~nodmyn-dosrux'
                   tuneTo(our)
                 }}
               >
-                home
+                !tune {our}
               </button> 
             }
 
@@ -386,17 +378,11 @@ const watchParty = '~nodmyn-dosrux'
             >
              {viewers.length}{' viewers'}
             </span> */}
-
+           
               
           </div>
 
-          {helpMenuOpen &&
-            <div>
-            <hr className="mt-2 "
-            />
-            <HelpMenu />
-            </div>
-          }
+       
     
           <div
             // className="content-center align-middle justify-center"
@@ -438,11 +424,13 @@ const watchParty = '~nodmyn-dosrux'
 
             />
             <div
-            className={'flex-row'}
+            className={'flex flex-row'}
               // player footer
             >
             
-            <div>
+            <div
+            className={'flex-1'}
+            >
               <p className={'mt-2'}>{viewers.length}{' viewers:'}</p>
               {viewers.map((x, i) => 
                     <span className={'mr-3'}
@@ -451,7 +439,30 @@ const watchParty = '~nodmyn-dosrux'
                       {x}{', '}
                     </span>
                 )}
+                
             </div>
+                      
+          {/* help button */}
+            <button
+              className={`hover:pointer px-4 py-2 \
+                        flex-initial outline-none \
+                        font-bold underline border-black border-t-0 \
+                        ${helpMenuOpen ? 'border' : ''}`}
+              style={{
+                // borderColor: 'black',
+                // border: helpMenuOpen ? '1' : '0'
+              }}
+              onClick={(e) => {
+                setHelpMenuLeft(e.clientX);
+                setHelpMenuTop(e.clientY);
+                setHelpMenuOpen(!helpMenuOpen);
+              }}
+            >
+              help
+            </button>
+            {helpMenuOpen &&
+              <HelpMenu left={helpMenuLeft} top={helpMenuTop} />
+            }
             </div>
           </div>
             

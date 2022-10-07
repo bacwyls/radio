@@ -24,6 +24,7 @@ interface IChatBox {
 
       if(chat[0] !== '~') return chatToHTML_default(key, chat);
 
+
       let split = chat.indexOf(': ');
       if(split === -1) return chatToHTML_default(key, chat);
       
@@ -35,16 +36,34 @@ interface IChatBox {
       if(checkURL(message)) {
         return chatToHTML_image(key, from, message);
       }
-      return chatToHTML_default(key, chat);
+      return chatToHTML_default_bold(key, from, message);
     }
 
-  const chatToHTML_default = (key:number, chat: string) => {
+
+  const chatToHTML_default = (key:number, chat : string) => {
     return (
       <p
         key={key}
-        className="mb-2"
+        className="p-1 \
+                   hover:bg-gray-100"
         >
         {chat}
+      </p>
+    )
+  }
+  const chatToHTML_default_bold = (key:number, from : string, message: string) => {
+    return (
+      <p
+        key={key}
+        className="p-1 \
+                   hover:bg-gray-100"
+        >
+          <span
+            className={'font-bold mr-1'}
+          >
+          {from}
+        </span>
+        {message}
       </p>
     )
   }
@@ -54,15 +73,18 @@ interface IChatBox {
     return (
       <p
         key={key}
-        className="mb-2"
+        className="p-1 \
+                   hover:bg-gray-100"
         >
-        <span>
+        <span
+          className={'font-bold mr-1'}
+        >
           {from}
         </span>
         <img src={imageUrl} className={'ml-2'}
           style={{
-            height:'100px',
-            maxWidth:'100px',
+            height:'10vh',
+            maxWidth:'10vh',
             objectFit:'cover',
             // backgroundColor:'black'
           }}
@@ -74,8 +96,7 @@ interface IChatBox {
   const height="85vh"
   return (
     <div
-        className="flex flex-col w-full \
-                   mr-3 overflow-scroll mt-2"
+        className="flex flex-col w-full"
         style={{
           height:height,
           maxHeight:height,
@@ -84,12 +105,19 @@ interface IChatBox {
           justifyContent:'flex-end',
         }}
         
-        id={chatboxId}
         >
-      {/* chatbox */}
-      {chats.map((x, i) => 
-            chatToHTML(i, chats[i])
-        )}
-     </div>
+
+        <div
+          className="overflow-y-scroll"
+          id={chatboxId}
+
+        >
+          {/* chatbox */}
+          {chats.map((x, i) => 
+                chatToHTML(i, chats[i])
+            )}
+
+      </div>
+    </div>
   );
 };
