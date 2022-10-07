@@ -91,7 +91,7 @@
         !!
       =.  online.state
           online.act
-      ?.  online
+      ?.  online.act
         :_  this
         :~
           (kick:io ~[/global /personal])
