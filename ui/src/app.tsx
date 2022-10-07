@@ -325,52 +325,62 @@ const watchParty = '~nodmyn-dosrux'
             // header above player
           >
 
-            <span className="flex-initial text-2xl align-middle">
+            <span className="text-2xl align-middle">
               📻
             </span> 
             {/* tuned to */}
             <span 
-            className="table-cell flex-full ml-4 px-2 align-middle"
+            className="flex-full ml-4 px-2 align-middle"
             >
               {tunePatP}{' '} {isPublic ? '(public)' : '(private)'}
             </span>
 
-
+            <div
+              className="flex-initial"
+              // style={{
+              //   position:'fixed',
+              //   top:0,
+              //   right:0
+              // }}
+            >
             {tunePatP!==watchParty && 
-              <button
-                className="hover:pointer button border-black \
-                          border p-1 text-center m-2
-                          flex-initial ml-4 justify-right"
-                style={{
-                  whiteSpace:'nowrap'
-                }}
+                <button
+                  className="hover:pointer button border-black \
+                            border p-1 text-center mt-2 mr-2
+                            flex-initial"
+                  style={{
+                    whiteSpace:'nowrap'
+                  }}
 
-                onClick={()=>
-                {
-                  tuneTo(watchParty)
-                }}
-              >
-                🎉 !tune {watchParty} 🎉
-              </button> 
-            }
-            {tunePatP!==our && 
-              <button
-                className="hover:pointer button border-black \
-                          border p-1 text-center m-2
-                          flex-initial ml-4"
-                style={{
-                  whiteSpace:'nowrap'
-                }}
+                  onClick={()=>
+                  {
+                    tuneTo(watchParty)
+                  }}
+                >
+                  🎉 !tune {watchParty} 🎉
+                </button> 
+              }
+              {tunePatP!==our && 
+                <button
+                  className="hover:pointer button border-black \
+                            border p-1 text-center mt-2
+                            flex-initial"
+                  style={{
+                    whiteSpace:'nowrap'
+                  }}
 
-                onClick={()=>
-                {
-                  tuneTo(our)
-                }}
-              >
-                !tune {our}
-              </button> 
-            }
+                  onClick={()=>
+                  {
+                    tuneTo(our)
+                  }}
+                >
+                  !tune {our}
+                </button> 
+              }
+           </div>   
 
+
+       
 
               {/* number of viewers */}
             {/* <span 
@@ -441,7 +451,7 @@ const watchParty = '~nodmyn-dosrux'
                 )}
                 
             </div>
-                      
+
           {/* help button */}
             <button
               className={`hover:pointer px-4 py-2 \
@@ -513,6 +523,8 @@ const watchParty = '~nodmyn-dosrux'
               </button>
             </div>
           </div>
+
+         
         </div>
       </div>
     </div>
