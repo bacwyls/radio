@@ -144,7 +144,7 @@
       =/  =chat:store  [message.act from.act]
       =.  chatlog  [chat chatlog]
       =.  chatlog
-        ?:  (gth (lent chatlog) 32)
+        ?:  (gth (lent chatlog) 16)
           (snip chatlog)
         chatlog
       :_  this
