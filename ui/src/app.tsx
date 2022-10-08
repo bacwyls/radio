@@ -149,7 +149,8 @@ export function App() {
           break;
         case "chat":
           let chat = update['chat'];
-          setChats(prevChats => [...prevChats, `${chat.from}: ${chat.message}`])  ;
+          setChat(chat.from, chat.message);
+          // setChats(prevChats => [...prevChats, `${chat.from}: ${chat.message}`])  ;
           break;
         case 'viewers':
           setViewers(update['viewers'])
@@ -157,8 +158,19 @@ export function App() {
         case "public":
           setIsPublic(update['public'])
           break;
+        case "chatlog":
+          setChats([''])
+          let chatlog = update['chatlog']
+          for(let i = 0; i < chatlog.length; i++) {
+            setChat(chatlog[i].from, chatlog[i].message)
+          }
+          break;
       }
   };
+
+  function setChat(from:string, message:string) {
+    setChats(prevChats => [...prevChats, `${from}: ${message}`])  ;
+  }
 
   const chatInputId ='radio-chat-input';
   function handleUserInput() {

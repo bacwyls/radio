@@ -1,6 +1,12 @@
 |%
 ::
 :: ::
++$  chat
+  $:
+  message=cord
+  from=ship
+  ==
+::
 +$  action
   $%
     [%tune tune=(unit @p)]
@@ -11,5 +17,6 @@
     [%online online=?]
     [%public public=?]
     [%viewers viewers=(set ship)]
+    [%chatlog chatlog=(list chat)]
   ==
 --

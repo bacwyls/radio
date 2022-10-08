@@ -17,6 +17,7 @@
   online=_&
   public=_&
   viewers=(set ship)
+  chatlog=(list chat:store)
   ==
 +$  card     card:agent:gall
 --
@@ -78,6 +79,7 @@
       :: ::
           %tune  `this
           %viewers  `this  :: TODO ugly
+          %chatlog  `this  :: TODO ugly
       :: ::
           %public
       ?.  =(src.bowl our.bowl)
@@ -139,6 +141,12 @@
       :: ?.  permitted:hc  !!
       ?.  online  !!
       =.  from.act  src.bowl
+      =/  =chat:store  [message.act from.act]
+      =.  chatlog  [chat chatlog]
+      =.  chatlog
+        ?:  (gth (lent chatlog) 32)
+          (snip chatlog)
+        chatlog
       :_  this
       (transmit act)
     ==
@@ -168,6 +176,7 @@
         (init-fact [%public public])
         (init-fact [%tune `our.bowl])
         (init-fact [%viewers viewers])
+        (init-fact [%chatlog chatlog])
         (transmit-card [%viewers viewers])
         ::
         (kick:io ~[/personal])

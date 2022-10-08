@@ -91,9 +91,10 @@
     :: ~&  >  [%tenna %on-poke act]
     ?-  -.act
       :: ::
-          %online  `this
-          %public  `this
+          %online   `this
+          %public   `this
           %viewers  `this  :: TODO ugly
+          %chatlog  `this  :: TODO ugly
       :: ::
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
