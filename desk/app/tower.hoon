@@ -56,6 +56,7 @@
   :: =.  spin-time  now.bowl
   `this
 ++  on-load  on-load:def
+:: ++  on-load  on-load:def
   :: |=  old-state=vase
   :: ^-  (quip card _this)
   :: =/  old  !<(versioned-state old-state)
@@ -89,14 +90,22 @@
           %online
       ?.  =(src.bowl our.bowl)
         !!
+      =/  kik=(list card)
+        :: going online or going offline
+        :: kick everyone
+        ?.  =(online.state online.act)
+          :~
+            (kick:io ~[/global /personal])
+          ==
+        ~
+      =.  viewers
+        ?.  =(online.state online.act)
+          *(set ship)
+        viewers
       =.  online.state
           online.act
-      ?.  online.act
-        :_  this
-        :~
-          (kick:io ~[/global /personal])
-        ==
-      `this
+      :_  this
+      kik
       :: ::
           %talk
       ?.  permitted:hc
