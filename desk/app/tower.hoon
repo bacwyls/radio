@@ -176,7 +176,7 @@
         (init-fact [%public public])
         (init-fact [%tune `our.bowl])
         (init-fact [%viewers viewers])
-        (init-fact [%chatlog chatlog])
+        (init-fact [%chatlog (flop chatlog)])
         (transmit-card [%viewers viewers])
         ::
         (kick:io ~[/personal])
