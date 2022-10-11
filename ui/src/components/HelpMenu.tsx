@@ -79,13 +79,7 @@ DJ COMMANDS:
 <p>change the background image</p>
 </div> */}
 
-{/* <p className="font-bold">
-!set-time
-</p>
-<div className="ml-4 mb-4">
 
-<p>set the shared timestamp to your current timestamp</p>
-</div> */}
 <p>
 -----------
 </p>
@@ -110,6 +104,14 @@ ADMIN COMMANDS:
 
 <p>only the host can use DJ commands</p>
 </div>
+
+{/* <p className="font-bold">
+!set-time
+</p>
+<div className="ml-4 mb-4">
+
+<p>set the shared timestamp to your current timestamp</p>
+</div> */}
 
 {/* <p>
 -----------

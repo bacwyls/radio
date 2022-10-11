@@ -62,19 +62,34 @@
   |=  [=wire =sign:agent:gall]
   :: TODO secure? retarded?
   ^-  (quip card _this)
-  ?:  ?&  =(%watch-ack -.sign)
-      ==
-    =.  wack  &
+  :: ~&  >>  [%on-agent %tenna wire -.sign]
+  ?~  tune.state  `this
+  ?.  =(src.bowl (need tune.state))
     `this
-  ?.  ?&  ?=(%fact -.sign)
-          =(%radio-action p.cage.sign)
-          =(src.bowl (need tune.state))
+  :: ?+    wire  (on-agent:def wire sign)
+  ::   [%expected %wire ~]
+    ?+    -.sign  (on-agent:def wire sign)
+        %watch-ack
+      =.  wack  &
+      `this
+        %kick
+      ?.  =(wire global)
+        `this
+      :_  this
+      :~
+      (poke-self:pass:io tuneout)
       ==
-    (on-agent:def wire sign)
-  :_  this
-  :~
-    :: fwd to client (frontend) subscription
-    (fact:io cage.sign ~[/frontend])
+        %fact
+      ?+    p.cage.sign  (on-agent:def wire sign)
+          %radio-action
+        :: ~&  >>>  [%tenna %fact !<(action:store q.cage.sign)]
+        :_  this
+        :~
+          :: fwd to client (frontend) subscription
+          (fact:io cage.sign ~[/frontend])
+        ==
+      ==
+    :: ==
   ==
 ++  on-poke
   |=  [=mark =vase]
@@ -96,6 +111,8 @@
           %viewers  `this  :: TODO ugly
           %chatlog  `this  :: TODO ugly
       :: ::
+          %presence
+                  :_  this  (fwd act)
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
           %chat   :_  this  (fwd act)
@@ -112,11 +129,13 @@
       ::
       =.  tune  new-tune
       ::
+      ::
       =/  watt
         (watch new-tune)
       =/  love
         (leave old-tune)
       ::
+      ::  cant remember why this broke something
       :: ?:  =(old-tune new-tune)
       ::   `this
      :: 
@@ -131,8 +150,8 @@
       ::
       =.  wack  |
       :: watch new AND/OR leave old
-::      ~&  >>>  [%watt watt]
-::      ~&  >>>  [%love love]
+    ::  ~&  >>>  [%watt watt]
+    ::  ~&  >>>  [%love love]
       :_  this
       (weld love watt)
     :: ::
@@ -169,7 +188,10 @@
 ++  watch
   |=  new-tune=(unit ship)
   ^-  (list card)
-  ?~  new-tune  ~
+  ?~  new-tune
+    :~
+      (fact:agentio tuneout ~[/frontend])
+    ==
   :~
   [%pass personal %agent [u.new-tune provider] %watch personal]
   [%pass global %agent [u.new-tune provider] %watch global]
@@ -182,5 +204,7 @@
       :-  %radio-action
       !>  act
   ==
+++  tuneout
+  radio-action+!>([%tune ~])
 -- 
 

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 interface IChatBox {
-  chats: string[]
+  chats: any
 }
 
   export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
@@ -20,71 +20,75 @@ interface IChatBox {
 
   }
 
-  const chatToHTML = (key:number, chat: string) => {
+  const chatToHTML = (chat: any) => {
 
-      if(chat[0] !== '~') return chatToHTML_default(key, chat);
+      let msg = chat.message;
+      let from = chat.from;
+      let time = chat.time;
+
+      if(!from) return chatToHTML_default(1337, chat.msg);
 
 
-      let split = chat.indexOf(': ');
-      if(split === -1) return chatToHTML_default(key, chat);
+      // let split = chat.indexOf(': ');
+      // if(split === -1) return chatToHTML_default(key, chat);
       
-      let from = chat.slice(0, split+2)
-      let message = chat.slice(split+2)
+      // let from = chat.slice(0, split+2)
+      // let message = chat.slice(split+2)
 
       // console.log(`processing chat from ${from} with message ${message}`)
 
-      if(checkURL(message)) {
-        return chatToHTML_image(key, from, message);
+      if(checkURL(chat.message)) {
+        return chatToHTML_image(chat);
       }
-      return chatToHTML_default_bold(key, from, message);
+      return chatToHTML_default_bold(chat);
     }
 
 
-  const chatToHTML_default = (key:number, chat : string) => {
+  const chatToHTML_default = (key: number, chat : any) => {
     return (
       <p
         key={key}
-        className="p-1 \
-                   hover:bg-gray-100"
         >
         {chat}
       </p>
     )
   }
-  const chatToHTML_default_bold = (key:number, from : string, message: string) => {
+  const chatToHTML_default_bold = (chat : any) => {
     return (
       <p
-        key={key}
+        key={chat.time}
         className="p-1 \
                    hover:bg-gray-100"
         >
           <span
             className={'font-bold mr-1'}
           >
-          {from}
+          {chat.from}{':'}
         </span>
-        {message}
+        {chat.message}
       </p>
     )
   }
 
   // for rendering pepes
-  const chatToHTML_image = (key:number, from: string, imageUrl: string) => {
+  const chatToHTML_image = (chat : any) => {
     return (
       <p
-        key={key}
+        key={chat.time}
         className="p-1 \
                    hover:bg-gray-100"
         >
         <span
           className={'font-bold mr-1'}
         >
-          {from}
+          {chat.from}{':'}
         </span>
-        <img src={imageUrl} className={'ml-2'}
+        <img src={chat.message} className={'ml-2'}
           style={{
-            height:'10vh',
-            maxWidth:'10vh',
+            minHeight:'1vh',
+            maxHeight:'10vh',
+            minWidth:'1vw',
+            maxWidth:'15vw',
             objectFit:'cover',
             // backgroundColor:'black'
           }}
@@ -113,8 +117,8 @@ interface IChatBox {
 
         >
           {/* chatbox */}
-          {chats.map((x, i) => 
-                chatToHTML(i, chats[i])
+          {chats.map((x:any,i:any) => 
+                chatToHTML(chats[i])
             )}
 
       </div>

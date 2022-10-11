@@ -18,12 +18,12 @@
     :-  -.act
     ?+  -.act  !!
     %chat
-      (enchat message.act from.act)
+      (enchat +.act)
     %chatlog
       :-  %a
       %+  turn  chatlog.act
       |=  =chat
-      (enchat message.chat from.chat)
+      (enchat chat)
     %viewers
       :: ~&  >  [%json %vs act]
       ::
@@ -59,11 +59,13 @@
     |=  her=@p
     [%s (scot %p her)]
 ++  enchat
-  |=  [message=cord from=ship]
+  |=  [=chat]
+  ^-  json
   %-  pairs:enjs
   :~
-  ['message' %s message]
-  ['from' %s (scot %p from)]
+  ['message' %s message.chat]
+  ['from' %s (scot %p from.chat)]
+  ['time' (sect:enjs time.chat)]
   ==
 ::
 ++  dejs
@@ -84,6 +86,7 @@
         [%chat chat]
         [%tune (mu patp)]
         [%public bo]
+        [%presence ul]
       ==
     ++  patp
       (su ;~(pfix sig fed:ag))
@@ -92,6 +95,7 @@
       :~  
           [%message so]
           [%from patp]
+          [%time di]
       ==
     ++  spin
       %-  ot

@@ -5,12 +5,14 @@ import { HelpMenu } from './components/HelpMenu';
 import { InitialSplash } from './components/InitialSplash';
 import { ChatBox } from './components/ChatBox';
 import { Radio } from './lib';
+import { NavItem } from './components/NavItem';
 
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
 
 const our = '~'+window.ship;
-const tuneInitial = our;
+const watchParty = '~nodmyn-dosrux'
+const tuneInitial = watchParty;
 
 let radio : Radio;
 radio = new Radio(our, api);
@@ -18,8 +20,10 @@ radio = new Radio(our, api);
 
 export function App() {
 
-  // should probably move this state into a radio object
+  // should really move this state into a real abstraction
   //  and split the usestate stuff into components
+  //
+  //  TODO useReducer
   //
   const [talkMsg, setTalkMsg]   = useState("");
   const [spinUrl, setSpinUrl]   = useState("");
@@ -39,7 +43,12 @@ export function App() {
   const [helpMenuTop, setHelpMenuTop] = useState(0);
   const [helpMenuLeft, setHelpMenuLeft] = useState(0);
 
+  const [navigationOpen, setNavigationOpen] = useState(false);
+
   const [playerReady, setPlayerReady] = useState(false);
+  const [playerInSync, setPlayerInSync] = useState(true);
+
+
 
   const inputReference = useRef<HTMLInputElement>(null);
 
@@ -55,8 +64,16 @@ export function App() {
 
   }, [userInteracted]);
 
+  useEffect(()=>{
+    setInterval(()=>{
+      // heartbeat to detect presence
+      radio.ping();
+    }, 1000*60*4)
+  }, [])
 
-  const [chats, setChats] = useState<Array<string>>([''])
+
+  const initChats = [{'message':'','from':'','time':0}];
+  const [chats, setChats] = useState(initChats)
   const maxChats = 100;
   useEffect(() => {
     // maximum chats
@@ -66,6 +83,7 @@ export function App() {
   }, [chats])
 
   useEffect(()=>{
+    setPlayerInSync(true);
     radio.seekToDelta(spinTime)
   }, [playerReady])
 
@@ -77,6 +95,7 @@ export function App() {
   useEffect(() => {
     if(!radio.player) return;
     if(!playerReady) return;
+    setPlayerInSync(true);
     radio.seekToDelta(spinTime)
   }, [spinTime]);
 
@@ -145,11 +164,21 @@ export function App() {
           synth.speak(utterThis);
           break;
         case "tune":
-          setTunePatP(update['tune'])
+          let tune = update['tune'];
+          setTunePatP(tune);
+          radio.tunedTo = tune;
+          if(tune===null) {
+            resetPage();
+            setUserInteracted(false); 
+            // radio.tune(our)
+            // alert('whoops, you left the radio station')
+          } else {
+            radio.ping();
+          }
           break;
         case "chat":
           let chat = update['chat'];
-          setChat(chat.from, chat.message);
+          setChat(chat);
           // setChats(prevChats => [...prevChats, `${chat.from}: ${chat.message}`])  ;
           break;
         case 'viewers':
@@ -159,17 +188,17 @@ export function App() {
           setIsPublic(update['public'])
           break;
         case "chatlog":
-          setChats([''])
+          setChats(initChats)
           let chatlog = update['chatlog']
           for(let i = 0; i < chatlog.length; i++) {
-            setChat(chatlog[i].from, chatlog[i].message)
+            setChat(chatlog[i])
           }
           break;
       }
   };
 
-  function setChat(from:string, message:string) {
-    setChats(prevChats => [...prevChats, `${from}: ${message}`])  ;
+  function setChat(chat:any) {
+    setChats(prevChats => [...prevChats, chat]);
   }
 
   const chatInputId ='radio-chat-input';
@@ -202,8 +231,8 @@ export function App() {
         radio.chat(chat);
         break;
       case 'tune':
-        if(arg===tunePatP) return;
         if(arg==='') arg=our;
+        radio.chat(chat);
         tuneTo(arg)
         break;
       case 'background':
@@ -211,57 +240,60 @@ export function App() {
         radio.chat(chat);
         break;
       case 'time':
+        setPlayerInSync(true);
         radio.seekToDelta(spinTime);
         radio.chat(chat);
         break;
       case 'set-time':
-        let time = radio.player.getCurrentTime();
-        if(!time) return;
-        if(!spinUrl) return;
-        radio.setTime(spinUrl, time);
+        radio.resyncAll(spinUrl);
         radio.chat(chat);
         break;
       case 'public':
-        if(tunePatP !== our) {
+        if(radio.tunedTo !== our) {
           return;
         }
         radio.public();
         radio.chat(chat);
         break;
       case 'private':
-        if(tunePatP !== our) {
+        if(radio.tunedTo !== our) {
           return;
         }
         radio.private();
         radio.chat(chat);
         break;
+      case 'ping':
+        radio.ping();
+        // radio.chat(chat);
+        break;
+      case 'logout':
+        radio.tune(null);
+        break;
       //
       // image commands
-      case 'datboi':
-        radio.datboi();
+      default:
+        radio.chatImage(command);
         break;
-      case 'pepe':
-        radio.pepe();
-        break;
-      case 'wojak':
-        radio.wojak();
-        break;
+      //
     }
   }
 
   function resetPage() {
     setPlayerReady(false);
-    setChats(['']);
+    setChats(initChats);
     setTalkMsg('');
     setViewers([])
     setSpinUrl('');
+    setNavigationOpen(false);
+    setHelpMenuOpen(false);  
   }
 
 
   // parse from user input
   // e.g. `!command argument`
   function getCommandArg(chat:string) {
-    if(chat[0] !== '!') return;
+    // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
+    if(!(chat[0] === '!' )) return;
 
     let splitIdx = chat.indexOf(' ');
     if(splitIdx === -1) return {'command':chat.slice(1), 'arg':''};
@@ -278,18 +310,22 @@ export function App() {
     var duration = radio.player.getDuration();
     let diff = Math.abs((delta % duration) - progress.playedSeconds)
 
+    if(our===radio.tunedTo) {
+      // if(diff > 60) {
+      //   console.log('host broadcasting new time')
+      //   radio.setTime(spinUrl, progress.playedSeconds);
+      // }
+      if(diff > 3) {
+        setPlayerInSync(false);
+      }
+      return;
+    }
+    // we arent the host
     if(diff > 2) {
-
-      if(!(our===tunePatP)) {
         // client scrub to host
         console.log('client scrubbing to host')
         radio.seekToDelta(spinTime);
         return;
-      }
-
-      // host assert new time
-      console.log('host broadcasting new time')
-      radio.setTime(spinUrl, progress.playedSeconds);
     }
   }
 
@@ -300,14 +336,14 @@ export function App() {
                 } } />
   }
   
-function tuneTo(patp:string) {
+function tuneTo(patp:string | null) {
   radio.tune(patp)
-  // setTunePatP(patp+' (LOADING)');
-  setTunePatP(patp);
+  radio.tunedTo = null;
+  setTunePatP(patp+' (LOADING)');
+  // setTunePatP(patp);i
   resetPage();
 }
 
-const watchParty = '~nodmyn-dosrux'
 
   return (
     <div className="mx-2 md:mx-20 text-xs font-mono">
@@ -333,7 +369,7 @@ const watchParty = '~nodmyn-dosrux'
         >
           
           <div
-            className="flex my-2 align-middle table w-full"
+            className="flex mt-2 align-middle table w-full"
             // header above player
           >
 
@@ -344,55 +380,53 @@ const watchParty = '~nodmyn-dosrux'
             <span 
             className="flex-full ml-4 px-2 align-middle"
             >
-              {tunePatP}{' '} {isPublic ? '(public)' : '(private)'}
+              {tunePatP}{' '}{isPublic ? '(public)' : '(private)'}
             </span>
+            </div>
 
             <div
-              className="flex-initial"
+              // className="flex-initial"
               // style={{
               //   position:'fixed',
               //   top:0,
               //   right:0
               // }}
+              className="mb-2 flex flex-row"
             >
-            {tunePatP!==watchParty && 
-                <button
-                  className="hover:pointer button border-black \
-                            border p-1 text-center mt-2 mr-2
-                            flex-initial"
+             {/* <span className="">navigation:</span> */}
+
+             <button
+                  className={`hover:pointer button border-black \
+                            border p-1 text-center mt-2 mr-2 \
+                            flex-initial ${navigationOpen ? 'font-bold' : ''}`}
                   style={{
                     whiteSpace:'nowrap'
                   }}
 
                   onClick={()=>
                   {
-                    tuneTo(watchParty)
+                    setNavigationOpen(!navigationOpen)
                   }}
                 >
-                  🎉 !tune {watchParty} 🎉
+                  navigation
                 </button> 
-              }
-              {tunePatP!==our && 
-                <button
-                  className="hover:pointer button border-black \
-                            border p-1 text-center mt-2
-                            flex-initial"
-                  style={{
-                    whiteSpace:'nowrap'
-                  }}
+            {navigationOpen && 
+              <div
+              className='w-full flex flex-row border border-black \
+              border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
+              >
+                  <NavItem tuneTo={tuneTo} patp={our} title='my station' />
+                  <NavItem tuneTo={tuneTo} patp={'~nodmyn-dosrux'} party/>
+                  {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
+                  <NavItem tuneTo={tuneTo} patp={'~sorwet'} />
+                  <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} /> */}
+                  <NavItem tuneTo={tuneTo} patp={null} logout />
 
-                  onClick={()=>
-                  {
-                    tuneTo(our)
-                  }}
-                >
-                  !tune {our}
-                </button> 
+              </div>
               }
            </div>   
 
-
-       
+          <div>
 
               {/* number of viewers */}
             {/* <span 
@@ -451,9 +485,9 @@ const watchParty = '~nodmyn-dosrux'
             >
             
             <div
-            className={'flex-1'}
+            className={'flex-1' }
             >
-              <p className={'mt-2'}>{viewers.length}{' viewers:'}</p>
+              <p className={'mt-2 '}>{viewers.length}{' viewers:'}</p>
               {viewers.map((x, i) => 
                     <span className={'mr-3'}
                       key={i}
@@ -463,17 +497,47 @@ const watchParty = '~nodmyn-dosrux'
                 )}
                 
             </div>
+              {!playerInSync && 
+                          <div> 
+
+                <button
+                className={`hover:pointer px-4 py-2 \
+                          flex-initial outline-none \
+                          font-bold underline border-black border-t-0 \
+                          text-yellow-500 `}
+                onClick={(e) => {
+                  radio.seekToDelta(spinTime);
+                  setPlayerInSync(true);
+                }}
+              >
+                resync self
+              </button>
+              {tunePatP===our && 
+              <button
+                className={`hover:pointer px-4 py-2 \
+                          flex-initial outline-none \
+                          font-bold underline border-black border-t-0 \
+                          text-blue-500 `}
+                style={{
+                  whiteSpace:'nowrap'
+                }}
+                onClick={(e) => {
+                  radio.resyncAll(spinUrl)
+                }}
+              >
+                resync all
+              </button>
+              }
+              </div>
+              }
 
           {/* help button */}
+          <div>
             <button
               className={`hover:pointer px-4 py-2 \
                         flex-initial outline-none \
                         font-bold underline border-black border-t-0 \
                         ${helpMenuOpen ? 'border' : ''}`}
-              style={{
-                // borderColor: 'black',
-                // border: helpMenuOpen ? '1' : '0'
-              }}
               onClick={(e) => {
                 setHelpMenuLeft(e.clientX);
                 setHelpMenuTop(e.clientY);
@@ -486,6 +550,7 @@ const watchParty = '~nodmyn-dosrux'
               <HelpMenu left={helpMenuLeft} top={helpMenuTop} />
             }
             </div>
+          </div>
           </div>
             
 

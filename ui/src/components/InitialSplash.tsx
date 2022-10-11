@@ -25,7 +25,7 @@ interface ISplash {
       <p className="m-2">first, interact with the webpage so we can autoplay videos</p>
       <p className="m-2">press any key to continue, or
       <button
-          className="button border-black border rounded p-1 text-center m-2"
+          className="button border-black border p-1 text-center m-2"
 
         onClick={()=>
         {

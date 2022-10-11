@@ -15,8 +15,8 @@
   spin-time=_~2022.10.3..20.40.15..7021
   :: view=_'' :: https://0x0.st/oS_V.png
   online=_&
-  public=_&
-  viewers=(set ship)
+  public=_|
+  viewers=(map ship time)
   chatlog=(list chat:store)
   ==
 +$  card     card:agent:gall
@@ -36,10 +36,14 @@
 ++  on-leave
   |=  [=path]
   :: ~&  >>>  [%on-leave src.bowl]
+  :: ~&  >  viewers
   =.  viewers
-    (~(del in viewers) src.bowl)
+    (~(del by viewers) src.bowl)
+  :: ~&  >  viewers
+  =/  ships=(set ship)
+    ~(key by viewers)
   :_  this
-  (transmit [%viewers viewers])
+  (transmit [%viewers ships])
 ++  on-peek   on-peek:def
 ++  on-agent  on-agent:def
 ++  on-arvo
@@ -102,8 +106,10 @@
         ~
       =.  viewers
         ?.  =(online.state online.act)
-          *(set ship)
+          *(map ship time)
         viewers
+      =.  chatlog
+        *(list chat:store)
       =.  online.state
           online.act
       :_  this
@@ -140,8 +146,12 @@
           %chat
       :: ?.  permitted:hc  !!
       ?.  online  !!
+      ::
+      :: no spoofing
       =.  from.act  src.bowl
-      =/  =chat:store  [message.act from.act]
+      =.  time.act  now.bowl
+      ::
+      =/  =chat:store  +.act
       =.  chatlog  [chat chatlog]
       =.  chatlog
         ?:  (gth (lent chatlog) 16)
@@ -149,6 +159,27 @@
         chatlog
       :_  this
       (transmit act)
+      :: ::
+          %presence
+      :: ~&  >  %presence
+      ?.  (~(has by viewers) src.bowl)
+        `this
+      ::
+      =.  viewers
+        (~(put by viewers) src.bowl now.bowl)
+      =/  stale=(list ship)
+        (get-stale viewers now.bowl)
+      :: ~&  >  [%got-stale stale]
+      =.  viewers
+        (remove-viw viewers stale)
+      :: ~&  >  [%del-stale viewers]
+      ?~  stale  `this
+      ::
+      :_  this
+      :-  (transmit-card [%viewers ~(key by viewers)])
+      %+  turn  stale
+      |=  =ship
+      (kick-only:io ship ~[/global /personal])
     ==
   ==
 ++  on-watch
@@ -157,6 +188,7 @@
   :: ~&  >  [%on-watch %tower path]
   ?.  online
     :_  this
+    :: kick everyone
     :~  (kick:io ~[/global /personal])
     ==
   ?+    path
@@ -166,20 +198,22 @@
     `this
       [%personal ~]
     =.  viewers
-      (~(put in viewers) src.bowl)
+      (~(put by viewers) src.bowl now.bowl)
+    =/  ships
+      ~(key by viewers)
     :: ~&  >  [%tower %personal viewers]
     :_  this
       :~
+        (transmit-card [%viewers ships])
         (init-fact [%spin spin spin-time])
         :: (init-fact [%talk talk])
         :: (init-fact [%view view])
         (init-fact [%public public])
         (init-fact [%tune `our.bowl])
-        (init-fact [%viewers viewers])
+        (init-fact [%viewers ships])
         (init-fact [%chatlog (flop chatlog)])
-        (transmit-card [%viewers viewers])
         ::
-        (kick:io ~[/personal])
+        (kick-only:io src.bowl ~[/personal])
       ==
   ==
 --
@@ -205,4 +239,26 @@
   :~
     (fact:agentio radio-action+!>(act) ~[/global])
   ==
+++  stale-timeout  ~m5
+++  get-stale
+  |=  [viw=(map ship time) now=time]
+  ^-  (list ship)
+  =/  vil
+    ~(tap by viw)
+  |-
+  ?~  vil  ~
+  ?:  (lth q.i.vil `@da`(sub now stale-timeout))
+    :-  p.i.vil
+    $(vil t.vil)
+  $(vil t.vil)
+++  remove-viw
+  |=  [viw=(map ship time) stale=(list ship)]
+  ^-  (map ship time)
+  =.  viw
+  |-
+  ?~  stale  viw
+    =.  viw
+    (~(del by viw) i.stale)
+    $(stale t.stale)
+  viw
 -- 

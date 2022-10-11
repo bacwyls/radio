@@ -1,9 +1,14 @@
 import Urbit from "@urbit/http-api";
 
-const datboiURL = 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp'
-const pepeURL = 'https://i.imgur.com/IGaYzV6.gif'
-const wojakURL = 'https://i.imgur.com/gsTARXr.gif'
 
+// const imgUrls = {
+//     'datboi' : 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
+//     'pepe': 'https://i.imgur.com/IGaYzV6.gif',
+//     'wojak': 'https://i.imgur.com/gsTARXr.gif',
+//     'poo' : 'https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif',
+//     'sadpepe': 'https://media.tenor.com/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif',
+
+// }
 
   // const whitebg = 'https://0x0.st/oJ62.png'
   // const blackbg = 'https://0x0.st/oJEy.png'
@@ -18,12 +23,14 @@ export class Radio {
     //
     //
     player: any;
+    //
+    tunedTo!: string | null;
 
     constructor(our: string, api:Urbit) {
         this.our = our;
         this.api = api
+        this.tunedTo = null;
     }
-
 
     public playerRef = (p:any) => {
         this.player = p;
@@ -51,6 +58,18 @@ export class Radio {
             this.player.seekTo(delta, 'seconds');
         }
     }
+
+    public resyncAll(url: string) {
+        let time = this.player.getCurrentTime();
+        if(!time) return;
+        if(!url) return;
+    
+        if(this.tunedTo !== this.our) {
+          return;
+        }
+        this.setTime(url, time);
+    }
+   
     
     // api hits
     public chat(chat:string) {
@@ -59,7 +78,8 @@ export class Radio {
           mark: 'radio-action',
           json: {'chat': {
                          'from':this.our,
-                         'message':chat
+                         'message':chat,
+                         'time':0,
                          } 
                 }
          });
@@ -90,6 +110,7 @@ export class Radio {
     }
 
     public spin(playUrl:string) {
+        if(!this.isValidHttpUrl(playUrl)) return;
         let currentUnixTime = Date.now()
         currentUnixTime = Math.ceil(currentUnixTime);
         this.api.poke({
@@ -136,14 +157,45 @@ export class Radio {
             });
     }
 
-    public datboi() {
-        this.chat(datboiURL);
+    public ping() {
+        console.log('ping');
+        this.api.poke({
+            app: 'tenna',
+            mark: 'radio-action',
+            json: {presence : null}
+            });
     }
-    public pepe() {
-        this.chat(pepeURL);
-    }
-    public wojak() {
-        this.chat(wojakURL);
+
+    public chatImage(command:string) {
+        // @ts-ignore
+        let img = this.imgUrls[command];
+        if(!img) return;
+        this.chat(img);
     }
     
+    public imgUrls = {
+        'datboi' : 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
+        'pepe': 'https://i.imgur.com/IGaYzV6.gif',
+        'wojak': 'https://i.imgur.com/gsTARXr.gif',
+        'poo' : 'https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif',
+        'sadpepe': 'https://media.tenor.com/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif',
+        'terry' : 'https://media.tenor.com/WIqvnT_7Vj8AAAAi/terry-a-davis-terry-davis.gif',
+        'fortnite': 'https://0x0.st/otwj.gif',
+        'bong': 'https://0x0.st/otw2.gif',
+        'hoon': 'https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif',
+        'band': 'https://0x0.st/otwe.gif', 
+    }
+
+    // util
+    public isValidHttpUrl(string : string) {
+        let url;
+        
+        try {
+          url = new URL(string);
+        } catch (_) {
+          return false;  
+        }
+      
+        return url.protocol === "http:" || url.protocol === "https:";
+      }
 }
