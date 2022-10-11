@@ -21,8 +21,11 @@ export class Radio {
     our: string;
     api: Urbit;
     //
-    //
+    // react player npm
     player: any;
+    //
+    // window.speechSynthesizer
+    synth:any;
     //
     tunedTo!: string | null;
 
@@ -30,6 +33,11 @@ export class Radio {
         this.our = our;
         this.api = api
         this.tunedTo = null;
+        this.synth = window.speechSynthesis;
+        this.synth.onvoiceschanged = (v:any) => {
+            console.log('radio voices', v)
+        }
+
     }
 
     public playerRef = (p:any) => {
@@ -184,6 +192,7 @@ export class Radio {
         'bong': 'https://0x0.st/otw2.gif',
         'hoon': 'https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif',
         'band': 'https://0x0.st/otwe.gif', 
+        'cozy': 'https://media.tenor.com/L8uQHgpI1aYAAAAC/reikouwu2.gif',
     }
 
     // util

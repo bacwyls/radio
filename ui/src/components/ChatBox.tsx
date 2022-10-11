@@ -20,13 +20,13 @@ interface IChatBox {
 
   }
 
-  const chatToHTML = (chat: any) => {
+  const chatToHTML = (key: number, chat: any) => {
 
       let msg = chat.message;
       let from = chat.from;
       let time = chat.time;
 
-      if(!from) return chatToHTML_default(1337, chat.msg);
+      if(!from) return chatToHTML_default(key, chat.msg);
 
 
       // let split = chat.indexOf(': ');
@@ -38,9 +38,9 @@ interface IChatBox {
       // console.log(`processing chat from ${from} with message ${message}`)
 
       if(checkURL(chat.message)) {
-        return chatToHTML_image(chat);
+        return chatToHTML_image(key, chat);
       }
-      return chatToHTML_default_bold(chat);
+      return chatToHTML_default_bold(key, chat);
     }
 
 
@@ -53,10 +53,10 @@ interface IChatBox {
       </p>
     )
   }
-  const chatToHTML_default_bold = (chat : any) => {
+  const chatToHTML_default_bold = (key:number , chat : any) => {
     return (
       <p
-        key={chat.time}
+        key={key}
         className="p-1 \
                    hover:bg-gray-100"
         >
@@ -71,10 +71,10 @@ interface IChatBox {
   }
 
   // for rendering pepes
-  const chatToHTML_image = (chat : any) => {
+  const chatToHTML_image = (key:number, chat : any) => {
     return (
       <p
-        key={chat.time}
+        key={key}
         className="p-1 \
                    hover:bg-gray-100"
         >
@@ -85,10 +85,12 @@ interface IChatBox {
         </span>
         <img src={chat.message} className={'ml-2'}
           style={{
-            minHeight:'1vh',
-            maxHeight:'10vh',
-            minWidth:'1vw',
-            maxWidth:'15vw',
+            height:'100%',
+            width:'12vh',
+            // minHeight:'1vh',
+            // maxHeight:'10vh',
+            // minWidth:'1vw',
+            // maxWidth:'15vw',
             objectFit:'cover',
             // backgroundColor:'black'
           }}
@@ -118,7 +120,7 @@ interface IChatBox {
         >
           {/* chatbox */}
           {chats.map((x:any,i:any) => 
-                chatToHTML(chats[i])
+                chatToHTML(i, chats[i])
             )}
 
       </div>

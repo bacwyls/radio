@@ -68,7 +68,7 @@ export function App() {
     setInterval(()=>{
       // heartbeat to detect presence
       radio.ping();
-    }, 1000*60*4)
+    }, 1000*60*3)
   }, [])
 
 
@@ -154,14 +154,14 @@ export function App() {
           setSpinTime(updateSpin.time);
           break;
         case "talk":
-          let synth = window.speechSynthesis;
+          // let synth = window.speechSynthesis;
           var updateTalk = update["talk"];
           var utterThis = new SpeechSynthesisUtterance(updateTalk);
           
           setTalkMsg(updateTalk);
           
           if(!userInteracted) return;
-          synth.speak(utterThis);
+          radio.synth.speak(utterThis);
           break;
         case "tune":
           let tune = update['tune'];
@@ -416,10 +416,10 @@ function tuneTo(patp:string | null) {
               border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
               >
                   <NavItem tuneTo={tuneTo} patp={our} title='my station' />
-                  <NavItem tuneTo={tuneTo} patp={'~nodmyn-dosrux'} party/>
+                  <NavItem tuneTo={tuneTo} patp={'~nodmyn-dosrux'} flare={'🎉'}/>
                   {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
-                  <NavItem tuneTo={tuneTo} patp={'~sorwet'} />
-                  <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} /> */}
+                  <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
+                  <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'} />
                   <NavItem tuneTo={tuneTo} patp={null} logout />
 
               </div>

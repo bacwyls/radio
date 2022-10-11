@@ -60,14 +60,14 @@
   :: annoyance: now.bowl here is wrong!
   :: =.  spin-time  now.bowl
   `this
-++  on-load  on-load:def
 :: ++  on-load  on-load:def
-  :: |=  old-state=vase
-  :: ^-  (quip card _this)
-  :: =/  old  !<(versioned-state old-state)
-  :: ?-  -.old
-  ::   %0  `this(state old)
-  :: ==
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+    %0  `this(state old)
+  ==
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
@@ -239,7 +239,7 @@
   :~
     (fact:agentio radio-action+!>(act) ~[/global])
   ==
-++  stale-timeout  ~m5
+++  stale-timeout  ~m6
 ++  get-stale
   |=  [viw=(map ship time) now=time]
   ^-  (list ship)

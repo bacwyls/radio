@@ -2,14 +2,14 @@ import React, { FC, useEffect, useState } from 'react';
 interface INavItem {
   patp: string | null,
   tuneTo:any,
-  party?:boolean,
+  flare?:string,
   title?:string,
   logout?:boolean,
 }
 
   export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const {patp, tuneTo, party, title, logout} = props;
+  const {patp, tuneTo, flare, title, logout} = props;
 
   if(logout) {
     return (
@@ -50,7 +50,7 @@ interface INavItem {
       }}
     >
       <span>
-        {party && '🎉 '}
+        {flare && `${flare} `}
         {title ? title : patp}
       </span>
     </button> 
