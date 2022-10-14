@@ -1,14 +1,8 @@
 import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { NavItem } from './NavItem';
-import {
-  selectTunePatP,
-  selectIsPublic
-} from '../features/station/stationSlice';
-import {
-  setNavigationOpen,
-  selectNavigationOpen
-} from '../features/ui/uiSlice';
+import { selectTunePatP, selectIsPublic } from '../features/station/stationSlice';
+import { setNavigationOpen, selectNavigationOpen } from '../features/ui/uiSlice';
 
 interface INavigation {
   our: string;
@@ -17,7 +11,7 @@ interface INavigation {
 
 export const Navigation: FC<INavigation> = (props: INavigation) => {
 
-  const { our, tuneTo } = props;
+  const {our, tuneTo} = props;
   
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);

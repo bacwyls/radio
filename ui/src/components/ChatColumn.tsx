@@ -2,13 +2,8 @@ import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
 import { ChatBox } from './ChatBox';
-import {
-  selectSpinUrl,
-  selectSpinTime
-} from '../features/station/stationSlice';
-import {
-  setPlayerInSync
-} from '../features/ui/uiSlice';
+import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
+import { setPlayerInSync } from '../features/ui/uiSlice';
 
 interface IChatColumn {
   our: string;
@@ -19,7 +14,7 @@ interface IChatColumn {
 
 export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
 
-  const { our, radio, tuneTo, inputReference } = props;
+  const {our, radio, tuneTo, inputReference} = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);

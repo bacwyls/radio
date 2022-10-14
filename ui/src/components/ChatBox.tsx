@@ -1,8 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import {
-  selectChats
-} from '../features/station/stationSlice';
+import { selectChats } from '../features/station/stationSlice';
 
   export const ChatBox: FC = () => {
 

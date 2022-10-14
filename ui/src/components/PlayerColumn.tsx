@@ -5,9 +5,6 @@ import { Navigation } from './Navigation';
 import { HelpMenu } from './HelpMenu';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {
-  setSpinUrl,
-  setSpinTime,
-  setViewers,
   selectSpinUrl,
   selectSpinTime,
   selectTunePatP,
@@ -16,11 +13,9 @@ import {
 import {
   setPlayerReady,
   setPlayerInSync,
-  setNavigationOpen,
   setHelpMenuOpen,
   setHelpMenuTop,
   setHelpMenuLeft,
-  selectNavigationOpen,
   selectPlayerInSync,
   selectPlayerReady,
   selectHelpMenuOpen,
@@ -36,7 +31,7 @@ interface IPlayerColumn {
 
 export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
 
-  const { our, radio, tuneTo } = props;
+  const {our, radio, tuneTo} = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);

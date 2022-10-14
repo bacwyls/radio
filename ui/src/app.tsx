@@ -13,7 +13,6 @@ import {
   setUpdate,
   selectSpinUrl,
   selectSpinTime,
-  selectTunePatP,
   selectRadioSub,
   selectChats,
   selectUpdate
@@ -44,7 +43,6 @@ export function App() {
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
-  const tunePatP = useAppSelector(selectTunePatP);
   const radioSub = useAppSelector(selectRadioSub);
   const chats = useAppSelector(selectChats);
   const update = useAppSelector(selectUpdate);
