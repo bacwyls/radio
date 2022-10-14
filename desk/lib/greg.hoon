@@ -50,9 +50,17 @@
     ++  decode
       %-  of
       :~
-        :: [%put *minitower]
+        [%put de-minitower]
         [%request ul]
         :: [%response *(set minitower)]
+      ==
+    ++  de-minitower
+      %-  ot
+      :~
+        [%description so]
+        [%location patp]
+        [%time di]
+        [%viewers ni]
       ==
     ++  patp
       (su ;~(pfix sig fed:ag))

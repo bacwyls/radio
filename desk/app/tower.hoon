@@ -213,9 +213,9 @@
         %response
       :: assert that its from greg
       ?.  =(src.bowl greg-ship)
-        :: ~&  >>>  [%tower %evil %greg %from src.bowl]
+        ~&  >>>  [%tower %evil %greg %from src.bowl]
         `this
-      :: ~&  >>>  [%tower %good %greg %from src.bowl ent]
+      ~&  >>>  [%tower %good %greg %from src.bowl ent]
       :_  this
       :~
         (fact:agentio greg-event+!>(ent) ~[/greg/local])
@@ -235,6 +235,10 @@
       `this
     =.  banned
       (set-banned:rib adi banned)
+    =.  viewers
+      ?.  =(-.adi %ban)
+        viewers
+      (~(del by viewers) ship.adi)
     :_  this
     :~
       (kick-only:io ship.adi ~[/personal /global])

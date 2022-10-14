@@ -58,7 +58,7 @@ import { selectChats } from '../features/station/stationSlice';
         {checkURL(chat.message)
           ? <img src={chat.message} className={'ml-2'}
               style={{
-                height: '100%',
+                height: '12vh',
                 width: '12vh',
                 // minHeight:'1vh',
                 // maxHeight:'10vh',

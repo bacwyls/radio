@@ -76,6 +76,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
       <Navigation
         our={our}
         tuneTo={tuneTo}
+        radio={radio}
       />
       <div>
         {!playerReady &&

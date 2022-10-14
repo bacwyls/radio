@@ -15,7 +15,7 @@ import {
   selectSpinTime,
   selectRadioSub,
   selectChats,
-  selectUpdate
+  selectUpdate,
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -30,7 +30,7 @@ api.ship = window.ship;
 
 const our = '~'+window.ship;
 const watchParty = '~nodmyn-dosrux'
-const tuneInitial = watchParty;
+const tuneInitial = our;
 
 let radio : Radio;
 radio = new Radio(our, api);
@@ -109,6 +109,7 @@ export function App() {
           dispatch(setRadioSub(subscriptionId));
           radio.tune(tuneInitial);
           });
+      
   }, [api]);
 
   // unsub on window close or refresh

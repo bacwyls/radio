@@ -174,6 +174,27 @@ export class Radio {
             });
     }
 
+    public gregRequest() {
+        this.api.poke({
+            app: 'tower',
+            mark: 'greg-event',
+            json: {request : null}
+        });
+    }
+
+    public gregPut(description:string) {
+        this.api.poke({
+            app: 'tower',
+            mark: 'greg-event',
+            json: {put : {
+                description:description,
+                location:this.our,
+                time:0,
+                viewers:0,
+            }}
+        });
+    }
+
     public chatImage(command: string) {
         // @ts-ignore
         let img = this.imgUrls[command];

@@ -5,16 +5,17 @@ interface INavItem {
   tuneTo: ((patp: string|null) => void);
   flare?: string,
   title?: string,
-  logout?: boolean
+  logout?: boolean,
+  key?:number,
 }
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const {patp, tuneTo, flare, title, logout} = props;
-
+  const {patp, tuneTo, flare, title, logout, key} = props;
   return(
     logout
       ? <button
+          key={key}
           className="hover:pointer border-red-500 text-red-500  \
                     border px-1 text-center inline-block \
                     flex-initial mr-2 my-1"
@@ -24,6 +25,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           <span>logout</span>
         </button> 
       : <button
+          key={key}
           className="hover:pointer border-black  \
                     border px-1 text-center inline-block \
                     flex-initial mr-2 my-1"
