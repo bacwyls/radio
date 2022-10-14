@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import {
+  selectChats
+} from '../features/station/stationSlice';
 
-interface IChatBox {
-  chats: any
-}
+  export const ChatBox: FC = () => {
 
-  export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
-
-  const { chats } = props;
-
+  const chats = useAppSelector(selectChats);
   const chatboxId = 'chatbox-radio';
 
   useEffect(() => {
@@ -18,7 +17,6 @@ interface IChatBox {
 
   function checkURL(url: string) {
     return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|webp)(\?(.*))?$/gmi) != null);
-
   }
 
   const chatToHTML = (key: number, chat: any) => {
@@ -56,7 +54,10 @@ interface IChatBox {
         key={key}
         className="p-1 \
                    hover:bg-gray-100"
-      >
+      >  
+        <span className={'mr-2'}>
+          {timestampFromTime(chat.time)}
+        </span>
         <span className={'font-bold mr-1'}>
           {chat.from}{':'}
         </span>
@@ -91,6 +92,15 @@ interface IChatBox {
         
     </p>
     )
+  }
+
+  const timestampFromTime = (time: number) => {
+    const date = new Date(time * 1000);
+    const minutes = date.getMinutes().toString();
+    const oneDayOld = Date.now() - date.getTime() > 1000 * 60 * 60 * 24;
+    return oneDayOld
+      ? `${date.getMonth() + 1}/${date.getDate()}`
+      : `${date.getHours()}:${minutes.length < 2 ? '0' : ''}${minutes}`;
   }
 
   const height = "85vh";

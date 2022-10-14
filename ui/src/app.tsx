@@ -7,40 +7,23 @@ import { InitialSplash } from './components/InitialSplash';
 import { PlayerColumn } from './components/PlayerColumn';
 import { ChatColumn } from './components/ChatColumn';
 import {
-  setTalkMsg,
-  setSpinUrl,
-  setSpinTime,
   setTunePatP,
   setRadioSub,
-  setIsPublic,
-  setViewers,
-  resetChats,
-  setChatsWithChatlog,
   chopChats,
-  setChatsWithChat,
   setUpdate,
-  selectTalkMsg,
   selectSpinUrl,
   selectSpinTime,
   selectTunePatP,
   selectRadioSub,
-  selectIsPublic,
   selectChats,
   selectUpdate
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
-  setPlayerReady,
   setPlayerInSync,
-  setNavigationOpen,
-  setHelpMenuOpen,
   selectUserInteracted,
-  selectNavigationOpen,
   selectPlayerInSync,
-  selectPlayerReady,
-  selectHelpMenuOpen,
-  selectHelpMenuTop,
-  selectHelpMenuLeft
+  selectPlayerReady
 } from './features/ui/uiSlice';
 
 const api = new Urbit('', '', window.desk);
@@ -118,11 +101,11 @@ export function App() {
     if (!api || radioSub) return;
       api
         .subscribe({
-            app: "tenna",
-            path: "/frontend",
-            event: handleSub,
-            quit: () => console.log('radio quit'),
-            err: (e) => console.log('radio err', e ),
+          app: "tenna",
+          path: "/frontend",
+          event: handleSub,
+          quit: () => console.log('radio quit'),
+          err: (e) => console.log('radio err', e )
         })
         .then((subscriptionId) => {
           dispatch(setRadioSub(subscriptionId));
@@ -161,7 +144,7 @@ export function App() {
     resetPage(dispatch);
   }
 
-  return (
+  return(
     !userInteracted
       ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))}/>
       : <div className="mx-2 md:mx-20 text-xs font-mono">
@@ -176,7 +159,6 @@ export function App() {
               radio={radio}
               tuneTo={tuneTo}
               inputReference={inputReference}
-              chats={chats}
             />
           </div>
         </div>

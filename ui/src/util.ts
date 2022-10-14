@@ -9,21 +9,19 @@ import {
   setViewers,
   resetChats,
   setChatsWithChatlog,
-  setChatsWithChat,
-  setUpdate
+  setChatsWithChat
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
   setPlayerReady,
   setNavigationOpen,
-  setHelpMenuOpen,
-  selectUserInteracted
+  setHelpMenuOpen
 } from './features/ui/uiSlice';
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
-  //
+  
   // handle updates from tower / radio station
   switch (mark) {
     case 'spin':

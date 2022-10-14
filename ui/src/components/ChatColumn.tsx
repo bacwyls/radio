@@ -15,12 +15,11 @@ interface IChatColumn {
   radio: Radio;
   tuneTo: ((patp: string|null) => void);
   inputReference: React.RefObject<HTMLInputElement>;
-  chats: any
 }
 
 export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
 
-  const { our, radio, tuneTo, inputReference, chats } = props;
+  const { our, radio, tuneTo, inputReference } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -121,7 +120,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
       className="flex-1 flex-col flex"
       style={{ maxWidth:'33%' }}
     >
-      <ChatBox chats={chats}/>
+      <ChatBox/>
       <div>
         <hr/>
         <div className="flex">

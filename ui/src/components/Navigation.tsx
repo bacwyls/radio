@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { NavItem } from './NavItem';
 import {
-  setTunePatP,
-  setIsPublic,
   selectTunePatP,
   selectIsPublic
 } from '../features/station/stationSlice';
@@ -51,12 +49,12 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
             className='w-full flex flex-row border border-black \
                       border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
           >
-            <NavItem tuneTo={tuneTo} patp={our} title='my station' />
+            <NavItem tuneTo={tuneTo} patp={our} title='my station'/>
             <NavItem tuneTo={tuneTo} patp={'~nodmyn-dosrux'} flare={'🎉'}/>
             {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
             <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
-            <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'} />
-            <NavItem tuneTo={tuneTo} patp={null} logout />
+            <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'}/>
+            <NavItem tuneTo={tuneTo} patp={null} logout/>
           </div>
         }
       </div>   
