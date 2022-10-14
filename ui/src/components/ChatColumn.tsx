@@ -1,4 +1,4 @@
-import React, { FC, Component, useReducer } from 'react';
+import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
 import { ChatBox } from './ChatBox';
@@ -57,7 +57,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         radio.chat(chat);
         break;
       case 'tune':
-        if(arg === '') arg=our;
+        if(arg === '') arg = our;
         radio.chat(chat);
         tuneTo(arg)
         break;
@@ -105,15 +105,15 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
   }
 
   // parse from user input
-  function getCommandArg(chat:string) {
+  function getCommandArg(chat: string) {
     // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
-    if (!(chat[0] === '!' )) return;
+    if (!(chat[0] === '!')) return;
 
     let splitIdx = chat.indexOf(' ');
-    if(splitIdx === -1) return {'command':chat.slice(1), 'arg':''};
-    let command = chat.slice(1,splitIdx);
-    let arg = chat.slice(splitIdx+1);
-    return {'command': command, 'arg':arg};
+    if(splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
+    let command = chat.slice(1, splitIdx);
+    let arg = chat.slice(splitIdx + 1);
+    return {'command': command, 'arg': arg};
   }
 
   return(
@@ -135,7 +135,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
             // autoFocus={false}
             placeholder="write your message..."
             id={chatInputId}
-            onKeyDown={(e:any)=> {
+            onKeyDown={(e: any)=> {
               if( e.key == 'Enter' ){
                 handleUserInput();
               }

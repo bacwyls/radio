@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
+interface ChatMessage {
+  message: string;
+  from: string;
+  time: number
+}
+
 export interface StationState {
   talkMsg: string;
   spinUrl: string;
@@ -9,6 +15,7 @@ export interface StationState {
   radioSub: number;
   isPublic: boolean;
   viewers: string[];
+  chats: ChatMessage[];
 }
 
 const initialState: StationState = {
@@ -18,7 +25,8 @@ const initialState: StationState = {
   tunePatP: '',
   radioSub: 0,
   isPublic: false,
-  viewers: Array<string>()
+  viewers: Array<string>(),
+  chats: Array<ChatMessage>()
 };
 
 export const stationSlice = createSlice({
@@ -28,43 +36,67 @@ export const stationSlice = createSlice({
     setTalkMsg: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        talkMsg: action.payload,
+        talkMsg: action.payload
       }
     },
     setSpinUrl: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        spinUrl: action.payload,
+        spinUrl: action.payload
       }
     },
     setSpinTime: (state, action: PayloadAction<number>) => {
       return {
         ...state,
-        spinTime: action.payload,
+        spinTime: action.payload
       }
     },
     setTunePatP: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        tunePatP: action.payload,
+        tunePatP: action.payload
       }
     },
     setRadioSub: (state, action: PayloadAction<number>) => {
       return {
         ...state,
-        radioSub: action.payload,
+        radioSub: action.payload
       }
     },
     setIsPublic: (state, action: PayloadAction<boolean>) => {
       return {
         ...state,
-        isPublic: action.payload,
+        isPublic: action.payload
       }
     },
     setViewers: (state, action: PayloadAction<string[]>) => {
       return {
         ...state,
-        viewers: action.payload,
+        viewers: action.payload
+      }
+    },
+    resetChats: (state, action: PayloadAction<ChatMessage[]>) => {
+      return {
+        ...state,
+        chats: initialState.chats
+      }
+    },
+    chatlogChats: (state, action: PayloadAction<ChatMessage[]>) => {
+      return {
+        ...state,
+        chats: action.payload
+      }
+    },
+    chopChats: (state, action: PayloadAction<ChatMessage[]>) => {
+      return {
+        ...state,
+        chats: state.chats.slice(1)
+      }
+    },
+    singleChats: (state, action: PayloadAction<ChatMessage>) => {
+      return {
+        ...state,
+        chats: state.chats.concat([action.payload])
       }
     }
   }
@@ -77,7 +109,11 @@ export const {
   setTunePatP,
   setRadioSub,
   setIsPublic,
-  setViewers
+  setViewers,
+  resetChats,
+  chatlogChats,
+  chopChats,
+  singleChats
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
@@ -87,5 +123,6 @@ export const selectTunePatP = (state: RootState) => state.station.tunePatP;
 export const selectRadioSub = (state: RootState) => state.station.radioSub;
 export const selectIsPublic = (state: RootState) => state.station.isPublic;
 export const selectViewers = (state: RootState) => state.station.viewers;
+export const selectChats = (state: RootState) => state.station.chats;
 
 export default stationSlice.reducer;

@@ -1,5 +1,6 @@
-import React, { FC, Component, useReducer } from 'react';
+import React, { FC } from 'react';
 import ReactPlayer from "react-player";
+import { Radio } from '../lib';
 import { HelpMenu } from './HelpMenu';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {
@@ -28,15 +29,12 @@ import {
 
 interface IPlayerColumn {
   our: string;
-  handleProgress: ((progress: any) => void);
-  playerRef: any;
-  radioSeekToDelta: ((spinTime: any) => void);
-  radioResyncAll: ((spinUrl: any) => void);
+  radio: Radio;
 }
 
 export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
 
-  const { our, handleProgress, playerRef, radioSeekToDelta, radioResyncAll } = props;
+  const { our, radio } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -49,13 +47,40 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
   const helpMenuLeft = useAppSelector(selectHelpMenuLeft);
   const dispatch = useAppDispatch();
 
+  function handleProgress(progress: any) {
+    // autoscrubbing
+
+    var currentUnixTime = Date.now() / 1000;
+    var delta = Math.ceil(currentUnixTime - spinTime);
+    var duration = radio.player.getDuration();
+    let diff = Math.abs((delta % duration) - progress.playedSeconds)
+
+    if (our === radio.tunedTo) {
+      // if(diff > 60) {
+      //   console.log('host broadcasting new time')
+      //   radio.setTime(spinUrl, progress.playedSeconds);
+      // }
+      if (diff > 3) {
+        dispatch(setPlayerInSync(false));
+      }
+      return;
+    }
+    // we arent the host
+    if (diff > 2) {
+      // client scrub to host
+      console.log('client scrubbing to host')
+      radio.seekToDelta(spinTime);
+      return;
+    }
+  }
+
   return(
     <div>
       {!playerReady &&
         <p className="text-center">loading media player ...</p>
       }
       <ReactPlayer
-        ref={playerRef}
+        ref={radio.playerRef}
         url={spinUrl}
         playing={true}
         width='100%'
@@ -69,7 +94,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
         config={{
           file: {
             // makes the audio player look nice
-            attributes: { style: {height:'50%', width:'100%',}}
+            attributes:{ style: { height: '50%', width: '100%' }}
           },
         }}
       />
@@ -93,7 +118,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                         font-bold underline border-black border-t-0 \
                         text-yellow-500 `}
               onClick={(e) => {
-                props.radioSeekToDelta(spinTime);
+                radio.seekToDelta(spinTime);
                 dispatch(setPlayerInSync(true));
               }}
             >
@@ -105,11 +130,9 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                           flex-initial outline-none \
                           font-bold underline border-black border-t-0 \
                           text-blue-500 `}
-                style={{
-                  whiteSpace:'nowrap'
-                }}
+                style={{ whiteSpace:'nowrap' }}
                 onClick={(e) => {
-                  props.radioResyncAll(spinUrl)
+                  radio.resyncAll(spinUrl)
                 }}
               >
                 resync all
@@ -132,7 +155,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
             help
           </button>
           {helpMenuOpen &&
-            <HelpMenu left={helpMenuLeft} top={helpMenuTop} />
+            <HelpMenu left={helpMenuLeft} top={helpMenuTop}/>
           }
         </div>
       </div>
