@@ -1,4 +1,4 @@
-/-  store=radio
+/-  store=radio, gore=greg
 /+  radio
 /+  default-agent, dbug, agentio
 =,  format
@@ -13,7 +13,7 @@
   spin=_'https://youtu.be/XGC80iRS7tw' :: classical music
   :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
   spin-time=_~2022.10.3..20.40.15..7021
-  :: view=_'' :: https://0x0.st/oS_V.png
+  :: view=_'' :: https://0x0.st/oS_V.png  :: alpha marble
   online=_&
   public=_|
   viewers=(map ship time)
@@ -35,11 +35,8 @@
 ++  on-fail   on-fail:def
 ++  on-leave
   |=  [=path]
-  :: ~&  >>>  [%on-leave src.bowl]
-  :: ~&  >  viewers
   =.  viewers
     (~(del by viewers) src.bowl)
-  :: ~&  >  viewers
   =/  ships=(set ship)
     ~(key by viewers)
   :_  this
@@ -49,7 +46,6 @@
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
-  :: ~&  >  [%on-arvo %tower wire]
   `this
 ++  on-save
   ^-  vase
@@ -74,6 +70,31 @@
   ?+  mark  (on-poke:def mark vase)
       %noun
     `this
+    ::
+    :: :: greg
+      %greg-event
+    =/  ent  !<(event:gore vase)
+    ?-  -.ent
+        %put
+      ?.  =(src.bowl our.bowl)
+        `this
+      =/  tow=minitower:gore  +.ent
+      :: set to latest viewer count
+      =.  viewers.tow
+        ~(wyt by viewers)
+      :_  this
+      (poke-greg [%put tow])
+      :: ::
+        %request
+      :_  this
+      (poke-greg ent)
+      :: ::
+        %response
+      :_  this
+      :~
+        (fact:agentio greg-event+!>(ent) ~[/greg/local])
+      ==
+    ==
     ::
     :: :: radio
       %radio-action
@@ -119,6 +140,9 @@
       ?.  permitted:hc
         :: permission denied
         `this
+      =.  talk.act
+          :: enfore maximum talk
+          (crip (scag 64 (trip talk.act)))
       =.  talk.state
           talk.act
       :_  this
@@ -136,13 +160,7 @@
       :_  this
       (transmit act)
       :: ::
-      :: %view
-      :: ?.  permitted:hc  !!
-      :: =.  view.state
-      ::     view.act
-      :: :_  this
-      :: (transmit act)
-      :: ::
+
           %chat
       :: ?.  permitted:hc  !!
       ?.  online  !!
@@ -170,10 +188,10 @@
       =/  stale=(list ship)
         (get-stale viewers now.bowl)
       :: ~&  >  [%got-stale stale]
+      ?~  stale  `this
       =.  viewers
         (remove-viw viewers stale)
       :: ~&  >  [%del-stale viewers]
-      ?~  stale  `this
       ::
       :_  this
       :-  (transmit-card [%viewers ~(key by viewers)])
@@ -193,6 +211,9 @@
     ==
   ?+    path
     (on-watch:def path)
+      [%greg %local ~]
+    ?>  =(src.bowl our.bowl)
+    `this
       [%global ~]
     :: no initial updates on the group path
     `this
@@ -221,7 +242,6 @@
 :: :: helper core
 :: ::
 |_  bowl=bowl:gall
-++  nil  0
 ++  permitted
   ^-  ?
   ?:  =(src.bowl our.bowl)
@@ -261,4 +281,15 @@
     (~(del by viw) i.stale)
     $(stale t.stale)
   viw
+::
+:: greg stuff
+++  greg-ship  ~bep  :: TODO change to ~nodmyn-dosrux
+++  poke-greg
+  |=  [ent=event:gore]
+  :~
+    %+  poke:pass:agentio
+      [greg-ship %greg]
+      :-  %greg-event
+      !>  ent
+  ==
 -- 

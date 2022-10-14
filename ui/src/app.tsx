@@ -48,8 +48,6 @@ export function App() {
   const [playerReady, setPlayerReady] = useState(false);
   const [playerInSync, setPlayerInSync] = useState(true);
 
-
-
   const inputReference = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -109,8 +107,8 @@ export function App() {
             app: "tenna",
             path: "/frontend",
             event: handleSub,
-            quit: ()=> console.log('radio quit'),
-            err: (e)=> console.log('radio err',e ),
+            quit: ()=> alert('lost connection to your urbit. please refresh'),
+            err: (e)=> console.log('radio err', e),
         })
         .then((subscriptionId) => {
           setRadioSub(subscriptionId);

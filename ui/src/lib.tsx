@@ -193,6 +193,14 @@ export class Radio {
         'hoon': 'https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif',
         'band': 'https://0x0.st/otwe.gif', 
         'cozy': 'https://media.tenor.com/L8uQHgpI1aYAAAAC/reikouwu2.gif',
+        'war':'https://media.tenor.com/Vc3qJRBT_AUAAAAM/alex-jones.gif',
+        'retard':'https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif',
+        'cheese':'https://image.noelshack.com/fichiers/2020/12/7/1584917989-ezgif-3-c96706d84527.gif',
+        'diddy':'https://www.latercera.com/resizer/ieO4j6CeHEOxbQ3zAA4F9guWt7E=/800x0/smart/arc-anglerfish-arc2-prod-copesa.s3.amazonaws.com/public/QMTMIODRIFC43OBIND2WMDJMNY.gif',
+        'batman': 'https://i.warosu.org/data/lit/img/0122/86/1545778952553.gif',
+        'jizz':'https://cdn.discordapp.com/emojis/693519541279391897.gif',
+        'butterfly': 'https://media3.giphy.com/media/LbN93tzk3P4gL03LXi/giphy.gif',
+        'penguin':'https://media.tenor.com/hyRFiIX7e1sAAAAC/gif-club-penguin-dance.gif',
     }
 
     // util
