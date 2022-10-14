@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import ReactPlayer from "react-player";
 import { Radio } from '../lib';
+import { Navigation } from './Navigation';
 import { HelpMenu } from './HelpMenu';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {
@@ -30,11 +31,12 @@ import {
 interface IPlayerColumn {
   our: string;
   radio: Radio;
+  tuneTo: ((patp:string | null) => void);
 }
 
 export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
 
-  const { our, radio } = props;
+  const { our, radio, tuneTo } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -75,88 +77,94 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
   }
 
   return(
-    <div>
-      {!playerReady &&
-        <p className="text-center">loading media player ...</p>
-      }
-      <ReactPlayer
-        ref={radio.playerRef}
-        url={spinUrl}
-        playing={true}
-        width='100%'
-        height='80vh'
-        controls={true}
-        loop={true}
-        onReady={() => dispatch(setPlayerReady(true))}
-        // onSeek={e => console.log('onSeek', e)}
-        onProgress={e => handleProgress(e)}
-        style={{ backgroundColor:'lightgray' }}
-        config={{
-          file: {
-            // makes the audio player look nice
-            attributes:{ style: { height: '50%', width: '100%' }}
-          },
-        }}
+    <div className="inline-block mr-4 w-2/3">
+      <Navigation
+        our={our}
+        tuneTo={tuneTo}
       />
-      <div className={'flex flex-row'}>
-        <div className={'flex-1' }>
-          <p className={'mt-2 '}>{viewers.length}{' viewers:'}</p>
-          {viewers.map((x, i) => 
-            <span 
-              className={'mr-3'}
-              key={i}
-            >
-              {x}{', '}
-            </span>
-          )}
-        </div>
-        {!playerInSync && 
-          <div> 
-            <button
-              className={`hover:pointer px-4 py-2 \
-                        flex-initial outline-none \
-                        font-bold underline border-black border-t-0 \
-                        text-yellow-500 `}
-              onClick={(e) => {
-                radio.seekToDelta(spinTime);
-                dispatch(setPlayerInSync(true));
-              }}
-            >
-              resync self
-            </button>
-            {tunePatP === props.our && 
+      <div>
+        {!playerReady &&
+          <p className="text-center">loading media player ...</p>
+        }
+        <ReactPlayer
+          ref={radio.playerRef}
+          url={spinUrl}
+          playing={true}
+          width='100%'
+          height='80vh'
+          controls={true}
+          loop={true}
+          onReady={() => dispatch(setPlayerReady(true))}
+          // onSeek={e => console.log('onSeek', e)}
+          onProgress={e => handleProgress(e)}
+          style={{ backgroundColor:'lightgray' }}
+          config={{
+            file: {
+              // makes the audio player look nice
+              attributes:{ style: { height: '50%', width: '100%' }}
+            },
+          }}
+        />
+        <div className={'flex flex-row'}>
+          <div className={'flex-1' }>
+            <p className={'mt-2 '}>{viewers.length}{' viewers:'}</p>
+            {viewers.map((x, i) => 
+              <span 
+                className={'mr-3'}
+                key={i}
+              >
+                {x}{', '}
+              </span>
+            )}
+          </div>
+          {!playerInSync && 
+            <div> 
               <button
                 className={`hover:pointer px-4 py-2 \
                           flex-initial outline-none \
                           font-bold underline border-black border-t-0 \
-                          text-blue-500 `}
-                style={{ whiteSpace:'nowrap' }}
+                          text-yellow-500 `}
                 onClick={(e) => {
-                  radio.resyncAll(spinUrl)
+                  radio.seekToDelta(spinTime);
+                  dispatch(setPlayerInSync(true));
                 }}
               >
-                resync all
+                resync self
               </button>
+              {tunePatP === props.our && 
+                <button
+                  className={`hover:pointer px-4 py-2 \
+                            flex-initial outline-none \
+                            font-bold underline border-black border-t-0 \
+                            text-blue-500 `}
+                  style={{ whiteSpace:'nowrap' }}
+                  onClick={(e) => {
+                    radio.resyncAll(spinUrl)
+                  }}
+                >
+                  resync all
+                </button>
+              }
+            </div>
+          }
+          <div>
+            <button
+              className={`hover:pointer px-4 py-2 \
+                        flex-initial outline-none \
+                        font-bold underline border-black border-t-0 \
+                        ${helpMenuOpen ? 'border' : ''}`}
+              onClick={(e) => {
+                dispatch(setHelpMenuLeft(e.clientX));
+                dispatch(setHelpMenuTop(e.clientY));
+                dispatch(setHelpMenuOpen(!helpMenuOpen));
+              }}
+            >
+              help
+            </button>
+            {helpMenuOpen &&
+              <HelpMenu left={helpMenuLeft} top={helpMenuTop}/>
             }
           </div>
-        }
-        <div>
-          <button
-            className={`hover:pointer px-4 py-2 \
-                      flex-initial outline-none \
-                      font-bold underline border-black border-t-0 \
-                      ${helpMenuOpen ? 'border' : ''}`}
-            onClick={(e) => {
-              dispatch(setHelpMenuLeft(e.clientX));
-              dispatch(setHelpMenuTop(e.clientY));
-              dispatch(setHelpMenuOpen(!helpMenuOpen));
-            }}
-          >
-            help
-          </button>
-          {helpMenuOpen &&
-            <HelpMenu left={helpMenuLeft} top={helpMenuTop}/>
-          }
         </div>
       </div>
     </div>

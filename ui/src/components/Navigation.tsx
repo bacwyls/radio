@@ -12,12 +12,12 @@ import {
   selectNavigationOpen
 } from '../features/ui/uiSlice';
 
-interface IPlayerColumn {
+interface INavigation {
   our: string;
-  tuneTo: ((patp:string | null) => void);
+  tuneTo: ((patp: string|null) => void);
 }
 
-export const Navigation: FC<IPlayerColumn> = (props: IPlayerColumn) => {
+export const Navigation: FC<INavigation> = (props: INavigation) => {
 
   const { our, tuneTo } = props;
   

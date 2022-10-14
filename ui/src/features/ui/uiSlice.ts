@@ -66,7 +66,7 @@ export const uiSlice = createSlice({
         ...state,
         navigationOpen: action.payload,
       }
-    },
+    }
   }
 });
 

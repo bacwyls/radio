@@ -16,6 +16,7 @@ export interface StationState {
   isPublic: boolean;
   viewers: string[];
   chats: ChatMessage[];
+  update: any;
 }
 
 const initialState: StationState = {
@@ -26,7 +27,8 @@ const initialState: StationState = {
   radioSub: 0,
   isPublic: false,
   viewers: Array<string>(),
-  chats: Array<ChatMessage>()
+  chats: Array<ChatMessage>(),
+  update: Object()
 };
 
 export const stationSlice = createSlice({
@@ -75,13 +77,13 @@ export const stationSlice = createSlice({
         viewers: action.payload
       }
     },
-    resetChats: (state, action: PayloadAction<ChatMessage[]>) => {
+    resetChats: (state) => {
       return {
         ...state,
         chats: initialState.chats
       }
     },
-    chatlogChats: (state, action: PayloadAction<ChatMessage[]>) => {
+    setChatsWithChatlog: (state, action: PayloadAction<ChatMessage[]>) => {
       return {
         ...state,
         chats: action.payload
@@ -93,10 +95,16 @@ export const stationSlice = createSlice({
         chats: state.chats.slice(1)
       }
     },
-    singleChats: (state, action: PayloadAction<ChatMessage>) => {
+    setChatsWithChat: (state, action: PayloadAction<ChatMessage>) => {
       return {
         ...state,
         chats: state.chats.concat([action.payload])
+      }
+    },
+    setUpdate: (state, action: PayloadAction<ChatMessage>) => {
+      return {
+        ...state,
+        update: action.payload
       }
     }
   }
@@ -111,9 +119,10 @@ export const {
   setIsPublic,
   setViewers,
   resetChats,
-  chatlogChats,
+  setChatsWithChatlog,
   chopChats,
-  singleChats
+  setChatsWithChat,
+  setUpdate
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
@@ -124,5 +133,6 @@ export const selectRadioSub = (state: RootState) => state.station.radioSub;
 export const selectIsPublic = (state: RootState) => state.station.isPublic;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
+export const selectUpdate = (state: RootState) => state.station.update;
 
 export default stationSlice.reducer;

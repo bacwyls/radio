@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import Urbit from '@urbit/http-api';
 import { Radio } from './lib';
+import { handleUpdate, resetPage } from './util';
 import { InitialSplash } from './components/InitialSplash';
 import { PlayerColumn } from './components/PlayerColumn';
-import { Navigation } from './components/Navigation';
 import { ChatColumn } from './components/ChatColumn';
 import {
   setTalkMsg,
@@ -15,16 +15,18 @@ import {
   setIsPublic,
   setViewers,
   resetChats,
-  chatlogChats,
+  setChatsWithChatlog,
   chopChats,
-  singleChats,
+  setChatsWithChat,
+  setUpdate,
   selectTalkMsg,
   selectSpinUrl,
   selectSpinTime,
   selectTunePatP,
   selectRadioSub,
   selectIsPublic,
-  selectChats
+  selectChats,
+  selectUpdate
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -32,8 +34,6 @@ import {
   setPlayerInSync,
   setNavigationOpen,
   setHelpMenuOpen,
-  setHelpMenuTop,
-  setHelpMenuLeft,
   selectUserInteracted,
   selectNavigationOpen,
   selectPlayerInSync,
@@ -55,8 +55,6 @@ radio = new Radio(our, api);
 
 export function App() {
 
-  const [update, setUpdate] = useState();
-
   const userInteracted = useAppSelector(selectUserInteracted);
   const playerReady = useAppSelector(selectPlayerReady);
   const playerInSync = useAppSelector(selectPlayerInSync);
@@ -66,6 +64,7 @@ export function App() {
   const tunePatP = useAppSelector(selectTunePatP);
   const radioSub = useAppSelector(selectRadioSub);
   const chats = useAppSelector(selectChats);
+  const update = useAppSelector(selectUpdate);
   
   const dispatch = useAppDispatch();
 
@@ -147,81 +146,19 @@ export function App() {
 
   // manage SSE events
   function handleSub(update: any) {
-    setUpdate(update);
+    dispatch(setUpdate(update));
   }
   useEffect(() => {
     if (!update) return;
     // wrap updates in this effect to get accurate usestate
-    handleUpdate(update);
+    handleUpdate(update, radio, dispatch, userInteracted);
   }, [update]);
-  function handleUpdate(update: any) {
-      console.log("radio update", update);
-      let mark = Object.keys(update)[0];
-      //
-      // handle updates from tower / radio station
-      switch (mark) {
-        case "spin":
-          var updateSpin = update["spin"];
-
-          dispatch(setSpinUrl(updateSpin.url));
-          dispatch(setSpinTime(updateSpin.time));
-          break;
-        case "talk":
-          // let synth = window.speechSynthesis;
-          var updateTalk = update["talk"];
-          var utterThis = new SpeechSynthesisUtterance(updateTalk);
-          
-          dispatch(setTalkMsg(updateTalk));
-          
-          if (!userInteracted) return;
-          radio.synth.speak(utterThis);
-          break;
-        case "tune":
-          let tune = update['tune'];
-          dispatch(setTunePatP(tune));
-          radio.tunedTo = tune;
-          if (tune === null) {
-            resetPage();
-            dispatch(setUserInteracted(false));
-            // radio.tune(our)
-            // alert('whoops, you left the radio station')
-          } else {
-            radio.ping();
-          }
-          break;
-        case "chat":
-          let chat = update['chat'];
-          dispatch(singleChats(chat));
-          break;
-        case 'viewers':
-          dispatch(setViewers(update['viewers']));
-          break;
-        case "public":
-          dispatch(setIsPublic(update['public']))
-          break;
-        case "chatlog":
-          dispatch(resetChats(chats));
-          let chatlog = update['chatlog']
-          console.log('chatlog', chatlog);
-          dispatch(chatlogChats(chatlog));
-      }
-  };
-
-  function resetPage() {
-    dispatch(setPlayerReady(false));
-    dispatch(resetChats(chats));
-    dispatch(setTalkMsg(''));
-    dispatch(setViewers([]));
-    dispatch(setSpinUrl(''));
-    dispatch(setNavigationOpen(false));
-    dispatch(setHelpMenuOpen(false));
-  }
   
   function tuneTo(patp: string|null) {
     radio.tune(patp)
     radio.tunedTo = null;
     dispatch(setTunePatP(patp+' (LOADING)'));
-    resetPage();
+    resetPage(dispatch);
   }
 
   return (
@@ -229,16 +166,11 @@ export function App() {
       ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))}/>
       : <div className="mx-2 md:mx-20 text-xs font-mono">
           <div className="flex flex-row">
-            <div className="inline-block mr-4 w-2/3">
-              <Navigation
-                our={our}
-                tuneTo={tuneTo}
-              />
-              <PlayerColumn 
-                our={our}
-                radio={radio}
-              />
-            </div>
+            <PlayerColumn 
+              our={our}
+              radio={radio}
+              tuneTo={tuneTo}
+            />
             <ChatColumn
               our={our}
               radio={radio}

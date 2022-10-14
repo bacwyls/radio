@@ -13,7 +13,7 @@ import {
 interface IChatColumn {
   our: string;
   radio: Radio;
-  tuneTo: ((patp:string | null) => void);
+  tuneTo: ((patp: string|null) => void);
   inputReference: React.RefObject<HTMLInputElement>;
   chats: any
 }
@@ -34,7 +34,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     let chat = input.value;
     input.value = '';
 
-    if (chat ==='') return;
+    if (chat === '') return;
 
     // check for commands
     let got = getCommandArg(chat);
@@ -57,7 +57,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         radio.chat(chat);
         break;
       case 'tune':
-        if(arg === '') arg = our;
+        if (arg === '') arg = our;
         radio.chat(chat);
         tuneTo(arg)
         break;

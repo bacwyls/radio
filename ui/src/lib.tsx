@@ -25,16 +25,16 @@ export class Radio {
     player: any;
     //
     // window.speechSynthesizer
-    synth:any;
+    synth: any;
     //
-    tunedTo!: string | null;
+    tunedTo!: string|null;
 
-    constructor(our: string, api:Urbit) {
+    constructor(our: string, api: Urbit) {
         this.our = our;
         this.api = api
         this.tunedTo = null;
         this.synth = window.speechSynthesis;
-        this.synth.onvoiceschanged = (v:any) => {
+        this.synth.onvoiceschanged = (v: any) => {
             console.log('radio voices', v)
         }
 
@@ -47,9 +47,9 @@ export class Radio {
     public seekToDelta(startedTime:number) {
         // respond to !time command or seek from update
         // this sets the player to the appropriate time
-        if(startedTime === 0) return;
+        if (startedTime === 0) return;
     
-        if(!this.player) {
+        if (!this.player) {
             console.log('player is not defined :(')
             return;
         }
@@ -60,7 +60,7 @@ export class Radio {
     
         // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
     
-        if(duration) {
+        if (duration) {
             this.player.seekTo((delta % duration));
         } else {
             this.player.seekTo(delta, 'seconds');
@@ -69,10 +69,10 @@ export class Radio {
 
     public resyncAll(url: string) {
         let time = this.player.getCurrentTime();
-        if(!time) return;
-        if(!url) return;
+        if (!time) return;
+        if (!url) return;
     
-        if(this.tunedTo !== this.our) {
+        if (this.tunedTo !== this.our) {
           return;
         }
         this.setTime(url, time);
@@ -133,7 +133,7 @@ export class Radio {
             });
     }
 
-    public setTime(playUrl:string, time:number) {
+    public setTime(playUrl: string, time: number) {
         time = time * 1000;
         let customStartTime = Date.now() - time;
         customStartTime = Math.ceil(customStartTime);
@@ -149,7 +149,7 @@ export class Radio {
             });
     }
 
-    public talk(talkMsg:string) {
+    public talk(talkMsg: string) {
         this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
@@ -157,7 +157,7 @@ export class Radio {
             });
     }
 
-    public tune(tuneTo:string | null) {
+    public tune(tuneTo: string|null) {
         this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
@@ -174,20 +174,20 @@ export class Radio {
             });
     }
 
-    public chatImage(command:string) {
+    public chatImage(command: string) {
         // @ts-ignore
         let img = this.imgUrls[command];
-        if(!img) return;
+        if (!img) return;
         this.chat(img);
     }
     
     public imgUrls = {
-        'datboi' : 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
+        'datboi': 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
         'pepe': 'https://i.imgur.com/IGaYzV6.gif',
         'wojak': 'https://i.imgur.com/gsTARXr.gif',
-        'poo' : 'https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif',
+        'poo': 'https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif',
         'sadpepe': 'https://media.tenor.com/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif',
-        'terry' : 'https://media.tenor.com/WIqvnT_7Vj8AAAAi/terry-a-davis-terry-davis.gif',
+        'terry': 'https://media.tenor.com/WIqvnT_7Vj8AAAAi/terry-a-davis-terry-davis.gif',
         'fortnite': 'https://0x0.st/otwj.gif',
         'bong': 'https://0x0.st/otw2.gif',
         'hoon': 'https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif',
