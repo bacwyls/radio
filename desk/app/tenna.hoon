@@ -60,7 +60,6 @@
   :: ==
 ++  on-agent
   |=  [=wire =sign:agent:gall]
-  :: TODO secure? retarded?
   ^-  (quip card _this)
   :: ~&  >>  [%on-agent %tenna wire -.sign]
   ?~  tune.state  `this
@@ -82,7 +81,6 @@
         %fact
       ?+    p.cage.sign  (on-agent:def wire sign)
           %radio-action
-        :: ~&  >>>  [%tenna %fact !<(action:store q.cage.sign)]
         :_  this
         :~
           :: fwd to client (frontend) subscription
@@ -138,11 +136,12 @@
       ::  cant remember why this broke something
       :: ?:  =(old-tune new-tune)
       ::   `this
-     :: 
-     :: dont love if not wack
-     :: dont leave if never got the watch ack
-     ::  handles alien and unbooted providers
-     ::  circumvents ames cork crash
+      :: 
+      :: dont love if not wack
+      :: dont leave if never got the watch ack
+      ::  handles alien and unbooted providers
+      ::  circumvents ames cork crash
+      ::   https://github.com/urbit/urbit/issues/6025
       =.  love
           ?:  wack
             love
@@ -193,8 +192,8 @@
       (fact:agentio tuneout ~[/frontend])
     ==
   :~
-  [%pass personal %agent [u.new-tune provider] %watch personal]
   [%pass global %agent [u.new-tune provider] %watch global]
+  [%pass personal %agent [u.new-tune provider] %watch personal]
   ==
 ++  fwd
   |=  [act=action:store]

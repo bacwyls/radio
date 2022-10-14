@@ -5,10 +5,43 @@
 ++  agent     %tenna
 ++  provider  %tower
 ::
+++  is-banned
+  |=  [=bowl:gall banned=(set ship)]
+  ^-  ?
+  :: if a ship is banned, so are its kids
+  ?|  (~(has in banned) src.bowl)
+    ::
+    %-  ~(has in banned)
+    %-  sein:title
+    :-  our.bowl
+    :-  now.bowl
+    src.bowl
+  ==
+++  set-banned
+  |=  [adi=admin banned=(set ship)]
+  ?-  -.adi
+      %ban
+    (~(put in banned) ship.adi)
+      %unban
+    (~(del in banned) ship.adi)
+  ==
 ::
 ++  enjs
   =,  enjs:format
   |%
+  ++  admin
+    |=  adi=^admin
+    ^-  json
+    %-  pairs
+    :_  ~
+    ^-  [cord json]
+    :-  -.adi
+    ?-  -.adi
+    %ban
+      [%s (scot %p ship.adi)]
+    %unban
+      [%s (scot %p ship.adi)]
+    ==
   ++  action
     |=  act=^action
     ^-  json
@@ -25,8 +58,6 @@
       |=  =chat
       (enchat chat)
     %viewers
-      :: ~&  >  [%json %vs act]
-      ::
       (set-ship viewers.act)
     %tune
       (unit-ship tune.act)
@@ -38,8 +69,6 @@
       ==
     %talk
       [%s talk.act]
-    :: %view
-    ::   [%s view.act]
     %public
       [%b public.act]
     ==
@@ -71,6 +100,20 @@
 ++  dejs
   =,  dejs:format
   |%
+  ++  patp
+    (su ;~(pfix sig fed:ag))
+  ++  admin
+    |=  jon=json
+    ^-  ^admin
+    =<  (decode jon)
+    |%
+    ++  decode
+      %-  of
+      :~
+        [%ban patp]
+        [%unban patp]
+      ==
+    --
   ++  action
     |=  jon=json
     ^-  ^action
@@ -88,8 +131,6 @@
         [%public bo]
         [%presence ul]
       ==
-    ++  patp
-      (su ;~(pfix sig fed:ag))
     ++  chat
       %-  ot
       :~  

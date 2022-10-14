@@ -13,6 +13,6 @@
   $%
     [%put =minitower]
     [%request ~]
-    [%response minitowers=(set minitower)]
+    [%response minitowers=(map ship minitower)]
   ==
 --

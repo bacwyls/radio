@@ -17,15 +17,15 @@
     ?-  -.ent
     %put       (en-minitower +.ent)
     %request   ~
-    %response  (set-minitower +.ent)
+    %response  (map-minitower +.ent)
     ==
   --
-++  set-minitower
-  |=  [tows=(set minitower)]
+++  map-minitower
+  |=  [tows=(map ship minitower)]
   ^-  json
   :-  %a
   %+  turn
-    ~(tap in tows)
+    ~(val by tows)
     |=  =minitower
     (en-minitower minitower)
 ++  en-minitower
