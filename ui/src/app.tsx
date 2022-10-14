@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import Urbit from '@urbit/http-api';
 import { Radio } from './lib';

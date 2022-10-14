@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectChats } from '../features/station/stationSlice';
 
@@ -11,7 +11,7 @@ import { selectChats } from '../features/station/stationSlice';
     let chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
     var xH = chatWindow.scrollHeight; 
     chatWindow.scrollTo(0, xH);
-  }, [chats])
+  }, [chats]);
 
   function checkURL(url: string) {
     return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|webp)(\?(.*))?$/gmi) != null);
@@ -39,7 +39,7 @@ import { selectChats } from '../features/station/stationSlice';
   const chatToHTML_default = (key: number, chat: any) => {
     return(
       <p key={key}>{chat}</p>
-    )
+    );
   }
 
   const chatToHTMLWithTimeAndFrom = (key: number, chat: any) => {
@@ -71,7 +71,7 @@ import { selectChats } from '../features/station/stationSlice';
           : chat.message
         }
       </p>
-    )
+    );
   }
 
   const timestampFromTime = (time: number) => {

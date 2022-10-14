@@ -163,5 +163,5 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
         </div>
       </div>
     </div>
-  )
+  );
 }

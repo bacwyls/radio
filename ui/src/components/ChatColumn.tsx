@@ -41,7 +41,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     // interpreting message as a command
     let command = got.command;
     let arg = got.arg;
-    switch(command) {
+    switch (command) {
       case 'talk':
         radio.chat(chat);
         radio.talk(arg);
@@ -104,7 +104,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     if (!(chat[0] === '!')) return;
 
     let splitIdx = chat.indexOf(' ');
-    if(splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
+    if (splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
     let command = chat.slice(1, splitIdx);
     let arg = chat.slice(splitIdx + 1);
     return {'command': command, 'arg': arg};
@@ -129,8 +129,8 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
             // autoFocus={false}
             placeholder="write your message..."
             id={chatInputId}
-            onKeyDown={(e: any)=> {
-              if( e.key == 'Enter' ){
+            onKeyDown={(e: any) => {
+              if (e.key == 'Enter'){
                 handleUserInput();
               }
             }}
@@ -145,5 +145,5 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         </div>
       </div>
     </div>
-  )
+  );
 }
