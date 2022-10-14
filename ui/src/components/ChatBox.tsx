@@ -23,9 +23,6 @@ import { selectChats } from '../features/station/stationSlice';
     let from = chat.from;
     let time = chat.time;
 
-    if (!from) return chatToHTML_default(key, chat.msg);
-
-
     // let split = chat.indexOf(': ');
     // if(split === -1) return chatToHTML_default(key, chat);
     
@@ -34,10 +31,9 @@ import { selectChats } from '../features/station/stationSlice';
 
     // console.log(`processing chat from ${from} with message ${message}`)
 
-    if (checkURL(chat.message)) {
-      return chatToHTML_image(key, chat);
-    }
-    return chatToHTML_default_bold(key, chat);
+    return !from
+      ? chatToHTML_default(key, chat.msg)
+      : chatToHTMLWithTimeAndFrom(key, chat);
   }
 
   const chatToHTML_default = (key: number, chat: any) => {
@@ -46,7 +42,7 @@ import { selectChats } from '../features/station/stationSlice';
     )
   }
 
-  const chatToHTML_default_bold = (key: number, chat: any) => {
+  const chatToHTMLWithTimeAndFrom = (key: number, chat: any) => {
     return(
       <p
         key={key}
@@ -59,36 +55,22 @@ import { selectChats } from '../features/station/stationSlice';
         <span className={'font-bold mr-1'}>
           {chat.from}{':'}
         </span>
-        {chat.message}
+        {checkURL(chat.message)
+          ? <img src={chat.message} className={'ml-2'}
+              style={{
+                height: '100%',
+                width: '12vh',
+                // minHeight:'1vh',
+                // maxHeight:'10vh',
+                // minWidth:'1vw',
+                // maxWidth:'15vw',
+                objectFit: 'cover',
+                // backgroundColor:'black'
+              }}
+            />
+          : chat.message
+        }
       </p>
-    )
-  }
-
-  // for rendering pepes
-  const chatToHTML_image = (key: number, chat: any) => {
-    return(
-      <p
-        key={key}
-        className="p-1 \
-                   hover:bg-gray-100"
-      >
-        <span className={'font-bold mr-1'}>
-          {chat.from}{':'}
-        </span>
-        <img src={chat.message} className={'ml-2'}
-          style={{
-            height:'100%',
-            width:'12vh',
-            // minHeight:'1vh',
-            // maxHeight:'10vh',
-            // minWidth:'1vw',
-            // maxWidth:'15vw',
-            objectFit:'cover',
-            // backgroundColor:'black'
-          }}
-        />
-        
-    </p>
     )
   }
 
