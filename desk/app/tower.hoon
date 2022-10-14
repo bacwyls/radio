@@ -345,7 +345,7 @@
   viw
 ::
 :: greg stuff
-++  greg-ship  ~nodmyn-dosrux
+++  greg-ship  ~littel-bacwyl-samweg
 ++  poke-greg
   |=  [ent=event:gore]
   :~
