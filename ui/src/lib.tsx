@@ -29,6 +29,8 @@ export class Radio {
     //
     tunedTo!: string|null;
 
+    hub:string = '~nodmyn-dosrux';
+
     constructor(our: string, api: Urbit) {
         this.our = our;
         this.api = api
@@ -36,6 +38,7 @@ export class Radio {
         this.synth = window.speechSynthesis;
         this.synth.onvoiceschanged = (v: any) => {
             console.log('radio voices', v)
+            // TODO check if voices is empty
         }
 
     }
@@ -171,6 +174,22 @@ export class Radio {
             app: 'tenna',
             mark: 'radio-action',
             json: {presence : null}
+            });
+    }
+
+    public ban(her:string) {
+        this.api.poke({
+            app: 'tower',
+            mark: 'radio-admin',
+            json: {ban : her}
+            });
+    }
+
+    public unban(her:string) {
+        this.api.poke({
+            app: 'tower',
+            mark: 'radio-admin',
+            json: {unban : her}
             });
     }
 

@@ -109,7 +109,14 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                 className={'mr-3'}
                 key={i}
               >
-                {x}{', '}
+                <a
+                  className={''}
+                  href={'/apps/landscape/~profile/'+x}
+                  target="_blank"
+                >
+                  {x}
+                </a>
+                {', '}
               </span>
             )}
           </div>

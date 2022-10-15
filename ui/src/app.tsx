@@ -29,11 +29,13 @@ const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
 
 const our = '~'+window.ship;
-const watchParty = '~nodmyn-dosrux'
-const tuneInitial = our;
 
 let radio : Radio;
 radio = new Radio(our, api);
+
+// should it be radio.hub?
+const tuneInitial = our;
+
 
 export function App() {
 

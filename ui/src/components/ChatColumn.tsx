@@ -5,6 +5,8 @@ import { ChatBox } from './ChatBox';
 import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
 import { setPlayerInSync } from '../features/ui/uiSlice';
 
+import {isValidPatp} from 'urbit-ob'
+
 interface IChatColumn {
   our: string;
   radio: Radio;
@@ -53,7 +55,9 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
       case 'tune':
         if (arg === '') arg = our;
         radio.chat(chat);
-        tuneTo(arg)
+        if(isValidPatp(arg)) {
+          tuneTo(arg);
+        }
         break;
       case 'background':
         radio.background(arg);
@@ -88,6 +92,21 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         break;
       case 'logout':
         radio.tune(null);
+        break;
+      case 'ban':
+        if(isValidPatp(arg)) {
+          radio.ban(arg);
+        }
+        radio.chat(chat);
+        break;
+      case 'unban':
+        if(isValidPatp(arg)) {
+          radio.unban(arg);
+        }
+        radio.chat(chat);
+        break;
+      case 'greg':
+        radio.gregPut('');
         break;
       //
       // image commands

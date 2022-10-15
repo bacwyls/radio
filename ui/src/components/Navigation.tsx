@@ -25,10 +25,10 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);
   const navigationOpen = useAppSelector(selectNavigationOpen);
-  // const towers = useAppSelector(selectTowers);
   const dispatch = useAppDispatch();
 
   const [towers, setTowers] = useState<Array<IMinitower>>([])
+  const [hasPublishedStation, setHasPublishedStation] = useState(false);
 
   useEffect(()=>{
     radio.api
@@ -38,12 +38,27 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
         event: (e)=> {
           console.log('greg update', e)
           if(!e['response']) return;
-         setTowers(e.response);
+          
+          // TODO sort by viewers
+          let newTowers = e.response;
+          newTowers.sort(function(a:any, b:any) {
+            return b.viewers - a.viewers;
+          });
+          setTowers(e.response);
         },
         quit: ()=> alert('(greg) lost connection to your urbit. please refresh'),
         err: (e)=> console.log('radio err', e),
     })
   }, [])
+
+  useEffect(()=>{
+    if(!hasPublishedStation) return;
+    setInterval(() => {
+      // heartbeat to detect presence
+      radio.gregPut('');
+    }, 1000 * 60 * 3)
+
+  }, [hasPublishedStation]);
 
 
   return(
@@ -67,9 +82,6 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
             if(!navigationOpen) {
               radio.gregRequest();
             }
-            // if(radio.our === radio.tunedTo) {
-            //   radio.gregPut('my epic radio station');
-            // }
 
             dispatch(setNavigationOpen(!navigationOpen))
           }}
@@ -83,24 +95,29 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                       border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
           >
             <NavItem tuneTo={tuneTo} patp={null} logout/>
-            {radio.tunedTo===radio.our ? (
+            {(radio.tunedTo===radio.our && !hasPublishedStation) &&
                 <button
                 className="hover:pointer border-blue-700 text-blue-700  \
                           border px-1 text-center inline-block \
                           flex-initial mr-2 my-1"
                 style={{ whiteSpace:'nowrap' }}
                 onClick={() => {
-                  radio.gregPut('my epic radio station')
+                  radio.gregPut('')
+                  setHasPublishedStation(true);
                   radio.gregRequest();
                 }}
               >
                 <span>publish my station</span>
               </button> 
-            ): (
-             <NavItem tuneTo={tuneTo} patp={our} title='my station'/>
-            )
             }
-            {/* <NavItem tuneTo={tuneTo} patp={'~nodmyn-dosrux'} flare={'🎉'}/> */}
+
+            {radio.tunedTo!==radio.our && 
+             <NavItem tuneTo={tuneTo} patp={our} title='my station'/>
+            }
+            
+            {radio.tunedTo!==radio.hub &&
+              <NavItem tuneTo={tuneTo} patp={radio.hub} title={'hub'}/>
+            }
             {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
             <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
             {/* <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'}/> */}
