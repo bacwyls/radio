@@ -2,15 +2,13 @@ import React, { FC, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectChats } from '../features/station/stationSlice';
 
-  export const ChatBox: FC = () => {
+export const ChatBox: FC = () => {
 
   const chats = useAppSelector(selectChats);
   const chatboxId = 'chatbox-radio';
 
   useEffect(() => {
-    let chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
-    var xH = chatWindow.scrollHeight; 
-    chatWindow.scrollTo(0, xH);
+    scrollToBottom();
   }, [chats]);
 
   function checkURL(url: string) {
@@ -58,15 +56,16 @@ import { selectChats } from '../features/station/stationSlice';
         {checkURL(chat.message)
           ? <img src={chat.message} className={'ml-2'}
               style={{
-                height: '12vh',
+                height: '100%',
                 width: '12vh',
                 // minHeight:'1vh',
-                // maxHeight:'10vh',
+                maxHeight:'12vh',
                 // minWidth:'1vw',
                 // maxWidth:'15vw',
                 objectFit: 'cover',
                 // backgroundColor:'black'
               }}
+              onLoad={() => scrollToBottom()}
             />
           : chat.message
         }
@@ -81,6 +80,12 @@ import { selectChats } from '../features/station/stationSlice';
     return oneDayOld
       ? `${date.getMonth() + 1}/${date.getDate()}`
       : `${date.getHours()}:${minutes.length < 2 ? '0' : ''}${minutes}`;
+  }
+
+  const scrollToBottom = () => {
+    let chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
+    var xH = chatWindow.scrollHeight; 
+    chatWindow.scrollTo(0, xH);
   }
 
   const height = "85vh";

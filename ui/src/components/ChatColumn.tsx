@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
+import { handleUserInput } from '../util';
 import { ChatBox } from './ChatBox';
 import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
 import { setPlayerInSync } from '../features/ui/uiSlice';
@@ -21,94 +22,6 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
   const dispatch = useAppDispatch();
 
   const chatInputId ='radio-chat-input';
-
-  function handleUserInput() {
-    let input = document.getElementById(chatInputId) as HTMLInputElement;
-
-    let chat = input.value;
-    input.value = '';
-
-    if (chat === '') return;
-
-    // check for commands
-    let got = getCommandArg(chat);
-    if (!got) {
-      // just a regular chat message
-      radio.chat(chat);
-      return;
-    }
-
-    // interpreting message as a command
-    let command = got.command;
-    let arg = got.arg;
-    switch (command) {
-      case 'talk':
-        radio.chat(chat);
-        radio.talk(arg);
-        break;
-      case 'play':
-        radio.spin(arg);
-        radio.chat(chat);
-        break;
-      case 'tune':
-        if (arg === '') arg = our;
-        radio.chat(chat);
-        tuneTo(arg)
-        break;
-      case 'background':
-        radio.background(arg);
-        radio.chat(chat);
-        break;
-      case 'time':
-        dispatch(setPlayerInSync(true));
-        radio.seekToDelta(spinTime);
-        radio.chat(chat);
-        break;
-      case 'set-time':
-        radio.resyncAll(spinUrl);
-        radio.chat(chat);
-        break;
-      case 'public':
-        if(radio.tunedTo !== our) {
-          return;
-        }
-        radio.public();
-        radio.chat(chat);
-        break;
-      case 'private':
-        if(radio.tunedTo !== our) {
-          return;
-        }
-        radio.private();
-        radio.chat(chat);
-        break;
-      case 'ping':
-        radio.ping();
-        // radio.chat(chat);
-        break;
-      case 'logout':
-        radio.tune(null);
-        break;
-      //
-      // image commands
-      default:
-        radio.chatImage(command);
-        break;
-      //
-    }
-  }
-
-  // parse from user input
-  function getCommandArg(chat: string) {
-    // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
-    if (!(chat[0] === '!')) return;
-
-    let splitIdx = chat.indexOf(' ');
-    if (splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
-    let command = chat.slice(1, splitIdx);
-    let arg = chat.slice(splitIdx + 1);
-    return {'command': command, 'arg': arg};
-  }
 
   return(
     <div
@@ -131,14 +44,33 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
             id={chatInputId}
             onKeyDown={(e: any) => {
               if (e.key == 'Enter'){
-                handleUserInput();
+                handleUserInput(
+                  radio,
+                  tuneTo,
+                  dispatch,
+                  chatInputId,
+                  spinTime,
+                  spinUrl,
+                  our
+                );
               }
             }}
           />
-          <button className="hover:pointer px-4 py-2\
-                            flex-initial ml-2 outline-none border-none"
-                  style={{ backdropFilter: 'blur(32px)' }}
-                  onClick={() => handleUserInput()}
+          <button 
+            className="hover:pointer px-4 py-2\
+                      flex-initial ml-2 outline-none border-none"
+            style={{ backdropFilter: 'blur(32px)' }}
+            onClick={() => 
+              handleUserInput(
+                radio,
+                tuneTo,
+                dispatch,
+                chatInputId,
+                spinTime,
+                spinUrl,
+                our
+              )
+            }
           >
             send
           </button>

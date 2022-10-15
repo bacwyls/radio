@@ -80,7 +80,7 @@ export function App() {
   useEffect(() => {
     dispatch(setPlayerInSync(true));
     radio.seekToDelta(spinTime)
-  }, [playerReady])
+  }, [playerReady]);
 
   useEffect(() => {
     if (!radio.player) return;
