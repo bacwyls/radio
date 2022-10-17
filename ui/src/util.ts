@@ -15,7 +15,6 @@ import {
   setUserInteracted,
   setPlayerReady,
   setNavigationOpen,
-  setHelpMenuOpen,
   setPlayerInSync
 } from './features/ui/uiSlice';
 
@@ -66,7 +65,6 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       break;
     case 'chatlog':
       let chatlog = update['chatlog']
-      console.log('chatlog', chatlog);
       dispatch(setChatsWithChatlog(chatlog));
   }
 };
@@ -78,7 +76,6 @@ export function resetPage(dispatch: any) {
   dispatch(setViewers([]));
   dispatch(setSpinUrl(''));
   dispatch(setNavigationOpen(false));
-  dispatch(setHelpMenuOpen(false));
 }
 
 export function handleUserInput(

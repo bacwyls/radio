@@ -218,9 +218,9 @@
         %response
       :: assert that its from greg
       ?.  =(src.bowl greg-ship)
-        ~&  >>>  [%tower %evil %greg %from src.bowl]
+        :: ~&  >>>  [%tower %evil %greg %from src.bowl]
         `this
-      ~&  >>>  [%tower %good %greg %from src.bowl ent]
+      :: ~&  >>>  [%tower %good %greg %from src.bowl ent]
       :_  this
       :~
         (fact:agentio greg-event+!>(ent) ~[/greg/local])
@@ -239,14 +239,16 @@
       :: dont ban yourself lol
       `this
     =.  banned
-      (set-banned:rib adi banned)
+    (set-banned:rib adi banned)
+    ?:  =(%unban -.adi)
+      `this
+    :: %ban
     =.  viewers
-      ?.  =(-.adi %ban)
-        viewers
-      (~(del by viewers) ship.adi)
+        (~(del by viewers) ship.adi)
     :_  this
     :~
       (kick-only:io ship.adi ~[/personal /global])
+      (transmit-card [%viewers ~(key by viewers)])
     ==
   ==
 ++  on-watch
@@ -303,6 +305,7 @@
 :: ::
 |_  bowl=bowl:gall
 ++  permitted
+  :: dj permissions
   ^-  ?
   ?:  =(src.bowl our.bowl)
     & :: admin
@@ -313,7 +316,6 @@
   ?.  (~(has by viewers) src.bowl)
     | :: src must be in viewers
   ::
-  :: dj permissions
   public
 ::
 ++  init-fact
@@ -354,7 +356,7 @@
   viw
 ::
 :: greg stuff
-++  greg-ship  ~littel-bacwyl-samweg
+++  greg-ship  ~nodmyn-dosrux
 ++  poke-greg
   |=  [ent=event:gore]
   :~

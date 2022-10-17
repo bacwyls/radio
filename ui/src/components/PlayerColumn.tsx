@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import ReactPlayer from "react-player";
 import { Radio } from '../lib';
 import { Navigation } from './Navigation';
@@ -13,14 +13,8 @@ import {
 import {
   setPlayerReady,
   setPlayerInSync,
-  setHelpMenuOpen,
-  setHelpMenuTop,
-  setHelpMenuLeft,
   selectPlayerInSync,
   selectPlayerReady,
-  selectHelpMenuOpen,
-  selectHelpMenuTop,
-  selectHelpMenuLeft
 } from '../features/ui/uiSlice';
 
 interface IPlayerColumn {
@@ -39,10 +33,14 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
   const playerReady = useAppSelector(selectPlayerReady);
   const playerInSync = useAppSelector(selectPlayerInSync);
   const viewers = useAppSelector(selectViewers);
-  const helpMenuOpen = useAppSelector(selectHelpMenuOpen);
-  const helpMenuTop = useAppSelector(selectHelpMenuTop);
-  const helpMenuLeft = useAppSelector(selectHelpMenuLeft);
+  // const helpMenuOpen = useAppSelector(selectHelpMenuOpen);
+  // const helpMenuTop = useAppSelector(selectHelpMenuTop);
+  // const helpMenuLeft = useAppSelector(selectHelpMenuLeft);
   const dispatch = useAppDispatch();
+
+  const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const [helpMenuTop, setHelpMenuTop] = useState(0);
+  const [helpMenuLeft, setHelpMenuLeft] = useState(0);
 
   function handleProgress(progress: any) {
     // autoscrubbing
@@ -157,9 +155,9 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                         font-bold underline border-black border-t-0 \
                         ${helpMenuOpen ? 'border' : ''}`}
               onClick={(e) => {
-                dispatch(setHelpMenuLeft(e.clientX));
-                dispatch(setHelpMenuTop(e.clientY));
-                dispatch(setHelpMenuOpen(!helpMenuOpen));
+                setHelpMenuLeft(e.clientX);
+                setHelpMenuTop(e.clientY);
+                setHelpMenuOpen(!helpMenuOpen);
               }}
             >
               help

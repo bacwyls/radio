@@ -17,7 +17,7 @@
 ::
 :: action or event?
 :: not going to rename right now,
-::  but i think event makes more sence since
+::  but i think event makes more sense since
 ::  these are all used as both 'actions' and 'updates'
 ::
 ::  actions: alter agent state

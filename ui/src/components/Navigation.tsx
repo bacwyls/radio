@@ -112,14 +112,14 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
             }
 
             {radio.tunedTo!==radio.our && 
-              <NavItem key={998}
+              <NavItem
                     tuneTo={tuneTo}
                     patp={our}
                     title={'my station'}/>
             }
             
             {radio.tunedTo!==radio.hub &&
-              <NavItem key={999}
+              <NavItem
                     tuneTo={tuneTo}
                     patp={radio.hub}
                     title={'hub'}/>

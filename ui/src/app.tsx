@@ -34,7 +34,7 @@ let radio : Radio;
 radio = new Radio(our, api);
 
 // should it be radio.hub?
-const tuneInitial = our;
+const tuneInitial = radio.hub;
 
 
 export function App() {

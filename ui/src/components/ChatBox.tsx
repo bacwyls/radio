@@ -45,9 +45,9 @@ export const ChatBox: FC = () => {
       <p
         key={key}
         className="p-1 \
-                   hover:bg-gray-100"
+                   hover:bg-gray-100 mb-1"
       >  
-        <span className={'mr-2'}>
+        <span className={'mr-2 text-gray-500'}>
           {timestampFromTime(chat.time)}
         </span>
         <span className={'font-bold mr-1'}>
