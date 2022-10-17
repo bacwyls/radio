@@ -201,8 +201,13 @@
         `this
       =/  tow=minitower:gore  +.ent
       :: set to latest viewer count
+      ::
+      :: if you want to spoof your viewer count,
+      :: you can take this =. out
+      ::  but you will be banned from the discovery pool :)
       =.  viewers.tow
         ~(wyt by viewers)
+      ::
       :_  this
       (poke-greg [%put tow])
       :: ::

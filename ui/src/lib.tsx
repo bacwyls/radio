@@ -241,6 +241,8 @@ export class Radio {
         'jizz':'https://cdn.discordapp.com/emojis/693519541279391897.gif',
         'butterfly': 'https://media3.giphy.com/media/LbN93tzk3P4gL03LXi/giphy.gif',
         'penguin':'https://media.tenor.com/hyRFiIX7e1sAAAAC/gif-club-penguin-dance.gif',
+        'spongebob':'https://media.tenor.com/0pO-d7FH3QgAAAAi/spongebob-meme-spongebob.gif',
+        'strawberry':'https://media.tenor.com/MsnbSzWd_yMAAAAj/crazy-fruit.gif',
     }
 
     // util
