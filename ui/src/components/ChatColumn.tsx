@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
+import { handleUserInput } from '../util';
 import { ChatBox } from './ChatBox';
 import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
 import { setPlayerInSync } from '../features/ui/uiSlice';
@@ -55,9 +56,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
       case 'tune':
         if (arg === '') arg = our;
         radio.chat(chat);
-        if(isValidPatp(arg)) {
-          tuneTo(arg);
-        }
+        tuneTo(arg)
         break;
       case 'background':
         radio.background(arg);
@@ -92,21 +91,6 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         break;
       case 'logout':
         radio.tune(null);
-        break;
-      case 'ban':
-        if(isValidPatp(arg)) {
-          radio.ban(arg);
-        }
-        radio.chat(chat);
-        break;
-      case 'unban':
-        if(isValidPatp(arg)) {
-          radio.unban(arg);
-        }
-        radio.chat(chat);
-        break;
-      case 'greg':
-        radio.gregPut('');
         break;
       //
       // image commands
@@ -154,10 +138,13 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
               }
             }}
           />
-          <button className="hover:pointer px-4 py-2\
-                            flex-initial ml-2 outline-none border-none"
-                  style={{ backdropFilter: 'blur(32px)' }}
-                  onClick={() => handleUserInput()}
+          <button 
+            className="hover:pointer px-4 py-2\
+                      flex-initial ml-2 outline-none border-none"
+            style={{ backdropFilter: 'blur(32px)' }}
+            onClick={() => 
+              handleUserInput()
+            }
           >
             send
           </button>

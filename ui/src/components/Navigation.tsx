@@ -94,7 +94,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
             className='w-full flex flex-row border border-black \
                       border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
           >
-            <NavItem tuneTo={tuneTo} patp={null} logout/>
+            {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
             {(radio.tunedTo===radio.our && !hasPublishedStation) &&
                 <button
                 className="hover:pointer border-blue-700 text-blue-700  \
@@ -112,11 +112,17 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
             }
 
             {radio.tunedTo!==radio.our && 
-             <NavItem tuneTo={tuneTo} patp={our} title='my station'/>
+              <NavItem key={998}
+                    tuneTo={tuneTo}
+                    patp={our}
+                    title={'my station'}/>
             }
             
             {radio.tunedTo!==radio.hub &&
-              <NavItem tuneTo={tuneTo} patp={radio.hub} title={'hub'}/>
+              <NavItem key={999}
+                    tuneTo={tuneTo}
+                    patp={radio.hub}
+                    title={'hub'}/>
             }
             {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
             <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
