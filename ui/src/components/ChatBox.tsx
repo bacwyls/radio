@@ -77,10 +77,15 @@ import { selectChats } from '../features/station/stationSlice';
   const timestampFromTime = (time: number) => {
     const date = new Date(time * 1000);
     const minutes = date.getMinutes().toString();
+    const hours = date.getHours().toString();
+    const month = (date.getMonth()+1).toString();
+    const day = date.getDate().toString();
+
+
     const oneDayOld = Date.now() - date.getTime() > 1000 * 60 * 60 * 24;
     return oneDayOld
-      ? `${date.getMonth() + 1}/${date.getDate()}`
-      : `${date.getHours()}:${minutes.length < 2 ? '0' : ''}${minutes}`;
+      ? `${month.padStart(2,'0')}/${day.padStart(2,'0')}`
+      : `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   }
 
   const height = "85vh";
