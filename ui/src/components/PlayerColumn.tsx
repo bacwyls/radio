@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import ReactPlayer from "react-player";
+import ReactPlayer from 'react-player';
+import { isMobile } from 'react-device-detect';
 import { Radio } from '../lib';
 import { Navigation } from './Navigation';
 import { HelpMenu } from './HelpMenu';
@@ -69,8 +70,19 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
     }
   }
 
+  const wrapperClass = isMobile
+    ? ''
+    : 'inline-block mr-4 w-2/3';
+
+  const reactPlayerHeight = isMobile
+    ? '30vh'
+    : '80vh';
+
   return(
-    <div className="inline-block mr-4 w-2/3">
+    <div 
+      className={wrapperClass}
+      id='player-wrapper'
+    >
       <Navigation
         our={our}
         tuneTo={tuneTo}
@@ -85,7 +97,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
           url={spinUrl}
           playing={true}
           width='100%'
-          height='80vh'
+          height={reactPlayerHeight}
           controls={true}
           loop={true}
           onReady={() => dispatch(setPlayerReady(true))}

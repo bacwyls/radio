@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { isMobile } from 'react-device-detect';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
 import { handleUserInput } from '../util';
@@ -113,16 +114,21 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     return {'command': command, 'arg': arg};
   }
 
+  const maxWidth = isMobile
+    ? '100%'
+    : '33%';
+
   return(
     <div
       className="flex-1 flex-col flex"
-      style={{ maxWidth:'33%' }}
+      style={{maxWidth}}
     >
       <ChatBox/>
       <div>
         <hr/>
         <div className="flex">
-          <input type="text"
+          <input 
+            type="text"
             ref={inputReference}
             className="hover:pointer px-4 py-2 inline-block \
                       flex-1 outline-none border-none placeholder-gray-800 "
