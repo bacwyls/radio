@@ -92,7 +92,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
         {navigationOpen && 
           <div
             className='w-full flex flex-row border border-black \
-                      border-t-0 border-b-0 px-2 mt-2 overflow-scroll'
+                      border-t-0 border-b-0 border-r-0 px-2 mt-2 overflow-scroll'
           >
             {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
             {(radio.tunedTo===radio.our && !hasPublishedStation) &&

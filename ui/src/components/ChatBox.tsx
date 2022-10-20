@@ -1,4 +1,5 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectChats } from '../features/station/stationSlice';
 
@@ -7,9 +8,18 @@ export const ChatBox: FC = () => {
   const chats = useAppSelector(selectChats);
   const chatboxId = 'chatbox-radio';
 
+  const [chatboxHeight, setChatboxHeight] = useState(0);
+
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
+
+  useEffect(() => {
+    const chatField = document.getElementById('radio-chat-input') as HTMLDivElement;
+    if (chatField) {
+      setChatboxHeight(calcChatboxHeight());
+    }
+  }, []);
 
   function checkURL(url: string) {
     return(url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|webp)(\?(.*))?$/gmi) != null);
@@ -88,12 +98,21 @@ export const ChatBox: FC = () => {
   }
 
   const scrollToBottom = () => {
-    let chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
-    var xH = chatWindow.scrollHeight; 
+    const chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 
+    const xH = chatWindow.scrollHeight; 
     chatWindow.scrollTo(0, xH);
   }
 
-  const height = "85vh";
+  const calcChatboxHeight = () => {
+    const chatField = document.getElementById('radio-chat-input') as HTMLDivElement;
+    const playerWrapper = document.getElementById('player-wrapper') as HTMLDivElement;
+    return window.innerHeight - playerWrapper.getBoundingClientRect().height - chatField.getBoundingClientRect().height;
+  }
+
+  const height = isMobile
+    ? `${chatboxHeight.toString()}px`
+    : '85vh';
+
   return(
     <div
       className="flex flex-col w-full"
@@ -102,7 +121,7 @@ export const ChatBox: FC = () => {
         maxHeight: height,
         overflowWrap: 'break-word',
         verticalAlign: 'bottom',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
       }}
     >
       <div
