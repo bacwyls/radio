@@ -39,7 +39,6 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           console.log('greg update', e)
           if(!e['response']) return;
           
-          // TODO sort by viewers
           let newTowers = e.response;
           newTowers.sort(function(a:any, b:any) {
             return b.viewers - a.viewers;

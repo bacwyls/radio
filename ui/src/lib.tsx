@@ -29,7 +29,7 @@ export class Radio {
     //
     tunedTo!: string|null;
 
-    hub:string = '~nodmyn-dosrux';
+    hub:string = '~littel-bacwyl-samweg'; // TODO change back to nodmyn
 
     constructor(our: string, api: Urbit) {
         this.our = our;
@@ -80,6 +80,10 @@ export class Radio {
         }
         this.setTime(url, time);
     }
+
+    public isAdmin() {
+        return this.tunedTo === this.our;
+    }
    
     
     // api hits
@@ -109,14 +113,6 @@ export class Radio {
             app: 'tower',
             mark: 'radio-action',
             json: {public : false}
-            });
-    }
-
-    public background(viewUrl:string) {
-        this.api.poke({
-            app: 'tenna',
-            mark: 'radio-action',
-            json: {view : viewUrl}
             });
     }
 

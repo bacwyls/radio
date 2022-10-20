@@ -18,6 +18,8 @@ import {
   setPlayerInSync
 } from './features/ui/uiSlice';
 
+import {isValidPatp} from 'urbit-ob';
+
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
@@ -78,7 +80,6 @@ export function resetPage(dispatch: any) {
   dispatch(setNavigationOpen(false));
 }
 
-// TODO not used
 export function handleUserInput(
   radio: Radio, 
   tuneTo: (patp: string|null) => void, 
@@ -118,11 +119,12 @@ export function handleUserInput(
     case 'tune':
       if (arg === '') arg = our;
       radio.chat(chat);
-      tuneTo(arg)
-      break;
-    case 'background':
-      radio.background(arg);
-      radio.chat(chat);
+      if(isValidPatp(arg)) {
+        tuneTo(arg);
+      }
+      if(isValidPatp('~'+arg)) {
+        tuneTo('~'+arg);
+      }
       break;
     case 'time':
       dispatch(setPlayerInSync(true));
@@ -130,21 +132,38 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'set-time':
+      if(!radio.isAdmin()) {
+        return;
+      }
       radio.resyncAll(spinUrl);
       radio.chat(chat);
       break;
     case 'public':
-      if(radio.tunedTo !== our) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.public();
       radio.chat(chat);
       break;
     case 'private':
-      if(radio.tunedTo !== our) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.private();
+      radio.chat(chat);
+      break;
+    case 'ban':
+      if(!radio.isAdmin()) {
+        return;
+      }
+      radio.ban(arg);
+      radio.chat(chat);
+      break;
+    case 'unban':
+      if(!radio.isAdmin()) {
+        return;
+      }
+      radio.unban(arg);
       radio.chat(chat);
       break;
     case 'ping':
