@@ -78,6 +78,7 @@ export function resetPage(dispatch: any) {
   dispatch(setNavigationOpen(false));
 }
 
+// TODO not used
 export function handleUserInput(
   radio: Radio, 
   tuneTo: (patp: string|null) => void, 

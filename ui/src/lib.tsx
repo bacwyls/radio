@@ -243,6 +243,11 @@ export class Radio {
         'penguin':'https://media.tenor.com/hyRFiIX7e1sAAAAC/gif-club-penguin-dance.gif',
         'spongebob':'https://media.tenor.com/0pO-d7FH3QgAAAAi/spongebob-meme-spongebob.gif',
         'strawberry':'https://media.tenor.com/MsnbSzWd_yMAAAAj/crazy-fruit.gif',
+        'mario':'https://media.tenor.com/c1ljnEruxwYAAAAi/smg4-smg4dancing.gif',
+        'baldi':'https://media.tenor.com/Ru81f5Z4K-YAAAAi/baldi-rickroll.gif',
+        'snake':'https://media.tenor.com/OGH7rOXh5YIAAAAi/solid-snake-mgs.gif',
+        'yoshi':'https://media.tenor.com/K2cU8bfy97gAAAAi/yoshi-tiptoe.gif',
+        'cringe':'https://media.tenor.com/pbderXHkWfUAAAAi/cringe-0000000.gif',
     }
 
     // util
