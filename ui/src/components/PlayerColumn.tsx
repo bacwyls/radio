@@ -107,8 +107,8 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                   font-bold underline border-black border-t-0 \
                   ${helpMenuOpen ? 'border' : ''}`}
         onClick={(e) => {
-          setHelpMenuLeft(e.clientX);
-          setHelpMenuTop(e.clientY);
+          setHelpMenuLeft(e.clientX - (isMobile ? 30 : 0));
+          setHelpMenuTop(isMobile ? window.innerHeight : e.clientY);
           setHelpMenuOpen(!helpMenuOpen);
         }}
       >
