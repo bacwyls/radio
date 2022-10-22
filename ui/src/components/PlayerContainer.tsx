@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import ReactPlayer from "react-player";
 import { Radio } from '../lib';
-import { Navigation } from './Navigation';
 import { HelpMenu } from './HelpMenu';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {
@@ -16,23 +15,24 @@ import {
   selectPlayerInSync,
   selectPlayerReady,
 } from '../features/ui/uiSlice';
+import { IoMdHelpCircleOutline, IoMdSync } from 'react-icons/io'
+import { Viewers } from './Viewers';
 
-interface IPlayerColumn {
+interface IPlayerContainer {
   our: string;
   radio: Radio;
-  tuneTo: ((patp:string | null) => void);
+  tuneTo: ((patp: string | null) => void);
 }
 
-export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
+export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) => {
 
-  const {our, radio, tuneTo} = props;
+  const { our, radio, tuneTo } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
   const tunePatP = useAppSelector(selectTunePatP);
   const playerReady = useAppSelector(selectPlayerReady);
   const playerInSync = useAppSelector(selectPlayerInSync);
-  const viewers = useAppSelector(selectViewers);
   // const helpMenuOpen = useAppSelector(selectHelpMenuOpen);
   // const helpMenuTop = useAppSelector(selectHelpMenuTop);
   // const helpMenuLeft = useAppSelector(selectHelpMenuLeft);
@@ -69,105 +69,104 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
     }
   }
 
-  return(
-    <div className="inline-block mr-4 w-2/3">
-      <Navigation
-        our={our}
-        tuneTo={tuneTo}
-        radio={radio}
-      />
-      <div>
+  const height = "78vh";
+
+  return (
+    <div className="inline-block w-full lg:mr-2 /
+                    lg:w-2/3 h-full "
+      style={{
+        height: height,
+        maxHeight: height,
+      }}
+    >
+      <div className="relative ">
         {!playerReady &&
-          <p className="text-center">loading media player ...</p>
+          <p className="text-center absolute left-1/2 -translate-x-1/2">loading media player ...</p>
         }
         <ReactPlayer
           ref={radio.playerRef}
           url={spinUrl}
           playing={true}
           width='100%'
-          height='80vh'
+          height='68vh'
           controls={true}
           loop={true}
           onReady={() => dispatch(setPlayerReady(true))}
           // onSeek={e => console.log('onSeek', e)}
           onProgress={e => handleProgress(e)}
-          style={{ backgroundColor:'lightgray' }}
+          style={{
+            backgroundColor: 'lightgray', borderRadius: '0.25rem',
+            overflow: 'hidden', boxShadow: 'rgba(50, 50, 93, 0.25) \
+             0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+          }}
           config={{
             file: {
               // makes the audio player look nice
-              attributes:{ style: { height: '50%', width: '100%' }}
+              attributes: { style: { height: '50%', width: '100%' } }
             },
           }}
         />
-        <div className={'flex flex-row'}>
-          <div className={'flex-1' }>
-            <p className={'mt-2 '}>{viewers.length}{' viewers:'}</p>
-            {viewers.map((x, i) => 
-              <span 
-                className={'mr-3'}
-                key={i}
-              >
-                <a
-                  className={''}
-                  href={'/apps/landscape/~profile/'+x}
-                  target="_blank"
-                >
-                  {x}
-                </a>
-                {', '}
-              </span>
-            )}
-          </div>
-          {!playerInSync && 
-            <div> 
-              <button
-                className={`hover:pointer px-4 py-2 \
-                          flex-initial outline-none \
-                          font-bold underline border-black border-t-0 \
-                          text-yellow-500 `}
-                onClick={(e) => {
-                  radio.seekToDelta(spinTime);
-                  dispatch(setPlayerInSync(true));
-                }}
-              >
-                resync self
-              </button>
-              {tunePatP === props.our && 
+        <div className={'flex overflow-hidden justify-between'}>
+          <Viewers />
+          <div className='flex items-start mt-1'>
+            {!playerInSync &&
+              <>
                 <button
-                  className={`hover:pointer px-4 py-2 \
-                            flex-initial outline-none \
-                            font-bold underline border-black border-t-0 \
-                            text-blue-500 `}
-                  style={{ whiteSpace:'nowrap' }}
+                  className={` px-2  ml-2 mr-2\
+                          flex-initial outline-none \
+                          font-bold border-black \
+                          flex text-center items-center justify-center 
+                          text-yellow-500 `}
+                  style={{ fontSize: '.7rem' }}
                   onClick={(e) => {
-                    radio.resyncAll(spinUrl)
+                    radio.seekToDelta(spinTime);
+                    dispatch(setPlayerInSync(true));
                   }}
                 >
-                  resync all
+                  <IoMdSync className='mr-1 text-sm' /> resync self
                 </button>
-              }
-            </div>
-          }
-          <div>
+                {tunePatP === props.our &&
+                  <button
+                    className={` px-2  mr-2\
+                            flex-initial outline-none \
+                            font-bold  \
+                            text-blue-500 \
+                            flex text-center items-center justify-center
+                           border-black
+                            `}
+                    style={{ whiteSpace: 'nowrap', fontSize: '.7rem' }}
+                    onClick={(e) => {
+                      radio.resyncAll(spinUrl)
+                    }}
+                  >
+                    <IoMdSync className='mr-1 text-sm' /> resync all
+                  </button>
+                }
+              </>
+            }
             <button
-              className={`hover:pointer px-4 py-2 \
-                        flex-initial outline-none \
-                        font-bold underline border-black border-t-0 \
-                        ${helpMenuOpen ? 'border' : ''}`}
+              id='help-button'
+              className={` px-2  \
+                         flex flex-initial items-center justify-center outline-none \
+                        font-bold  border-black\
+                        text-center
+                        `}
+              style={{ fontSize: '.7rem' }}
               onClick={(e) => {
                 setHelpMenuLeft(e.clientX);
                 setHelpMenuTop(e.clientY);
                 setHelpMenuOpen(!helpMenuOpen);
               }}
             >
+              <IoMdHelpCircleOutline className='mr-1 text-sm' />
               help
             </button>
-            {helpMenuOpen &&
-              <HelpMenu left={helpMenuLeft} top={helpMenuTop}/>
-            }
           </div>
+          {helpMenuOpen &&
+            <HelpMenu left={helpMenuLeft} top={helpMenuTop} setHelpMenuOpen={setHelpMenuOpen} />
+          }
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

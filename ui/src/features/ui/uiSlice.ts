@@ -42,15 +42,22 @@ export const uiSlice = createSlice({
         ...state,
         navigationOpen: action.payload,
       }
+    },
+    toggleNativationOpen: (state, action: PayloadAction) => {
+      return {
+        ...state,
+        navigationOpen: !state.navigationOpen,
+      }
     }
   }
 });
 
-export const { 
+export const {
   setUserInteracted,
   setPlayerReady,
   setPlayerInSync,
-  setNavigationOpen
+  setNavigationOpen,
+  toggleNativationOpen
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;

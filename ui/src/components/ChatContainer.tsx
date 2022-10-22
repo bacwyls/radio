@@ -5,25 +5,24 @@ import { handleUserInput } from '../util';
 import { ChatBox } from './ChatBox';
 import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
 import { setPlayerInSync } from '../features/ui/uiSlice';
+import { FiSend } from 'react-icons/fi'
 
-import {isValidPatp} from 'urbit-ob'
-
-interface IChatColumn {
+interface IChatContainer {
   our: string;
   radio: Radio;
-  tuneTo: ((patp: string|null) => void);
+  tuneTo: ((patp: string | null) => void);
   inputReference: React.RefObject<HTMLInputElement>;
 }
 
-export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
+export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
 
-  const {our, radio, tuneTo, inputReference} = props;
+  const { our, radio, tuneTo, inputReference } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
   const dispatch = useAppDispatch();
 
-  const chatInputId ='radio-chat-input';
+  const chatInputId = 'radio-chat-input';
 
   function handleUserInput() {
     let input = document.getElementById(chatInputId) as HTMLInputElement;
@@ -72,14 +71,14 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         radio.chat(chat);
         break;
       case 'public':
-        if(radio.tunedTo !== our) {
+        if (radio.tunedTo !== our) {
           return;
         }
         radio.public();
         radio.chat(chat);
         break;
       case 'private':
-        if(radio.tunedTo !== our) {
+        if (radio.tunedTo !== our) {
           return;
         }
         radio.private();
@@ -107,49 +106,63 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     if (!(chat[0] === '!')) return;
 
     let splitIdx = chat.indexOf(' ');
-    if (splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
+    if (splitIdx === -1) return { 'command': chat.slice(1), 'arg': '' };
     let command = chat.slice(1, splitIdx);
     let arg = chat.slice(splitIdx + 1);
-    return {'command': command, 'arg': arg};
+    return { 'command': command, 'arg': arg };
   }
 
-  return(
+  const height = "78vh";
+  return (
     <div
-      className="flex-1 flex-col flex"
-      style={{ maxWidth:'33%' }}
+      className="flex-col flex w-full lg:w-1/3"
+      style={{
+        height: height,
+        maxHeight: height,
+
+      }}
     >
-      <ChatBox/>
-      <div>
-        <hr/>
-        <div className="flex">
-          <input type="text"
-            ref={inputReference}
-            className="hover:pointer px-4 py-2 inline-block \
-                      flex-1 outline-none border-none placeholder-gray-800 "
-            autoCorrect={'off'}
-            autoCapitalize={'off'}
-            autoComplete={'off'}
-            // autoFocus={false}
-            placeholder="write your message..."
-            id={chatInputId}
-            onKeyDown={(e: any) => {
-              if (e.key == 'Enter'){
-                handleUserInput();
-              }
-            }}
-          />
-          <button 
-            className="hover:pointer px-4 py-2\
-                      flex-initial ml-2 outline-none border-none"
-            style={{ backdropFilter: 'blur(32px)' }}
-            onClick={() => 
-              handleUserInput()
+      <ChatBox />
+      <div className="flex \
+          mt-3 h-6"
+      >
+        < input type="text"
+          ref={inputReference}
+          className="p-2 inline-block \
+                        w-3/4    bg-white
+                        rounded border border-solid border-gray-400
+                        "
+          style={{
+            fontSize: '.6rem'
+          }}
+          autoCorrect={'off'}
+          autoCapitalize={'off'}
+          autoComplete={'off'}
+          // autoFocus={false}
+          placeholder="write your message..."
+          id={chatInputId}
+          onKeyDown={(e: any) => {
+            if (e.key == 'Enter') {
+              handleUserInput();
             }
-          >
-            send
-          </button>
-        </div>
-      </div>
-    </div>
+          }}
+        />
+        < button
+          className="bg-white rounded w-1/4  \
+            flex-initial outline-none flex  \
+            rounded border border-solid  border-gray-400 \
+             justify-center items-center ml-2"
+          style={{
+            fontSize: '.6rem'
+          }}
+          onClick={() =>
+            handleUserInput()
+          }
+        >
+          <FiSend className='mr-1'></FiSend>
+          send
+        </ button>
+      </div >
+    </div >
   );
 }

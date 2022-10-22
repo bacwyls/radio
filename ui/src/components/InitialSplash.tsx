@@ -6,17 +6,17 @@ interface ISplash {
 
 export const InitialSplash: FC<ISplash> = (props: ISplash) => {
 
-  const {onClick} = props;
+  const { onClick } = props;
 
-  useEffect(()=>{
+  useEffect(() => {
     document.addEventListener("keydown", onClick, false);
     return () => {
       document.removeEventListener("keydown", onClick, false);
     }
   }, []);
 
-  return(
-    <main className="flex justify-center overflow-scroll items-center">
+  return (
+    <main className="flex justify-center overflow-hidden" style={{ height: '100vh' }}>
       <div className="bg-white mt-2 rounded p-2 lg:w-1/2 mx-6 content-center">
         <h1 className="text-lg font-bold m-2">urbit radio</h1>
         <p className="m-2">first, interact with the webpage so we can autoplay videos</p>
@@ -27,7 +27,7 @@ export const InitialSplash: FC<ISplash> = (props: ISplash) => {
             onClick={() => onClick()}
           >
             click here
-          </button> 
+          </button>
         </p>
       </div>
     </main>

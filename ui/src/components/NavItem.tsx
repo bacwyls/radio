@@ -1,8 +1,15 @@
+import { reactRenderer, sigil } from '@tlon/sigil-js';
 import React, { FC } from 'react';
+import { GrFormView, GrSatellite } from 'react-icons/gr';
+import { isValidPatp } from 'urbit-ob'
+
+import { MdOutlineDeviceHub, MdOutlineRadio, MdSettingsInputAntenna } from 'react-icons/md';
+
+
 
 interface INavItem {
-  patp: string|null,
-  tuneTo: ((patp: string|null) => void);
+  patp: string | null,
+  tuneTo: ((patp: string | null) => void);
   flare?: string,
   title?: string,
   logout?: boolean,
@@ -10,29 +17,77 @@ interface INavItem {
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const {patp, tuneTo, flare, title, logout} = props;
-  return(
+  const { patp, tuneTo, flare, title, logout } = props;
+  const navItemHeight = '145px';
+  return (
     logout
       ? <button
-          className="hover:pointer border-red-500 text-red-500  \
+        className="hover:pointer border-red-500 text-red-500  \
                     border px-1 text-center inline-block \
-                    flex-initial mr-2 my-1"
-          style={{ whiteSpace:'nowrap' }}
-          onClick={() => tuneTo(null)}
-        >
-          <span>logout</span>
-        </button> 
+                    flex-initial mr-2 "
+        style={{ whiteSpace: 'nowrap' }}
+        onClick={() => tuneTo(null)}
+      >
+        <span>logout</span>
+      </button>
       : <button
-          className="hover:pointer border-black  \
-                    border px-1 text-center inline-block \
-                    flex-initial mr-2 my-1"
-          style={{ whiteSpace:'nowrap' }}
-          onClick={() => tuneTo(patp)}
-        >
-          <span>
-            {flare && `${flare} `}
+        className="hover:pointer  rounded  \
+                    border border-gray-400 text-center inline-block \
+                    flex-initial mr-2 flex items-center
+                     justify-center relative overflow-hidden"
+        style={{
+          whiteSpace: 'nowrap',
+          minWidth: navItemHeight,
+          minHeight: navItemHeight,
+          maxHeight: navItemHeight,
+          maxWidth: navItemHeight,
+        }}
+        onClick={() => tuneTo(patp)}
+      >
+        <span className=' opacity-5	'>
+          {title != 'hub' && title != 'my station' && patp &&
+            <>
+              {
+                (isValidPatp(patp) && patp.length <= 14) ? sigil({
+                  patp: patp,
+                  renderer: reactRenderer,
+                  size: 145,
+                  colors: ['black', 'white'],
+                })
+                  :
+                  <div className='bg-black'
+                    style={{
+                      minWidth: navItemHeight,
+                      minHeight: navItemHeight,
+                      maxHeight: navItemHeight,
+                      maxWidth: navItemHeight,
+                    }}
+                  ></div>
+              }
+            </>
+          }
+          {title == 'my station' && <MdOutlineRadio style={{ fontSize: '5rem' }} />}
+          {/* {title != 'hub' && title != 'my station' && <GrSatellite style={{ fontSize: '5rem' }} />} */}
+          {title == 'hub' && <MdOutlineDeviceHub style={{ fontSize: '5rem' }}></MdOutlineDeviceHub>}
+        </span>
+        <div className='absolute  flex flex-col items-center justify-center	h-full'>
+          <div className='	inline-block font-bold' style={{
+            fontSize: '.65rem',
+            wordWrap: 'break-word',
+            whiteSpace: 'normal',
+            padding: '.2em'
+          }}>
             {title ? title : patp}
+          </div>
+          <span className='flex items-center text-center' style={{ fontSize: '.65rem' }}>
+            {flare &&
+              <>
+                <GrFormView className=' text-lg ' />
+                {flare}
+              </>
+            }
           </span>
-        </button>
+        </div>
+      </button >
   );
 };

@@ -4,8 +4,8 @@ import Urbit from '@urbit/http-api';
 import { Radio } from './lib';
 import { handleUpdate, resetPage } from './util';
 import { InitialSplash } from './components/InitialSplash';
-import { PlayerColumn } from './components/PlayerColumn';
-import { ChatColumn } from './components/ChatColumn';
+import { PlayerContainer } from './components/PlayerContainer';
+import { ChatContainer } from './components/ChatContainer';
 import {
   setTunePatP,
   setRadioSub,
@@ -24,13 +24,14 @@ import {
   selectPlayerInSync,
   selectPlayerReady
 } from './features/ui/uiSlice';
+import { Navigation } from './components/Navigation';
 
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
 
-const our = '~'+window.ship;
+const our = '~' + window.ship;
 
-let radio : Radio;
+let radio: Radio;
 radio = new Radio(our, api);
 
 // should it be radio.hub?
@@ -48,7 +49,7 @@ export function App() {
   const radioSub = useAppSelector(selectRadioSub);
   const chats = useAppSelector(selectChats);
   const update = useAppSelector(selectUpdate);
-  
+
   const dispatch = useAppDispatch();
 
   const inputReference = useRef<HTMLInputElement>(null);
@@ -99,19 +100,19 @@ export function App() {
   // initialize subscription
   useEffect(() => {
     if (!api || radioSub) return;
-      api
-        .subscribe({
-            app: "tenna",
-            path: "/frontend",
-            event: handleSub,
-            quit: ()=> alert('lost connection to your urbit. please refresh'),
-            err: (e)=> console.log('radio err', e),
-        })
-        .then((subscriptionId) => {
-          dispatch(setRadioSub(subscriptionId));
-          radio.tune(tuneInitial);
-          });
-      
+    api
+      .subscribe({
+        app: "tenna",
+        path: "/frontend",
+        event: handleSub,
+        quit: () => alert('lost connection to your urbit. please refresh'),
+        err: (e) => console.log('radio err', e),
+      })
+      .then((subscriptionId) => {
+        dispatch(setRadioSub(subscriptionId));
+        radio.tune(tuneInitial);
+      });
+
   }, [api]);
 
   // unsub on window close or refresh
@@ -137,31 +138,40 @@ export function App() {
     // wrap updates in this effect to get accurate usestate
     handleUpdate(update, radio, dispatch, userInteracted);
   }, [update]);
-  
-  function tuneTo(patp: string|null) {
+
+  function tuneTo(patp: string | null) {
     radio.tune(patp)
     radio.tunedTo = null;
-    dispatch(setTunePatP(patp+' (LOADING)'));
+    dispatch(setTunePatP(patp + ' (LOADING)'));
     resetPage(dispatch);
   }
 
-  return(
+  return (
     !userInteracted
-      ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))}/>
-      : <div className="mx-2 md:mx-20 text-xs font-mono">
-          <div className="flex flex-row">
-            <PlayerColumn 
-              our={our}
-              radio={radio}
-              tuneTo={tuneTo}
-            />
-            <ChatColumn
-              our={our}
-              radio={radio}
-              tuneTo={tuneTo}
-              inputReference={inputReference}
-            />
-          </div>
+      ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))} />
+      : <div className="px-2 md:px-10 lg:pb-7 text-xs font-mono \
+                 	 flex flex-col lg:max-h-screen "
+        style={{ backgroundColor: 'rgb(253 253 253)', height: '100vh', maxHeight: '100vh', }}
+      >
+        <Navigation
+          our={our}
+          tuneTo={tuneTo}
+          radio={radio}
+        />
+        <div className="flex flex-col lg:flex-row "
+          style={{ height: '78vh', maxHeight: '78vh', }}>
+          <PlayerContainer
+            our={our}
+            radio={radio}
+            tuneTo={tuneTo}
+          />
+          <ChatContainer
+            our={our}
+            radio={radio}
+            tuneTo={tuneTo}
+            inputReference={inputReference}
+          />
         </div>
+      </div>
   );
 }

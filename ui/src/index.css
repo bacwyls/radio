@@ -1,9 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-*{
+/* *{
     -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
     display: none;
+} */
+html{
+    font-size: 25px;
 }
