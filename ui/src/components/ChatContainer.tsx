@@ -118,8 +118,7 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
       className="flex-col flex w-full lg:w-1/3"
       style={{
         height: height,
-        maxHeight: height,
-
+        maxHeight: height
       }}
     >
       <ChatBox />

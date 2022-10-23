@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Radio } from '../lib';
-import { IMinitower } from './Navigation';
-import { NavItem } from './NavItem';
-import { MdClose } from 'react-icons/md';
-import { setNavigationOpen, selectNavigationOpen, toggleNativationOpen } from '../features/ui/uiSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { Radio } from '../../lib';
+import { IMinitower } from './UpperRow';
+import { NavItem } from '../NavItem';
+import { selectNavigationOpen, toggleNativationOpen } from '../../features/ui/uiSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface INavigateMenu {
     tuneTo: ((patp: string | null) => void);
@@ -17,12 +16,13 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
 
     const { tuneTo, radio, our, towers } = props;
 
-    const navigationOpen = useAppSelector(selectNavigationOpen);
     const dispatch = useAppDispatch();
 
     const hardCodedTowers = ['~harlys-forbec', '~fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec',]
-    const navigateBackgroundId = 'navigate-background';
     const [inputText, setInputText] = useState('');
+    const navigationOpen = useAppSelector(selectNavigationOpen);
+
+    const navigateBackgroundId = 'navigate-background';
 
     function handleInputTextChange(e) {
         setInputText(e.target.value);
@@ -55,15 +55,17 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
                 onClick={handleMenuBackgroundClick}
             >
                 <div
-                    className='fixed px-5 py-8 w-full flex flex-col rounded \
-                   bg-white justify-end'
+                    className='fixed px-5 py-8 flex flex-col rounded \
+                   bg-white justify-center'
                     style={{
                         top: '10vh',
-                        width: '50vw',
-                        height: '65vh',
-                        right: '25vw',
+                        maxWidth: '35em',
+                        width: '100vw',
+                        height: '22em',
+                        right: '50%',
                         boxShadow: 'rgba(50, 50, 93, 0.25) \
-                0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px',
+                                    0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px',
+                        transform: 'translateX(50%)',
                     }}
                 >
                     <p className='text-base font-bold mb-1'>stations:</p>
@@ -156,9 +158,9 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
                             />
                             < button
                                 className="bg-white rounded w-1/4  \
-            flex-initial outline-none flex  \
-            rounded border border-solid border-gray-400 \
-             justify-center items-center ml-2"
+                                           flex-initial outline-none flex  \
+                                           rounded border border-solid border-gray-400 \
+                                           justify-center items-center ml-2"
                                 style={{
                                     fontSize: '.6rem'
                                 }}

@@ -4,7 +4,7 @@ import Urbit from '@urbit/http-api';
 import { Radio } from './lib';
 import { handleUpdate, resetPage } from './util';
 import { InitialSplash } from './components/InitialSplash';
-import { PlayerContainer } from './components/PlayerContainer';
+import { PlayerContainer } from './components/PlayerContainer/PlayerContainer';
 import { ChatContainer } from './components/ChatContainer';
 import {
   setTunePatP,
@@ -24,7 +24,7 @@ import {
   selectPlayerInSync,
   selectPlayerReady
 } from './features/ui/uiSlice';
-import { Navigation } from './components/Navigation';
+import { UpperRow } from './components/UpperRow/UpperRow';
 
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
@@ -42,7 +42,6 @@ export function App() {
 
   const userInteracted = useAppSelector(selectUserInteracted);
   const playerReady = useAppSelector(selectPlayerReady);
-  const playerInSync = useAppSelector(selectPlayerInSync);
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -112,7 +111,6 @@ export function App() {
         dispatch(setRadioSub(subscriptionId));
         radio.tune(tuneInitial);
       });
-
   }, [api]);
 
   // unsub on window close or refresh
@@ -147,18 +145,19 @@ export function App() {
   }
 
   return (
-    !userInteracted
-      ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))} />
-      : <div className="px-2 md:px-10 lg:pb-7 text-xs font-mono \
-                 	 flex flex-col lg:max-h-screen "
-        style={{ backgroundColor: 'rgb(253 253 253)', height: '100vh', maxHeight: '100vh', }}
+    !userInteracted ?
+      <InitialSplash onClick={() => dispatch(setUserInteracted(true))} />
+      :
+      <div className="px-2 md:px-10 text-xs font-mono \
+                        flex flex-col h-screen"
+        style={{ backgroundColor: 'rgb(253 253 253)' }}
       >
-        <Navigation
+        <UpperRow
           our={our}
           tuneTo={tuneTo}
           radio={radio}
         />
-        <div className="flex flex-col lg:flex-row "
+        <div className="flex flex-col lg:flex-row"
           style={{ height: '78vh', maxHeight: '78vh', }}>
           <PlayerContainer
             our={our}
