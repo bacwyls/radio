@@ -1,19 +1,15 @@
 import React, { FC } from 'react';
-import { Radio } from '../../lib';
 import { Help } from './Help';
 import { Viewers } from './Viewers';
 import { Player } from './Player';
 import { SyncActions } from './SyncActions';
 
 interface IPlayerContainer {
-  our: string;
-  radio: Radio;
-  tuneTo: ((patp: string | null) => void);
+
 }
 
 export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) => {
 
-  const { our, radio, tuneTo } = props;
 
   const height = "78vh";
 
@@ -26,11 +22,11 @@ export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) =
       }}
     >
       <div className="relative">
-        <Player radio={radio} our={our} />
+        <Player />
         <div className={'flex overflow-hidden justify-between'}>
           <Viewers />
           <div className='flex items-start mt-1'>
-            <SyncActions radio={radio} our={our} />
+            <SyncActions />
             <Help />
           </div>
         </div>

@@ -160,7 +160,11 @@
       ::
       :: no spoofing
       =.  from.act  src.bowl
-      =.  time.act  now.bowl
+      =/  exists    (find [from=src.bowl time=now.bowl message=message.act]~ chatlog)
+      =.  time.act
+        ?~  exists
+          now.bowl
+        (add now.bowl 1)
       ::
       =/  =chat:store  +.act
       =.  chatlog  [chat chatlog]
@@ -365,4 +369,4 @@
       :-  %greg-event
       !>  ent
   ==
--- 
+--

@@ -1,22 +1,19 @@
 import React, { FC } from 'react';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { Radio } from '../lib';
-import { handleUserInput } from '../util';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { handleUserInput, tuneTo } from '../../util';
 import { ChatBox } from './ChatBox';
-import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
-import { setPlayerInSync } from '../features/ui/uiSlice';
+import { selectSpinUrl, selectSpinTime } from '../../features/station/stationSlice';
+import { setPlayerInSync } from '../../features/ui/uiSlice';
 import { FiSend } from 'react-icons/fi'
+import { radio } from '../../api';
 
 interface IChatContainer {
-  our: string;
-  radio: Radio;
-  tuneTo: ((patp: string | null) => void);
   inputReference: React.RefObject<HTMLInputElement>;
 }
 
 export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
 
-  const { our, radio, tuneTo, inputReference } = props;
+  const { inputReference } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -53,9 +50,9 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
         radio.chat(chat);
         break;
       case 'tune':
-        if (arg === '') arg = our;
+        if (arg === '') arg = radio.our;
         radio.chat(chat);
-        tuneTo(arg)
+        tuneTo(arg, radio, dispatch)
         break;
       case 'background':
         radio.background(arg);
@@ -71,14 +68,14 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
         radio.chat(chat);
         break;
       case 'public':
-        if (radio.tunedTo !== our) {
+        if (radio.tunedTo !== radio.our) {
           return;
         }
         radio.public();
         radio.chat(chat);
         break;
       case 'private':
-        if (radio.tunedTo !== our) {
+        if (radio.tunedTo !== radio.our) {
           return;
         }
         radio.private();

@@ -1,4 +1,3 @@
-import React, { FC } from 'react';
 import { Radio } from './lib';
 import {
   setTalkMsg,
@@ -21,7 +20,7 @@ import {
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
-  
+
   // handle updates from tower / radio station
   switch (mark) {
     case 'spin':
@@ -34,9 +33,9 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       // let synth = window.speechSynthesis;
       var updateTalk = update['talk'];
       var utterThis = new SpeechSynthesisUtterance(updateTalk);
-      
+
       dispatch(setTalkMsg(updateTalk));
-      
+
       if (!userInteracted) return;
       radio.synth.speak(utterThis);
       break;
@@ -79,8 +78,8 @@ export function resetPage(dispatch: any) {
 }
 
 export function handleUserInput(
-  radio: Radio, 
-  tuneTo: (patp: string|null) => void, 
+  radio: Radio,
+  tuneTo: (patp: string | null) => void,
   dispatch: any,
   chatInputId: string,
   spinTime: number,
@@ -133,14 +132,14 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'public':
-      if(radio.tunedTo !== our) {
+      if (radio.tunedTo !== our) {
         return;
       }
       radio.public();
       radio.chat(chat);
       break;
     case 'private':
-      if(radio.tunedTo !== our) {
+      if (radio.tunedTo !== our) {
         return;
       }
       radio.private();
@@ -162,14 +161,21 @@ export function handleUserInput(
   }
 }
 
-  // parse from user input
+export function tuneTo(patp: string | null, radio: Radio, dispatch) {
+  radio.tune(patp)
+  radio.tunedTo = null;
+  dispatch(setTunePatP(patp + ' (LOADING)'));
+  resetPage(dispatch);
+}
+
+// parse from user input
 function getCommandArg(chat: string) {
   // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
   if (!(chat[0] === '!')) return;
 
   let splitIdx = chat.indexOf(' ');
-  if (splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
+  if (splitIdx === -1) return { 'command': chat.slice(1), 'arg': '' };
   let command = chat.slice(1, splitIdx);
   let arg = chat.slice(splitIdx + 1);
-  return {'command': command, 'arg': arg};
+  return { 'command': command, 'arg': arg };
 }

@@ -94,7 +94,7 @@
   :~
   ['message' %s message.chat]
   ['from' %s (scot %p from.chat)]
-  ['time' (sect:enjs time.chat)]
+  ['time' %s (scot %da time.chat)]
   ==
 ::
 ++  dejs

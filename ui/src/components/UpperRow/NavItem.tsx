@@ -1,15 +1,15 @@
 import { reactRenderer, sigil } from '@tlon/sigil-js';
 import React, { FC } from 'react';
-import { GrFormView, GrSatellite } from 'react-icons/gr';
+import { GrFormView } from 'react-icons/gr';
 import { isValidPatp } from 'urbit-ob'
 
-import { MdOutlineDeviceHub, MdOutlineRadio, MdSettingsInputAntenna } from 'react-icons/md';
-
-
+import { MdOutlineDeviceHub, MdOutlineRadio } from 'react-icons/md';
+import { tuneTo } from '../../util';
+import { radio } from '../../api';
+import { useAppDispatch } from '../../app/hooks';
 
 interface INavItem {
   patp: string | null,
-  tuneTo: ((patp: string | null) => void);
   flare?: string,
   title?: string,
   logout?: boolean,
@@ -17,8 +17,10 @@ interface INavItem {
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const { patp, tuneTo, flare, title, logout } = props;
+  const { patp, flare, title, logout } = props;
   const navItemHeight = '145px';
+  const dispatch = useAppDispatch();
+
   return (
     logout
       ? <button
@@ -26,7 +28,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
                     border px-1 text-center inline-block \
                     flex-initial mr-2 "
         style={{ whiteSpace: 'nowrap' }}
-        onClick={() => tuneTo(null)}
+        onClick={() => tuneTo(null, radio, dispatch)}
       >
         <span>logout</span>
       </button>
@@ -42,7 +44,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           maxHeight: navItemHeight,
           maxWidth: navItemHeight,
         }}
-        onClick={() => tuneTo(patp)}
+        onClick={() => tuneTo(patp, radio, dispatch)}
       >
         <span className=' opacity-5	'>
           {title != 'hub' && title != 'my station' && patp &&

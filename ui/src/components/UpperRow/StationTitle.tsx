@@ -2,16 +2,15 @@ import { reactRenderer, sigil } from '@tlon/sigil-js';
 import React from 'react';
 import { FC } from 'react';
 import { isValidPatp } from 'urbit-ob'
+import { radio } from '../../api';
 import { useAppSelector } from '../../app/hooks';
 import { selectIsPublic, selectTunePatP } from '../../features/station/stationSlice';
 
 interface IStationTitle {
-    our: string;
 }
 
 export const StationTitle: FC<IStationTitle> = (props: IStationTitle) => {
 
-    const { our } = props;
     const tunePatP = useAppSelector(selectTunePatP);
     const isPublic = useAppSelector(selectIsPublic);
 
@@ -27,7 +26,7 @@ export const StationTitle: FC<IStationTitle> = (props: IStationTitle) => {
                     })}
                 </span>
                 <span >
-                    {tunePatP == our ? 'My station' :
+                    {tunePatP == radio.our ? 'My station' :
                         `~fidwed-sipwyn's station`}
                     {' '}{isPublic ? '(public)' : '(private)'}
                 </span>

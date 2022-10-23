@@ -4,7 +4,7 @@ import { RootState } from '../../app/store';
 interface ChatMessage {
   message: string;
   from: string;
-  time: number
+  time: string;
 }
 
 export interface StationState {
@@ -110,7 +110,7 @@ export const stationSlice = createSlice({
   }
 });
 
-export const { 
+export const {
   setTalkMsg,
   setSpinUrl,
   setSpinTime,

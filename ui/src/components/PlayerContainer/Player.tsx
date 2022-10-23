@@ -1,18 +1,15 @@
 import React from "react";
 import { FC } from "react";
 import ReactPlayer from "react-player";
+import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
 import { selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../features/ui/uiSlice";
-import { Radio } from "../../lib";
 
 interface IPlayer {
-    radio: Radio;
-    our: string;
 }
 
 export const Player: FC<IPlayer> = (props: IPlayer) => {
-    const { radio, our } = props;
 
     const playerReady = useAppSelector(selectPlayerReady);
     const spinUrl = useAppSelector(selectSpinUrl);
@@ -28,7 +25,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
         var duration = radio.player.getDuration();
         let diff = Math.abs((delta % duration) - progress.playedSeconds)
 
-        if (our === radio.tunedTo) {
+        if (radio.our === radio.tunedTo) {
             // if(diff > 60) {
             //   console.log('host broadcasting new time')
             //   radio.setTime(spinUrl, progress.playedSeconds);

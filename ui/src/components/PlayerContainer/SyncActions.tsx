@@ -1,19 +1,15 @@
 import React from "react";
 import { FC } from "react";
 import { IoMdSync } from "react-icons/io";
+import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl, selectTunePatP } from "../../features/station/stationSlice";
 import { selectPlayerInSync, setPlayerInSync } from "../../features/ui/uiSlice";
-import { Radio } from "../../lib";
 
 interface ISyncActions {
-    radio: Radio;
-    our: string;
 }
 
 export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
-
-    const { radio } = props;
 
     const spinTime = useAppSelector(selectSpinTime);
     const tunePatP = useAppSelector(selectTunePatP);
@@ -39,7 +35,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                 >
                     <IoMdSync className='mr-1 text-sm' /> resync self
                 </button>
-                {tunePatP === props.our &&
+                {tunePatP === radio.our &&
                     <button
                         className={` px-2  mr-2\
                           flex-initial outline-none \

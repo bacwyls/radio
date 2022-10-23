@@ -1,42 +1,29 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import Urbit from '@urbit/http-api';
-import { Radio } from './lib';
-import { handleUpdate, resetPage } from './util';
+import { handleUpdate } from './util';
 import { InitialSplash } from './components/InitialSplash';
 import { PlayerContainer } from './components/PlayerContainer/PlayerContainer';
-import { ChatContainer } from './components/ChatContainer';
+import { ChatContainer } from './components/ChatContainer/ChatContainer';
 import {
-  setTunePatP,
   setRadioSub,
-  chopChats,
   setUpdate,
   selectSpinUrl,
   selectSpinTime,
   selectRadioSub,
-  selectChats,
   selectUpdate,
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
   setPlayerInSync,
   selectUserInteracted,
-  selectPlayerInSync,
   selectPlayerReady
 } from './features/ui/uiSlice';
 import { UpperRow } from './components/UpperRow/UpperRow';
-
-const api = new Urbit('', '', window.desk);
-api.ship = window.ship;
-
-const our = '~' + window.ship;
-
-let radio: Radio;
-radio = new Radio(our, api);
+import { radio } from './api';
 
 // should it be radio.hub?
-const tuneInitial = radio.hub;
-
+// const tuneInitial = radio.hub;
+const tuneInitial = radio.our;
 
 export function App() {
 
@@ -46,7 +33,6 @@ export function App() {
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
   const radioSub = useAppSelector(selectRadioSub);
-  const chats = useAppSelector(selectChats);
   const update = useAppSelector(selectUpdate);
 
   const dispatch = useAppDispatch();
@@ -71,14 +57,6 @@ export function App() {
     }, 1000 * 60 * 3)
   }, []);
 
-  const maxChats = 100;
-  useEffect(() => {
-    // maximum chats
-    if (chats.length > maxChats) {
-      dispatch(chopChats(chats));
-    }
-  }, [chats]);
-
   useEffect(() => {
     dispatch(setPlayerInSync(true));
     radio.seekToDelta(spinTime)
@@ -98,8 +76,8 @@ export function App() {
 
   // initialize subscription
   useEffect(() => {
-    if (!api || radioSub) return;
-    api
+    if (!radio.api || radioSub) return;
+    radio.api
       .subscribe({
         app: "tenna",
         path: "/frontend",
@@ -111,7 +89,7 @@ export function App() {
         dispatch(setRadioSub(subscriptionId));
         radio.tune(tuneInitial);
       });
-  }, [api]);
+  }, [radio.api]);
 
   // unsub on window close or refresh
   useEffect(() => {
@@ -123,8 +101,8 @@ export function App() {
   //
   const unsubFunc = () => {
     radio.tune(null);
-    api.unsubscribe(radioSub);
-    api.delete();
+    radio.api.unsubscribe(radioSub);
+    radio.api.delete();
   };
 
   // manage SSE events
@@ -137,39 +115,19 @@ export function App() {
     handleUpdate(update, radio, dispatch, userInteracted);
   }, [update]);
 
-  function tuneTo(patp: string | null) {
-    radio.tune(patp)
-    radio.tunedTo = null;
-    dispatch(setTunePatP(patp + ' (LOADING)'));
-    resetPage(dispatch);
-  }
-
   return (
     !userInteracted ?
       <InitialSplash onClick={() => dispatch(setUserInteracted(true))} />
       :
-      <div className="px-2 md:px-10 text-xs font-mono \
+      <div className="px-2 md:px-10 text-xs font-mono \ 
                         flex flex-col h-screen"
         style={{ backgroundColor: 'rgb(253 253 253)' }}
       >
-        <UpperRow
-          our={our}
-          tuneTo={tuneTo}
-          radio={radio}
-        />
+        <UpperRow />
         <div className="flex flex-col lg:flex-row"
-          style={{ height: '78vh', maxHeight: '78vh', }}>
-          <PlayerContainer
-            our={our}
-            radio={radio}
-            tuneTo={tuneTo}
-          />
-          <ChatContainer
-            our={our}
-            radio={radio}
-            tuneTo={tuneTo}
-            inputReference={inputReference}
-          />
+          style={{ height: '78vh', maxHeight: '78vh' }}>
+          <PlayerContainer />
+          <ChatContainer inputReference={inputReference} />
         </div>
       </div>
   );

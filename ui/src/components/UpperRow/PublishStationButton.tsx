@@ -1,14 +1,12 @@
 import React from "react";
 import { FC, useEffect, useState } from "react";
-import { Radio } from "../../lib";
+import { radio } from "../../api";
 
 interface IPublishStationButton {
-  radio: Radio,
 }
 
 export const PublishStationButton: FC<IPublishStationButton> = (props: IPublishStationButton) => {
 
-  const { radio } = props;
 
   const [hasPublishedStation, setHasPublishedStation] = useState(false);
 
