@@ -29,7 +29,7 @@ export class Radio {
     //
     tunedTo!: string|null;
 
-    hub:string = '~littel-bacwyl-samweg'; // TODO change back to nodmyn
+    hub:string = '~nodmyn-dosrux';
 
     constructor(our: string, api: Urbit) {
         this.our = our;
@@ -39,6 +39,7 @@ export class Radio {
         this.synth.onvoiceschanged = (v: any) => {
             console.log('radio voices', v)
             // TODO check if voices is empty
+            //  users have had empty voices in ubuntu + brave
         }
 
     }
@@ -60,11 +61,9 @@ export class Radio {
         var currentUnixTime = Date.now() / 1000;
         var delta = Math.ceil(currentUnixTime - startedTime);
         var duration = this.player.getDuration();
-    
-        // console.log(`delta: ${delta}, duration: ${player.getDuration()}`)
-    
+        
         if (duration) {
-            this.player.seekTo((delta % duration));
+            this.player.seekTo((delta % duration), 'seconds');
         } else {
             this.player.seekTo(delta, 'seconds');
         }

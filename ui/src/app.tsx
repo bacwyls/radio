@@ -125,8 +125,8 @@ export function App() {
   //
   const unsubFunc = () => {
     radio.tune(null);
-    api.unsubscribe(radioSub);
-    api.delete();
+    radio.api.unsubscribe(radioSub);
+    radio.api.delete();
   };
 
   // manage SSE events

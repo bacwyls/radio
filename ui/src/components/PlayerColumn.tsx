@@ -125,8 +125,12 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
       className='mt-2'
       style={{ paddingTop: isMobile ? '0.25rem' : 'inherit' }}
     >
-      {`${viewers.length} viewers:`}
-    </p>;
+      {viewers.length === 1 ?
+        `${viewers.length} viewer:`
+      :
+        `${viewers.length} viewers:`
+      }
+      </p>;
 
   return(
     <div 

@@ -122,7 +122,7 @@ export function handleUserInput(
       if(isValidPatp(arg)) {
         tuneTo(arg);
       }
-      if(isValidPatp('~'+arg)) {
+      else if(isValidPatp('~'+arg)) {
         tuneTo('~'+arg);
       }
       break;
