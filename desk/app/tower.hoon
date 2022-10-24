@@ -62,14 +62,14 @@
   :: annoyance: now.bowl here is wrong!
   :: =.  spin-time  now.bowl
   `this
-++  on-load  on-load:def
-:: ++  on-load
-::   |=  old-state=vase
-::   ^-  (quip card _this)
-::   =/  old  !<(versioned-state old-state)
-::   ?-  -.old
-::     %0  `this(state old)
-::   ==
+:: ++  on-load  on-load:def
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+    %0  `this(state old)
+  ==
 ++  on-leave
   |=  [=path]
   =.  viewers

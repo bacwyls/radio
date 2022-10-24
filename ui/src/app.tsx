@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { isMobile } from 'react-device-detect';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import Urbit from '@urbit/http-api';
 import { Radio } from './lib';
@@ -124,8 +125,8 @@ export function App() {
   //
   const unsubFunc = () => {
     radio.tune(null);
-    api.unsubscribe(radioSub);
-    api.delete();
+    radio.api.unsubscribe(radioSub);
+    radio.api.delete();
   };
 
   // manage SSE events
@@ -145,23 +146,25 @@ export function App() {
     resetPage(dispatch);
   }
 
+  const wrapperClass = isMobile
+    ? 'mx-2 md:mx-20 text-xs font-mono'
+    : 'mx-2 md:mx-20 text-xs font-mono flex flex-row';
+
   return(
     !userInteracted
       ? <InitialSplash onClick={() => dispatch(setUserInteracted(true))}/>
-      : <div className="mx-2 md:mx-20 text-xs font-mono">
-          <div className="flex flex-row">
-            <PlayerColumn 
-              our={our}
-              radio={radio}
-              tuneTo={tuneTo}
-            />
-            <ChatColumn
-              our={our}
-              radio={radio}
-              tuneTo={tuneTo}
-              inputReference={inputReference}
-            />
-          </div>
+      : <div className={wrapperClass}>
+          <PlayerColumn 
+            our={our}
+            radio={radio}
+            tuneTo={tuneTo}
+          />
+          <ChatColumn
+            our={our}
+            radio={radio}
+            tuneTo={tuneTo}
+            inputReference={inputReference}
+          />
         </div>
   );
 }
