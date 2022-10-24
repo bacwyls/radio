@@ -7,9 +7,10 @@
 ::    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0vjhr07.esb5k.mpa79.1dt39.minpf.glob' 0vjhr07.esb5k.mpa79.1dt39.minpf]        ::  4
 ::    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0v4.6inqn.1auuk.p10pc.usv88.giqeo.glob' 0v4.6inqn.1auuk.p10pc.usv88.giqeo]    ::  5
 ::    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0v5.bnl7e.0pjed.mo5bs.htvno.ou2li.glob' 0v5.bnl7e.0pjed.mo5bs.htvno.ou2li]    ::  6
-    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0v4.0afgm.0nttk.mr11h.8ul0m.uc4go.glob' 0v4.0afgm.0nttk.mr11h.8ul0m.uc4go]      ::  7
+::    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0v4.0afgm.0nttk.mr11h.8ul0m.uc4go.glob' 0v4.0afgm.0nttk.mr11h.8ul0m.uc4go]    ::  7
+    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/glob-0v1.m5ths.ih7c4.imb9l.a147l.hm5pj.glob' 0v1.m5ths.ih7c4.imb9l.a147l.hm5pj]      ::  8
     base+'radio'
-    version+[0 0 7]
+    version+[0 0 8]
     image+'https://0x0.st/o4--.png'
     website+'https://github.com/bacwyls/radio'
     license+'MIT'
