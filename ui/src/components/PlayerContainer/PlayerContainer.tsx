@@ -10,11 +10,10 @@ interface IPlayerContainer {
 
 export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) => {
 
-
   const height = "78vh";
 
   return (
-    <div className="inline-block w-full lg:mr-2 /
+    <div className="inline-block w-full lg:mr-3 /
                     lg:w-2/3 h-full "
       style={{
         height: height,
@@ -23,7 +22,7 @@ export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) =
     >
       <div className="relative">
         <Player />
-        <div className={'flex overflow-hidden justify-between'}>
+        <div className='flex overflow-hidden justify-between'>
           <Viewers />
           <div className='flex items-start mt-1'>
             <SyncActions />

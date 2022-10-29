@@ -25,8 +25,9 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     className={` px-2  ml-2 mr-2\
                         flex-initial outline-none \
                         font-bold border-black \
-                        flex text-center items-center justify-center 
-                        text-indigo-400	 `}
+                        flex text-center items-center 
+                        justify-center 
+                        	 `}
                     style={{ fontSize: '.7rem' }}
                     onClick={(e) => {
                         radio.seekToDelta(spinTime);
@@ -39,12 +40,11 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     <button
                         className={` px-2  mr-2\
                           flex-initial outline-none \
-                          font-bold  \
-                          text-yellow-500 \
-                          flex text-center items-center justify-center
-                         border-black
+                          font-bold  border-black \
+                          flex text-center items-center 
+                          justify-center
                           `}
-                        style={{ whiteSpace: 'nowrap', fontSize: '.7rem' }}
+                        style={{ whiteSpace: 'nowrap', fontSize: '.7rem', }}
                         onClick={(e) => {
                             radio.resyncAll(spinUrl)
                         }}

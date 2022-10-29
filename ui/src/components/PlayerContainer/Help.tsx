@@ -11,19 +11,22 @@ export const Help: FC<IHelp> = (props: IHelp) => {
   useEffect(() => {
     document.addEventListener(
       "click",
-      handleOutsideMenuClick
+      handleOutsideHelpMenuClick
     )
 
-    return () => document.removeEventListener('click', handleOutsideMenuClick)
+    return () => document.removeEventListener('click', handleOutsideHelpMenuClick)
   }, []);
 
-  const handleOutsideMenuClick = (event: any) => {
+  const handleOutsideHelpMenuClick = (event: any) => {
     var clicked = event.target as Element;
     var helpMenu = document.getElementById('help-menu');
     var helpButton = document.getElementById('help-button');
 
     if (
-      clicked != helpMenu && !helpMenu?.contains(clicked) && clicked != helpButton && !helpButton?.contains(clicked)
+      clicked != helpMenu
+      && !helpMenu?.contains(clicked)
+      && clicked != helpButton
+      && !helpButton?.contains(clicked)
     ) {
       setHelpMenuOpen(false);
     }
@@ -36,7 +39,7 @@ export const Help: FC<IHelp> = (props: IHelp) => {
         className={` px-2  \
                          flex flex-initial items-center justify-center outline-none \
                         font-bold  border-black\
-                        text-center
+                        text-center 
                         `}
         style={{ fontSize: '.7rem' }}
         onClick={(e) => {

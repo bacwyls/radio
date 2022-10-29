@@ -8,12 +8,12 @@ import { FiSend } from 'react-icons/fi'
 import { radio } from '../../api';
 
 interface IChatContainer {
-  inputReference: React.RefObject<HTMLInputElement>;
+  // inputReference: React.RefObject<HTMLInputElement>;
 }
 
 export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
 
-  const { inputReference } = props;
+  // const { inputReference } = props;
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -110,24 +110,35 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
   }
 
   const height = "78vh";
+
   return (
     <div
-      className="flex-col flex w-full lg:w-1/3"
+      className="flex-col flex w-full 
+      lg:w-1/3 border rounded 
+      border-gray-400
+      border border-solid bg-white"
       style={{
         height: height,
         maxHeight: height
       }}
     >
-      <ChatBox />
-      <div className="flex \
-          mt-3 h-6"
+      <div
+        className=' font-bold flex items-center px-2'
+        style={{ height: '8vh' }}
       >
-        < input type="text"
-          ref={inputReference}
-          className="p-2 inline-block \
-                        w-3/4    bg-white
-                        rounded border border-solid border-gray-400
-                        "
+        chat
+      </div>
+      <ChatBox />
+      <div
+        className="flex items-center px-2"
+        style={{ height: '10vh' }}>
+        <input
+          type="text"
+          // ref={inputReference}
+          className="px-2 py-1 inline-block \
+                        w-3/4  border-gray-400
+                        border border-solid  bg-white
+                        rounded"
           style={{
             fontSize: '.6rem'
           }}
@@ -144,7 +155,7 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
           }}
         />
         < button
-          className="bg-white rounded w-1/4  \
+          className="bg-white rounded w-1/4 py-1 \
             flex-initial outline-none flex  \
             rounded border border-solid  border-gray-400 \
              justify-center items-center ml-2"

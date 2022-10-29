@@ -16,7 +16,6 @@ export const ChatBox: FC = () => {
 
   useEffect(() => {
     scrollToBottom();
-    console.log(chats);
     if (chats.length > maxChats) {
       dispatch(chopChats(chats));
     }
@@ -36,12 +35,12 @@ export const ChatBox: FC = () => {
       return ('' + chat.time) + chat.from;
   }
 
-  const height = "68vh";
+  const height = "60vh";
 
   return (
     <div
-      className="flex flex-col w-full  bg-white rounded \
-       border border-solid border-gray-400"
+      className="flex flex-col w-full bg-white  \
+      border-gray-400 border-b border-t "
       style={{
         height: height,
         maxHeight: height,
@@ -54,9 +53,20 @@ export const ChatBox: FC = () => {
         className="overflow-y-auto"
         id={chatboxId}
       >
-        {/* chatbox */}
-        {chats.map((x: any, i: any) =>
-          <ChatMessageMemo key={generateUniqueKey(x, i)} from={x.from} message={x.message} time={x.time} />)
+        {chats && chats.length > 0 ?
+          chats.map((x: any, i: any) =>
+            <ChatMessageMemo
+              key={generateUniqueKey(x, i)}
+              from={x.from}
+              message={x.message}
+              time={x.time}
+            />)
+          :
+          <div className='flex justify-center items-center'
+            style={{ height: height }}
+          >
+            There are no messages
+          </div>
         }
       </div>
     </div >

@@ -13,11 +13,10 @@ import {
 import {
   setUserInteracted,
   setPlayerReady,
-  setNavigationOpen,
   setPlayerInSync
 } from './features/ui/uiSlice';
 
-export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
+export function handleUpdate(update: any, radio: Radio, dispatch: any) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
 
@@ -36,7 +35,6 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
 
       dispatch(setTalkMsg(updateTalk));
 
-      if (!userInteracted) return;
       radio.synth.speak(utterThis);
       break;
     case 'tune':
@@ -45,7 +43,6 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       radio.tunedTo = tune;
       if (tune === null) {
         resetPage(dispatch);
-        dispatch(setUserInteracted(false));
         // radio.tune(our)
         // alert('whoops, you left the radio station')
       } else {
@@ -74,7 +71,6 @@ export function resetPage(dispatch: any) {
   dispatch(setTalkMsg(''));
   dispatch(setViewers([]));
   dispatch(setSpinUrl(''));
-  dispatch(setNavigationOpen(false));
 }
 
 export function handleUserInput(
@@ -162,10 +158,11 @@ export function handleUserInput(
 }
 
 export function tuneTo(patp: string | null, radio: Radio, dispatch) {
-  radio.tune(patp)
-  radio.tunedTo = null;
-  dispatch(setTunePatP(patp + ' (LOADING)'));
   resetPage(dispatch);
+  radio.tune(patp);
+  radio.tunedTo = null;
+
+  dispatch(setTunePatP(patp ? patp + '(loading...)' : ''));
 }
 
 // parse from user input
@@ -178,4 +175,31 @@ function getCommandArg(chat: string) {
   let command = chat.slice(1, splitIdx);
   let arg = chat.slice(splitIdx + 1);
   return { 'command': command, 'arg': arg };
+}
+
+export const timestampFromTime = (time: string) => {
+  const utcTime = time.slice(1).split(".")!;
+  const minutes = utcTime[5];
+  const hours = utcTime[4];
+  const day = utcTime[2];
+  const month = utcTime[1];
+  const year = utcTime[0];
+
+  const date = new Date(Date.UTC(+year, (+month) - 1, +day, +hours, +minutes));
+  const localMonth = '' + date.getMonth();
+  const localDay = '' + date.getDate();
+  const localHours = '' + date.getHours();
+  const localMinutes = '' + date.getMinutes();
+
+  // this is weird sometimes
+  // const oneDayOld = (Date.now() - date.getTime()) > (1000 * 60 * 60 * 24);
+
+  // if the msg is older than 12 hours and from a different day
+  const oneDayOld = new Date().getDate() > (+localDay);
+  const hoursSince = (new Date().getHours() + (24 - (+localHours)));
+  const olderMessage = oneDayOld && (hoursSince >= 12);
+
+  return olderMessage
+    ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`
+    : `${localHours.padStart(2, '0')}:${localMinutes.padStart(2, '0')}`;
 }

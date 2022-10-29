@@ -1,17 +1,20 @@
 import React from "react";
 import { FC, useEffect, useState } from "react";
 import { radio } from "../../api";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectHasPublishedStation, setHasPublishedStation } from "../../features/station/stationSlice";
+import { ToggleSwitch } from "./ToggleSwitch/`ToggleSwitch";
 
 interface IPublishStationButton {
 }
 
 export const PublishStationButton: FC<IPublishStationButton> = (props: IPublishStationButton) => {
 
-
-  const [hasPublishedStation, setHasPublishedStation] = useState(false);
+  const hasPublishedStation = useAppSelector(selectHasPublishedStation);
 
   useEffect(() => {
     if (!hasPublishedStation) return;
+
     setInterval(() => {
       // heartbeat to detect presence
       radio.gregPut('');
@@ -20,19 +23,15 @@ export const PublishStationButton: FC<IPublishStationButton> = (props: IPublishS
   }, [hasPublishedStation]);
 
   return (
-    (radio.tunedTo === radio.our && !hasPublishedStation) ?
+    (radio.tunedTo === radio.our) ?
       <button
-        className="border border-solid border-gray-400  \
-                       rounded px-2 py-1 text-center inline-block \
-                      flex-initial my-1 bg-white bg-green-50 h-7 "
-        style={{ whiteSpace: 'nowrap' }}
-        onClick={() => {
-          radio.gregPut('')
-          setHasPublishedStation(true);
-          radio.gregRequest();
-        }}
+        className="flex items-center  border justify-between
+        border-gray-400 rounded px-1 h-6 bg-white
+        "
+        style={{ whiteSpace: 'nowrap', width: '8em', fontSize: '.65rem' }}
       >
-        <span >publish my station</span>
+        <span className="mr-1" >publish</span>
+        <ToggleSwitch />
       </button>
       :
       <></>

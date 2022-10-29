@@ -7,6 +7,13 @@ interface ChatMessage {
   time: string;
 }
 
+export interface IMinitower {
+  location: string;
+  description: string;
+  time: number;
+  viewers: number;
+}
+
 export interface StationState {
   talkMsg: string;
   spinUrl: string;
@@ -17,6 +24,8 @@ export interface StationState {
   viewers: string[];
   chats: ChatMessage[];
   update: any;
+  towers: Array<IMinitower>;
+  hasPublishedStation: boolean;
 }
 
 const initialState: StationState = {
@@ -28,7 +37,9 @@ const initialState: StationState = {
   isPublic: false,
   viewers: Array<string>(),
   chats: Array<ChatMessage>(),
-  update: Object()
+  update: Object(),
+  towers: Array<IMinitower>(),
+  hasPublishedStation: false,
 };
 
 export const stationSlice = createSlice({
@@ -106,7 +117,20 @@ export const stationSlice = createSlice({
         ...state,
         update: action.payload
       }
+    },
+    setHasPublishedStation: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        hasPublishedStation: action.payload
+      }
+    },
+    setTowers: (state, action: PayloadAction<Array<IMinitower>>) => {
+      return {
+        ...state,
+        towers: action.payload
+      }
     }
+
   }
 });
 
@@ -122,7 +146,9 @@ export const {
   setChatsWithChatlog,
   chopChats,
   setChatsWithChat,
-  setUpdate
+  setUpdate,
+  setTowers,
+  setHasPublishedStation,
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
@@ -134,5 +160,7 @@ export const selectIsPublic = (state: RootState) => state.station.isPublic;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
 export const selectUpdate = (state: RootState) => state.station.update;
+export const selectTowers = (state: RootState) => state.station.towers;
+export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
 
 export default stationSlice.reducer;

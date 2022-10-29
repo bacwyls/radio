@@ -1,0 +1,45 @@
+
+/* Source: https://codepen.io/mburnette/pen/LxNxNg */
+
+.toggle-switch-input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle-switch-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 60px;
+    height: 25px;
+    background-color: rgba(209, 213, 219);
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+.toggle-switch-label:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+.toggle-switch-input:checked + .toggle-switch-label {
+    background-color: rgba(167, 243, 208); 
+}
+
+.toggle-switch-input:checked + .toggle-switch-label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+.toggle-switch-label:active:after {
+    width: 32px;
+}
+

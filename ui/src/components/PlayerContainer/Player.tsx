@@ -44,11 +44,13 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
         }
     }
 
-
     return (
         <div className="relative ">
             {!playerReady &&
-                <p className="text-center absolute left-1/2 -translate-x-1/2">loading media player ...</p>
+                <p className="text-center absolute 
+                            left-1/2 -translate-x-1/2">
+                    loading media player...
+                </p>
             }
             <ReactPlayer
                 ref={radio.playerRef}
@@ -75,6 +77,4 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
             />
         </div>
     )
-
-
 }

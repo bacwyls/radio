@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import { handleUpdate } from './util';
-import { InitialSplash } from './components/InitialSplash';
-import { PlayerContainer } from './components/PlayerContainer/PlayerContainer';
-import { ChatContainer } from './components/ChatContainer/ChatContainer';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+
 import {
   setRadioSub,
   setUpdate,
@@ -11,25 +10,20 @@ import {
   selectSpinTime,
   selectRadioSub,
   selectUpdate,
+  setTowers,
 } from './features/station/stationSlice';
 import {
-  setUserInteracted,
   setPlayerInSync,
-  selectUserInteracted,
   selectPlayerReady
 } from './features/ui/uiSlice';
-import { UpperRow } from './components/UpperRow/UpperRow';
 import { radio } from './api';
-
-// should it be radio.hub?
-// const tuneInitial = radio.hub;
-const tuneInitial = radio.our;
+import { Home } from './pages/Home';
+import { Station } from './pages/Station';
+import { NavigateMenu } from './components/Navigation/NavigateMenu';
 
 export function App() {
 
-  const userInteracted = useAppSelector(selectUserInteracted);
   const playerReady = useAppSelector(selectPlayerReady);
-
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
   const radioSub = useAppSelector(selectRadioSub);
@@ -37,24 +31,30 @@ export function App() {
 
   const dispatch = useAppDispatch();
 
-  const inputReference = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    // autofocus input
-    if (!inputReference) return;
-    if (!inputReference.current) return;
-    window.setTimeout(() => {
-      // use a slight delay for better UX
-      // @ts-ignore
-      inputReference.current.focus();
-    }, 250);
-  }, [userInteracted]);
-
   useEffect(() => {
     setInterval(() => {
       // heartbeat to detect presence
       radio.ping();
     }, 1000 * 60 * 3)
+
+    radio.api
+      .subscribe({
+        app: "tower",
+        path: "/greg/local",
+        event: (e) => {
+          console.log('greg update', e)
+          if (!e['response']) return;
+
+          // TODO sort by viewers
+          let newTowers = e.response;
+          newTowers.sort(function (a: any, b: any) {
+            return b.viewers - a.viewers;
+          });
+          dispatch(setTowers(e.response));
+        },
+        quit: () => alert('(greg) lost connection to your urbit. please refresh'),
+        err: (e) => console.log('radio err', e),
+      })
   }, []);
 
   useEffect(() => {
@@ -87,7 +87,6 @@ export function App() {
       })
       .then((subscriptionId) => {
         dispatch(setRadioSub(subscriptionId));
-        radio.tune(tuneInitial);
       });
   }, [radio.api]);
 
@@ -107,28 +106,25 @@ export function App() {
 
   // manage SSE events
   function handleSub(update: any) {
+    console.log(update, 'handleSub')
     dispatch(setUpdate(update));
   }
+
   useEffect(() => {
     if (!update) return;
     // wrap updates in this effect to get accurate usestate
-    handleUpdate(update, radio, dispatch, userInteracted);
+    handleUpdate(update, radio, dispatch);
   }, [update]);
 
   return (
-    !userInteracted ?
-      <InitialSplash onClick={() => dispatch(setUserInteracted(true))} />
-      :
-      <div className="px-2 md:px-10 text-xs font-mono \ 
-                        flex flex-col h-screen"
-        style={{ backgroundColor: 'rgb(253 253 253)' }}
-      >
-        <UpperRow />
-        <div className="flex flex-col lg:flex-row"
-          style={{ height: '78vh', maxHeight: '78vh' }}>
-          <PlayerContainer />
-          <ChatContainer inputReference={inputReference} />
-        </div>
-      </div>
+    < BrowserRouter basename='/apps/radio' >
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/station/:patp" element={<Station />}>
+          <Route path="navMenu" element={<NavigateMenu />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </ BrowserRouter >
   );
 }

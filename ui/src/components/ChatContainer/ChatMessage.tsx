@@ -2,6 +2,8 @@ import { sigil, reactRenderer } from "@tlon/sigil-js";
 import React, { useEffect } from "react";
 import { FC } from "react";
 import { isValidPatp } from 'urbit-ob'
+import { radio } from "../../api";
+import { timestampFromTime } from "../../util";
 
 interface IChatMessage {
     from?: string,
@@ -13,12 +15,6 @@ interface IChatMessage {
 export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
 
     const { from, time, message } = props;
-
-    console.log('rendered?', message)
-
-    useEffect(() => {
-        console.log('mounted?', message)
-    }, []);
 
     const chatToHTML = (key: number, message: string, from?: string, time?: string) => {
 
@@ -45,28 +41,6 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         );
     }
 
-    const timestampFromTime = (time: string) => {
-        const utcTime = time.slice(1).split(".")!;
-        const minutes = utcTime[5];
-        const hours = utcTime[4];
-        const month = utcTime[1];
-        const day = utcTime[2];
-        const year = utcTime[0];
-
-        const date = new Date(Date.UTC(+year, +month, +day, +hours, +minutes));
-
-        const oneDayOld = (Date.now() - date.getTime()) > 1000 * 60 * 60 * 24;
-
-        const localMonth = '' + date.getMonth();
-        const localDay = '' + date.getDay();
-        const localHours = '' + date.getHours();
-        const localMinutes = '' + date.getMinutes();
-
-        return oneDayOld
-            ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`
-            : `${localHours.padStart(2, '0')}:${localMinutes.padStart(2, '0')}`;
-    }
-
     const chatToHTMLWithTimeAndFrom = (key: number, from: string, time: string, message: string) => {
         return (
             <div
@@ -75,20 +49,19 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 style={{ fontSize: '.65rem' }}
             >
                 <div className='flex justify-between items-center w-4/10'>
-
                     <div className='flex'>
                         <span className='bg-black p-0.5 mr-1 ml-1 rounded
                            flex justify-center items-center'>
                             {
                                 isValidPatp(from) && from.length <= 14 && sigil({
-                                    patp: '~fidwed-sipwyn',
+                                    patp: from,
                                     renderer: reactRenderer,
                                     size: 18,
                                     colors: ['black', 'white'],
                                 })}
                         </span>
                         <span className='font-bold mr-1'>
-                            ~fidwed-sipwyn{':'}
+                            {from == radio.our ? 'You' : from}{':'}
                         </span>
                     </div>
                     <span className={'text-gray-500 flex'}>
