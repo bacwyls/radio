@@ -60,12 +60,12 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
               {
                 (isValidPatp(patp) && patp.length <= 14) ? <>
                   {
-                    // sigil({
-                    //   patp: patp,
-                    //   renderer: reactRenderer,
-                    //   size: 145,
-                    //   colors: ['white', 'black'],
-                    // })
+                    sigil({
+                      patp: patp,
+                      renderer: reactRenderer,
+                      size: 145,
+                      colors: ['white', 'black'],
+                    })
                   }
                 </>
                   :
