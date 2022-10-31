@@ -42,16 +42,17 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
         <div
             className='w-full h-full fixed z-50'
             style={{
-                backdropFilter: 'blur(10px) brightness(0.8)'
-                , top: 0, left: 0
+                backdropFilter: 'blur(10px) brightness(0.8)',
+                top: 0,
+                left: 0
             }}
             id={navigateBackgroundId}
             onClick={handleMenuBackgroundClick}
         >
             <div
-                className='py-4 flex fixed items-center
-                            flex-col rounded bg-white overflow-hidden
-                             '
+                className='py-4 px-6 flex fixed items-center
+                            flex-col rounded bg-white 
+                             border overflow-y-auto'
                 style={{
                     top: '5vh',
                     maxWidth: '40em',
@@ -61,14 +62,15 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
                     boxShadow: 'rgba(50, 50, 93, 0.25) \
                                     0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px',
                     transform: 'translateX(50%)',
+                    backgroundColor: 'rgb(253 253 253)',
                 }}
             >
                 <button
                     className='absolute flex items-center
-                         border-gray-400 rounded border
-                         text-bold px-2 py-1 mt-4 z-10'
+                         border-gray-400 rounded border hover:border-black
+                         text-bold px-2 py-1 mt-4 z-10
+                         bg-gray-100 shadow'
                     style={{
-                        fontSize: '.6rem',
                         right: 0,
                         top: 0,
                         marginRight: '2.42em',
@@ -79,18 +81,19 @@ export const NavigateMenu: FC<INavigateMenu> = (props: INavigateMenu) => {
                     onClick={handleMenuClose}
                 >
                     <span
-                        className='font-bold'
+                        className='font-bold '
                         style={{ fontSize: '.7rem' }}
                     >
-                        close
+                        Close
                     </span>
-                    <span className=' text-gray-500 ml-1 px-1 
-                                        border-gray-400 rounded border'
+                    <span className=' text-gray-500 ml-1 px-1 shadow
+                                       bg-white border-gray-400 rounded border'
                         style={{
                             fontSize: '.6rem', right: '0.1em', top: '0.1em',
-                            boxShadow: 'rgba(50, 50, 93, 0.25) \
-                                          0px 2px 5px -1px, rgba(0, 0, 0, 0.3) \
-                                          0px 1px 3px -1px' }}
+                            // boxShadow: 'rgba(50, 50, 93, 0.25) \
+                            //               0px 2px 5px -1px, rgba(0, 0, 0, 0.3) \
+                            //               0px 1px 3px -1px' 
+                        }}
                     >
                         Esc
                     </span>

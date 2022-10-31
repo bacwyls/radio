@@ -2,7 +2,6 @@ import { reactRenderer, sigil } from '@tlon/sigil-js';
 import React, { FC } from 'react';
 import { GrFormView } from 'react-icons/gr';
 import { isValidPatp } from 'urbit-ob'
-import { GoRadioTower } from 'react-icons/go';
 
 import { MdOutlineDeviceHub, MdOutlineRadio } from 'react-icons/md';
 import { tuneTo } from '../../util';
@@ -13,14 +12,17 @@ import { useNavigate } from 'react-router-dom';
 interface INavItem {
   patp: string | null,
   flare?: string,
-  title?: string,
+  title?: NavItemTitle,
   logout?: boolean,
 }
+
+export type NavItemTitle = 'Hub' | 'My Station';
+
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
   const { patp, flare, title, logout } = props;
-  const navItemHeight = '145px';
+  const navItemHeight = '140px';
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -31,8 +33,8 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
   return (
     logout
       ? <button
-        className="hover:pointer border-red-500 text-red-500  \
-                    border px-1 text-center inline-block \
+        className="hover:pointer border-red-500 text-red-500  
+                    border px-1 text-center inline-block 
                     flex-initial "
         style={{ whiteSpace: 'nowrap' }}
         onClick={() => tuneTo(null, radio, dispatch)}
@@ -40,9 +42,9 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         <span>logout</span>
       </button>
       : <button
-        className="hover:border-2  rounded bg-white \
-                    border border-gray-400 text-center inline-block \
-                    flex-initial  flex items-center
+        className="hover:border-2  rounded hover:bg-white 
+                     border-gray-400 text-center inline-block 
+                    flex-initial  flex items-center 
                      justify-center relative overflow-hidden"
         style={{
           whiteSpace: 'nowrap',
@@ -53,9 +55,14 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         }}
         onClick={handleNavItemClick}
       >
-        {title != 'hub' && title != 'my station' && <GoRadioTower className="absolute opacity-100 " style={{ top: '.3em', right: '.3em', color: 'black' }} />}
+        {/* {title != 'Hub'
+          && title != 'My Station'
+          && <GoRadioTower
+            className="absolute opacity-20 "
+            style={{ top: '.3em', right: '.3em', color: 'black' }} />
+        } */}
         <span className=' opacity-5	'>
-          {title != 'hub' && title != 'my station' && patp &&
+          {title != 'Hub' && title != 'My Station' && patp &&
             <>
               {
                 (isValidPatp(patp) && patp.length <= 14) ? <>
@@ -80,24 +87,29 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
               }
             </>
           }
-          {title == 'my station' && <MdOutlineRadio style={{ fontSize: '5rem' }} />}
-          {title == 'hub' && <MdOutlineDeviceHub style={{ fontSize: '4rem' }}></MdOutlineDeviceHub>}
+          {title == 'My Station' && <MdOutlineRadio style={{ fontSize: '5rem' }} />}
+          {title == 'Hub' && <MdOutlineDeviceHub style={{ fontSize: '5rem' }} />}
         </span>
-        <div className='absolute  flex flex-col items-center justify-center	h-full'>
+        <div
+          className='absolute flex flex-col 
+          items-center justify-center	h-full'>
           <div
-            className='inline-block font-bold leading-3 '
+            className='inline-block font-bold	 leading-3 '
             style={{
-              fontSize: '.65rem',
+              fontSize: '.7rem',
               wordWrap: 'break-word',
               whiteSpace: 'normal',
               padding: '.2em 0 .2em 0'
             }}>
             {title ? title : patp}
           </div>
-          {flare && <span className='flex items-center text-center ' style={{ fontSize: '.65rem' }}>
-            <GrFormView className=' text-lg ' />
-            {flare}
-          </span>}
+          {flare &&
+            <span
+              className='flex items-center text-center '
+              style={{ fontSize: '.65rem' }}>
+              <GrFormView className=' text-lg ' />
+              {flare}
+            </span>}
         </div>
       </button >
   );

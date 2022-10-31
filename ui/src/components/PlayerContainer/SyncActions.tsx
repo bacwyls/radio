@@ -24,32 +24,36 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                 <button
                     className={` px-2  ml-2 mr-2\
                         flex-initial outline-none \
-                        font-bold border-black \
+                        font-bold border-black rounded \
                         flex text-center items-center 
-                        justify-center 
+                        justify-center hover:bg-gray-100
                         	 `}
-                    style={{ fontSize: '.7rem' }}
+                    style={{ fontSize: '.65rem' }}
                     onClick={(e) => {
                         radio.seekToDelta(spinTime);
                         dispatch(setPlayerInSync(true));
                     }}
                 >
-                    <IoMdSync className='mr-1 text-sm' /> resync self
+                    <IoMdSync className='mr-1 text-sm' /> Resync self
                 </button>
                 {tunePatP === radio.our &&
                     <button
                         className={` px-2  mr-2\
                           flex-initial outline-none \
-                          font-bold  border-black \
+                          font-bold  border-black rounded \
                           flex text-center items-center 
-                          justify-center
+                          justify-center hover:bg-gray-100
                           `}
-                        style={{ whiteSpace: 'nowrap', fontSize: '.7rem', }}
+                        style=
+                        {{
+                            whiteSpace: 'nowrap',
+                            fontSize: '.65rem',
+                        }}
                         onClick={(e) => {
                             radio.resyncAll(spinUrl)
                         }}
                     >
-                        <IoMdSync className='mr-1 text-sm' /> resync all
+                        <IoMdSync className='mr-1 text-sm' /> Resync all
                     </button>
                 }
             </>

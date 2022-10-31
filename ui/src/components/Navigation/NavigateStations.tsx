@@ -14,8 +14,8 @@ interface INavigateStations {
 
 export const NavigateStations: FC<INavigateStations> = (props: INavigateStations) => {
 
-    const towers = useAppSelector(selectTowers);
-    const hardCodedTowers = ['~harlys-forbec', '~fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec',]
+    // const towers = useAppSelector(selectTowers);
+    const hardCodedTowers = ['~harlys-forbec', '~fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec',]
     const [queriedTowers, setqueriedTowers] = useState(hardCodedTowers);
 
     const [tuneToText, setTuneToText] = useState('');
@@ -49,18 +49,15 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
 
     return (
         <div
-            className="text-sm"
+            className="text-sm w-full h-full"
             style={{
-                width: '31em'
-            }}>
-            <div
-                className='text-sm whitespace-nowrap'
-            >
-                join station:
+                minHeight: '100%'
+            }}
+        >
+            <div className='text-sm whitespace-nowrap'>
+                Join station:
             </div>
-            <div
-                className="flex h-8 relative items-center mb-2 "
-            >
+            <div className="flex h-8 relative items-center  mb-2 ">
                 <GrSearch className="absolute ml-2 	"
                     style={{
                         fontSize: '.6rem',
@@ -68,11 +65,14 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                 ></GrSearch>
                 < input
                     type="text"
-                    className=" pl-6 pb-0.5 inline-block \
-                               w-2/5  h-6 bg-white 
-                               rounded border border-solid border-gray-400
+                    className=" pl-6 pb-0.5 flex flex-initial
+                                h-6 bg-white whitespace-nowrap	
+                               rounded border border-gray-400
+                               placeholder-black  hover:border-black
                                "
                     style={{
+                        width: '100%',
+                        maxWidth: '15em',
                         fontSize: '.6rem'
                     }}
                     autoCorrect={'off'}
@@ -88,10 +88,10 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                     onChange={handleInputTextChange}
                 />
                 < button
-                    className="bg-white rounded w-20 h-6 \
-                               flex-initial outline-none flex  \
-                               rounded border border-solid border-gray-400 \
-                               justify-center items-center ml-2"
+                    className="bg-white rounded w-20 h-6    
+                               outline-none flex  hover:border-black
+                               rounded border border-solid border-gray-400 
+                               justify-center items-center ml-2 whitespace-nowrap	"
                     style={{
                         fontSize: '.6rem'
                     }}
@@ -100,7 +100,7 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                     }
                 >
                     <GrSatellite className="mr-1" />
-                    tune in
+                    Tune In
                 </ button>
                 {error && <div
                     className="text-red-600 text-xs absolute mt-10"
@@ -110,14 +110,16 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                 >invalid ship</div>}
             </div>
 
-            <div className="relative"
-            >
-                <div
-                    className='grid grid-cols-4 gap-2 overflow-y-auto p-2
-                        bg-gray-100 w-full rounded'
-                    style={{ height: '65vh' }}>
-
-                    {/* {notFound && <div
+            <div
+                className='grid overflow-y-auto py-2 justify-items-center
+                	 sm:gap-2 px-1 sm:px-3
+                         rounded border border-gray-400'
+                style={{
+                    minWidth: '100%',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+                    gridTemplateRows: 'repeat(auto-fill, minmax(140px, 1fr))'
+                }}>
+                {/* {notFound && <div
                         className="absolute flex justify-start  text-xs"
                         style={{
                             fontSize: '.9rem',
@@ -125,39 +127,37 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                         }}
                     >station is not in the discovery pool</div>} */}
 
-                    {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
+                {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
 
-                    {radio.tunedTo !== radio.our && tuneToText.length == 0 &&
-                        <NavItem
-                            patp={radio.our}
-                            title={'my station'} />
-                    }
+                {radio.tunedTo !== radio.our && tuneToText.length == 0 &&
+                    <NavItem
+                        patp={radio.our}
+                        title={'My Station'} />
+                }
 
-                    {radio.tunedTo !== radio.hub && tuneToText.length == 0 &&
-                        <NavItem
-                            patp={radio.hub}
-                            title={'hub'} />
-                    }
-                    {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
+                {radio.tunedTo !== radio.hub && tuneToText.length == 0 &&
+                    <NavItem
+                        patp={radio.hub}
+                        title={'Hub'} />
+                }
+                {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
 <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
-                    {/* <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'}/> */}
+                {/* <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'}/> */}
 
-                    {/* {towers.map((tower: any, i: number) =>
+                {/* {towers.map((tower: any, i: number) =>
             <NavItem
                 key={i}
                 patp={tower.location}
                 flare={tower.viewers} />
         )} */}
-
-                    {
-                        queriedTowers.map((tower: any, i: number) =>
-                            <NavItem
-                                key={i}
-                                patp={tower}
-                                flare={'' + 20} />
-                        )
-                    }
-                </div>
+                {
+                    queriedTowers.map((tower: any, i: number) =>
+                        <NavItem
+                            key={i}
+                            patp={tower}
+                            flare={'' + 20} />
+                    )
+                }
             </div>
         </div >
     )

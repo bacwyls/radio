@@ -45,7 +45,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
-                className="hover:bg-gray-100 px-1 py-1 overflow-hidden break-all"
+                className="hover:bg-gray-100 px-1 py-1 break-all"
                 style={{ fontSize: '.65rem' }}
             >
                 <div className='flex justify-between items-center w-4/10'>

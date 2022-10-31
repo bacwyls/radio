@@ -153,14 +153,13 @@
       :_  this
       (transmit act)
       :: ::
-
           %chat
       :: ?.  permitted:hc  !!
       ?.  online  !!
       ::
       :: no spoofing
       =.  from.act  src.bowl
-      =/  exists    (find [from=src.bowl time=now.bowl message=message.act]~ chatlog)
+      =/  exists    (get-chat [now.bowl chatlog])
       =.  time.act
         ?~  exists
           now.bowl
@@ -369,4 +368,9 @@
       :-  %greg-event
       !>  ent
   ==
---
+::
+++  get-chat
+  |=  [time=@da logs=(list chat:store)]
+  =/  times  (turn logs |=(=chat:store time.chat))
+  (find [time]~ times)  
+-- 

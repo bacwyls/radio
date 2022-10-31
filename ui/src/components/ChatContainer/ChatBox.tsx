@@ -35,40 +35,55 @@ export const ChatBox: FC = () => {
       return ('' + chat.time) + chat.from;
   }
 
-  const height = "60vh";
+  const height = "68vh";
 
   return (
     <div
-      className="flex flex-col w-full bg-white  \
-      border-gray-400 border-b border-t "
+      className='border-t rounded-t border-r
+       border-l border-gray-400 flex flex-col'
       style={{
-        height: height,
+        height: '100%',
+        minHeight: height,
         maxHeight: height,
-        overflowWrap: 'break-word',
-        verticalAlign: 'bottom',
-        justifyContent: 'flex-end',
       }}
     >
       <div
-        className="overflow-y-auto"
-        id={chatboxId}
+        className='font-bold flex items-center px-2 
+                     bg-white border-b border-gray-400 rounded-t'
+        style={{ minHeight: "min(8vh, 4em)" }}
       >
-        {chats && chats.length > 0 ?
-          chats.map((x: any, i: any) =>
-            <ChatMessageMemo
-              key={generateUniqueKey(x, i)}
-              from={x.from}
-              message={x.message}
-              time={x.time}
-            />)
-          :
-          <div className='flex justify-center items-center'
-            style={{ height: height }}
-          >
-            There are no messages
-          </div>
-        }
+        Chat
       </div>
-    </div >
+      <div
+        className="flex flex-col w-full 
+                  "
+        style={{
+          justifyContent: 'flex-end',
+          height: 'calc(68vh - min(8vh, 4em)',
+          // height: 'calc(100% - min(8vh, 4em))'
+        }}
+      >
+        <div
+          className="overflow-y-auto"
+          id={chatboxId}
+        >
+          {chats && chats.length > 0 ?
+            chats.map((x: any, i: any) =>
+              <ChatMessageMemo
+                key={generateUniqueKey(x, i)}
+                from={x.from}
+                message={x.message}
+                time={x.time}
+              />)
+            :
+            <div
+              className='flex justify-center items-center'
+              style={{ height: height }}
+            >
+              There are no messages
+            </div>
+          }</div>
+      </div >
+    </div>
   );
 };

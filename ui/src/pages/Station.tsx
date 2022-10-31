@@ -8,7 +8,7 @@ import { PlayerContainer } from "../components/PlayerContainer/PlayerContainer";
 import { UpperRow } from "../components/UpperRow/UpperRow";
 import { tuneTo } from "../util";
 import { isValidPatp } from 'urbit-ob'
-import { selectRadioSub } from "../features/station/stationSlice";
+import { selectRadioSub, setHasPublishedStation } from "../features/station/stationSlice";
 import { useAppSelector } from "../app/hooks";
 
 export const Station: FC = () => {
@@ -31,7 +31,7 @@ export const Station: FC = () => {
     }, [patp, radioSub]);
 
     return (
-        <div className="px-2 md:px-10 text-xs font-mono 
+        <div className="px-2 md:px-10 text-xs  
                         flex flex-col h-screen"
             style={{ backgroundColor: 'rgb(253 253 253)' }}
         >

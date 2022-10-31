@@ -12,10 +12,11 @@ export const ToggleSwitch: FC<IToggleSwitch> = (props: IToggleSwitch) => {
     const hasPublishedStation = useAppSelector(selectHasPublishedStation);
     const dispatch = useAppDispatch();
 
+
     return (
         <>
             <input
-                className="toggle-switch-input"
+                className="toggle-switch-input "
                 type="checkbox"
                 id="switch"
                 checked={hasPublishedStation}
@@ -25,7 +26,7 @@ export const ToggleSwitch: FC<IToggleSwitch> = (props: IToggleSwitch) => {
                     radio.gregRequest();
                 }}
             />
-            <label className="toggle-switch-label" htmlFor="switch">Toggle</label>
+            <label className="toggle-switch-label " htmlFor="switch">Toggle</label>
         </>
     )
 }

@@ -1,6 +1,7 @@
 import React, { FC, } from 'react';
-import { MdOutlineSettings } from 'react-icons/md';
+import { MdOutlineHome, MdOutlineSettings } from 'react-icons/md';
 import { NavigateButton } from '../Navigation/NavigateButton';
+import { HomeButton } from './HomeButton';
 import { PublishStationButton } from './PublishStationButton';
 import { StationTitle } from './StationTitle';
 
@@ -19,6 +20,7 @@ export const UpperRow: FC<IUpperRow> = (props: IUpperRow) => {
       </div>
       <div className="flex flex-row m-w-1/3 w-1/3 justify-end items-center">
         <NavigateButton />
+        <HomeButton />
       </div>
     </div >
   )

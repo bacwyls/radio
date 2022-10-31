@@ -8,7 +8,8 @@ import {
   setViewers,
   resetChats,
   setChatsWithChatlog,
-  setChatsWithChat
+  setChatsWithChat,
+  setHasPublishedStation
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -160,9 +161,13 @@ export function handleUserInput(
 export function tuneTo(patp: string | null, radio: Radio, dispatch) {
   resetPage(dispatch);
   radio.tune(patp);
+
+  if (radio.tunedTo != patp) {
+    dispatch(setHasPublishedStation(false));
+  }
   radio.tunedTo = null;
 
-  dispatch(setTunePatP(patp ? patp + '(loading...)' : ''));
+  dispatch(setTunePatP(patp ? patp + ' (loading...)' : ''));
 }
 
 // parse from user input

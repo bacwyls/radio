@@ -36,7 +36,7 @@ export const StationTitle: FC<IStationTitle> = (props: IStationTitle) => {
                             </span>
                             <span className='flex items-center mr-1'>
                                 {tunePatP == radio.our ?
-                                    <> My station <SettingsMenu />
+                                    <> My Station <SettingsMenu />
                                     </> :
                                     `${tunePatP}'s station`}
                             </span>

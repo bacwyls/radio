@@ -33,9 +33,10 @@ export const IsPublicDropdown = () => {
         (radio.tunedTo !== radio.our) ?
             <> {isPublic ? ' (public)' : ' (private)'}</>
             :
-            <div className="relative" style={{ fontSize: '.65rem', }}>
+            <div className="relative " style={{ fontSize: '.65rem', }}>
                 <button id="is-public-dropdown"
-                    className="flex items-center  border justify-between
+                    className="flex items-center border hover:border-black
+                             justify-between
                            border-gray-400 rounded px-3 h-6 bg-white"
                     style={{ width: '8em' }}
                     onClick={() => setShowOptions(prev => !prev)}>
@@ -44,7 +45,7 @@ export const IsPublicDropdown = () => {
                 </button >
                 {showOptions &&
                     <button
-                        className="absolute z-10 flex items-center  border justify-between
+                        className="absolute z-10 flex items-center hover:border-black  border justify-between
                            border-gray-400 rounded-b px-3 h-6 bg-white
                            "
                         style={{ width: '8em', marginTop: '-.4em' }}

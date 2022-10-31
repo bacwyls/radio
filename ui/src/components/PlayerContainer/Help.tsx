@@ -38,10 +38,10 @@ export const Help: FC<IHelp> = (props: IHelp) => {
         id='help-button'
         className={` px-2  \
                          flex flex-initial items-center justify-center outline-none \
-                        font-bold  border-black\
-                        text-center 
+                        font-bold  rounded \
+                        text-center hover:bg-gray-100
                         `}
-        style={{ fontSize: '.7rem' }}
+        style={{ fontSize: '.65rem' }}
         onClick={(e) => {
           // setHelpMenuLeft(e.clientX);
           // setHelpMenuTop(e.clientY);
@@ -49,7 +49,7 @@ export const Help: FC<IHelp> = (props: IHelp) => {
         }}
       >
         <IoMdHelpCircleOutline className='mr-1 text-sm' />
-        help
+        Help
       </button>
       {helpMenuOpen &&
         <div

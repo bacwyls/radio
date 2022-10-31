@@ -71,10 +71,10 @@ export const Viewers = () => {
                 onClick={() => setViewersMenuOpen((previous) => !previous)}
             >
                 <GrFormView className='mr-1 text-lg ' />
-                <span className='text-bold' >{
+                <span className='font-bold' >{
                     viewers.length == 0 ? 0 : viewers.length - 1}
                 </span>
-                <span className={'ml-1 text-bold '}>
+                <span className={'ml-1 font-bold '}>
                     viewer(s)
                 </span>
             </div>
@@ -102,22 +102,26 @@ export const Viewers = () => {
                             style={{ marginBottom: '-0.1em' }}
                             onClick={() => handleTabClick('Viewers')}
                         >
-                            viewers
+                            Viewers
                             <span className='rounded py-0.5 px-1'
                                 style={{ fontSize: '.55rem' }}>
                                 ({viewers.length - 1})
                             </span>
                         </button>
-                        <button className={`w-1/2 border-b-2  ${openTab == 'Banned' ? 'border-black font-bold' : 'border-transparent'}
-                                        py-2 flex justify-center items-center`}
+                        <button
+                            className={`w-1/2 border-b-2 
+                                    ${openTab == 'Banned'
+                                    ? 'border-black font-bold'
+                                    : 'border-transparent'}
+                                     py-2 flex justify-center items-center`}
                             style={{ marginBottom: '-0.1em' }}
                             onClick={() => handleTabClick('Banned')}
                         >
-                            banned
+                            Banned
                             <span className='rounded px-1 py-0.5 
                                  font-bold'
                                 style={{ fontSize: '.55rem' }}>
-                                ({viewers.length - 1})
+                                (0)
                             </span>
                         </button>
                     </div>
@@ -175,9 +179,9 @@ export const Viewers = () => {
                                         </span>
                                     </span>
                                 </a>
-                                <span className='hover:cursor-pointer 
+                                <span className='hover:cursor-pointer font-bold
                                                 border border-gray-400
-                                                p-0.5 ml-2 bg-red-200 rounded'
+                                                p-0.5 ml-2 px-1 bg-red-200 rounded'
                                 >
                                     ban
                                 </span>

@@ -13,25 +13,29 @@ export const Home: FC = () => {
     }, []);
 
     return (
-        <div className='flex justify-center items-center'
+        <div
+            className='flex justify-center px-2 sm:px-5 lg:px-10 py-4 '
             style={{
                 backgroundColor: 'rgb(253 253 253)',
-                height: '100vh',
+                height: '100%',
+                minHeight: '100vh',
                 width: '100vw'
             }}
         >
-            <div style={{
-                width: '31em',
-                height: '90vh',
-            }}
-                className=" px-8 ">
-                <div className="flex items-center mb-2  font-mono">
-                    <span className="font-bold whitespace-nowrap text-xl mr-2 flex h-8 flex items-end">urbit radio</span>
+            <div
+                style={{ width: '100%', maxWidth: '55em' }}
+            >
+                <div className="flex items-center mb-2 ">
+                    <span
+                        className="font-bold whitespace-nowrap
+                         text-xl mr-2 flex h-8 flex items-end"
+                    >
+                        Urbit Radio
+                    </span>
                     <img src='/apps/radio/assets/favicon.ico' className='h-auto w-8 ' />
                 </div>
                 <NavigateStations />
-
-            </div >
+            </div>
         </div >
     )
 }

@@ -24,13 +24,13 @@ export const NavigateButton: FC<INavigateButton> = (props: INavigateButton) => {
             <button
                 className={`hover:pointer button border-gray-400 \
                     border px-4 text-center rounded bg-white\
-                    flex-initial h-7 
+                    flex-initial h-7 hover:border-black shadow
                     flex justify-center items-center relative 
                     `}
-                style={{
-                    boxShadow: 'rgba(50, 50, 93, 0.25) \
-            0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
-                }}
+                // style={{
+                //     boxShadow: 'rgba(50, 50, 93, 0.25) \
+                // 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+                // }}
                 onClick={() => {
                     if (!location.pathname.includes('navMenu')) {
                         radio.gregRequest();
@@ -44,7 +44,7 @@ export const NavigateButton: FC<INavigateButton> = (props: INavigateButton) => {
                     className='font-bold'
                     style={{ fontSize: '.7rem' }}
                 >
-                    navigate
+                    Navigate
                 </span>
                 {/* <span className=' text-gray-500 ml-1 px-1 
                           border-gray-400 rounded border'

@@ -27,7 +27,7 @@ export const SettingsMenu = () => {
     }
 
     return (
-        < span id="settings-menu" className="relative"  >
+        < div id="settings-menu" className="relative flex items-center"  >
             < MdOutlineSettings
                 className='ml-1 hover:cursor-pointer text-sm '
                 onClick={() => setShowConfigMenu((prev) => !prev)}
@@ -35,17 +35,17 @@ export const SettingsMenu = () => {
             {showConfigMenu
                 &&
                 <div className="absolute z-10  
-                             flex items-center 
-                            justify-between bg-gray-100  px-2 rounded"
+                             flex items-center px-2 rounded
+                            justify-between bg-gray-100  "
                     style={{
                         left: '2em',
-                        top: '-3vh',
                         height: '9vh',
+                        maxHeight: '4em',
                         width: '16em',
                     }}>
                     <IsPublicDropdown />
                     <PublishStationButton />
                 </div>}
-        </ span>
+        </ div>
     )
 }   
