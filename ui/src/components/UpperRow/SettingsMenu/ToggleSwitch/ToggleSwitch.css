@@ -1,5 +1,5 @@
 
-/* Source: https://codepen.io/mburnette/pen/LxNxNg */
+/* Original Code: https://codepen.io/mburnette/pen/LxNxNg */
 
 .toggle-switch-input[type=checkbox] {
     height: 0;
@@ -10,8 +10,8 @@
 .toggle-switch-label {
     cursor: pointer;
     text-indent: -9999px;
-    width: 60px;
-    height: 25px;
+    width: 50px;
+    height: 23px;
     background-color: rgba(209, 213, 219);
     display: block;
     border-radius: 100px;
@@ -21,10 +21,10 @@
 .toggle-switch-label:after {
     content: '';
     position: absolute;
-    top: 2px;
+    top: 3px;
     left: 2px;
-    width: 22px;
-    height: 22px;
+    width: 17px;
+    height: 17px;
     background: white;
     border-radius: 90px;
     transition: 0.3s;
@@ -40,6 +40,6 @@
 }
 
 .toggle-switch-label:active:after {
-    width: 32px;
+    width: 40px;
 }
 

@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
+import { useMobileOrientation } from "react-device-detect";
 import ReactPlayer from "react-player";
-import { radio } from "../../api";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
-import { selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../features/ui/uiSlice";
+import { radio } from "../../../api";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { selectSpinTime, selectSpinUrl } from "../../../features/station/stationSlice";
+import { selectIsLandscape, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
+import { isPhone } from "../../../util";
+import './Player.css';
 
 interface IPlayer {
 }
+
+export type Orientation = 'Landscape' | 'Portrait';
 
 export const Player: FC<IPlayer> = (props: IPlayer) => {
 
     const playerReady = useAppSelector(selectPlayerReady);
     const spinUrl = useAppSelector(selectSpinUrl);
     const spinTime = useAppSelector(selectSpinTime);
+    const isLandscape = useAppSelector(selectIsLandscape);
+
+    // const [style, setStyle] = useState(updateStyle());
 
     const dispatch = useAppDispatch();
+
+    // function handleOrientationChange() {
+    //     if (!isPhone()) return;
+    //     setStyle(updateStyle());
+    // }
+
+    // function updateStyle() {
+    //     if (!(isPhone())) return;
+
+    //     if (!isLandscape) return {};
+
+    //     else {
+    //         return
+    //     }
+    // };
 
     function handleProgress(progress: any) {
         // autoscrubbing
@@ -45,7 +68,18 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
     }
 
     return (
-        <div className="relative ">
+        <div
+            className={`${isPhone() ? (isLandscape ? 'player-phone-landscape' : 'player-phone-portrait') : 'player'}`}
+            style={
+                !(isPhone() && isLandscape) ? {}
+                    :
+                    {
+                        minWidth: window.innerWidth + 'px',
+                        width: window.innerWidth + 'px',
+                        minHeight: window.innerHeight + 'px',
+                        height: window.innerHeight + 'px',
+                    }}
+        >
             {!playerReady &&
                 <p className="text-center absolute 
                             left-1/2 -translate-x-1/2">
@@ -57,7 +91,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                 url={spinUrl}
                 playing={true}
                 width='100%'
-                height='68vh'
+                height='100%'
                 controls={true}
                 loop={true}
                 onReady={() => dispatch(setPlayerReady(true))}
@@ -65,10 +99,10 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                 onProgress={e => handleProgress(e)}
                 style={{
                     backgroundColor: 'lightgray',
-                    borderRadius: '0.25rem',
+                    borderRadius: `${isPhone() ? '0' : '0.25rem'}`,
                     overflow: 'hidden',
                     boxShadow: 'rgba(50, 50, 93, 0.25) \
-                     0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+                     0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px',
                 }}
                 config={{
                     file: {
@@ -77,6 +111,6 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     },
                 }}
             />
-        </div>
+        </div >
     )
 }

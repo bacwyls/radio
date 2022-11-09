@@ -14,12 +14,12 @@ import {
 } from './features/station/stationSlice';
 import {
   setPlayerInSync,
-  selectPlayerReady
+  selectPlayerReady,
+  setIsLandscape
 } from './features/ui/uiSlice';
 import { radio } from './api';
 import { Home } from './pages/Home';
-import { Station } from './pages/Station';
-import { NavigateMenu } from './components/Navigation/NavigateMenu';
+import { Station } from './pages/Station/Station';
 
 export function App() {
 
@@ -56,6 +56,20 @@ export function App() {
         err: (e) => console.log('radio err', e),
       })
   }, []);
+
+  useEffect(() => {
+    updateOrientation();
+
+    screen.orientation.addEventListener("change", updateOrientation);
+
+    return () => {
+      screen.orientation.removeEventListener("change", updateOrientation);
+    };
+  }, []);
+
+  const updateOrientation = () => {
+    dispatch(setIsLandscape(screen.orientation.type.includes('landscape') ? true : false));
+  }
 
   useEffect(() => {
     dispatch(setPlayerInSync(true));
@@ -116,13 +130,14 @@ export function App() {
     handleUpdate(update, radio, dispatch);
   }, [update]);
 
+
+
+
   return (
     < BrowserRouter basename='/apps/radio' >
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/station/:patp" element={<Station />}>
-          <Route path="navMenu" element={<NavigateMenu />} />
-        </Route>
+        <Route path="/station/:patp" element={<Station />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </ BrowserRouter >

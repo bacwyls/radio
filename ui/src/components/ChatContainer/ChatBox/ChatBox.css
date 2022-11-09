@@ -1,0 +1,53 @@
+.chatbox-container{
+    --height: 36vw;
+    height: var(--height);
+    min-height: var(--height);
+    max-height: var(--height);
+}
+
+.chatbox-container-phone {
+    --height: 49vh;
+    height: var(--height);
+    min-height: var(--height);
+    max-height: var(--height);
+}
+
+.chatbox-container-full{
+    height: calc(100vh - 6.5em);
+    width: 100vw;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.chatbox{
+    height: calc(36vw - 3em);
+}
+
+.chatbox-phone{
+    height: calc(49% - 3em);
+    width: 100%;
+    bottom: 8vh;
+    position: fixed;
+}
+
+.chatbox-full{
+    height: calc(100% - 6.5em);
+    width: 100vw;
+    top: 3em; 
+    bottom: 3.5em;
+    position: fixed;
+}
+
+@media (max-width: 1023px){
+
+    .chatbox-container{
+        --height: 36vh;
+        height: var(--height);
+    }    
+
+    .chatbox {
+        height: calc(100% - 3em);
+    }
+}

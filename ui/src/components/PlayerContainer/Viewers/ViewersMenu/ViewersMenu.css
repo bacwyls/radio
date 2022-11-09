@@ -1,0 +1,35 @@
+.viewers-menu {
+    height: 36vw;
+    width: 28vw;
+    min-width: 18em;
+    top: 0;
+    left: 0;
+    position: absolute;
+    boxShadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.viewers-menu-phone {
+    height: 49vh;
+    min-height: 10em;
+    position: fixed;
+    bottom: 8vh;
+    left: 0;
+    width: 100vw;
+}
+
+@media (min-width: 640px) and (max-width: 1023px){
+    .viewers-menu {
+        height: 52.88vw;
+        width: 40vw;
+        min-width: 18em;
+
+    }
+}
+
+@media (max-width: 639px) {
+    .viewers-menu {
+        height: 56.25vw;
+        min-width: 18em;
+
+    }
+}

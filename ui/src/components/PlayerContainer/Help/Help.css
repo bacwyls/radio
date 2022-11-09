@@ -1,0 +1,32 @@
+
+.help-menu{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 36vw;
+    width: 50%;
+}
+
+@media (min-width: 640px) and (max-width: 1023px){
+
+    .help-menu{
+        height: 52.88vw;
+    }
+}
+
+@media (max-width: 640px) and (max-width: 1023px){
+    .help-menu{
+        height: 56.25vw;
+        width: 100%;
+    }
+}
+
+.help-menu-phone{
+    position: fixed;
+    font-size: .7rem;
+    top: 0;
+    left: 0;
+    height: 92%;
+    width: 100%;
+    overflow-x: hidden;
+}

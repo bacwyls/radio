@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
-import { Help } from './Help';
-import { Viewers } from './Viewers';
-import { Player } from './Player';
+import React, { FC, useEffect } from 'react';
+import { Help } from './Help/Help';
+import { Player } from './Player/Player';
 import { SyncActions } from './SyncActions';
+import { isPhone } from '../../util';
+import { ViewersButton } from './Viewers/ViewersButton';
 
 interface IPlayerContainer {
 
@@ -10,26 +11,19 @@ interface IPlayerContainer {
 
 export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) => {
 
-  const height = "78vh";
-
   return (
-    <div className="inline-block w-full lg:mr-3 /
-                    lg:w-2/3 h-full "
-      style={{
-        height: height,
-        maxHeight: height,
-      }}
+    <div className={`inline-block relative sm:mr-3 w-full 
+                     ${isPhone() ? '' : 'mb-2'}
+                     `}
     >
-      <div className="relative">
-        <Player />
-        <div className='flex overflow-hidden justify-between'>
-          <Viewers />
-          <div className='flex items-start mt-1'>
-            <SyncActions />
-            <Help />
-          </div>
+      <Player />
+      {!isPhone() && <div className='flex overflow-hidden justify-between'>
+        <ViewersButton />
+        <div className='flex items-start mt-1 gap-1'>
+          <SyncActions />
+          <Help />
         </div>
-      </div >
+      </div>}
     </div >
   );
 }

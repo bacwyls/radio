@@ -1,19 +1,17 @@
 import { sigil, reactRenderer } from "@tlon/sigil-js";
-import React, { useEffect } from "react";
+import React from "react";
 import { FC } from "react";
 import { isValidPatp } from 'urbit-ob'
 import { radio } from "../../api";
-import { timestampFromTime } from "../../util";
+import { isPhone, timestampFromTime } from "../../util";
 
 interface IChatMessage {
     from?: string,
     time?: string,
     message: string,
-    // key: number,
 }
 
 export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
-
     const { from, time, message } = props;
 
     const chatToHTML = (key: number, message: string, from?: string, time?: string) => {
@@ -45,12 +43,12 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
-                className="hover:bg-gray-100 px-1 py-1 break-all"
+                className="hover:bg-gray-100 rounded-md px-1 py-1 break-all"
                 style={{ fontSize: '.65rem' }}
             >
-                <div className='flex justify-between items-center w-4/10'>
+                <div className={`flex justify-between items-center w-4/10 ml-1 ${isPhone() && 'mr-1'}`}>
                     <div className='flex'>
-                        <span className='bg-black p-0.5 mr-1 ml-1 rounded
+                        <span className='bg-black p-0.5 mr-1 rounded
                            flex justify-center items-center'>
                             {
                                 isValidPatp(from) && from.length <= 14 && sigil({
@@ -60,7 +58,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                                     colors: ['black', 'white'],
                                 })}
                         </span>
-                        <span className='font-bold mr-1'>
+                        <span className='font-semibold mr-1'>
                             {from == radio.our ? 'You' : from}{':'}
                         </span>
                     </div>
@@ -68,7 +66,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         {timestampFromTime(time)}
                     </span>
                 </div>
-                <div className='flex' style={{ paddingLeft: '2.2em' }}>
+                <div className={`flex ${isPhone() && 'mr-1'}`} style={{ paddingLeft: '2.2em' }}>
                     {
                         checkURL(message)
                             ? <img src={message} className={'ml-2 mt-1'}

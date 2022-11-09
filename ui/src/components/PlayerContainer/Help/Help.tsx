@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { IoMdHelpCircleOutline } from 'react-icons/io';
+import { MdOutlineHelpOutline } from 'react-icons/md';
+import { isPhone } from '../../../util';
+import './Help.css';
 
 interface IHelp {
 }
@@ -36,10 +38,12 @@ export const Help: FC<IHelp> = (props: IHelp) => {
     <>
       <button
         id='help-button'
-        className={` px-2  \
-                         flex flex-initial items-center justify-center outline-none \
-                        font-bold  rounded \
+        className={` px-2  
+                         flex flex-initial items-center outline-none 
+                        font-semibold  rounded 
                         text-center hover:bg-gray-100
+                        ${isPhone() ? ' w-full  justify-start' : 'justify-center'}
+                        ${helpMenuOpen && 'bg-gray-100'} 
                         `}
         style={{ fontSize: '.65rem' }}
         onClick={(e) => {
@@ -48,21 +52,18 @@ export const Help: FC<IHelp> = (props: IHelp) => {
           setHelpMenuOpen(!helpMenuOpen);
         }}
       >
-        <IoMdHelpCircleOutline className='mr-1 text-sm' />
+        <MdOutlineHelpOutline className='mr-1 text-sm' />
         Help
       </button>
       {helpMenuOpen &&
         <div
           id='help-menu'
-          className="p-4 bg-white rounded overflow-y-auto"
+          className={`p-4 bg-white rounded overflow-y-auto
+          ${isPhone() ? 'help-menu-phone' : 'help-menu'} 
+          `}
           style={{
-            position: 'absolute',
-            top: '0',
-            right: '0',
-            height: '68vh',
-            width: '50%',
             boxShadow: 'rgba(50, 50, 93, 0.25) \
-         0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+         0px 2px 5px - 1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
           }}
         >
           <p className="mb-4">to interact with radio, enter commands in the bottom right</p>

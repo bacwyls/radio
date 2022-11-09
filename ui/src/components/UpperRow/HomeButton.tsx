@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 import { MdLogout, MdOutlineHome } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
-
+import { isPhone } from "../../util";
 
 export const HomeButton = () => {
 
@@ -9,14 +9,15 @@ export const HomeButton = () => {
 
     return (
         <button
-            className={`border-gray-400 \
-            border px-2 ml-2 text-center rounded bg-white\
-            flex-initial h-7 hover:border-black shadow
+            className={`border-gray-400 
+            sm:border sm:shadow   text-center rounded 
+             h-6 hover:border-black 
             flex justify-center items-center relative 
+            ${isPhone() ? '' : 'ml-2 px-2 bg-white'}
             `}
             onClick={() => navigate('/')}
         >
-            <MdLogout className="text-sm" />
+            <MdLogout className="text-base" />
         </button>
 
     )

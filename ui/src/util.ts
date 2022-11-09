@@ -16,6 +16,7 @@ import {
   setPlayerReady,
   setPlayerInSync
 } from './features/ui/uiSlice';
+import { browserName, isMobile, isTablet, osName, useDeviceData, useMobileOrientation } from 'react-device-detect';
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any) {
   console.log("radio update", update);
@@ -200,11 +201,20 @@ export const timestampFromTime = (time: string) => {
   // const oneDayOld = (Date.now() - date.getTime()) > (1000 * 60 * 60 * 24);
 
   // if the msg is older than 12 hours and from a different day
-  const oneDayOld = new Date().getDate() > (+localDay);
-  const hoursSince = (new Date().getHours() + (24 - (+localHours)));
+  let today = new Date();
+  const oneDayOld = today.getDate() != (+localDay) && today.getMonth() != (+localMonth);
+  const hoursSince = (today.getHours() + (24 - (+localHours)));
   const olderMessage = oneDayOld && (hoursSince >= 12);
 
   return olderMessage
     ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`
     : `${localHours.padStart(2, '0')}:${localMinutes.padStart(2, '0')}`;
 }
+
+export const isPhone = () => {
+  return (isMobile && !isTablet);
+}
+
+// export const isLandscape = () => {
+//   return window.matchMedia('(orientation:landscape)').matches;
+// }

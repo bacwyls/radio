@@ -1,0 +1,30 @@
+.player {
+    width: 64vw;
+    height: 36vw;
+    position: relative;
+}
+
+@media (min-width: 640px) and (max-width: 1023px){
+    .player {
+        width: 94vw;
+        height: 52.88vw;
+    }
+}
+
+@media (max-width: 639px) {
+    .player {
+        width: 100vw;
+        height: 56.25vw;
+    }
+}
+
+.player-phone-portrait {
+    height: 32vh;
+    width: 100vw;
+}
+
+.player-phone-landscape{
+    position: fixed !important;
+    left: 0;
+    top: 0;
+}

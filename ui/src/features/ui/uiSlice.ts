@@ -5,12 +5,16 @@ export interface UIState {
   userInteracted: boolean;
   playerReady: boolean;
   playerInSync: boolean;
+  isChatFullScreen: boolean;
+  isLandscape: boolean,
 }
 
 const initialState: UIState = {
   userInteracted: false,
   playerReady: false,
   playerInSync: false,
+  isChatFullScreen: false,
+  isLandscape: false,
 };
 
 export const uiSlice = createSlice({
@@ -35,18 +39,18 @@ export const uiSlice = createSlice({
         playerInSync: action.payload,
       }
     },
-    // setNavigationOpen: (state, action: PayloadAction<boolean>) => {
-    //   return {
-    //     ...state,
-    //     navigationOpen: action.payload,
-    //   }
-    // },
-    // toggleNativationOpen: (state, action: PayloadAction) => {
-    //   return {
-    //     ...state,
-    //     navigationOpen: !state.navigationOpen,
-    //   }
-    // }
+    setIsChatFullScreen: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isChatFullScreen: action.payload,
+      }
+    },
+    setIsLandscape: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isLandscape: action.payload,
+      }
+    },
   }
 });
 
@@ -54,10 +58,14 @@ export const {
   setUserInteracted,
   setPlayerReady,
   setPlayerInSync,
+  setIsChatFullScreen,
+  setIsLandscape,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;
 export const selectPlayerReady = (state: RootState) => state.ui.playerReady;
 export const selectPlayerInSync = (state: RootState) => state.ui.playerInSync;
+export const selectIsChatFullScreen = (state: RootState) => state.ui.isChatFullScreen;
+export const selectIsLandscape = (state: RootState) => state.ui.isLandscape;
 
 export default uiSlice.reducer;

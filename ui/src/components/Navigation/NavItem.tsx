@@ -18,11 +18,10 @@ interface INavItem {
 
 export type NavItemTitle = 'Hub' | 'My Station';
 
-
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
   const { patp, flare, title, logout } = props;
-  const navItemHeight = '140px';
+  const navItemHeight = '145px';
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -42,9 +41,9 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         <span>logout</span>
       </button>
       : <button
-        className="hover:border-2  rounded hover:bg-white 
+        className="hover:border-2  rounded  
                      border-gray-400 text-center inline-block 
-                    flex-initial  flex items-center 
+                    flex-initial  flex items-center  border
                      justify-center relative overflow-hidden"
         style={{
           whiteSpace: 'nowrap',
@@ -61,7 +60,8 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
             className="absolute opacity-20 "
             style={{ top: '.3em', right: '.3em', color: 'black' }} />
         } */}
-        <span className=' opacity-5	'>
+        <span
+        >
           {title != 'Hub' && title != 'My Station' && patp &&
             <>
               {
@@ -71,17 +71,18 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
                       patp: patp,
                       renderer: reactRenderer,
                       size: 145,
-                      colors: ['white', 'black'],
+                      colors: ['rgba(0, 0, 0, 0.05)', 'white'],
                     })
                   }
                 </>
                   :
-                  <div className='bg-white'
+                  <div
                     style={{
                       minWidth: navItemHeight,
                       minHeight: navItemHeight,
                       maxHeight: navItemHeight,
                       maxWidth: navItemHeight,
+                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
                     }}
                   ></div>
               }
@@ -94,7 +95,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           className='absolute flex flex-col 
           items-center justify-center	h-full'>
           <div
-            className='inline-block font-bold	 leading-3 '
+            className='inline-block font-semibold	 leading-3 '
             style={{
               fontSize: '.7rem',
               wordWrap: 'break-word',
@@ -105,7 +106,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           </div>
           {flare &&
             <span
-              className='flex items-center text-center '
+              className='flex items-center font-semibold text-center '
               style={{ fontSize: '.65rem' }}>
               <GrFormView className=' text-lg ' />
               {flare}

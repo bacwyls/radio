@@ -1,0 +1,13 @@
+.settings-menu{
+    height: 9vh;
+    maxHeight: 4em;
+    left: 2em;
+}
+
+.settings-menu-phone{
+    left: 0;
+    top: 1.5em;
+    padding: 1em;
+    width: 9em;
+    flex-direction: column-reverse;
+}

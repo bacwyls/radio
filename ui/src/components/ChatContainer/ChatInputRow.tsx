@@ -1,11 +1,15 @@
-import React from "react";
+import React, { FC, useEffect, useRef } from "react";
+import { MdOutlineArrowBack } from "react-icons/md";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
-import { setPlayerInSync } from "../../features/ui/uiSlice";
-import { tuneTo } from "../../util";
+import { selectIsChatFullScreen, setIsChatFullScreen, setPlayerInSync } from "../../features/ui/uiSlice";
+import { isPhone, tuneTo } from "../../util";
 
-export const ChatInputRow = () => {
+interface IChatInputRow {
+}
+
+export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
 
     const chatInputId = 'radio-chat-input';
 
@@ -13,6 +17,20 @@ export const ChatInputRow = () => {
 
     const spinUrl = useAppSelector(selectSpinUrl);
     const spinTime = useAppSelector(selectSpinTime);
+
+    const inputReference = useRef<HTMLInputElement>(null);
+
+    const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
+
+    // useEffect(() => {
+    //     if (!inputReference) return;
+    //     if (!inputReference.current) return;
+    //     window.setTimeout(() => {
+    //         // use a slight delay for better UX
+    //         // @ts-ignore
+    //         inputReference.current.focus();
+    //     }, 250);
+    // }, []);
 
     function handleUserInput() {
         let input = document.getElementById(chatInputId) as HTMLInputElement;
@@ -104,23 +122,28 @@ export const ChatInputRow = () => {
 
     return (
         <div
-            className="flex items-center px-2  
-                        border border-gray-400 rounded-b "
+            className={`flex items-center px-2 w-full bg-white rounded-b border-t  border-gray-400 
+                    ${isPhone() && 'fixed bottom-0 z-10'}
+                `}
             style={{
-                height: '10vh',
-                maxHeight: '4em'
+                height: '3.5em',
+                maxHeight: '3.5em'
             }}
         >
+            {isPhone() && isChatFullScreen &&
+                <MdOutlineArrowBack
+                    className="text-2xl mr-1 cursor:pointer flex justify-items-start"
+                    onClick={() => dispatch(setIsChatFullScreen(false))}
+                />}
             <input
                 type="text"
-                // ref={inputReference}
-                className="px-2 py-1 inline-block \
+                ref={inputReference}
+                className="px-2 flex items-center 
                     w-3/4  border-gray-400 hover:border-black
-                    border border-solid  bg-gray-50
+                    border border-solid  bg-gray-50 h-6
                     rounded focus:bg-white placeholder-black"
                 style={{
                     fontSize: '.6rem',
-
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -135,10 +158,10 @@ export const ChatInputRow = () => {
                 }}
             />
             < button
-                className="bg-white rounded w-1/4 py-1 \
-        flex-initial outline-none flex font-bold hover:border-black \
-        rounded border border-solid  border-gray-400 \
-         justify-center items-center ml-2 bg-blue-50"
+                className="bg-white rounded w-1/4 
+                           flex-initial outline-none flex font-bold hover:border-black 
+                            rounded border border-solid  border-gray-400 
+                             justify-center items-center ml-2 bg-blue-50 h-6"
                 style={{
                     fontSize: '.6rem'
                 }}
