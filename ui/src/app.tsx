@@ -130,9 +130,6 @@ export function App() {
     handleUpdate(update, radio, dispatch);
   }, [update]);
 
-
-
-
   return (
     < BrowserRouter basename='/apps/radio' >
       <Routes>
