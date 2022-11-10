@@ -68,7 +68,7 @@ const Viewer = (props: IViewer) => {
                     {ship == radio.our ? 'You' : ship}
                 </span>
             </span>
-            {isFocused && <div className={`flex items-center justify-end  gap-1`}>
+            {isFocused && <div className={`flex items-center justify-end gap-1`}>
                 <a
                     href={'/apps/landscape/~profile/' + ship}
                     target="_blank"
@@ -82,18 +82,16 @@ const Viewer = (props: IViewer) => {
                         profile
                     </span>
                 </a>
-
                 <span className='cursor-pointer font-semibold
                                     border border-gray-400  hover:border-red-400
                                     hover:shadow  h-4 w-7 flex items-center justify-center 
                                      rounded bg-white text-red-800'
                     style={{ fontSize: '.6rem' }}
+                    onClick={() => radio.isAdmin() && radio.ban(ship)}
                 >
                     ban
                 </span>
             </div>}
-
-
         </div>
     )
 }

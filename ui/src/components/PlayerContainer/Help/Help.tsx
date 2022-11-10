@@ -66,7 +66,7 @@ export const Help: FC<IHelp> = (props: IHelp) => {
          0px 2px 5px - 1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
           }}
         >
-          <p className="mb-4">to interact with radio, enter commands in the bottom right</p>
+          <p className="mb-4">to interact with radio, enter commands in chat</p>
           <p className='italic mb-2'>NAVIGATION:</p>
           <p className="font-bold">!tune ~sampel-palnet</p>
           <div className="ml-4 mb-4">
@@ -86,14 +86,7 @@ export const Help: FC<IHelp> = (props: IHelp) => {
           <p className="font-bold">!talk hello world</p>
           <div className="ml-4 mb-4">
             <p>broadcast text-to-speech</p>
-            {/* <p>everyone in the audience will hear this text spoken from their device</p> */}
           </div>
-          {/* <p className="font-bold">
-       !background https://wallpapercave.com/wp/5w05B2R.jpg
-       </p>
-       <div className="ml-4 mb-4">
-       <p>change the background image</p>
-       </div> */}
           <p>-----------</p>
           <p className='italic mb-2'>ADMIN COMMANDS:</p>
           {/* <p className="mb-4">only the radio station host can use these commands</p> */}
@@ -105,24 +98,31 @@ export const Help: FC<IHelp> = (props: IHelp) => {
           <div className="ml-4 mb-4">
             <p>only the host can use DJ commands</p>
           </div>
+          <p className="font-bold mb-4">!ban ~zod</p>
+          <p className="font-bold">!unban ~zod</p>
+
           {/* <p className="font-bold">
-       !set-time
-       </p>
-       <div className="ml-4 mb-4">
-       <p>set the shared timestamp to your current timestamp</p>
-       </div> */}
+      !set-time
+      </p>
+      <div className="ml-4 mb-4">
+
+      <p>set the shared timestamp to your current timestamp</p>
+      </div> */}
           {/* <p>
-       -----------
-       </p>
-       <p className='italic mb-2'>
-       OTHER COMMANDS:
-       </p>
-       <p className="font-bold">
-       !time
-       </p>
-       <div className="ml-4 mb-4">
-       <p>auto scrub to the shared timestamp</p>
-       </div> */}
+      -----------
+      </p>
+      <p className='italic mb-2'>
+      OTHER COMMANDS:
+      </p>
+
+      <p className="font-bold">
+      !time
+
+      </p>
+      <div className="ml-4 mb-4">
+
+      <p>auto scrub to the shared timestamp</p>
+      </div> */}
         </div>
       }
     </>
