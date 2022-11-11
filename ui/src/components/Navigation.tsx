@@ -86,6 +86,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           }}
         >
           navigation
+          {(radio.tunedTo===radio.our && !hasPublishedStation) && ' *'}
         </button> 
        
         {navigationOpen && 

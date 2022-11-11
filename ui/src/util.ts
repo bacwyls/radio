@@ -128,7 +128,7 @@ export function handleUserInput(
       break;
     case 'time':
       dispatch(setPlayerInSync(true));
-      radio.seekToDelta(spinTime);
+      radio.seekToGlobal(spinTime);
       radio.chat(chat);
       break;
     case 'set-time':
@@ -172,6 +172,10 @@ export function handleUserInput(
       break;
     case 'logout':
       radio.tune(null);
+      break;
+    case 'live':
+      radio.syncLive(spinUrl);
+      radio.chat(chat);
       break;
     //
     // image commands
