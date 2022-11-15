@@ -82,7 +82,7 @@ export function App() {
 
   useEffect(() => {
     dispatch(setPlayerInSync(true));
-    radio.seekToDelta(spinTime)
+    radio.seekToGlobal(spinTime)
   }, [playerReady]);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export function App() {
     if (!radio.player) return;
     if (!playerReady) return;
     dispatch(setPlayerInSync(true));
-    radio.seekToDelta(spinTime)
+    radio.seekToGlobal(spinTime)
   }, [spinTime]);
 
   // initialize subscription

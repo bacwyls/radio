@@ -42,28 +42,35 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
   const [helpMenuLeft, setHelpMenuLeft] = useState(0);
 
   function handleProgress(progress: any) {
-    // autoscrubbing
+    // turn on scrub buttons if out of sync
 
     var currentUnixTime = Date.now() / 1000;
-    var delta = Math.ceil(currentUnixTime - spinTime);
     var duration = radio.player.getDuration();
-    let diff = Math.abs((delta % duration) - progress.playedSeconds)
+    if(!duration) return;
 
-    if (our === radio.tunedTo) {
-      // if(diff > 60) {
-      //   console.log('host broadcasting new time')
-      //   radio.setTime(spinUrl, progress.playedSeconds);
-      // }
-      if (diff > 3) {
-        dispatch(setPlayerInSync(false));
-      }
-      return;
-    }
-    // we arent the host
-    if (diff > 2) {
-      // client scrub to host
-      console.log('client scrubbing to host')
-      radio.seekToDelta(spinTime);
+
+    let localProgress = progress.playedSeconds;
+    let globalProgress = Math.ceil(currentUnixTime - spinTime);
+
+    globalProgress = globalProgress % duration
+    
+  
+    let outOfSync = Math.abs(localProgress - globalProgress)
+
+    // stupid way to detect livestreams
+    // just dont autoscrub if the duration and played seconds are close
+    // because that tends to be the case for live streams...
+    //
+    // NOTE: this has bad edge cases. it was dumb anyways but im leaving commented for later
+    //
+    // ...(later) yeah, the duration is different for each user. everyone has a
+    //  static duration from when they first loaded the live stream. so this logic
+    //  will never work.
+    // let maybeLive = Math.abs(duration - globalProgress) < 3 || globalProgress < 3;
+
+
+    if (outOfSync > 2) {
+      dispatch(setPlayerInSync(false));
       return;
     }
   }
@@ -76,13 +83,13 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
             className={`hover:pointer px-4 py-2 \
                       flex-initial outline-none \
                       font-bold underline border-black border-t-0 \
-                      text-yellow-500 `}
+                      text-red-500 `}
             onClick={(e) => {
-              radio.seekToDelta(spinTime);
+              radio.seekToGlobal(spinTime);
               dispatch(setPlayerInSync(true));
             }}
           >
-            resync self
+            resync
           </button>
           {tunePatP === props.our && 
             <button

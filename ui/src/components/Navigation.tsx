@@ -86,6 +86,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           }}
         >
           navigation
+          {(radio.tunedTo===radio.our && !hasPublishedStation) && ' *'}
         </button> 
        
         {navigationOpen && 
@@ -131,7 +132,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                 <NavItem tuneTo={tuneTo}
                     key={i}
                     patp={tower.location}
-                    flare={tower.viewers} />
+                    flare={tower.viewers.toString()} />
             )}            
 
           </div>
