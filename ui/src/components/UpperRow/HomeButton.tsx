@@ -1,3 +1,4 @@
+import { SignOut } from "phosphor-react";
 import React from "react";
 import { MdLogout, MdOutlineHome } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
@@ -9,15 +10,14 @@ export const HomeButton = () => {
 
     return (
         <button
-            className={`border-gray-400 
-            sm:border sm:shadow   text-center rounded 
-             h-6 hover:border-black 
+            className={`   text-center  rounded  hover:bg-gray-100
             flex justify-center items-center relative 
-            ${isPhone() ? '' : 'ml-2 px-2 bg-white'}
-            `}
+            ${isPhone() ? '' : ' '}
+                    `}
             onClick={() => navigate('/')}
+            style={{ width: '2em', height: '2em' }}
         >
-            <MdLogout className="text-base" />
+            <SignOut size={26} weight="bold" />
         </button>
 
     )

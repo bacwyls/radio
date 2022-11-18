@@ -1,0 +1,25 @@
+
+.join-station-phone-portrait{
+    @apply fixed bottom-0 left-0 px-2 border-t border-gray-400 w-full flex flex-col justify-center z-10 ;
+    height: 22vh;
+    min-height: 7em;
+    background-color: rgb(253,253,253);
+}
+
+.discovery-box-phone-portrait{
+    @apply w-screen left-0;
+    border-radius: 0px !important;
+    top: 14vh; 
+    height: 100vh;
+}
+
+.discovery-list{
+    @apply flex flex-wrap overflow-y-auto gap-3;
+    height: 250px;
+}
+
+.discovery-list-phone-portrait{
+    @apply flex flex-wrap overflow-x-hidden overflow-y-visible;
+    gap: calc(14vw - 1rem);
+}
+

@@ -1,10 +1,9 @@
+import { MusicNotes } from "phosphor-react";
 import React, { FC, useState } from "react";
-import { GoRadioTower } from "react-icons/go";
-import { GrSatellite, GrSearch } from "react-icons/gr";
-import { MdOutlineRadio, MdOutlineTune } from "react-icons/md";
+import { MdOutlineTune } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
-import { radio } from "../../api";
+import './style.css';
 
 interface ISearchStationRow {
     setqueriedTowers: React.Dispatch<React.SetStateAction<string[]>>;
@@ -38,7 +37,11 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
     }
 
     return (
-        <div className="h-6 relative items-center mb-2 sm:mb-4 flex">
+        <div
+            className={`h-6 relative items-center mb-2 sm:mb-4 flex
+            
+            `}
+        >
             {/* <GrSearch className="absolute ml-2 	"
                     style={{
                         fontSize: '.6rem',
@@ -46,16 +49,18 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 ></GrSearch> */}
             < input
                 type="text"
-                className=" px-2 
+                className=" pr-4 pl-2 bg-gray-50
              h-6 whitespace-nowrap	focus:bg-white
-            rounded border border-gray-400 bg-gray-50
-            placeholder-black  hover:border-black hover:shadow
+            rounded border font-semibold font-gray-800
+            placeholder-gray-800  hover:border-black focus:outline-none
             "
                 style={{
                     width: '100%',
                     maxWidth: '15em',
                     fontSize: '.6rem',
-                    paddingBottom: '0.1em'
+                    paddingBottom: '0.1em',
+                    backgroundColor: '#FFF2EB',
+                    borderColor: '#F4E8D7',
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -70,27 +75,30 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 onChange={handleInputTextChange}
             />
             < button
-                className="bg-white rounded w-20 h-6    
-            outline-none flex  hover:border-black bg-blue-50    
-            rounded border border-solid border-gray-400   hover:shadow
-            justify-center items-center ml-2 whitespace-nowrap px-1	font-semibold"
+                className=" rounded w-20 h-6    
+            outline-none flex   
+            rounded   hover:shadow text-white
+            justify-center items-center whitespace-nowrap px-1	font-bold"
                 style={{
-                    fontSize: '.6rem'
+                    fontSize: '.6rem',
+                    backgroundColor: '#F8BD72',
+                    marginLeft: '-1em'
                 }}
                 onClick={() =>
                     handleTuneToSubmit()
                 }
             >
-                <MdOutlineTune className="mr-1 text-sm " />
+                {/* <MdOutlineTune className="mr-1 text-sm " /> */}
+                <MusicNotes size={20} weight="bold" className="mr-0.5" />
                 Tune In
             </ button>
             {
                 error && <div
-                    className="text-red-600 text-xs absolute mt-9"
+                    className="text-red-300 font-bold text-xs absolute mt-9"
                     style={{
                         fontSize: '.6rem'
                     }}
-                >invalid ship</div>
+                >Invalid Ship</div>
             }
         </div >
     )

@@ -1,3 +1,4 @@
+import { Question } from 'phosphor-react';
 import React, { FC, useEffect, useState } from 'react';
 import { MdOutlineHelpOutline } from 'react-icons/md';
 import { isPhone } from '../../../util';
@@ -36,25 +37,16 @@ export const Help: FC<IHelp> = (props: IHelp) => {
 
   return (
     <>
-      <button
+      <Question
         id='help-button'
-        className={` px-2  
-                         flex flex-initial items-center outline-none 
-                        font-semibold  rounded 
-                        text-center hover:bg-gray-100
-                        ${isPhone() ? ' w-full  justify-start' : 'justify-center'}
-                        ${helpMenuOpen && 'bg-gray-100'} 
-                        `}
-        style={{ fontSize: '.65rem' }}
+        size={20}
+        weight="bold"
+        className='ml-0.5 cursor-pointer hover:bg-gray-100 rounded'
+        style={{ marginTop: '0.1em' }}
         onClick={(e) => {
-          // setHelpMenuLeft(e.clientX);
-          // setHelpMenuTop(e.clientY);
           setHelpMenuOpen(!helpMenuOpen);
         }}
-      >
-        <MdOutlineHelpOutline className='mr-1 text-sm' />
-        Help
-      </button>
+      />
       {helpMenuOpen &&
         <div
           id='help-menu'

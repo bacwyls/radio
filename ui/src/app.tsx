@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import { handleUpdate } from './util';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import './index.css';
 
 import {
   setRadioSub,
@@ -18,7 +19,7 @@ import {
   setIsLandscape
 } from './features/ui/uiSlice';
 import { radio } from './api';
-import { Home } from './pages/Home';
+import { Home } from './pages/Home/Home';
 import { Station } from './pages/Station/Station';
 
 export function App() {

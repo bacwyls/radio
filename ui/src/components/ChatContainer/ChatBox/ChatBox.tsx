@@ -1,10 +1,12 @@
+import { Question } from 'phosphor-react';
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
 import { selectIsChatFullScreen } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
+import { Help } from '../Help/Help';
 import { ChatMessage } from '../ChatMessage';
-import './ChatBox.css';
+import './style.css';
 
 const ChatMessageMemo = React.memo(ChatMessage);
 
@@ -53,20 +55,20 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   return (
     <div
-      className={` rounded-t  border-gray-400  flex flex-col
+      className={` flex flex-col border-t border-gray-300
                   ${isPhone() ? 'chatbox-container-phone' : 'chatbox-container'}
                     ${isChatFullScreen ? 'chatbox-container-full' : ''}
                 `}
     >
       <div
-        className='font-bold flex items-center justify-between rounded-t px-2 
-                     bg-white border-b  border-gray-400 z-10 '
-        style={{ height: '3em', }}
+        className='font-extrabold flex items-center 
+                     z-10 '
+        style={{ height: '2rem', }}
       >
-        Chat
+        Chat <Help />
       </div>
       <div
-        className={`  w-full flex flex-col bg-white 
+        className={`  w-full flex flex-col  bg-white
                   ${isPhone() ? 'chatbox-phone' : 'chatbox'}
                   ${isChatFullScreen ? 'chatbox-full' : ''}
             `}
@@ -76,7 +78,6 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
       >
         <div
           className={`overflow-y-auto
-          // ${isChatFullScreen ? 'chatbox-full' : ''}
           `}
           id={chatboxId}
         >

@@ -183,8 +183,8 @@ export const ViewersMenu = () => {
                     < input
                         type="text"
                         className=" pl-6 pb-0.5 inline-block 
-                   w-full  h-6 bg-white placeholder-black
-                   rounded border border-solid border-gray-400
+                   w-full  h-6 bg-gray-100 placeholder-black
+                   rounded 
                    "
                         style={{
                             fontSize: '.6rem'

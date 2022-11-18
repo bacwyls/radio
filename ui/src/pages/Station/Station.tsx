@@ -8,11 +8,11 @@ import { isPhone, tuneTo } from "../../util";
 import { isValidPatp } from 'urbit-ob'
 import { selectRadioSub, setHasPublishedStation } from "../../features/station/stationSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import './Station.css';
 import { PhoneFooter } from "../../components/Mobile/PhoneFooter/PhoneFooter";
 import { isMobile, isTablet } from "react-device-detect";
 import { UpperRowContainer } from "../../components/UpperRow/UpperRowContainer/UpperRowContainer";
 import { selectIsChatFullScreen } from "../../features/ui/uiSlice";
+import './style.css';
 
 const PlayerContainerMemo = React.memo(PlayerContainer);
 const ChatContainerMemo = React.memo(ChatContainer);
@@ -39,19 +39,30 @@ export const Station: FC = () => {
     }, [patp, radioSub]);
 
     return (
-        <div className="text-xs  
-                        flex flex-col"
+        <div className="text-xs fixed station-container
+                        flex flex-col  "
             style={{
                 backgroundColor: 'rgb(253 253 253)',
+                height: '100vh',
+                width: '100%',
+                padding: '25px 25px 0 25px'
             }}
         >
-            <UpperRowContainer />
-            <div className="station-padding flex flex-col lg:flex-row"
+            {/* <UpperRowContainer /> */}
+            <div className=" flex flex-col lg:flex-row h-full"
             >
                 <PlayerContainerMemo />
-                <ChatContainerMemo />
+                <div className="flex flex-col "
+                    style={{
+                        paddingBottom: '70px',
+                        width: 'calc(44vw - 75px)',
+                        height: '100%',
+                    }}
+                >
+                    <UpperRowContainer />
+                    <ChatContainerMemo />
+                </div>
             </div>
-            {isPhone() && !isChatFullScreen && <PhoneFooter />}
         </div>
     )
 

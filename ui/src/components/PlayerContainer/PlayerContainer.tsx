@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Help } from './Help/Help';
+import { Help } from '../ChatContainer/Help/Help';
 import { Player } from './Player/Player';
 import { SyncActions } from './SyncActions';
 import { isPhone } from '../../util';
@@ -12,18 +12,20 @@ interface IPlayerContainer {
 export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) => {
 
   return (
-    <div className={`inline-block relative sm:mr-3 w-full 
-                     ${isPhone() ? '' : 'mb-2'}
+    <div className={`inline-block relative  w-full flex flex-col 
+                     ${isPhone() ? '' : ''}
                      `}
+      style={{ marginRight: '25px' }}
     >
       <Player />
-      {!isPhone() && <div className='flex overflow-hidden justify-between'>
+      <SyncActions />
+      {/* {!isPhone() && <div className='flex overflow-hidden justify-between'>
         <ViewersButton />
         <div className='flex items-start mt-1 gap-1'>
           <SyncActions />
           <Help />
         </div>
-      </div>}
+      </div>} */}
     </div >
   );
 }

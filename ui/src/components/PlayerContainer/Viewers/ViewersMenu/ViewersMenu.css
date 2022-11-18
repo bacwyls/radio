@@ -1,10 +1,10 @@
 .viewers-menu {
-    height: 36vw;
+    height: calc(100% - 3.25em - 70px - 25px);
     width: 28vw;
     min-width: 18em;
-    top: 0;
-    left: 0;
-    position: absolute;
+    top: 4.6em;
+    right: 25px;
+    position: fixed;
     boxShadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 

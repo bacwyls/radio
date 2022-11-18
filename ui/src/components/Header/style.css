@@ -1,0 +1,8 @@
+.header{
+    @apply flex justify-between mb-1 border-b border-gray-400 py-3 px-5 fixed left-0 top-0 w-full text-2xl sm:text-3xl md:text-lg;
+}
+
+.header-phone-portrait{
+    @apply fixed bg-white border-b border-gray-400 z-10 top-0 left-0 w-full p-2;
+    height: 13vh;
+}

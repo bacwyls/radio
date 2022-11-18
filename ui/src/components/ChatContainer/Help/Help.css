@@ -1,8 +1,9 @@
 
 .help-menu{
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 50%;
+    right: 30.6vw;
+    transform: translateY(-50%);
     height: 36vw;
     width: 50%;
 }

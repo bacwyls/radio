@@ -43,10 +43,10 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
-                className="hover:bg-gray-100 rounded-md px-1 py-1 break-all"
+                className="hover:bg-gray-100  py-1 break-all"
                 style={{ fontSize: '.65rem' }}
             >
-                <div className={`flex justify-between items-center w-4/10 ml-1 ${isPhone() && 'mr-1'}`}>
+                <div className={`flex justify-between items-center w-4/10  ${isPhone() && 'mr-1'}`}>
                     <div className='flex'>
                         <span className='bg-black p-0.5 mr-1 rounded
                            flex justify-center items-center'>
@@ -62,11 +62,11 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                             {from == radio.our ? 'You' : from}{':'}
                         </span>
                     </div>
-                    <span className={'text-gray-500 flex'}>
+                    <span className={'text-gray-500 font-semibold flex mr-1'}>
                         {timestampFromTime(time)}
                     </span>
                 </div>
-                <div className={`flex ${isPhone() && 'mr-1'}`} style={{ paddingLeft: '2.2em' }}>
+                <div className={`flex ${isPhone() && 'mr-1'}`} style={{ paddingLeft: '2.2em', lineHeight: '.8rem' }}>
                     {
                         checkURL(message)
                             ? <img src={message} className={'ml-2 mt-1'}

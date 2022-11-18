@@ -65,10 +65,6 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 radio.chat(chat);
                 tuneTo(arg, radio, dispatch)
                 break;
-            case 'background':
-                radio.background(arg);
-                radio.chat(chat);
-                break;
             case 'time':
                 dispatch(setPlayerInSync(true));
                 radio.seekToDelta(spinTime);
@@ -122,12 +118,11 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
 
     return (
         <div
-            className={`flex items-center px-2 w-full bg-white rounded-b border-t  border-gray-400 
+            className={`flex items-end  w-full
                     ${isPhone() && 'fixed bottom-0 z-10'}
                 `}
             style={{
-                height: '3.5em',
-                maxHeight: '3.5em'
+                height: '1.5rem'
             }}
         >
             {isPhone() && isChatFullScreen &&
@@ -139,9 +134,11 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 type="text"
                 ref={inputReference}
                 className="px-2 flex items-center 
-                    w-3/4  border-gray-400 hover:border-black
-                    border border-solid  bg-gray-50 h-6
-                    rounded focus:bg-white placeholder-black"
+                    w-3/4   hover:border-black
+                     bg-gray-100 h-6
+                    rounded focus:bg-white placeholder-black
+                    font-bold
+                    "
                 style={{
                     fontSize: '.6rem',
                 }}
@@ -160,10 +157,11 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
             < button
                 className="bg-white rounded w-1/4 
                            flex-initial outline-none flex font-bold hover:border-black 
-                            rounded border border-solid  border-gray-400 
+                            rounded     
                              justify-center items-center ml-2 bg-blue-50 h-6"
                 style={{
-                    fontSize: '.6rem'
+                    fontSize: '.6rem',
+                    backgroundColor: '#EFF6FF',
                 }}
                 onClick={() =>
                     handleUserInput()

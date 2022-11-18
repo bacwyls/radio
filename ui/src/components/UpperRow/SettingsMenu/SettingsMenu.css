@@ -1,7 +1,8 @@
 .settings-menu{
-    height: 9vh;
-    maxHeight: 4em;
-    left: 2em;
+    height: 6em;
+    flex-direction: column-reverse;
+    top: calc(25px + 2em);
+    right: 25px;
 }
 
 .settings-menu-phone{

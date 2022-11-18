@@ -1,8 +1,6 @@
 .chatbox-container{
-    --height: 36vw;
+    --height: calc(100% - 2rem);
     height: var(--height);
-    min-height: var(--height);
-    max-height: var(--height);
 }
 
 .chatbox-container-phone {
@@ -22,7 +20,8 @@
 }
 
 .chatbox{
-    height: calc(36vw - 3em);
+    height: calc(100% - 2rem);
+    width: 100%;
 }
 
 .chatbox-phone{

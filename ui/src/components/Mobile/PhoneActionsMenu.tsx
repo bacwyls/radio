@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { MdOutlineMenu } from "react-icons/md";
-import { Help } from "../PlayerContainer/Help/Help";
+import { Help } from "../ChatContainer/Help/Help";
 import { SyncActions } from "../PlayerContainer/SyncActions";
 
 export const PhoneActionsMenu = () => {

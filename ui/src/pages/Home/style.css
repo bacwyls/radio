@@ -1,0 +1,13 @@
+.home-container{
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    @apply px-2 sm:px-5 lg:px-10;
+}
+
+.home-container-phone-portrait{
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+}
+

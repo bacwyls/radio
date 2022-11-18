@@ -6,7 +6,7 @@ import { ChatButton } from "../../ChatContainer/ChatButton"
 import { ViewersButton } from "../../PlayerContainer/Viewers/ViewersButton"
 import { HomeButton } from "../../UpperRow/HomeButton"
 import { PhoneActionsMenu } from "../PhoneActionsMenu"
-import './PhoneFooter.css';
+import './style.css';
 
 export const PhoneFooter = () => {
 

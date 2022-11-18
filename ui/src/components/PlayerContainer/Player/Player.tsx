@@ -21,24 +21,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
     const spinTime = useAppSelector(selectSpinTime);
     const isLandscape = useAppSelector(selectIsLandscape);
 
-    // const [style, setStyle] = useState(updateStyle());
-
     const dispatch = useAppDispatch();
-
-    // function handleOrientationChange() {
-    //     if (!isPhone()) return;
-    //     setStyle(updateStyle());
-    // }
-
-    // function updateStyle() {
-    //     if (!(isPhone())) return;
-
-    //     if (!isLandscape) return {};
-
-    //     else {
-    //         return
-    //     }
-    // };
 
     function handleProgress(progress: any) {
         // autoscrubbing
@@ -69,7 +52,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
 
     return (
         <div
-            className={`${isPhone() ? (isLandscape ? 'player-phone-landscape' : 'player-phone-portrait') : 'player'}`}
+            className={`${isPhone() ? (isLandscape ? 'player-phone-landscape' : 'player-phone-portrait') : 'player  '}`}
             style={
                 !(isPhone() && isLandscape) ? {}
                     :
@@ -101,13 +84,12 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     backgroundColor: 'lightgray',
                     borderRadius: `${isPhone() ? '0' : '0.25rem'}`,
                     overflow: 'hidden',
-                    boxShadow: 'rgba(50, 50, 93, 0.25) \
-                     0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
                 }}
                 config={{
                     file: {
                         // makes the audio player look nice
-                        attributes: { style: { height: '50%', width: '100%' } }
+                        attributes: { style: { height: '50%', width: '100%', transform: 'translateY(12.5%)', } }
                     },
                 }}
             />

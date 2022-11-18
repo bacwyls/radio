@@ -4,7 +4,7 @@ import { selectIsChatFullScreen, selectIsLandscape, setIsChatFullScreen } from '
 import { isPhone } from '../../../util';
 import { ChatBox } from '../ChatBox/ChatBox';
 import { ChatInputRow } from '../ChatInputRow';
-import './ChatContainer.css';
+import './style.css';
 
 interface IChatContainer {
 }
@@ -16,19 +16,13 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
 
   return (
     <div
-      className={`inline bg-white w-full h-full
+      className={`flex flex-col justify-between w-full mt-3 
            ${isPhone() && isLandscape && 'chat-container-phone-landscape'} 
       `}
+      style={{ height: 'calc(100% - 3.25em)' }}
     >
-      <div
-        className={` bg-white flex flex-col 
-                     ${isPhone() ? '' : 'border border-gray-400  rounded shadow'} 
-                      ${isChatFullScreen && 'chat-container-full'}
-                  `}
-      >
-        <ChatBox />
-        {(!isPhone() || isChatFullScreen) && < ChatInputRow />}
-      </div>
+      <ChatBox />
+      {(!isPhone() || isChatFullScreen) && < ChatInputRow />}
     </div >
   );
 }

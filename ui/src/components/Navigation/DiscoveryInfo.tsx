@@ -1,3 +1,4 @@
+import { Question } from "phosphor-react";
 import React, { useEffect, useState } from "react"
 import { MdOutlineInfo } from "react-icons/md";
 
@@ -30,17 +31,22 @@ export const DiscoveryInfo = () => {
             id="discovery-info"
         >
             <div
-                className="flex items-center font-semibold h-6 "
-                style={{ fontSize: '.75rem' }}
+                className="flex items-center  h-6 "
+                style={{ fontSize: '.8rem' }}
             >
                 <span
-                    className="h-full flex items-center whitespace-nowrap	"
-                    style={{ paddingBottom: '0.1em' }}
+                    className="h-full flex items-center mr-1 whitespace-nowrap font-bold	"
                 > Discovery pool
                 </span>
-                <MdOutlineInfo
-                    onClick={() => setShowDiscoveryInfo(prev => !prev)}
+                {/* <MdOutlineInfo
                     className="cursor-pointer ml-1 h-full  "
+                /> */}
+                <Question
+                    size={22}
+                    weight="bold"
+                    className="cursor-pointer"
+                    // style={{ marginBottom: '.05em' }}
+                    onClick={() => setShowDiscoveryInfo(prev => !prev)}
                 />
             </div>
             {showDiscoveryInfo && <div

@@ -1,6 +1,8 @@
 
-
-.station-padding{
+.station-container{
+ }
+ 
+/* .station-padding{
     padding: 0 3vw 0 3vw;
 }
 
@@ -8,4 +10,4 @@
     .station-padding{
         padding: 0;
     }
-}
+} */

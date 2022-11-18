@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom";
 import { radio } from "../../api";
-import { NavigateStations } from "./NavigateStations";
+import { NavigateStations } from "./NavigateStations/NavigateStations";
 
 interface INavigateMenu {
     setIsNavigationOpen: React.Dispatch<React.SetStateAction<boolean>>,

@@ -1,3 +1,4 @@
+import { Gear } from "phosphor-react";
 import React, { useEffect, useState } from "react"
 import { MdOutlineSettings } from "react-icons/md"
 import { isPhone } from "../../../util";
@@ -29,29 +30,28 @@ export const SettingsMenu = () => {
     }
 
     return (
-        < div
+        <button
             id="settings-menu"
-            className="relative flex items-center"
+            className={`rounded hover:bg-gray-100  flex items-center justify-center
+             ${showConfigMenu && 'bg-gray-100'}
+             `}
+            style={{ width: '2em', height: '2em' }}
+            onClick={() => setShowConfigMenu((prev) => !prev)}
         >
-            < MdOutlineSettings
-                className={`ml-1 hover:cursor-pointer text-base 
-                ${showConfigMenu && 'bg-gray-100'}
-                `}
-
-                onClick={() => setShowConfigMenu((prev) => !prev)}
+            <Gear size={26} weight="bold"
             />
             {showConfigMenu
                 &&
-                <div className={`absolute z-10  shadow
+                <div className={`fixed z-20  shadow 
                              flex items-center px-2 rounded
-                            justify-between bg-gray-100 gap-2
+                            justify-center gap-2 bg-gray-100 
                             ${isPhone() ? 'settings-menu-phone' : 'settings-menu'}
                             `}
-                    style={{
-                    }}>
+                >
                     <IsPublicDropdown />
                     <PublishStationButton />
                 </div>}
-        </ div>
+        </button >
+
     )
 }   

@@ -1,0 +1,33 @@
+.nav-item{
+    /* --nav-item-height: 145px;
+    min-width: var(--nav-item-height);
+    min-height: var(--nav-item-height);
+    max-height: var(--nav-item-height);
+    max-width: var(--nav-item-height); */
+}
+
+.nav-item-phone-portrait {
+    height: 43vw;
+    width: 43vw;
+}
+/* 
+.nopatp-background{
+    --nav-item-height: 145px;
+    min-width: var(--nav-item-height);
+    min-height: var(--nav-item-height);
+    max-height: var(--nav-item-height);
+    max-width: var(--nav-item-height);
+    background-color: 'rgba(255, 166, 0, 0.1)';
+}
+
+.nopatp-background-phone-portrait{
+    min-width: 43vw;
+    min-height: 43vw;
+    background-color: rgb(243,240,233));
+} */
+
+.sigil-background{
+    @apply rounded  border-solid h-full w-full min-h-full min-w-full;
+    border-color: rgb(248,246,238);
+    border-width: 100px;
+}
