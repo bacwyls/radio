@@ -1,11 +1,9 @@
 import { Radio, Television } from "phosphor-react";
 import React from "react"
-import { GoRadioTower } from "react-icons/go";
-import { MdOutlineRadio } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { radio } from "../../../api"
 import { useAppSelector } from "../../../app/hooks";
-import { selectIsLandscape } from "../../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import './style.css';
 
@@ -13,6 +11,7 @@ export const ShortcutButtons = () => {
 
     const navigate = useNavigate();
     const isLandscape = useAppSelector(selectIsLandscape);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     return (
 
@@ -21,18 +20,17 @@ export const ShortcutButtons = () => {
         `}>
             {radio.tunedTo !== radio.our &&
                 <button
-                    className=" rounded
-            text-center bg-white hover:bg-gray-100
-            flex-initial flex items-center 
-            justify-center px-1 overflow-hidden h-6"
+                    className={`rounded text-center 
+                                flex-initial flex items-center 
+                            justify-center px-1 overflow-hidden h-6 
+                            ${isDarkMode ? 'hover:bg-hover-gray-dark text-white-dark ' : 'hover:bg-gray-100 '}
+                            `}
                     style={{
                         whiteSpace: 'nowrap',
-                        width: '6.5em'
-                    }
-                    }
+                        width: '6.5em',
+                    }}
                     onClick={() => navigate('/station/' + radio.our)}
                 >
-                    {/* <MdOutlineRadio className="text-xs " /> */}
                     <Radio size={32} weight="bold" />
                     <span
                         className='ml-1	flex items-center
@@ -49,18 +47,17 @@ export const ShortcutButtons = () => {
             {
                 radio.tunedTo !== radio.hub &&
                 <button
-                    className="  rounded bg-white 
-                text-center 
-                flex-initial  flex items-center  hover:bg-gray-100
-                justify-center px-4  overflow-hidden  h-6"
+                    className={`  rounded text-center 
+                flex-initial  flex items-center  
+                justify-center px-4  overflow-hidden  h-6
+                ${isDarkMode ? 'hover:bg-hover-gray-dark text-white-dark' : 'hover:bg-hover-gray-light '}
+                `}
                     style={{
                         whiteSpace: 'nowrap',
-                        width: '6.5em'
+                        width: '6.5em',
                     }}
                     onClick={() => navigate('/station/' + radio.hub)}
                 >
-                    {/* <GoRadioTower className="text-xs" />
-                     */}
                     <Television size={32} weight="bold" />
                     <span
                         className='ml-1	flex items-center font-bold leading-3 '

@@ -1,11 +1,10 @@
 import { ArrowsClockwise } from "phosphor-react";
 import React from "react";
 import { FC } from "react";
-import { MdOutlineSync } from "react-icons/md";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl, selectTunePatP } from "../../features/station/stationSlice";
-import { selectPlayerInSync, setPlayerInSync } from "../../features/ui/uiSlice";
+import { selectIsDarkMode, selectPlayerInSync, setPlayerInSync } from "../../features/ui/uiSlice";
 import { isPhone } from "../../util";
 
 interface ISyncActions {
@@ -17,6 +16,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
     const tunePatP = useAppSelector(selectTunePatP);
     const playerInSync = useAppSelector(selectPlayerInSync);
     const spinUrl = useAppSelector(selectSpinUrl);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const dispatch = useAppDispatch();
 
@@ -24,11 +24,13 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
         !playerInSync ?
             <div className="flex gap-2 justify-center mt-2">
                 <button
-                    className={` px-2   \
-                        flex-initial outline-none \
-                        font-semibold border-2 border-gray-300  rounded \
+                    className={` px-2   
+                        flex-initial outline-none 
+                        font-semibold   rounded 
                         flex text-center items-center  px-2 py-0.5
                          hover:bg-gray-200  z-10 bg-white  gap-1
+                         ${isDarkMode ? 'bg-white-dark' : 'bg-white border-2 border-gray-300'}
+
                         ${isPhone() ? 'w-full justify-start' : 'justify-center'}
                         	 `}
                     style={{ fontSize: '.65rem' }}
@@ -44,11 +46,14 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     <button
                         className={` px-2 \
                           flex-initial outline-none bg-white \
-                          font-semibold  border-2 border-gray-300 rounded \
+                          font-semibold   rounded \
                           flex text-center items-center  gap-1
                           hover:bg-gray-200  z-10  px-2 py-0.5
                           ${isPhone() ? 'w-full justify-start' : 'justify-center'}
+                          
+                          ${isDarkMode ? 'bg-white-dark' : 'bg-white border-2 border-gray-300'}
                           `}
+
                         style=
                         {{
                             whiteSpace: 'nowrap',

@@ -22,6 +22,6 @@
   },
   "include": [
     "./src",
-    "src/components/PlayerContainer/Viewers/.tsx"
+    "src/components/UpperRow/Viewers/.tsx"
   ]
 }

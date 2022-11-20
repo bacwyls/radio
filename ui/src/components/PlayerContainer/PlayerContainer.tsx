@@ -3,7 +3,7 @@ import { Help } from '../ChatContainer/Help/Help';
 import { Player } from './Player/Player';
 import { SyncActions } from './SyncActions';
 import { isPhone } from '../../util';
-import { ViewersButton } from './Viewers/ViewersButton';
+import { ViewersButton } from '../UpperRow/Viewers/ViewersButton';
 
 interface IPlayerContainer {
 

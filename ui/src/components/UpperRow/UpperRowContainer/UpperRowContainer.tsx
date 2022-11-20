@@ -1,7 +1,7 @@
-import { MoonStars } from 'phosphor-react';
 import React, { FC, } from 'react';
-import { MdOutlineHome, MdOutlineSettings } from 'react-icons/md';
+import { radio } from '../../../api';
 import { useAppSelector } from '../../../app/hooks';
+import { selectTunePatP } from '../../../features/station/stationSlice';
 import { selectIsLandscape } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { Navigate } from '../../Navigation/NavigateMenu';
@@ -18,20 +18,19 @@ interface IUpperRowContainer {
 export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContainer) => {
 
   const isLandscape = useAppSelector(selectIsLandscape);
+  const tunePatP = useAppSelector(selectTunePatP);
 
   return (
     <div
-      className={` flex justify-between w-full
+      className={` flex justify-between w-full 
                    ${isPhone() && isLandscape && 'upper-row-phone-landscape'}
                 `}
-      style={{ height: '3em' }}
+      style={{ height: '2.5em' }}
     >
-      <div className="flex ">
-        <StationTitle />
-      </div>
+      <StationTitle />
       <div className="flex  items-center ">
         {/* <Navigate /> */}
-        <SettingsMenu />
+        {tunePatP == radio.our && <SettingsMenu />}
         <ThemeButton />
         {!isPhone() && <HomeButton />}
       </div>

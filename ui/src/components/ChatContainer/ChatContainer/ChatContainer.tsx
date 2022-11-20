@@ -19,7 +19,7 @@ export const ChatContainer: FC<IChatContainer> = (props: IChatContainer) => {
       className={`flex flex-col justify-between w-full mt-3 
            ${isPhone() && isLandscape && 'chat-container-phone-landscape'} 
       `}
-      style={{ height: 'calc(100% - 3.25em)' }}
+      style={{ height: 'calc(100% - 3.75em)' }}
     >
       <ChatBox />
       {(!isPhone() || isChatFullScreen) && < ChatInputRow />}

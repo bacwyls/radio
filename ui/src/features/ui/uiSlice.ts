@@ -7,6 +7,14 @@ export interface UIState {
   playerInSync: boolean;
   isChatFullScreen: boolean;
   isLandscape: boolean,
+  isDarkMode: boolean,
+}
+
+const isSystemDarkMode = () => {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return true
+  }
+  else { return false }
 }
 
 const initialState: UIState = {
@@ -15,6 +23,7 @@ const initialState: UIState = {
   playerInSync: false,
   isChatFullScreen: false,
   isLandscape: false,
+  isDarkMode: isSystemDarkMode(),
 };
 
 export const uiSlice = createSlice({
@@ -51,6 +60,12 @@ export const uiSlice = createSlice({
         isLandscape: action.payload,
       }
     },
+    setIsDarkMode: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isDarkMode: action.payload,
+      }
+    },
   }
 });
 
@@ -60,6 +75,7 @@ export const {
   setPlayerInSync,
   setIsChatFullScreen,
   setIsLandscape,
+  setIsDarkMode,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;
@@ -67,5 +83,6 @@ export const selectPlayerReady = (state: RootState) => state.ui.playerReady;
 export const selectPlayerInSync = (state: RootState) => state.ui.playerInSync;
 export const selectIsChatFullScreen = (state: RootState) => state.ui.isChatFullScreen;
 export const selectIsLandscape = (state: RootState) => state.ui.isLandscape;
+export const selectIsDarkMode = (state: RootState) => state.ui.isDarkMode;
 
 export default uiSlice.reducer;

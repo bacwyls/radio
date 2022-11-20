@@ -1,6 +1,7 @@
 import { Gear } from "phosphor-react";
 import React, { useEffect, useState } from "react"
-import { MdOutlineSettings } from "react-icons/md"
+import { useAppSelector } from "../../../app/hooks";
+import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { IsPublicDropdown } from "./IsPublicDropdown"
 import { PublishStationButton } from "./PublishStationButton"
@@ -8,6 +9,7 @@ import './SettingsMenu.css';
 
 export const SettingsMenu = () => {
     const [showConfigMenu, setShowConfigMenu] = useState(false);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     useEffect(() => {
         document.addEventListener(
@@ -29,29 +31,36 @@ export const SettingsMenu = () => {
         }
     }
 
-    return (
+    return (<div
+        id="settings-menu"
+    >
         <button
-            id="settings-menu"
-            className={`rounded hover:bg-gray-100  flex items-center justify-center
-             ${showConfigMenu && 'bg-gray-100'}
+            className={`rounded  flex items-center justify-center 
+            ${isDarkMode ? 'text-white-dark hover:bg-hover-gray-dark ' : 'hover:bg-hover-gray-light'}
+             ${showConfigMenu && (isDarkMode ? 'bg-hover-gray-dark' : 'bg-hover-gray-light')}
              `}
-            style={{ width: '2em', height: '2em' }}
+            style={{
+                width: '2em',
+                height: '2em',
+            }}
             onClick={() => setShowConfigMenu((prev) => !prev)}
         >
             <Gear size={26} weight="bold"
             />
-            {showConfigMenu
-                &&
-                <div className={`fixed z-20  shadow 
-                             flex items-center px-2 rounded
-                            justify-center gap-2 bg-gray-100 
-                            ${isPhone() ? 'settings-menu-phone' : 'settings-menu'}
-                            `}
-                >
-                    <IsPublicDropdown />
-                    <PublishStationButton />
-                </div>}
         </button >
+        {showConfigMenu
+            &&
+            <div className={`fixed z-20   
+                             flex items-center px-2 rounded
+                            justify-center gap-2 
+                            ${isDarkMode ? 'bg-lighter-black' : 'bg-gray-50 shadow'}
+                            ${isPhone() ? 'settings-menu-phone  ' : 'settings-menu '}
+                            `}
+            >
+                <IsPublicDropdown />
+                <PublishStationButton />
+            </div>}
+    </div>
 
     )
 }   

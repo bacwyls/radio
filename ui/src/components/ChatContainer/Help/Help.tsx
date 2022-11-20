@@ -1,6 +1,7 @@
 import { Question } from 'phosphor-react';
 import React, { FC, useEffect, useState } from 'react';
-import { MdOutlineHelpOutline } from 'react-icons/md';
+import { useAppSelector } from '../../../app/hooks';
+import { selectIsDarkMode } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import './Help.css';
 
@@ -10,6 +11,7 @@ interface IHelp {
 export const Help: FC<IHelp> = (props: IHelp) => {
 
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   useEffect(() => {
     document.addEventListener(
@@ -37,20 +39,25 @@ export const Help: FC<IHelp> = (props: IHelp) => {
 
   return (
     <>
-      <Question
-        id='help-button'
-        size={20}
-        weight="bold"
-        className='ml-0.5 cursor-pointer hover:bg-gray-100 rounded'
+      <button
+        className={`cursor-pointer rounded p-1 ml-0.5
+                    ${helpMenuOpen ? (isDarkMode ? 'bg-hover-gray-dark' : ' bg-hover-gray-light') : ''}
+                    ${isDarkMode ? ' hover:bg-hover-gray-dark' : ' hover:bg-hover-gray-light'}
+                    `}
         style={{ marginTop: '0.1em' }}
-        onClick={(e) => {
-          setHelpMenuOpen(!helpMenuOpen);
-        }}
-      />
+        onClick={() => setHelpMenuOpen(prev => !prev)}
+      >
+        <Question
+          id='help-button'
+          size={20}
+          weight="bold"
+        />
+      </button>
       {helpMenuOpen &&
         <div
           id='help-menu'
-          className={`p-4 bg-white rounded overflow-y-auto
+          className={`p-4 rounded overflow-y-auto
+          ${isDarkMode ? 'bg-lighter-black text-white-dark' : 'bg-white shadow'}
           ${isPhone() ? 'help-menu-phone' : 'help-menu'} 
           `}
           style={{

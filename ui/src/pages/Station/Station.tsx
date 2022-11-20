@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { PhoneFooter } from "../../components/Mobile/PhoneFooter/PhoneFooter";
 import { isMobile, isTablet } from "react-device-detect";
 import { UpperRowContainer } from "../../components/UpperRow/UpperRowContainer/UpperRowContainer";
-import { selectIsChatFullScreen } from "../../features/ui/uiSlice";
+import { selectIsChatFullScreen, selectIsDarkMode } from "../../features/ui/uiSlice";
 import './style.css';
 
 const PlayerContainerMemo = React.memo(PlayerContainer);
@@ -22,6 +22,7 @@ export const Station: FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const radioSub = useAppSelector(selectRadioSub);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
 
@@ -39,10 +40,11 @@ export const Station: FC = () => {
     }, [patp, radioSub]);
 
     return (
-        <div className="text-xs fixed station-container
-                        flex flex-col  "
+        <div className={`text-xs fixed station-container
+                        flex flex-col  
+                        ${isDarkMode ? 'bg-default-bg-dark' : 'bg-default-bg-light'}
+                        `}
             style={{
-                backgroundColor: 'rgb(253 253 253)',
                 height: '100vh',
                 width: '100%',
                 padding: '25px 25px 0 25px'

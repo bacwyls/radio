@@ -3,7 +3,7 @@ import { useAppSelector } from "../../../app/hooks"
 import { selectIsLandscape } from "../../../features/ui/uiSlice"
 import { isPhone } from "../../../util"
 import { ChatButton } from "../../ChatContainer/ChatButton"
-import { ViewersButton } from "../../PlayerContainer/Viewers/ViewersButton"
+import { ViewersButton } from "../../UpperRow/Viewers/ViewersButton"
 import { HomeButton } from "../../UpperRow/HomeButton"
 import { PhoneActionsMenu } from "../PhoneActionsMenu"
 import './style.css';

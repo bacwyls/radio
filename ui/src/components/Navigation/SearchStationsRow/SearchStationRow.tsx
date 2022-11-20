@@ -1,8 +1,9 @@
 import { MusicNotes } from "phosphor-react";
 import React, { FC, useState } from "react";
-import { MdOutlineTune } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
+import { useAppSelector } from "../../../app/hooks";
+import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import './style.css';
 
 interface ISearchStationRow {
@@ -15,6 +16,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
     // const towers = useAppSelector(selectTowers);
     const hardCodedTowers = ['~harlys-forbec', '~fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn', '~fidwed-sipwyn', '~tidreg', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec',]
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const navigate = useNavigate();
 
@@ -42,11 +44,6 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             
             `}
         >
-            {/* <GrSearch className="absolute ml-2 	"
-                    style={{
-                        fontSize: '.6rem',
-                    }}
-                ></GrSearch> */}
             < input
                 type="text"
                 className=" pr-4 pl-2 bg-gray-50
@@ -75,10 +72,12 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 onChange={handleInputTextChange}
             />
             < button
-                className=" rounded w-20 h-6    
+                className={` rounded w-20 h-6    
             outline-none flex   
-            rounded   hover:shadow text-white
-            justify-center items-center whitespace-nowrap px-1	font-bold"
+            rounded   hover:shadow
+            justify-center items-center whitespace-nowrap px-1	font-bold
+            ${isDarkMode ? 'text-white-dark' : 'text-white'}
+            `}
                 style={{
                     fontSize: '.6rem',
                     backgroundColor: '#F8BD72',
@@ -88,7 +87,6 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                     handleTuneToSubmit()
                 }
             >
-                {/* <MdOutlineTune className="mr-1 text-sm " /> */}
                 <MusicNotes size={20} weight="bold" className="mr-0.5" />
                 Tune In
             </ button>

@@ -1,9 +1,9 @@
 import React from "react";
 import { FC, useEffect } from "react";
-import { MdToggleOn } from "react-icons/md";
 import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
 import { selectHasPublishedStation, setHasPublishedStation } from "../../../features/station/stationSlice";
+import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import { ToggleSwitch } from "./ToggleSwitch/ToggleSwitch";
 
 interface IPublishStationButton {
@@ -12,6 +12,7 @@ interface IPublishStationButton {
 export const PublishStationButton: FC<IPublishStationButton> = (props: IPublishStationButton) => {
 
   const hasPublishedStation = useAppSelector(selectHasPublishedStation);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   useEffect(() => {
     if (!hasPublishedStation) return;
@@ -26,10 +27,15 @@ export const PublishStationButton: FC<IPublishStationButton> = (props: IPublishS
   return (
     (radio.tunedTo === radio.our) ?
       <button
-        className="flex items-center hover:border-black  border justify-between
-        border-gray-400 rounded px-1 h-6 bg-white  font-semibold
-        "
-        style={{ whiteSpace: 'nowrap', width: '8em', fontSize: '.65rem' }}
+        className={`flex items-center   border 
+        rounded px-2 h-6  font-semibold border-gray-400 
+          ${isDarkMode ? 'bg-lighter-black text-white-dark hover:border-white-dark' : 'bg-white text-black hover:border-black'}
+        `}
+        style={{
+          whiteSpace: 'nowrap',
+          width: '8em',
+          fontSize: '.65rem'
+        }}
       >
         <span className="mr-1" >publish</span>
         <ToggleSwitch />

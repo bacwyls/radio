@@ -4,8 +4,10 @@ import { radio } from "../../../../api";
 import { isPhone } from "../../../../util";
 import { isValidPatp } from 'urbit-ob'
 import { ViewersTabOption } from "../ViewersButton";
+import { MagnifyingGlass } from "phosphor-react";
+import { useAppSelector } from "../../../../app/hooks";
+import { selectIsDarkMode } from "../../../../features/ui/uiSlice";
 import './ViewersMenu.css';
-import { MdOutlineSearch } from "react-icons/md";
 
 interface IViewer {
     ship: string,
@@ -17,6 +19,7 @@ const Viewer = (props: IViewer) => {
     const { ship, index } = props;
 
     const [isFocused, setIsFocused] = useState(false);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const handleViewerClick = (ship) => {
         setIsFocused(true);
@@ -39,8 +42,9 @@ const Viewer = (props: IViewer) => {
         <div
             id={'viewer-' + ship}
             className={`flex  px-2 rounded-md
-                                    hover:bg-gray-100 justify-between py-1
-                        ${isFocused ? 'bg-gray-100 py-2 gap-1 items-center flex-wrap'
+                                     justify-between py-1
+                                    ${isDarkMode ? 'hover:bg-hover-gray-dark' : 'hover:bg-hover-gray-light'}
+                        ${isFocused ? (isDarkMode ? 'bg-hover-gray-dark py-2 gap-1 items-center flex-wrap' : 'bg-hover-gray-light py-2 gap-1 items-center flex-wrap')
                     : 'items-center '
                 } `}
             onClick={() => handleViewerClick(ship)}
@@ -73,10 +77,12 @@ const Viewer = (props: IViewer) => {
                     href={'/apps/landscape/~profile/' + ship}
                     target="_blank"
                 >
-                    <span className='cursor-pointer font-semibold
-                                    border border-gray-400 hover:border-black
+                    <span className={`cursor-pointer font-semibold
+                                    border border-gray-400
                                     hover:shadow h-4 w-10 flex items-center justify-center
-                                    rounded bg-white'
+                                    rounded bg-white text-black hover:font-bold 
+                                    ${isDarkMode ? 'hover:border-white-dark ' : 'hover:border-black'}
+                                    `}
                         style={{ fontSize: '.6rem' }}
                     >
                         profile
@@ -85,7 +91,7 @@ const Viewer = (props: IViewer) => {
                 <span className='cursor-pointer font-semibold
                                     border border-gray-400  hover:border-red-400
                                     hover:shadow  h-4 w-7 flex items-center justify-center 
-                                     rounded bg-white text-red-800'
+                                     rounded bg-white text-red-800  hover:font-bold'
                     style={{ fontSize: '.6rem' }}
                     onClick={() => radio.isAdmin() && radio.ban(ship)}
                 >
@@ -104,6 +110,7 @@ export const ViewersMenu = () => {
     const [openTab, setOpenTab] = useState<ViewersTabOption>('Viewers');
     const [viewersQuery, setViewersQuery] = useState('');
     const [queriedList, setQueriedList] = useState<string[]>(viewers.filter(x => x != radio.our));
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     function handleTabClick(option: ViewersTabOption) {
         setOpenTab(option);
@@ -133,16 +140,20 @@ export const ViewersMenu = () => {
 
     return (
         <div
-            className={` flex flex-col  border z-20 bg-white
+            className={` flex flex-col  border z-20 
+            ${isDarkMode ? 'bg-lighter-black text-white-dark border-light-border-dark' : 'bg-white '}
                    ${isPhone() ? 'viewers-menu-phone' : 'rounded viewers-menu'}
                     `}
         >
-            <div className='flex border-b-2 h-7 '>
+            <div className={`flex border-b h-7 
+            ${(isDarkMode ? 'border-light-border-dark ' : 'border-light-border-light')}
+            `}>
                 <button
-                    className={`w-1/2 border-b-2 py-2 
+                    className={`w-1/2  py-2 
                             flex justify-center items-center
                              ${openTab == 'Viewers' ?
-                            'border-black font-semibold'
+                            (isDarkMode ? 'border-white-dark border-b-2 font-semibold' :
+                                'border-black  border-b-2 font-semibold')
                             : 'border-transparent'
                         }
                       ` }
@@ -156,10 +167,10 @@ export const ViewersMenu = () => {
                     </span>
                 </button>
                 <button
-                    className={`w-1/2 border-b-2 
+                    className={`w-1/2 border-b
                     py-2 flex justify-center items-center
                         ${openTab == 'Banned'
-                            ? 'border-black font-semibold'
+                            ? (isDarkMode ? 'border-white-dark  border-b-2 font-semibold' : 'border-black  border-b-2 font-semibold')
                             : 'border-transparent'
                         } `}
                     style={{ marginBottom: '-0.1em' }}
@@ -179,13 +190,13 @@ export const ViewersMenu = () => {
                     className="flex mb-1 px-2 h-8 relative 
                                  items-center justify-between "
                 >
-                    <MdOutlineSearch className="absolute ml-2 font-base	" />
+                    <MagnifyingGlass className="absolute ml-2 text-black" size={20} weight="bold" />
                     < input
                         type="text"
-                        className=" pl-6 pb-0.5 inline-block 
-                   w-full  h-6 bg-gray-100 placeholder-black
-                   rounded 
-                   "
+                        className={` pl-6 pb-0.5 inline-block 
+                   w-full  h-6 bg-gray-100 placeholder-black text-black
+                   rounded ${isDarkMode ? 'outline-white-dark ' : ''}
+                   `}
                         style={{
                             fontSize: '.6rem'
                         }}

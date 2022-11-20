@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
-import { selectTowers } from "../../../features/station/stationSlice";
 import { NavItem } from "../NavItem/NavItem";
-import { isValidPatp } from 'urbit-ob'
-import { GrSatellite, GrSearch } from "react-icons/gr";
-import { reactRenderer, sigil } from "@tlon/sigil-js";
-import { MdOutlineDeviceHub, MdOutlineInfo, MdOutlineRadio } from "react-icons/md";
-import { GoRadioTower } from "react-icons/go";
 import { SearchStationRow } from "../SearchStationsRow/SearchStationRow";
 import { DiscoveryInfo } from "../DiscoveryInfo";
 import { ShortcutButtons } from "../ShortcutButtons/ShortcutButtons";
 import { isPhone } from "../../../util";
 import './style.css';
-import { selectIsLandscape } from "../../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape } from "../../../features/ui/uiSlice";
 
 interface INavigateStations {
 
@@ -27,6 +20,7 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
     const hardCodedTowers = ['~harlys-forbec', '~fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn', '~fidwed-sipwyn', '~tidreg', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec', '~fidwed-sipwyn', '~harlys-forbec',]
     const [queriedTowers, setqueriedTowers] = useState(hardCodedTowers);
     const isLandscape = useAppSelector(selectIsLandscape);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     // const [notFound, setNotFound] = useState(false);
 
@@ -51,7 +45,11 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
             <div
                 className={`${!isLandscape && isPhone() && 'join-station-phone-portrait'}
             `}>
-                <div className='text-base md:text-2xl w-full whitespace-nowrap font-bold tracking-tighter mb-1'>
+                <div
+                    className='text-base md:text-2xl w-full 
+                whitespace-nowrap font-bold tracking-tighter mb-1'
+                    style={{ color: `${isDarkMode ? 'rgb(253,253,253)' : ''}` }}
+                >
                     Join Station:
                 </div>
 
@@ -64,7 +62,8 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
 
             <div
                 className={` relative  px-2 sm:px-4 rounded 
-                    ${(isPhone() && !isLandscape) ? 'discovery-box-phone-portrait' : 'py-2 border  bg-white'}
+                    ${(isPhone() && !isLandscape) ? 'discovery-box-phone-portrait' : 'py-2 border '}
+                    ${isDarkMode ? 'bg-lighter-black border-lighter-border-dark' : 'bg-white '}
                 `}
             >
                 <div

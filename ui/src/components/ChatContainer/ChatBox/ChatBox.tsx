@@ -2,7 +2,7 @@ import { Question } from 'phosphor-react';
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
-import { selectIsChatFullScreen } from '../../../features/ui/uiSlice';
+import { selectIsChatFullScreen, selectIsDarkMode } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { Help } from '../Help/Help';
 import { ChatMessage } from '../ChatMessage';
@@ -26,6 +26,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
   const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel',]
 
   const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   useEffect(() => {
     scrollToBottom();
@@ -61,14 +62,19 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
                 `}
     >
       <div
-        className='font-extrabold flex items-center 
-                     z-10 '
-        style={{ height: '2rem', }}
+        className={`font-extrabold flex items-center 
+                     z-10
+                     ${isDarkMode ? 'text-white-dark' : ''}
+                     
+                     `}
+        style={{
+          height: '2rem',
+        }}
       >
         Chat <Help />
       </div>
       <div
-        className={`  w-full flex flex-col  bg-white
+        className={`  w-full flex flex-col  
                   ${isPhone() ? 'chatbox-phone' : 'chatbox'}
                   ${isChatFullScreen ? 'chatbox-full' : ''}
             `}
@@ -76,29 +82,30 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
           justifyContent: 'flex-end',
         }}
       >
-        <div
-          className={`overflow-y-auto
+        {chats && chats.length > 0 ?
+          <div
+            className={`overflow-y-auto
           `}
-          id={chatboxId}
-        >
-          {chats && chats.length > 0 ?
-            chats.map((x: any, i: any) =>
-              <ChatMessageMemo
-                key={generateUniqueKey(x, i)}
-                from={x.from}
-                message={x.message}
-                time={x.time}
-              />)
-            :
-            <div
-              className={`flex justify-center items-center '
-              ${isPhone() ? 'chatbox-phone' : 'chatbox'}
-              ${isChatFullScreen && 'chatbox-full'}
-              `}
-            >
-              There are no messages
-            </div>
-          }</div>
+            id={chatboxId}
+          >
+            {
+              chats.map((x: any, i: any) =>
+                <ChatMessageMemo
+                  key={generateUniqueKey(x, i)}
+                  from={x.from}
+                  message={x.message}
+                  time={x.time}
+                />)
+            }
+          </div>
+          :
+          <div
+            className={`flex justify-center items-center h-full w-full k '
+            `}
+          >
+            There are no messages
+          </div>
+        }
       </div >
     </div >
   );

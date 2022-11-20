@@ -4,13 +4,14 @@ import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Header } from "../../components/Header/Header";
 import { NavigateStations } from "../../components/Navigation/NavigateStations/NavigateStations";
-import { selectIsLandscape } from "../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape } from "../../features/ui/uiSlice";
 import { isPhone, tuneTo } from "../../util";
 import './style.css';
 
 export const Home: FC = () => {
     const dispatch = useAppDispatch();
     const isLandscape = useAppSelector(selectIsLandscape);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     useEffect(() => {
         tuneTo(null, radio, dispatch);
@@ -24,10 +25,9 @@ export const Home: FC = () => {
                     ?
                     'home-container-phone-portrait'
                     : 'home-container'}
+                    
+                    ${isDarkMode ? 'bg-default-bg-dark' : 'bg-default-bg-light'}
                     `}
-            style={{
-                backgroundColor: 'rgb(253, 253, 253)',
-            }}
         >
             <Header />
             <div

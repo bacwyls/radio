@@ -1,7 +1,8 @@
 .settings-menu{
     height: 6em;
+    width: 10em;
     flex-direction: column-reverse;
-    top: calc(25px + 2em);
+    top: calc(25px + 2em + 5px);
     right: 25px;
 }
 

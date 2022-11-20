@@ -1,5 +1,5 @@
+import { Chat } from "phosphor-react";
 import React, { FC } from "react"
-import { MdOutlineChat } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectIsChatFullScreen, setIsChatFullScreen } from "../../features/ui/uiSlice";
 
@@ -12,7 +12,9 @@ export const ChatButton: FC<IChatButton> = (props: IChatButton) => {
     const dispatch = useAppDispatch();
 
     return (
-        <MdOutlineChat
+        <Chat
+            size={32}
+            weight="bold"
             onClick={() => dispatch(setIsChatFullScreen(!isChatFullScreen))}
             className="text-base"
         />

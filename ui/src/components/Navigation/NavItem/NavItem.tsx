@@ -1,14 +1,12 @@
 import { reactRenderer, sigil } from '@tlon/sigil-js';
 import React, { FC } from 'react';
 import { isValidPatp } from 'urbit-ob'
-
-import { MdOutlineDeviceHub, MdOutlinePeopleAlt, MdOutlineRadio } from 'react-icons/md';
 import { isPhone, tuneTo } from '../../../util';
 import { radio } from '../../../api';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-import { selectIsLandscape } from '../../../features/ui/uiSlice';
+import { selectIsDarkMode, selectIsLandscape } from '../../../features/ui/uiSlice';
 import { Users } from 'phosphor-react';
 
 interface INavItem {
@@ -27,6 +25,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLandscape = useAppSelector(selectIsLandscape);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   const handleNavItemClick = () => {
     navigate('/station/' + patp)
@@ -44,22 +43,28 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         <span>logout</span>
       </button>
       : <button
-        className={`hover:border-2 border-2 border-white rounded  hover:border-black hover:shadow-md	
-                     border-gray-400 text-center inline-block px-3
-                      flex items-center   r gap-2
+        className={`  rounded  hover:shadow-md	
+                      text-center inline-block px-3
+                      flex items-center  gap-2
                      relative overflow-hidden 
                      ${(isPhone() && !isLandscape) ? 'nav-item-phone-portrait' : 'nav-item'}
+                     ${isDarkMode ? 'hover:border-white border-transparent hover:border-4 border-4 ' : 'border-transparent	hover:border-black hover:border-2 border-2'}
                      `}
         style={{
           whiteSpace: 'nowrap',
-          backgroundColor: '#DAE4F0',
-          width: '12rem',
+          backgroundColor: 'rgb(218,228,240)',
+          width: 'calc(50% - 0.5rem)',
           height: '4em',
         }}
         onClick={handleNavItemClick}
       >
         {(patp && isValidPatp(patp) && patp.length <= 14) &&
-          <span className='bg-black py-1.5 px-2   rounded border-2 border-white'>
+          <span
+            className='bg-black py-1.5 px-2 rounded border-2 '
+            style={{
+              borderColor: isDarkMode ? 'rgb(218,228,240)' : 'white',
+            }}
+          >
             {
               sigil({
                 patp: patp,

@@ -1,9 +1,9 @@
 import { Users } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import { useMobileOrientation } from 'react-device-detect';
-import { MdOutlinePeopleAlt } from 'react-icons/md';
 import { useAppSelector } from '../../../app/hooks';
 import { selectTunePatP, selectViewers } from '../../../features/station/stationSlice';
+import { selectIsDarkMode } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { ViewersMenu } from './ViewersMenu/ViewersMenu';
 
@@ -15,6 +15,7 @@ export const ViewersButton = () => {
     const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~zod']
     const [viewersMenuOpen, setViewersMenuOpen] = useState(false);
     const tunePatP = useAppSelector(selectTunePatP);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const viewersMenuId = 'viewers-menu';
 
@@ -39,13 +40,18 @@ export const ViewersButton = () => {
     }
 
     return (
-        <div id='viewers-menu'>
-            <div className={`flex cursor-pointer items-center tracking-wide hover:bg-gray-100	z-0 rounded  font-bold 	
-            ${tunePatP && tunePatP.length > 14 && 'justify-center'}          
+        <div id='viewers-menu' className='w-max	ml-0.5'>
+            <div
+
+                className={`px-0.5 flex cursor-pointer items-center tracking-wide 	z-0 rounded  font-bold 	
+            ${tunePatP && tunePatP.length > 14 && 'justify-center'}   
+            ${isDarkMode ? 'hover:bg-hover-gray-dark text-gray-dark' : 'hover:bg-hover-gray-light text-gray-light'}
           `}
+
                 onClick={() => setViewersMenuOpen((previous) => !previous)}
                 style={{
-                    fontSize: '.6rem', color: 'rgba(0,0,0,0.5)',
+                    fontSize: '.6rem',
+                    lineHeight: '.3rem',
                 }}
             >
                 <Users

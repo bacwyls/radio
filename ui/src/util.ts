@@ -186,8 +186,8 @@ export function tuneTo(patp: string | null, radio: Radio, dispatch) {
     dispatch(setHasPublishedStation(false));
   }
   radio.tunedTo = null;
-
   dispatch(setTunePatP(patp ? patp + ' (loading...)' : ''));
+
 }
 
 // parse from user input
@@ -221,9 +221,12 @@ export const timestampFromTime = (time: string) => {
 
   // if the msg is older than 12 hours and from a different day
   let today = new Date();
-  const oneDayOld = today.getDate() != (+localDay) && today.getMonth() != (+localMonth);
+  const oneDayOld = today.getDate() != (+localDay) || today.getMonth() != (+localMonth);
   const hoursSince = (today.getHours() + (24 - (+localHours)));
   const olderMessage = oneDayOld && (hoursSince >= 12);
+  console.log(today.getDate(), (+localDay), today.getMonth(), (+localMonth))
+  console.log(date)
+  console.log(oneDayOld);
 
   return olderMessage
     ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`

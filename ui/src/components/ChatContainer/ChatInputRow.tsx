@@ -1,9 +1,9 @@
+import { ArrowLeft } from "phosphor-react";
 import React, { FC, useEffect, useRef } from "react";
-import { MdOutlineArrowBack } from "react-icons/md";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
-import { selectIsChatFullScreen, setIsChatFullScreen, setPlayerInSync } from "../../features/ui/uiSlice";
+import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen, setPlayerInSync } from "../../features/ui/uiSlice";
 import { isPhone, tuneTo } from "../../util";
 
 interface IChatInputRow {
@@ -21,6 +21,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
     const inputReference = useRef<HTMLInputElement>(null);
 
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     // useEffect(() => {
     //     if (!inputReference) return;
@@ -126,19 +127,21 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
             }}
         >
             {isPhone() && isChatFullScreen &&
-                <MdOutlineArrowBack
-                    className="text-2xl mr-1 cursor:pointer flex justify-items-start"
-                    onClick={() => dispatch(setIsChatFullScreen(false))}
-                />}
+                <ArrowLeft
+                    size={32}
+                    weight="bold"
+                    className="mr-1 cursor:pointer flex justify-items-start"
+                    onClick={() => dispatch(setIsChatFullScreen(false))} />
+            }
             <input
                 type="text"
                 ref={inputReference}
-                className="px-2 flex items-center 
+                className={`px-2 flex items-center 
                     w-3/4   hover:border-black
-                     bg-gray-100 h-6
-                    rounded focus:bg-white placeholder-black
-                    font-bold
-                    "
+                     bg-gray-200 h-6
+                    rounded focus:bg-white 
+                    font-bold placeholder-black
+                    `}
                 style={{
                     fontSize: '.6rem',
                 }}
@@ -162,6 +165,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 style={{
                     fontSize: '.6rem',
                     backgroundColor: '#EFF6FF',
+
                 }}
                 onClick={() =>
                     handleUserInput()
