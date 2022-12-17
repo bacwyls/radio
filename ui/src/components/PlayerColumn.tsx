@@ -53,8 +53,8 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
     let globalProgress = Math.ceil(currentUnixTime - spinTime);
 
     globalProgress = globalProgress % duration
-    
-  
+
+
     let outOfSync = Math.abs(localProgress - globalProgress)
 
     // stupid way to detect livestreams
@@ -75,10 +75,10 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
     }
   }
 
-  const buttonRow = 
+  const buttonRow =
     <div style={{ display: 'flex', marginLeft: 'auto' }}>
-      {!playerInSync && 
-        <div> 
+      {!playerInSync &&
+        <div>
           <button
             className={`hover:pointer px-4 py-2 \
                       flex-initial outline-none \
@@ -91,7 +91,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
           >
             resync
           </button>
-          {tunePatP === props.our && 
+          {tunePatP === props.our &&
             <button
               className={`hover:pointer px-4 py-2 \
                         flex-initial outline-none \
@@ -127,8 +127,8 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
       }
     </div>;
 
-  const viewersCountLabel = 
-    <p 
+  const viewersCountLabel =
+    <p
       className='mt-2'
       style={{ paddingTop: isMobile ? '0.25rem' : 'inherit' }}
     >
@@ -140,7 +140,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
       </p>;
 
   return(
-    <div 
+    <div
       className={isMobile ? '' : 'inline-block mr-4 w-2/3'}
       id='player-wrapper'
     >
@@ -184,7 +184,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                 </div>
               : viewersCountLabel
             }
-            <div 
+            <div
               style={
                 isMobile
                   ? {
@@ -195,7 +195,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                   : { overflowX: 'inherit' }
               }
             >
-              {viewers.map((x, i) => 
+              {viewers.map((x, i) =>
                 <span
                   className='mr-3'
                   key={i}
