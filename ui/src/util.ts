@@ -6,6 +6,7 @@ import {
   setSpinTime,
   setTunePatP,
   setIsPublic,
+  setHasPublishedStation,
   setViewers,
   resetChats,
   setChatsWithChatlog,
@@ -64,6 +65,9 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       break;
     case 'public':
       dispatch(setIsPublic(update['public']))
+      break;
+    case 'publish':
+      dispatch(setHasPublishedStation(update['published']))
       break;
     case 'chatlog':
       let chatlog = update['chatlog']
@@ -183,6 +187,7 @@ export function handleUserInput(
       }
       radio.gregPut(arg);
       radio.chat(chat);
+      dispatch(setHasPublishedStation(true));
       // refresh towers
       radio.gregRequest();
     //

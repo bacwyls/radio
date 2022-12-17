@@ -26,15 +26,14 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
       : <button
           className="hover:pointer border-black  \
                     border px-1 text-left inline-block \
+                    flex flex-col
                     flex-initial mr-2 my-1"
           style={{ whiteSpace:'nowrap' }}
           onClick={() => tuneTo(patp)}
         >
-          <span>
-            {flare && `${flare} `}
-            {title ? title : patp}
-            {description && ` | ${description}`}
-          </span>
+          <div>{title ? title : patp}</div>
+          <div>{description && `${description}`}</div>
+          <div>{flare && `${flare} viewer${flare!=='1' ? 's' : ''}`}</div>
         </button>
   );
 };

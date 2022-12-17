@@ -14,6 +14,7 @@ export interface StationState {
   tunePatP: string;
   radioSub: number;
   isPublic: boolean;
+  hasPublishedStation: boolean;
   viewers: string[];
   chats: ChatMessage[];
   update: any;
@@ -26,6 +27,7 @@ const initialState: StationState = {
   tunePatP: '',
   radioSub: 0,
   isPublic: false,
+  hasPublishedStation: false,
   viewers: Array<string>(),
   chats: Array<ChatMessage>(),
   update: Object()
@@ -71,6 +73,12 @@ export const stationSlice = createSlice({
         isPublic: action.payload
       }
     },
+    setHasPublishedStation: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        hasPublishedStation: action.payload
+      }
+    },
     setViewers: (state, action: PayloadAction<string[]>) => {
       return {
         ...state,
@@ -110,13 +118,14 @@ export const stationSlice = createSlice({
   }
 });
 
-export const { 
+export const {
   setTalkMsg,
   setSpinUrl,
   setSpinTime,
   setTunePatP,
   setRadioSub,
   setIsPublic,
+  setHasPublishedStation,
   setViewers,
   resetChats,
   setChatsWithChatlog,
@@ -131,6 +140,7 @@ export const selectSpinTime = (state: RootState) => state.station.spinTime;
 export const selectTunePatP = (state: RootState) => state.station.tunePatP;
 export const selectRadioSub = (state: RootState) => state.station.radioSub;
 export const selectIsPublic = (state: RootState) => state.station.isPublic;
+export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
 export const selectUpdate = (state: RootState) => state.station.update;

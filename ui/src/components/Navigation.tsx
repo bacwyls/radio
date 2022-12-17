@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { NavItem } from './NavItem';
-import { selectTunePatP, selectIsPublic, } from '../features/station/stationSlice';
+import { selectTunePatP, selectIsPublic, selectHasPublishedStation, setHasPublishedStation } from '../features/station/stationSlice';
 import { setNavigationOpen, selectNavigationOpen } from '../features/ui/uiSlice';
 import { Radio } from '../lib';
 
@@ -24,12 +24,12 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
 
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);
+  const hasPublishedStation = useAppSelector(selectHasPublishedStation);
   const navigationOpen = useAppSelector(selectNavigationOpen);
   const dispatch = useAppDispatch();
 
   const [towers, setTowers] = useState<Array<IMinitower>>([])
   const [ourTower, setOurTower] = useState<IMinitower>();
-  const [hasPublishedStation, setHasPublishedStation] = useState(false);
 
   useEffect(()=>{
     radio.api
@@ -99,7 +99,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           <div>
             <div
               className='flex flex-col bg-white border border-black absolute \
-                        p-2 mt-1 overflow-scroll \
+                        p-2 mt-1 overflow-scroll w-1/2 \
                         items-start'
             >
               {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
@@ -110,7 +110,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                             flex-initial mr-2 my-1"
                   style={{ whiteSpace:'nowrap' }}
                   onClick={() => {
-                    setHasPublishedStation(true);
+                    dispatch(setHasPublishedStation(true))
                     radio.gregRequest();
                   }}
                 >
