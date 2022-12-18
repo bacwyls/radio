@@ -99,7 +99,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           <div>
             <div
               className='flex flex-col bg-white border border-black absolute \
-                        p-2 mt-1 overflow-scroll w-1/2 \
+                        p-2 mt-1 overflow-scroll \
                         items-start'
             >
               {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
