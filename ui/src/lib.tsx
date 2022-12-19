@@ -41,12 +41,12 @@ export class Radio {
         // no funny numbers
         // started time is a unix timestamp
         if (startedTime === 0) return;
-    
+
         if (!this.player) {
             console.log('player is not defined :(')
             return;
         }
-    
+
         var currentUnixTime = Date.now() / 1000;
         var duration = this.player.getDuration();
 
@@ -55,7 +55,7 @@ export class Radio {
 
         let globalProgress = Math.ceil(currentUnixTime - startedTime) % duration;
 
-        
+
         console.log('seeking to :', globalProgress)
         this.player.seekTo(globalProgress, 'seconds');
 
@@ -65,7 +65,7 @@ export class Radio {
         let time = this.player.getCurrentTime();
         if (!time) return;
         if (!url) return;
-    
+
         if (this.tunedTo !== this.our) {
           return;
         }
@@ -88,8 +88,8 @@ export class Radio {
     public isAdmin() {
         return this.tunedTo === this.our;
     }
-   
-    
+
+
     // api hits
     public chat(chat:string) {
         this.api.poke({
@@ -99,7 +99,7 @@ export class Radio {
                          'from':this.our,
                          'message':chat,
                          'time':0,
-                         } 
+                         }
                 }
          });
     }
@@ -220,7 +220,7 @@ export class Radio {
         if (!img) return;
         this.chat(img);
     }
-    
+
     public imgUrls = {
         'datboi': 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
         'pepe': 'https://i.imgur.com/IGaYzV6.gif',
@@ -231,7 +231,7 @@ export class Radio {
         'fortnite': 'https://0x0.st/otwj.gif',
         'bong': 'https://0x0.st/otw2.gif',
         'hoon': 'https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif',
-        'band': 'https://0x0.st/otwe.gif', 
+        'band': 'https://0x0.st/otwe.gif',
         'cozy': 'https://media.tenor.com/L8uQHgpI1aYAAAAC/reikouwu2.gif',
         'war':'https://media.tenor.com/Vc3qJRBT_AUAAAAM/alex-jones.gif',
         'retard':'https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif',
@@ -254,13 +254,13 @@ export class Radio {
     // util
     public isValidHttpUrl(string : string) {
         let url;
-        
+
         try {
           url = new URL(string);
         } catch (_) {
-          return false;  
+          return false;
         }
-      
+
         return url.protocol === "http:" || url.protocol === "https:";
       }
 }
