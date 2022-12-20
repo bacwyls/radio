@@ -1,9 +1,8 @@
 .settings-menu{
-    height: 6em;
-    width: 10em;
-    flex-direction: column-reverse;
-    top: calc(25px + 2em + 5px);
-    right: 25px;
+    height: 32em;
+    width: 24em;
+    left: 24px;
+    bottom: 80px;
 }
 
 .settings-menu-phone{
@@ -13,3 +12,8 @@
     width: 9em;
     flex-direction: column-reverse;
 }
+
+
+  input[type="radio"] {
+   filter: grayscale(0.6);
+  }

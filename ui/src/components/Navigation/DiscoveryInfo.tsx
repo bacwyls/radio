@@ -32,45 +32,34 @@ export const DiscoveryInfo = () => {
         <div
             id="discovery-info"
         >
-            <div
-                className={`flex items-center  h-6 
-                ${isDarkMode ? 'text-white-dark' : ''}
-                `}
-                style={{ fontSize: '.8rem' }}
+            <button
+                className={`cursor-pointer rounded p-1  mt-0.5  
+                    ${showDiscoveryInfo ? (isDarkMode ? 'bg-black-80' : ' bg-black-5') : ''}
+                    ${isDarkMode ? ' hover:bg-black-80' : ' hover:bg-black-10'}
+                    `}
+                onClick={() => setShowDiscoveryInfo(prev => !prev)}
             >
-                <span
-                    className={`h-full flex items-center whitespace-nowrap font-bold
-                       
-                    `}
-                > Discovery
-                </span>
-                <button
-                    className={`cursor-pointer rounded p-1
-                    ${showDiscoveryInfo ? (isDarkMode ? 'bg-hover-gray-dark' : ' bg-hover-gray-light') : ''}
-                    ${isDarkMode ? ' hover:bg-hover-gray-dark' : ' hover:bg-hover-gray-light'}
-                    `}
-                    onClick={() => setShowDiscoveryInfo(prev => !prev)}
-
-                >
-                    <Question
-                        size={22}
-                        weight="bold"
-                    />
-                </button>
-            </div>
-            {showDiscoveryInfo && <div
-                className={`border bg-white z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 
-                            rounded shadow absolute text-xs leading-4
-                            ${isDarkMode ? 'text-white-dark bg-lighter-black border-light-border-dark' : ''}
+                <Question
+                    size={22}
+                    weight="bold"
+                />
+            </button>
+            {
+                showDiscoveryInfo && <div
+                    className={`border z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 
+                            rounded shadow absolute  leading-4 font-bold    
+                            ${isDarkMode ? ' bg-black-90 border-black-85' : ' bg-white '}
                             `}
-                style={{
-                    left: 0,
-                    top: 0,
-                    width: '15em',
-                }}
-            >
-                Published stations with the most viewers will appear here.
-            </div>}
+                    style={{
+                        left: 0,
+                        top: 0,
+                        width: '20em',
+                        fontSize: '18px'
+                    }}
+                >
+                    Published stations with the most viewers will appear here.
+                </div>
+            }
         </div >
 
     )

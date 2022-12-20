@@ -28,7 +28,7 @@ export class Radio {
     //
     tunedTo!: string | null;
 
-    hub: string = '~nodmyn-dosrux';
+    hub: string = '~zod';
 
     constructor(our: string, api: Urbit) {
         this.our = our;
@@ -81,6 +81,26 @@ export class Radio {
 
     public isAdmin() {
         return this.tunedTo === this.our;
+    }
+
+    public stop() {
+        this.api.poke({
+            app: 'tower',
+            mark: 'radio-action',
+            json: {
+                'online': false,
+            }
+        });
+    }
+
+    public start() {
+        this.api.poke({
+            app: 'tower',
+            mark: 'radio-action',
+            json: {
+                'online': true,
+            }
+        });
     }
 
 
@@ -198,7 +218,7 @@ export class Radio {
         });
     }
 
-    public gregPut(description: string) {
+    public gregPut(description: string, isPublic: boolean) {
         this.api.poke({
             app: 'tower',
             mark: 'greg-event',
@@ -208,6 +228,7 @@ export class Radio {
                     location: this.our,
                     time: 0,
                     viewers: 0,
+                    public: isPublic,
                 }
             }
         });

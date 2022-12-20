@@ -1,3 +1,10 @@
+@media (min-width: 1200px){
+    .chat-container{
+        width: 25vw;
+    }
+
+}
+
 .chat-container-full{
     position: fixed;
     top: 0;
@@ -9,4 +16,15 @@
 
 .chat-container-phone-landscape{
     display: none !important;
+}
+
+@media (max-width: 1199px){
+
+    .chat-container{
+        @apply  rounded-md;
+        margin: 0 24px;
+        width: calc(100vw - 48px);
+        height: calc(40vh - 24px);
+        max-height: 40vh;   
+    }
 }

@@ -1,11 +1,10 @@
 .viewers-menu {
-    height: calc(100% - 3.05em - 70px - 25px);
-    width: 27vw;
-    min-width: 18em;
-    top: 4.4em;
-    right: 24px;
+    height: calc(100vh - 6px);
+    width: calc(25vw);
+    top: calc(63px);
+    right: 0px;
     position: fixed;
-    boxShadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .viewers-menu-phone {

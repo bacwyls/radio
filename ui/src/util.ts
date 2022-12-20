@@ -9,15 +9,18 @@ import {
   resetChats,
   setChatsWithChatlog,
   setChatsWithChat,
-  setHasPublishedStation
+  setHasPublishedStation,
+  setBanned
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
   setPlayerReady,
-  setPlayerInSync
+  setPlayerInSync,
+  setIsConnecting
 } from './features/ui/uiSlice';
 import { browserName, isMobile, isTablet, osName, useDeviceData, useMobileOrientation } from 'react-device-detect';
 import { isValidPatp } from 'urbit-ob'
+import { radio } from './api';
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any) {
   console.log("radio update", update);
@@ -43,6 +46,7 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any) {
     case 'tune':
       let tune = update['tune'];
       dispatch(setTunePatP(tune));
+      dispatch(setIsConnecting(false));
       radio.tunedTo = tune;
       if (tune === null) {
         resetPage(dispatch);
@@ -65,6 +69,9 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any) {
     case 'chatlog':
       let chatlog = update['chatlog']
       dispatch(setChatsWithChatlog(chatlog));
+    case 'banned':
+      dispatch(setBanned(update['banned']));
+      break;
   }
 };
 
@@ -77,18 +84,11 @@ export function resetPage(dispatch: any) {
 }
 
 export function handleUserInput(
-  radio: Radio,
-  tuneTo: (patp: string | null) => void,
   dispatch: any,
-  chatInputId: string,
+  chat: string,
   spinTime: number,
   spinUrl: string,
-  our: string
 ) {
-  let input = document.getElementById(chatInputId) as HTMLInputElement;
-
-  let chat = input.value;
-  input.value = '';
 
   if (chat === '') return;
 
@@ -113,13 +113,13 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'tune':
-      if (arg === '') arg = our;
+      if (arg === '') arg = radio.our;
       radio.chat(chat);
       if (isValidPatp(arg)) {
-        tuneTo(arg);
+        tuneTo(arg, radio, dispatch);
       }
       else if (isValidPatp('~' + arg)) {
-        tuneTo('~' + arg);
+        tuneTo('~' + arg, radio, dispatch);
       }
       break;
     case 'time':
@@ -187,11 +187,11 @@ export function tuneTo(patp: string | null, radio: Radio, dispatch) {
   }
   radio.tunedTo = null;
   dispatch(setTunePatP(patp ? patp + ' (loading...)' : ''));
-
+  dispatch(setIsConnecting(true));
 }
 
 // parse from user input
-function getCommandArg(chat: string) {
+export function getCommandArg(chat: string) {
   // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
   if (!(chat[0] === '!')) return;
 
@@ -224,9 +224,6 @@ export const timestampFromTime = (time: string) => {
   const oneDayOld = today.getDate() != (+localDay) || today.getMonth() != (+localMonth);
   const hoursSince = (today.getHours() + (24 - (+localHours)));
   const olderMessage = oneDayOld && (hoursSince >= 12);
-  console.log(today.getDate(), (+localDay), today.getMonth(), (+localMonth))
-  console.log(date)
-  console.log(oneDayOld);
 
   return olderMessage
     ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`
@@ -236,8 +233,4 @@ export const timestampFromTime = (time: string) => {
 export const isPhone = () => {
   return (isMobile && !isTablet);
 }
-
-// export const isLandscape = () => {
-//   return window.matchMedia('(orientation:landscape)').matches;
-// }
 

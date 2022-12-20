@@ -1,10 +1,10 @@
 import { ArrowLeft } from "phosphor-react";
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
 import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen, setPlayerInSync } from "../../features/ui/uiSlice";
-import { isPhone, tuneTo } from "../../util";
+import { handleUserInput, isPhone, tuneTo } from "../../util";
 
 interface IChatInputRow {
 }
@@ -17,93 +17,11 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
 
     const spinUrl = useAppSelector(selectSpinUrl);
     const spinTime = useAppSelector(selectSpinTime);
-
-    const inputReference = useRef<HTMLInputElement>(null);
-
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
     const isDarkMode = useAppSelector(selectIsDarkMode);
+    // const inputReference = useRef<HTMLInputElement>(null);
 
-    // useEffect(() => {
-    //     if (!inputReference) return;
-    //     if (!inputReference.current) return;
-    //     window.setTimeout(() => {
-    //         // use a slight delay for better UX
-    //         // @ts-ignore
-    //         inputReference.current.focus();
-    //     }, 250);
-    // }, []);
-
-    function handleUserInput() {
-        let input = document.getElementById(chatInputId) as HTMLInputElement;
-
-        let chat = input.value;
-        input.value = '';
-
-        if (chat === '') return;
-
-        // check for commands
-        let got = getCommandArg(chat);
-        if (!got) {
-            // just a regular chat message
-            radio.chat(chat);
-            return;
-        }
-
-        // interpreting message as a command
-        let command = got.command;
-        let arg = got.arg;
-        switch (command) {
-            case 'talk':
-                radio.chat(chat);
-                radio.talk(arg);
-                break;
-            case 'play':
-                radio.spin(arg);
-                radio.chat(chat);
-                break;
-            case 'tune':
-                if (arg === '') arg = radio.our;
-                radio.chat(chat);
-                tuneTo(arg, radio, dispatch)
-                break;
-            case 'time':
-                dispatch(setPlayerInSync(true));
-                radio.seekToDelta(spinTime);
-                radio.chat(chat);
-                break;
-            case 'set-time':
-                radio.resyncAll(spinUrl);
-                radio.chat(chat);
-                break;
-            case 'public':
-                if (radio.tunedTo !== radio.our) {
-                    return;
-                }
-                radio.public();
-                radio.chat(chat);
-                break;
-            case 'private':
-                if (radio.tunedTo !== radio.our) {
-                    return;
-                }
-                radio.private();
-                radio.chat(chat);
-                break;
-            case 'ping':
-                radio.ping();
-                // radio.chat(chat);
-                break;
-            case 'logout':
-                radio.tune(null);
-                break;
-            //
-            // image commands
-            default:
-                radio.chatImage(command);
-                break;
-            //
-        }
-    }
+    const [inputText, setInputText] = useState('');
 
     // parse from user input
     function getCommandArg(chat: string) {
@@ -117,13 +35,25 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
         return { 'command': command, 'arg': arg };
     }
 
+    function processInput() {
+        handleUserInput(
+            dispatch,
+            inputText,
+            spinTime,
+            spinUrl,
+        );
+        setInputText('');
+    }
+
+
     return (
         <div
-            className={`flex items-end  w-full
-                    ${isPhone() && 'fixed bottom-0 z-10'}
+            className={`flex items-start  w-full
+                    // ${isPhone() && 'fixed bottom-0 z-10'}
                 `}
             style={{
-                height: '1.5rem'
+                padding: '0 24px 0 24px',
+                height: '88px',
             }}
         >
             {isPhone() && isChatFullScreen &&
@@ -135,40 +65,47 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
             }
             <input
                 type="text"
-                ref={inputReference}
-                className={`px-2 flex items-center 
-                    w-3/4   hover:border-black
-                     bg-gray-200 h-6
-                    rounded focus:bg-white 
-                    font-bold placeholder-black
+                // ref={inputReference}
+                className={`px-2 flex items-center mt-2 w-full   
+                      border  rounded-md  outline-none focus:shadow
+                    font-bold 
+                    ${isDarkMode ? 'bg-black-70 focus:bg-black-80 border-black-70  text-black-1 placeholder-white' : ' text-black-80  bg-black-10 border-black-10 placeholder-black-80 focus:bg-black-1'}
+
                     `}
                 style={{
+                    height: '40px',
                     fontSize: '.6rem',
+                    paddingRight: '6.4em'
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
                 autoComplete={'off'}
-                // autoFocus={false}
                 placeholder="Message"
                 id={chatInputId}
                 onKeyDown={(e: any) => {
                     if (e.key == 'Enter') {
-                        handleUserInput();
+                        processInput();
                     }
                 }}
+                value={inputText}
+                onChange={e => setInputText(e.target.value)}
             />
             < button
-                className="bg-white rounded w-1/4 
-                           flex-initial outline-none flex font-bold hover:border-black 
-                            rounded     
-                             justify-center items-center ml-2 bg-blue-50 h-6"
+                className={`bg-white rounded mt-2
+                           flex-initial outline-none flex font-bold 
+                            rounded-md 
+                             justify-center items-center  
+                             ${isDarkMode ? 'text-black-90' : '  text-white '}
+                             ${inputText.trim().length > 0 ? 'hover:shadow bg-blue-90   ' : 'cursor-not-allowed	bg-blue-50 text-opacity-50 '} 
+                             `}
                 style={{
                     fontSize: '.6rem',
-                    backgroundColor: '#EFF6FF',
-
+                    width: '6em',
+                    height: '40px',
+                    marginLeft: '-6em',
                 }}
                 onClick={() =>
-                    handleUserInput()
+                    processInput()
                 }
             >
                 Send

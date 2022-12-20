@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { useMobileOrientation } from "react-device-detect";
 import ReactPlayer from "react-player";
+import Snowfall from "react-snowfall";
 import { radio } from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../../features/station/stationSlice";
-import { selectIsLandscape, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
+import { PlayerLoadingAnimation } from "../PlayerLoadingAnimation/PlayerLoadingAnimation";
 import './Player.css';
 
 interface IPlayer {
@@ -20,6 +22,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
     const spinUrl = useAppSelector(selectSpinUrl);
     const spinTime = useAppSelector(selectSpinTime);
     const isLandscape = useAppSelector(selectIsLandscape);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const dispatch = useAppDispatch();
 
@@ -64,10 +67,20 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     }}
         >
             {!playerReady &&
-                <p className="text-center absolute 
-                            left-1/2 -translate-x-1/2">
-                    loading media player...
-                </p>
+                <div
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: isDarkMode ? '#4A4948' : '#D2D1D1',
+                        borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                    }}
+                >
+                    <span className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+                        <PlayerLoadingAnimation />
+                    </span>
+                </div>
             }
             <ReactPlayer
                 ref={radio.playerRef}
@@ -80,11 +93,13 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                 onReady={() => dispatch(setPlayerReady(true))}
                 // onSeek={e => console.log('onSeek', e)}
                 onProgress={e => handleProgress(e)}
+
                 style={{
-                    backgroundColor: 'lightgray',
-                    borderRadius: `${isPhone() ? '0' : '0.25rem'}`,
+                    backgroundColor: isDarkMode ? '#3F3D3C' : '#D2D1D1',
+                    borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     overflow: 'hidden',
                     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                    visibility: playerReady ? 'visible' : 'hidden',
                 }}
                 config={{
                     file: {
@@ -93,6 +108,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     },
                 }}
             />
+
         </div >
     )
 }

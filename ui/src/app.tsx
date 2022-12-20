@@ -33,11 +33,6 @@ export function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setInterval(() => {
-      // heartbeat to detect presence
-      radio.ping();
-    }, 1000 * 60 * 3)
-
     radio.api
       .subscribe({
         app: "tower",
@@ -132,7 +127,7 @@ export function App() {
   }, [update]);
 
   return (
-    < BrowserRouter basename='/apps/radio' >
+    < BrowserRouter basename='/apps/radio/' >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/station/:patp" element={<Station />} />

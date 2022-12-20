@@ -1,5 +1,5 @@
 .chatbox-container{
-    --height: calc(100% - 2rem);
+    --height: calc(100vh - 80px);
     height: var(--height);
 }
 
@@ -20,7 +20,7 @@
 }
 
 .chatbox{
-    height: calc(100% - 2rem);
+    height: calc(100vh - 64px - 80px);
     width: 100%;
 }
 
@@ -39,14 +39,15 @@
     position: fixed;
 }
 
-@media (max-width: 1023px){
+@media (max-width: 1199px){
 
     .chatbox-container{
-        --height: 36vh;
-        height: var(--height);
+        /* --height: 36vh; */
+        /* height: var(--height); */
+        height: 100%;
     }    
 
     .chatbox {
-        height: calc(100% - 3em);
+        height: calc(100% - 64px);
     }
 }

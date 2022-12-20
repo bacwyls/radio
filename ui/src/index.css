@@ -1,13 +1,24 @@
+@font-face {
+    font-family: 'Inter';
+    font-weight: 100 1000;
+    font-stretch: 0% 200%;
+    font-style: normal;
+    src: local('Inter'), url(./assets/fonts/Inter-VariableFont_slnt,wght.ttf) format('truetype');
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* *{
-    -ms-overflow-style: none;
-}
-::-webkit-scrollbar {
-    display: none;
-} */
 
 html{
-    font-size: 25px;
+    font-size: 24px;
+}
+
+* {
+       box-sizing: border-box;
+}
+
+body{
+    overflow: hidden;
 }

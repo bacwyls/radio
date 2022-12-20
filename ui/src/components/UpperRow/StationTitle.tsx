@@ -1,14 +1,49 @@
 import { reactRenderer, sigil } from '@tlon/sigil-js';
 import { Radio, Television, Users } from 'phosphor-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { FC } from 'react';
 import { isValidPatp } from 'urbit-ob'
 import { radio } from '../../api';
 import { useAppSelector } from '../../app/hooks';
 import { selectIsPublic, selectTunePatP } from '../../features/station/stationSlice';
 import { selectIsDarkMode } from '../../features/ui/uiSlice';
-import { ViewersButton } from './Viewers/ViewersButton';
-import { SettingsMenu } from './SettingsMenu/SettingsMenu';
+
+const IsPublicInfo = () => {
+    const [showInfo, setShowInfo] = useState(false);
+    const isPublic = useAppSelector(selectIsPublic);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
+
+    return (
+        <span className={`flex items-center justify-center rounded-full
+        ml-1 font-bold text-black-90 h-4 relative
+        ${isDarkMode ? 'bg-blue-50' : 'bg-blue-70'}
+        `}
+            style={{
+                fontSize: '14px',
+                padding: '0 .6em'
+            }}
+            onMouseEnter={() => setShowInfo(true)}
+            onMouseLeave={() => setShowInfo(false)}
+        >
+            {isPublic ? 'Public' : 'Private'}
+            {showInfo &&
+                <div
+                    className={`absolute top-5 left-0 shadow py-2 px-3
+                      rounded h-12 font-semibold   flex items-center border
+                      ${isDarkMode ? ' bg-black-90 border-black-85 text-black-10' : ' bg-white text-black-80 border-black-10'}
+
+                      `}
+                    style={{ width: '21.4em', fontSize: '16px', lineHeight: '18px', zIndex: 2 }}
+
+                >
+                    {isPublic ? 'This station is public and everybody can use DJ commands (Play & Talk).'
+                        :
+                        'This station is private and only the host can use DJ commands (Play & Talk).'
+                    }
+                </div>}
+        </span>
+    )
+}
 
 interface IStationTitle {
 }
@@ -19,120 +54,84 @@ export const StationTitle: FC<IStationTitle> = (props: IStationTitle) => {
     // const viewers = useAppSelector(selectViewers);
     const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~zod'];
     const isDarkMode = useAppSelector(selectIsDarkMode);
-    const isPublic = useAppSelector(selectIsPublic);
 
     return (
-
-        // tunePatP && tunePatP == '~nodmyn-dosrux' ?
-        //     <div className='flex flex-col'
-        //         style={{
-        //             height: '2em', lineHeight: '.6rem',
-        //         }}
-        //     >
-        //         <div className={`flex items-center font-bold
-        //         ${isDarkMode ? 'text-white-dark' : 'text-black'}
-        //     `}
-        //             style={{
-        //             }}
-        //         >
-        //             <Television size={26} weight="bold" className='mr-1 ' />
-        //             Hub
-
-        //         </div>
-        //     </div>
-
-        //     :
-        tunePatP ?
-            <div
-                className='flex items-start '
-                style={{ height: '2.5em' }}
-            >
-                {tunePatP == radio.hub &&
+        <div
+            className={`flex items-center  
+            ${isDarkMode ? 'text-black-10' : 'text-black-80'}
+            `}
+        >
+            {tunePatP == radio.hub &&
+                <>
                     <span
-                        className={`rounded flex items-center  px-2  py-1  ${isDarkMode ? 'bg-white-dark  ' : ' bg-gray-200 '}`}
+                        className={`rounded flex items-center justify-center    
+                               ${isDarkMode ? 'bg-black-70 text-black-1' : ' bg-black-80 text-white'}`}
+                        style={{ minHeight: '40px', minWidth: '40px' }}
                     >
                         <Television
-                            size={30}
+                            size={25}
                             weight="bold"
-                            className={` ${isDarkMode ? 'text-black' : ''}`}
                         />
                     </span>
-                }
-                {tunePatP == radio.our &&
-                    <span
-                        className={`rounded flex items-center px-2 py-1   ${isDarkMode ? 'bg-white-dark  text-white-dark ' : '  bg-gray-200 '}`}
+                    <span className='ml-2 font-bold'>Hub</span>
+                    <IsPublicInfo />
+                </>
+            }
+            {
+                tunePatP == radio.our && tunePatP != radio.hub &&
+                <>
+                    < span
+                        className={`rounded flex items-center px-1.5 py-1  
+                        ${isDarkMode ? 'bg-black-70 text-black-1 ' : ' bg-black-80 text-white'}
+                         `}
+
                     >
                         <Radio
-                            size={30}
+                            size={25}
                             weight="bold"
-                            className={` ${isDarkMode ? 'text-black' : ''}`}
                         />
-                    </span>
-
-                }
-
-                {
-                    tunePatP != radio.hub && tunePatP != radio.our && tunePatP.length <= 14 &&
+                    </span >
+                    <div
+                        className='flex items-center font-extrabold z-10 ml-2 '
+                    >
+                        <span className='flex items whitespace-nowrap'>My Station</span>
+                        <IsPublicInfo />
+                    </div>
+                </>
+            }
+            {
+                tunePatP &&
+                tunePatP != radio.hub
+                && tunePatP != radio.our
+                && tunePatP.length <= 14
+                && isValidPatp(tunePatP) &&
+                <>
                     <span
-                        className={` py-0.5 px-1 overflow-hidden 
+                        className={`  overflow-hidden 
                            rounded flex justify-center items-center
-                           ${isDarkMode ? 'bg-white-dark' : 'bg-black'}
+                           ${isDarkMode ? 'bg-black-70' : 'bg-black-1'}
                            `}
+                        style={{ height: '40px', width: '40px' }}
                     >{
                             sigil({
-                                patp: '~harlys-forbec',
+                                patp: '~fidwed-sipwyn',
                                 renderer: reactRenderer,
                                 size: 30,
-                                colors: isDarkMode ? ['rgb(253,253,253)', 'black'] : ['black', 'white'],
+                                colors: isDarkMode ? ['#60605E', 'white'] : ['#4A4948', 'white'],
                             })
                         }
                     </span>
-                }
-                <div
-                    className={`flex flex-col pt-0.5 flex-wrap
-                              ${isDarkMode ? 'text-white-dark' : ''}
-                            `}
-                    style={{
-                        lineHeight: '.6rem',
-                        marginTop: '-0.2em'
-                    }}
-                >
-                    <div
-                        className='flex items-center font-bold z-10 ml-1 '
+                    <span
+                        className='ml-2 font-bold'
+                        style={{
+                            maxWidth: '80%'
+                        }}
                     >
-                        {tunePatP == radio.our &&
-                            <span className='flex items '>My Station</span>
-                        }
-
-                        {tunePatP == radio.hub &&
-                            <span className=''>Hub</span>
-                        }
-
-                        {
-                            tunePatP != radio.our && tunePatP != radio.hub &&
-                            <span
-                                style={{
-                                    maxWidth: '8em'
-                                }}
-                            >
-                                {tunePatP}
-                            </span>
-                        }
-                        <span className='flex items-center justify-center rounded text-black ml-0.5 mt-0.5 px-1 font-semibold'
-                            style={{
-                                backgroundColor: 'rgb(239,246,255)',
-                                fontSize: '.55rem',
-                                paddingBottom: '0.2em',
-                            }}
-                        >
-                            {isPublic ? 'public' : 'private'}
-                        </span>
-                    </div>
-                    <ViewersButton />
-                </div>
-            </div >
-            : <></>
-
-
+                        {tunePatP}
+                    </span>
+                    <IsPublicInfo />
+                </>
+            }
+        </div >
     )
 }

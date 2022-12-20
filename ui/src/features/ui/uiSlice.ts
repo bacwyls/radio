@@ -66,6 +66,12 @@ export const uiSlice = createSlice({
         isDarkMode: action.payload,
       }
     },
+    setIsConnecting: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isConnecting: action.payload,
+      }
+    },
   }
 });
 
@@ -76,6 +82,7 @@ export const {
   setIsChatFullScreen,
   setIsLandscape,
   setIsDarkMode,
+  setIsConnecting,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;

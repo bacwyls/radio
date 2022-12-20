@@ -27,7 +27,7 @@
 ::
 ++  on-fail   on-fail:def
 ++  on-peek   on-peek:def
-++  on-load  on-load:def
+++  on-load   on-load:def
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
@@ -108,9 +108,11 @@
           %public   `this
           %viewers  `this  :: TODO ugly
           %chatlog  `this  :: TODO ugly
+          %banned   `this
       :: ::
           %presence
-                  :_  this  (fwd act)
+          :_  this  (fwd act)
+          ::
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
           %chat   :_  this  (fwd act)

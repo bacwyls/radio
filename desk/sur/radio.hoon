@@ -38,6 +38,7 @@
     [%public public=?]
     [%viewers viewers=(set ship)]
     [%chatlog chatlog=(list chat)]
-    [%presence ~]
+    [%presence ~] 
+    [%banned banned=(set ship)]
   ==
 --

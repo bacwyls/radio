@@ -7,6 +7,7 @@
   location=ship
   time=@da
   viewers=@ud
+  public=?
   ==
 ::
 +$  event

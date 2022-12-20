@@ -22,52 +22,54 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
 
     return (
         !playerInSync ?
-            <div className="flex gap-2 justify-center mt-2">
+            <div className="absolute right-0 gap-2 flex justify-end "
+            >
                 <button
-                    className={` px-2   
+                    className={` 
                         flex-initial outline-none 
-                        font-semibold   rounded 
-                        flex text-center items-center  px-2 py-0.5
-                         hover:bg-gray-200  z-10 bg-white  gap-1
-                         ${isDarkMode ? 'bg-white-dark' : 'bg-white border-2 border-gray-300'}
-
+                        font-bold   rounded-md  
+                        flex text-center items-center  
+                           z-10  gap-1  shadow 
+                           ${isDarkMode ? ' bg-black-90  hover:bg-black-70 ' : ' bg-white hover:bg-black-5 border-black-10'}
                         ${isPhone() ? 'w-full justify-start' : 'justify-center'}
                         	 `}
-                    style={{ fontSize: '.65rem' }}
+                    style={{
+                        fontSize: '.65rem',
+                        height: '40px', width: '120px'
+                    }}
                     onClick={(e) => {
                         radio.seekToDelta(spinTime);
                         dispatch(setPlayerInSync(true));
                     }}
                 >
-                    <ArrowsClockwise size={20} weight="bold" />
                     Resync Self
                 </button>
                 {tunePatP === radio.our &&
                     <button
-                        className={` px-2 \
-                          flex-initial outline-none bg-white \
-                          font-semibold   rounded \
+                        className={` 
+                          flex-initial outline-none 
+                          font-bold   rounded-md  
                           flex text-center items-center  gap-1
-                          hover:bg-gray-200  z-10  px-2 py-0.5
+                           z-10  shadow 
                           ${isPhone() ? 'w-full justify-start' : 'justify-center'}
-                          
-                          ${isDarkMode ? 'bg-white-dark' : 'bg-white border-2 border-gray-300'}
+                          ${isDarkMode ? ' bg-black-90  hover:bg-black-70 ' : ' bg-white hover:bg-black-5 border-black-10'}
                           `}
 
                         style=
                         {{
                             whiteSpace: 'nowrap',
                             fontSize: '.65rem',
+                            height: '40px',
+                            width: '120px'
                         }}
                         onClick={(e) => {
                             radio.resyncAll(spinUrl)
                         }}
                     >
-                        <ArrowsClockwise size={20} weight="bold" />
                         Resync All
                     </button>
                 }
-            </div>
+            </div >
             :
             <></>
     )

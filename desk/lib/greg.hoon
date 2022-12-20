@@ -37,6 +37,7 @@
   ['location' %s (scot %p location.tow)]
   ['time' (sect:enjs time.tow)]
   ['viewers' (numb:enjs viewers.tow)]
+  ['public' %b public.tow]
   ==
 ++  dejs
   =,  dejs:format
@@ -61,6 +62,7 @@
         [%location patp]
         [%time di]
         [%viewers ni]
+        [%public bo]
       ==
     ++  patp
       (su ;~(pfix sig fed:ag))

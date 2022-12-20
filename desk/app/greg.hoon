@@ -68,8 +68,8 @@
         `this
       ::
       :: no 0 viewer B.S.
-      ?:  =(0 viewers.tow)
-        `this
+      :: ?:  =(0 viewers.tow)
+      ::   `this
       ::
       =.  description.tow
         ::  truncate description
@@ -215,5 +215,4 @@
     (~(del by tows) i.stale)
     $(stale t.stale)
   tows
--- 
-
+--

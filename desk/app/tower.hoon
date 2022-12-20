@@ -98,6 +98,7 @@
           %tune     `this
           %viewers  `this
           %chatlog  `this
+          %banned   `this
       :: ::
           %public
       ?.  =(src.bowl our.bowl)
@@ -244,7 +245,10 @@
     =.  banned
     (set-banned:rib adi banned)
     ?:  =(%unban -.adi)
-      `this
+    :_  this
+    :~
+      (transmit-card [%banned banned])
+    ==
     :: %ban
     =.  viewers
         (~(del by viewers) ship.adi)
@@ -252,6 +256,7 @@
     :~
       (kick-only:io ship.adi ~[/personal /global])
       (transmit-card [%viewers ~(key by viewers)])
+      (transmit-card [%banned banned])
     ==
   ==
 ++  on-watch
@@ -298,6 +303,7 @@
         (init-fact [%tune `our.bowl])
         (init-fact [%viewers ships])
         (init-fact [%chatlog (flop chatlog)])
+        (init-fact [%banned banned])
         ::
         (kick-only:io src.bowl ~[/personal])
       ==
@@ -369,6 +375,7 @@
       !>  ent
   ==
 ::
+:: find chat by time and returns the index
 ++  get-chat
   |=  [time=@da logs=(list chat:store)]
   =/  times  (turn logs |=(=chat:store time.chat))

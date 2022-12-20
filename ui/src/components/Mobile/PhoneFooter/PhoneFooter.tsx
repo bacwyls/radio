@@ -4,7 +4,7 @@ import { selectIsLandscape } from "../../../features/ui/uiSlice"
 import { isPhone } from "../../../util"
 import { ChatButton } from "../../ChatContainer/ChatButton"
 import { ViewersButton } from "../../UpperRow/Viewers/ViewersButton"
-import { HomeButton } from "../../UpperRow/HomeButton"
+import { HomeButton } from "../../UpperRow/HomeButton/HomeButton"
 import { PhoneActionsMenu } from "../PhoneActionsMenu"
 import './style.css';
 

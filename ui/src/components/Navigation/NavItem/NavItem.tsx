@@ -7,21 +7,23 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
 import { selectIsDarkMode, selectIsLandscape } from '../../../features/ui/uiSlice';
-import { Users } from 'phosphor-react';
+import { Television, Users } from 'phosphor-react';
 
 interface INavItem {
   patp: string | null,
   flare?: string,
   title?: NavItemTitle,
   logout?: boolean,
+  description: string,
+  isPublic: boolean,
 }
 
 export type NavItemTitle = 'Hub' | 'My Station';
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const { patp, flare, title, logout } = props;
-  const navItemHeight = '145px';
+  const { patp, flare, title, logout, description, isPublic } = props;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLandscape = useAppSelector(selectIsLandscape);
@@ -32,123 +34,184 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
   }
 
   return (
-    logout
-      ? <button
-        className="hover:pointer border-red-500 text-red-500  
-                    border px-1 text-center inline-block 
-                    flex-initial "
-        style={{ whiteSpace: 'nowrap' }}
-        onClick={() => tuneTo(null, radio, dispatch)}
-      >
-        <span>logout</span>
-      </button>
-      : <button
-        className={`  rounded  hover:shadow-md	
-                      text-center inline-block px-3
-                      flex items-center  gap-2
+    (patp && patp.length <= 14 && isValidPatp(patp)) ?
+      <button
+        className={` nav-item  rounded  hover:shadow	 relative
+                      text-center inline-block px-4 py-2
+                      flex items-center  gap-2 
                      relative overflow-hidden 
-                     ${(isPhone() && !isLandscape) ? 'nav-item-phone-portrait' : 'nav-item'}
-                     ${isDarkMode ? 'hover:border-white border-transparent hover:border-4 border-4 ' : 'border-transparent	hover:border-black hover:border-2 border-2'}
+                     ${isDarkMode ?
+            'bg-black-85 hover:bg-black-80 text-black-10  '
+            : 'bg-black-10 hover:bg-black-20  text-black-80'}
                      `}
         style={{
+          fontSize: '16px',
           whiteSpace: 'nowrap',
-          backgroundColor: 'rgb(218,228,240)',
-          width: 'calc(50% - 0.5rem)',
-          height: '4em',
+          width: '100%',
+          minHeight: '124px',
+          zIndex: 2,
         }}
         onClick={handleNavItemClick}
       >
-        {(patp && isValidPatp(patp) && patp.length <= 14) &&
-          <span
-            className='bg-black py-1.5 px-2 rounded border-2 '
-            style={{
-              borderColor: isDarkMode ? 'rgb(218,228,240)' : 'white',
-            }}
-          >
-            {
-              sigil({
-                patp: patp,
-                renderer: reactRenderer,
-                size: 35,
-                colors: ['black', 'white'],
-              })
-            }
-          </span>
-        }
-        <div
-          className='flex flex-col '
+        <span
+          className={` rounded flex 
+          items-center justify-center  relative
+          ${isDarkMode ? 'bg-black-70 text-black-10' : 'bg-black-80 text-white'}
+          `}
           style={{
-            lineHeight: '.6rem',
+            height: '88px',
+            width: '88px',
+            minWidth: '88px',
+            minHeight: '88px',
           }}
         >
-          <div className={`font-bold w-full flex 
-           ${patp && patp.length > 14 ? 'whitespace-normal' : 'whitespace-nowrap'}       
+          {patp == radio.hub ?
+            <Television weight='bold' size={40} /> :
+            <>
+              {
+                patp && patp.length <= 14 && isValidPatp(patp) &&
+                sigil({
+                  patp: patp,
+                  renderer: reactRenderer,
+                  size: 60,
+                  colors: isDarkMode ? ['#60605E', '#E9E8E9'] : ['#4A4948', 'white'],
+                })
+              }
+            </>
+          }
+          {!(patp == radio.hub) &&
+            <span className={`absolute bottom-0 w-full right-0 flex items-center 
+          justify-center px-1 py-0.5 font-bold rounded-b 
+          ${isDarkMode ? 'bg-black-60 text-black-10' : 'bg-black-70  text-white'}
+          `}
+              style={{
+                fontSize: '14px',
+              }}
+            >
+              <Users
+                size={20}
+                weight="bold"
+                style={{
+                  marginRight: '0.25em',
+                  zIndex: 10,
+                }}
+              />
+              {flare}
+            </span>}
+        </span>
+        <div
+          className='flex flex-col 	w-full'
+          style={{
+            lineHeight: '1.2rem',
+          }}
+        >
+          <div className={`font-bold w-full flex items-center 
+         whitespace-nowrap   
+         ${isDarkMode ? 'text-black-5' : 'text-black-90 '}
+ 
           `}
             style={{
               wordWrap: 'break-word',
-              // whiteSpace: 'normal',
-              lineHeight: '.8rem',
-              // fontSize: '.8rem'
             }}
           >
             {title ? title : patp}
+            <span className={`flex items-center justify-center rounded-full
+                          ml-1 font-bold h-4 text-black-90
+                          ${isDarkMode ? 'bg-blue-50 ' : 'bg-blue-70  '}
+                          `}
+              style={{
+                fontSize: '14px',
+                padding: '0 .6em'
+              }}
+            >
+              {isPublic ? 'Public' : 'Private'}
+            </span>
           </div>
-          <div className={`flex items-center tracking-wide	  font-bold 	
-            ${patp && patp.length > 14 && 'justify-center'}          
-          `}
+          <div className={`flex font-bold    break-words whitespace-normal
+                    ${isDarkMode ? 'text-black-30' : 'text-black-70'}
+                    `}
             style={{
-              fontSize: '.7rem',
-              color: 'rgba(0,0,0,0.5)',
+              lineHeight: '19.36px',
+              textAlign: 'left',
+              letterSpacing: '.4px',
             }}
           >
-            <Users
-              size={25}
-              weight="bold"
-              style={{
-                marginTop: '0.1em',
-                marginRight: '0.25em'
-              }}
-            />
-            {flare + (flare && flare != '1' ? ' viewers' : ' viewer')}
+            {description}
           </div>
         </div>
       </button >
+      :
+      <button
+        className={` nav-item  rounded  hover:shadow	 relative
+                      text-center inline-block px-4 py-2
+                      flex flex-col items-center justify-center
+                     relative overflow-hidden  
+                     ${isDarkMode ?
+            'bg-black-85 hover:bg-black-80 text-black-10  '
+            : 'bg-black-10 hover:bg-black-20  text-black-80'}
+                               `}
+        style={{
+          fontSize: '16px',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          minHeight: '124px',
+          zIndex: 2,
+        }}
+        onClick={handleNavItemClick}
+      >
+        <div className={`font-bold w-full flex items-center  
+           whitespace-normal justify-center     
+          `}
+          style={{
+            wordWrap: 'break-word',
+            lineHeight: '.8rem',
+          }}
+        >
+          {title ? title : patp}
+          <span className={`flex items-center justify-center rounded-full
+                             ml-1 font-bold text-black-90 h-4
+                             ${isDarkMode ? 'bg-blue-50' : 'bg-blue-70'}
+                             `}
+            style={{
+              fontSize: '14px',
+              padding: '0 .6em'
+            }}
+          >
+            {isPublic ? 'Public' : 'Private'}
+          </span>
+        </div>
+        <div className={`flex mb-0.5   font-bold 	   break-words whitespace-normal
+                    ${isDarkMode ? 'text-black-30' : 'text-black-70'}
+                        `}
+          style={{
+            lineHeight: '19.36px',
+            letterSpacing: '.4px',
+
+            textAlign: 'center',
+          }}
+        >
+          {description}
+        </div>
+        <div className={`flex items-center tracking-wide	  font-bold 	
+            justify-center       
+          `}
+          style={{
+            color: 'rgba(0,0,0,0.5)',
+            fontSize: '14px',
+
+          }}
+        >
+          <Users
+            size={20}
+            weight="bold"
+            style={{
+              marginRight: '0.25em'
+            }}
+          />
+          {flare}
+        </div>
+      </button >
+
   );
 };
 
-
-// <span >
-// <div className='sigil-background '
-// >
-//   {(patp && isValidPatp(patp) && patp.length <= 14) &&
-//     sigil({
-//       patp: patp,
-//       renderer: reactRenderer,
-//       size: 145,
-//       colors: ['rgba(186, 162, 89, 0.1)', 'white'],
-//     })
-//   }
-// </div>
-// </span>
-// <div
-// className='absolute flex flex-col
-// items-center justify-center	h-full'
-// >
-// <div
-//   className='inline-block font-semibold	 leading-3'
-//   style={{
-//     fontSize: '.7rem',
-//     wordWrap: 'break-word',
-//     whiteSpace: 'normal',
-//     padding: '.2em 0 .2em 0'
-//   }}>
-//   {title ? title : patp}
-// </div>
-// {flare &&
-//   <span
-//     className='flex items-center font-semibold text-center '
-//     style={{ fontSize: '.65rem' }}>
-//     <MdOutlinePeopleAlt className={` text-base mr-1`} />
-//     {flare}
-//   </span>}
-// </div>

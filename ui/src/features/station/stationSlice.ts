@@ -12,6 +12,7 @@ export interface IMinitower {
   description: string;
   time: number;
   viewers: number;
+  public: boolean;
 }
 
 export interface StationState {
@@ -26,6 +27,8 @@ export interface StationState {
   update: any;
   towers: Array<IMinitower>;
   hasPublishedStation: boolean;
+  description: string;
+  banned: string[];
 }
 
 const initialState: StationState = {
@@ -40,6 +43,8 @@ const initialState: StationState = {
   update: Object(),
   towers: Array<IMinitower>(),
   hasPublishedStation: false,
+  description: '',
+  banned: Array<string>(),
 };
 
 export const stationSlice = createSlice({
@@ -129,8 +134,19 @@ export const stationSlice = createSlice({
         ...state,
         towers: action.payload
       }
-    }
-
+    },
+    setDescription: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        description: action.payload
+      }
+    },
+    setBanned: (state, action: PayloadAction<string[]>) => {
+      return {
+        ...state,
+        banned: action.payload
+      }
+    },
   }
 });
 
@@ -149,6 +165,8 @@ export const {
   setUpdate,
   setTowers,
   setHasPublishedStation,
+  setDescription,
+  setBanned
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
@@ -162,5 +180,7 @@ export const selectChats = (state: RootState) => state.station.chats;
 export const selectUpdate = (state: RootState) => state.station.update;
 export const selectTowers = (state: RootState) => state.station.towers;
 export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
+export const selectDescription = (state: RootState) => state.station.description;
+export const selectBanned = (state: RootState) => state.station.banned;
 
 export default stationSlice.reducer;

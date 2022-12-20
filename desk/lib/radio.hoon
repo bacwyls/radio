@@ -71,6 +71,10 @@
       [%s talk.act]
     %public
       [%b public.act]
+    %online
+      [%b online.act]
+    %banned
+      (set-ship banned.act)
     ==
   --
 ++  unit-ship
@@ -130,6 +134,7 @@
         [%tune (mu patp)]
         [%public bo]
         [%presence ul]
+        [%online bo]
       ==
     ++  chat
       %-  ot

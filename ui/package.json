@@ -15,12 +15,14 @@
     "@urbit/http-api": "^2.3.0",
     "phosphor-react": "^1.4.1",
     "react": "^17.0.2",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^17.0.2",
-    "react-icons": "^4.6.0",
+    "react-icons": "^4.7.1",
     "react-player": "^2.10.1",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
+    "react-snowfall": "^1.2.1",
     "urbit-ob": "^5.0.1"
   },
   "devDependencies": {

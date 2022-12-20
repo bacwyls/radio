@@ -1,12 +1,14 @@
 import { Question } from 'phosphor-react';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
 import { selectIsChatFullScreen, selectIsDarkMode } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { Help } from '../Help/Help';
-import { ChatMessage } from '../ChatMessage';
+import { ChatMessage } from '../ChatMessage/ChatMessage';
 import './style.css';
+import { ViewersMenu } from '../../UpperRow/Viewers/ViewersMenu/ViewersMenu';
+import { ViewersButton } from '../../UpperRow/Viewers/ViewersButton';
 
 const ChatMessageMemo = React.memo(ChatMessage);
 
@@ -17,6 +19,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   const chats = useAppSelector(selectChats);
   const chatboxId = 'chatbox-radio';
+  const chatboxContainerId = 'chatbox-container-radio'
 
   const dispatch = useAppDispatch();
 
@@ -30,9 +33,11 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   useEffect(() => {
     scrollToBottom();
+
     if (chats.length > maxChats) {
       dispatch(chopChats(chats));
     }
+
   }, [chats]);
 
   useEffect(() => {
@@ -56,25 +61,32 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   return (
     <div
-      className={` flex flex-col border-t border-gray-300
+      className={` flex flex-col 
                   ${isPhone() ? 'chatbox-container-phone' : 'chatbox-container'}
                     ${isChatFullScreen ? 'chatbox-container-full' : ''}
                 `}
     >
       <div
-        className={`font-extrabold flex items-center 
-                     z-10
-                     ${isDarkMode ? 'text-white-dark' : ''}
+        className={`font-extrabold flex items-center justify-between
+                     z-10 
+                     ${isDarkMode ? 'text-black-10' : ''}
                      
                      `}
         style={{
-          height: '2rem',
+          padding: '0 24px 0 24px',
+          height: '64px',
+          fontSize: '20px',
+          // boxShadow: chats.length > 0 ? (isDarkMode ? 'rgba(0, 0, 0, .8) 0px 4px 8px -16px, rgba(0, 0, 0, .8) 0px 12px 20px -16px' : 'rgba(0, 0, 0, 0.2) 0px 4px 4px -16px, rgba(0, 0, 0, 0.2) 0px 12px 20px -16px') : 'none',
         }}
       >
-        Chat <Help />
+        Chat
+        <ViewersButton />
+        {/* <Help /> */}
       </div>
       <div
-        className={`  w-full flex flex-col  
+        id={chatboxContainerId}
+        className={`  w-full flex flex-col
+
                   ${isPhone() ? 'chatbox-phone' : 'chatbox'}
                   ${isChatFullScreen ? 'chatbox-full' : ''}
             `}
@@ -84,7 +96,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
       >
         {chats && chats.length > 0 ?
           <div
-            className={`overflow-y-auto
+            className={`overflow-y-auto overflow-x-hidden
           `}
             id={chatboxId}
           >
@@ -100,7 +112,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
           </div>
           :
           <div
-            className={`flex justify-center items-center h-full w-full k '
+            className={`flex justify-center items-center h-full w-full  '
             `}
           >
             There are no messages

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
+import Snowfall from "react-snowfall";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Header } from "../../components/Header/Header";
+import { DiscoverList } from "../../components/Navigation/DiscoverList/DiscoverList";
 import { NavigateStations } from "../../components/Navigation/NavigateStations/NavigateStations";
+import { selectIsPublic, selectDescription, setDescription } from "../../features/station/stationSlice";
 import { selectIsDarkMode, selectIsLandscape } from "../../features/ui/uiSlice";
 import { isPhone, tuneTo } from "../../util";
 import './style.css';
@@ -12,35 +15,35 @@ export const Home: FC = () => {
     const dispatch = useAppDispatch();
     const isLandscape = useAppSelector(selectIsLandscape);
     const isDarkMode = useAppSelector(selectIsDarkMode);
+    const isPublic = useAppSelector(selectIsPublic);
+    const description = useAppSelector(selectDescription);
 
     useEffect(() => {
         tuneTo(null, radio, dispatch);
     }, []);
 
+    useEffect(() => {
+        radio.gregRequest();
+
+        setInterval(() => {
+            radio.gregRequest();
+        }, 1000 * 60)
+
+    }, []);
+
     return (
         <div
-            className={` flex justify-center items-center
-                 overflow-x-hidden 
+            className={` flex flex-col justify-center items-center
                     ${(!isLandscape && isPhone())
                     ?
                     'home-container-phone-portrait'
                     : 'home-container'}
                     
-                    ${isDarkMode ? 'bg-default-bg-dark' : 'bg-default-bg-light'}
+                    ${isDarkMode ? 'bg-black-100 text-black-10' : 'bg-black-2 text-black-80'}
                     `}
         >
             <Header />
-            <div
-                className={`overflow-y-auto  h-full  	
-                ${(!isLandscape && isPhone()) ? '' : 'px-5 pt-7'} 
-                `}
-                style={{
-                    width: '100%',
-                    maxWidth: '30em',
-                }}
-            >
-                <NavigateStations />
-            </div>
+            <NavigateStations />
         </div >
     )
 }

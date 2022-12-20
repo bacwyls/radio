@@ -1,13 +1,11 @@
 import React, { FC, } from 'react';
 import { radio } from '../../../api';
 import { useAppSelector } from '../../../app/hooks';
-import { selectTunePatP } from '../../../features/station/stationSlice';
-import { selectIsLandscape } from '../../../features/ui/uiSlice';
+import { selectDescription, selectTunePatP } from '../../../features/station/stationSlice';
+import { selectIsDarkMode, selectIsLandscape } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { Navigate } from '../../Navigation/NavigateMenu';
-import { HomeButton } from '../HomeButton';
-import { PublishStationButton } from '../SettingsMenu/PublishStationButton';
-import { SettingsMenu } from '../SettingsMenu/SettingsMenu';
+import { HomeButton } from '../HomeButton/HomeButton';
 import { StationTitle } from '../StationTitle';
 import { ThemeButton } from '../ThemeButton';
 import './style.css';
@@ -18,21 +16,25 @@ interface IUpperRowContainer {
 export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContainer) => {
 
   const isLandscape = useAppSelector(selectIsLandscape);
-  const tunePatP = useAppSelector(selectTunePatP);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   return (
     <div
-      className={` flex justify-between w-full 
+      className={` flex justify-between items-center w-full border-b  
                    ${isPhone() && isLandscape && 'upper-row-phone-landscape'}
+                   ${isDarkMode ? ' bg-black-95  border-black-85' : ' bg-white  border-gray-200'}
                 `}
-      style={{ height: '2.5em' }}
+      style={{
+        height: '64px',
+        minHeight: '64px',
+        padding: '0 24px'
+      }}
     >
       <StationTitle />
       <div className="flex  items-center ">
         {/* <Navigate /> */}
-        {tunePatP == radio.our && <SettingsMenu />}
-        <ThemeButton />
         {!isPhone() && <HomeButton />}
+        <ThemeButton />
       </div>
     </div >
   )

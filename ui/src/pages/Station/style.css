@@ -1,7 +1,31 @@
 
 .station-container{
+    /* @apply font-inter; */
  }
+
+    @media (min-width: 1200px){
+        .upperow-player{
+            width: 75vw;
+        }
+
+    }
+
+
  
+ @media (max-width: 1199px){
+
+    .station-container{
+        @apply flex-col;
+     }
+     .upperow-player{
+        width: 100vw;
+        height: 60vh;
+        max-height: 60vh;
+     }
+}
+
+
+
 /* .station-padding{
     padding: 0 3vw 0 3vw;
 }
