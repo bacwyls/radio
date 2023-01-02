@@ -10,7 +10,8 @@ import {
   setViewers,
   resetChats,
   setChatsWithChatlog,
-  setChatsWithChat
+  setChatsWithChat,
+  setOurTowerDescription
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -65,9 +66,6 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       break;
     case 'public':
       dispatch(setIsPublic(update['public']))
-      break;
-    case 'publish':
-      dispatch(setHasPublishedStation(update['published']))
       break;
     case 'chatlog':
       let chatlog = update['chatlog']
@@ -188,6 +186,7 @@ export function handleUserInput(
       radio.gregPut(arg);
       radio.chat(chat);
       dispatch(setHasPublishedStation(true));
+      dispatch(setOurTowerDescription(arg))
       // refresh towers
       radio.gregRequest();
     //
