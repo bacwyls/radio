@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { NavItem } from './NavItem';
-import { selectTunePatP, selectIsPublic, selectHasPublishedStation, setHasPublishedStation } from '../features/station/stationSlice';
+import { selectTunePatP, selectIsPublic, selectHasPublishedStation, setHasPublishedStation, selectOurTowerDescription } from '../features/station/stationSlice';
 import { setNavigationOpen, selectNavigationOpen } from '../features/ui/uiSlice';
 import { Radio } from '../lib';
 
@@ -25,12 +25,12 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);
   const hasPublishedStation = useAppSelector(selectHasPublishedStation);
+  const ourTowerDescription = useAppSelector(selectOurTowerDescription);
   const navigationOpen = useAppSelector(selectNavigationOpen);
   const dispatch = useAppDispatch();
 
   const [towers, setTowers] = useState<Array<IMinitower>>([])
-  const [ourTower, setOurTower] = useState<IMinitower>();
-
+ 
   useEffect(()=>{
     radio.api
     .subscribe({
@@ -52,18 +52,35 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
     radio.gregRequest();
   }, [])
 
-  useEffect(()=>{
-    setOurTower(towers.find(t=>t.location===our));
-  }, [towers])
+  useInterval(() => {
+    if(!hasPublishedStation) return;
 
-  useEffect(()=>{
-    if(!ourTower || !hasPublishedStation) return;
-    setInterval(() => {
-      // heartbeat to detect presence
-      radio.gregPut(ourTower.description);
-    }, 1000 * 60 * 3)
+    // heartbeat to update our slot in the discovery pool
+    console.log('sending greg heartbeat')
+    
+    // get fresh state
+    radio.gregPut(ourTowerDescription);
 
-  }, [hasPublishedStation]);
+  }, 1000 * 60 * 3)
+
+  // @ts-ignore
+  function useInterval(callback, delay) {
+    const savedCallback = useRef();
+  
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+  
+    useEffect(() => {
+      function tick() {
+          // @ts-ignore
+        savedCallback.current();
+      }
+  
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }, [delay]);
+  }
 
 
   return(
@@ -99,7 +116,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           <div>
             <div
               className='flex flex-col bg-white border border-black absolute \
-                        p-2 mt-1 overflow-scroll z-10 items-start'
+              p-2 mt-1 overflow-scroll z-10 items-start'
             >
               {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
               {(radio.tunedTo===radio.our && !hasPublishedStation) &&
@@ -109,6 +126,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                             flex-initial mr-2 my-1"
                   style={{ whiteSpace:'nowrap' }}
                   onClick={() => {
+                    radio.gregPut('')
                     dispatch(setHasPublishedStation(true))
                     radio.gregRequest();
                   }}

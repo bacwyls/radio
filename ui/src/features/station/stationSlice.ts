@@ -15,6 +15,7 @@ export interface StationState {
   radioSub: number;
   isPublic: boolean;
   hasPublishedStation: boolean;
+  ourTowerDescription: string;
   viewers: string[];
   chats: ChatMessage[];
   update: any;
@@ -28,6 +29,7 @@ const initialState: StationState = {
   radioSub: 0,
   isPublic: false,
   hasPublishedStation: false,
+  ourTowerDescription: '',
   viewers: Array<string>(),
   chats: Array<ChatMessage>(),
   update: Object()
@@ -79,6 +81,12 @@ export const stationSlice = createSlice({
         hasPublishedStation: action.payload
       }
     },
+    setOurTowerDescription: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        ourTowerDescription: action.payload
+      }
+    },
     setViewers: (state, action: PayloadAction<string[]>) => {
       return {
         ...state,
@@ -126,6 +134,7 @@ export const {
   setRadioSub,
   setIsPublic,
   setHasPublishedStation,
+  setOurTowerDescription,
   setViewers,
   resetChats,
   setChatsWithChatlog,
@@ -141,6 +150,7 @@ export const selectTunePatP = (state: RootState) => state.station.tunePatP;
 export const selectRadioSub = (state: RootState) => state.station.radioSub;
 export const selectIsPublic = (state: RootState) => state.station.isPublic;
 export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
+export const selectOurTowerDescription = (state: RootState) => state.station.ourTowerDescription;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
 export const selectUpdate = (state: RootState) => state.station.update;
