@@ -201,12 +201,15 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                   key={i}
                   style={{ whiteSpace: isMobile ? 'nowrap' : 'inherit' }}
                 >
+                  {/* 
+                    https://github.com/tloncorp/landscape-apps/issues/1559
+                    broken since groups 2
                   <a
                     href={'/apps/landscape/~profile/'+x}
                     target='_blank'
-                  >
+                  > */}
                     {x}
-                  </a>
+                  {/* </a> */}
                   {i < viewers.length - 1 ? ', ' : ''}
                 </span>
               )}
