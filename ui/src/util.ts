@@ -6,6 +6,7 @@ import {
   setSpinTime,
   setTunePatP,
   setIsPublic,
+  setHasPublishedStation,
   setViewers,
   resetChats,
   setChatsWithChatlog,
@@ -23,7 +24,7 @@ import {isValidPatp} from 'urbit-ob';
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
-  
+
   // handle updates from tower / radio station
   switch (mark) {
     case 'spin':
@@ -36,9 +37,9 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       // let synth = window.speechSynthesis;
       var updateTalk = update['talk'];
       var utterThis = new SpeechSynthesisUtterance(updateTalk);
-      
+
       dispatch(setTalkMsg(updateTalk));
-      
+
       if (!userInteracted) return;
       radio.synth.speak(utterThis);
       break;
@@ -65,6 +66,9 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
     case 'public':
       dispatch(setIsPublic(update['public']))
       break;
+    case 'publish':
+      dispatch(setHasPublishedStation(update['published']))
+      break;
     case 'chatlog':
       let chatlog = update['chatlog']
       dispatch(setChatsWithChatlog(chatlog));
@@ -81,8 +85,8 @@ export function resetPage(dispatch: any) {
 }
 
 export function handleUserInput(
-  radio: Radio, 
-  tuneTo: (patp: string|null) => void, 
+  radio: Radio,
+  tuneTo: (patp: string|null) => void,
   dispatch: any,
   chatInputId: string,
   spinTime: number,
@@ -177,6 +181,15 @@ export function handleUserInput(
       radio.syncLive(spinUrl);
       radio.chat(chat);
       break;
+    case 'publish':
+      if (!radio.isAdmin()) {
+        return;
+      }
+      radio.gregPut(arg);
+      radio.chat(chat);
+      dispatch(setHasPublishedStation(true));
+      // refresh towers
+      radio.gregRequest();
     //
     // image commands
     default:
