@@ -85,19 +85,18 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
 
   return(
     <div>
-      <div className="flex mt-2 align-middle table w-full">
-        <span className="text-2xl align-middle">📻</span>
-        {/* tuned to */}
-        <span className="flex-full ml-4 px-2 align-middle">
-          {tunePatP}{' '}{isPublic ? '(public)' : '(private)'}
-        </span>
-      </div>
-      <div className="mb-2 flex-col">
-       {/* <span className="">navigation:</span> */}
+      <div className="flex flex-row my-2 w-full h-8">
+
+
+        <div className="flex flex-col mr-3"
+          style={{
+            justifyContent: 'center',
+          }}
+        >
         <button
           className={`hover:pointer button border-black \
-                    border p-1 text-center mt-2 mr-2 \
-                    flex-initial ${navigationOpen ? 'font-bold' : ''}`}
+                    border p-1 text-center\
+                    ${navigationOpen ? 'font-bold' : ''}`}
           style={{ whiteSpace:'nowrap' }}
           onClick={() => {
 
@@ -116,7 +115,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           <div>
             <div
               className='flex flex-col bg-white border border-black absolute \
-              p-2 mt-1 overflow-scroll z-10 items-start'
+              p-2 overflow-scroll z-10 items-start mt-1'
             >
               {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
               {(radio.tunedTo===radio.our && !hasPublishedStation) &&
@@ -148,10 +147,6 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                       patp={radio.hub}
                       title={'hub'}/>
               }
-              {/* <NavItem tuneTo={tuneTo} patp={'~littel-wolfur'} />
-              <NavItem tuneTo={tuneTo} patp={'~sorwet'} /> */}
-              {/* <NavItem tuneTo={tuneTo} patp={'~poldec-tonteg'} flare={'🎷'}/> */}
-
               {towers.map((tower:any, i:number) =>
                   <NavItem tuneTo={tuneTo}
                       key={i}
@@ -164,6 +159,27 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           </div>
         }
       </div>
+
+         {/* tuned to */}
+        <div className="flex-full inline-block"
+        >
+          <span className="text-xl mr-3">
+            📻
+          </span>
+          <span className="">
+            {tunePatP}
+          </span>
+          <span>
+            {' '}{isPublic ? '(public)' : '(private)'}
+          </span>
+        </div>
+
+
+
+
+
+      </div>
+
     </div>
   )
 }
