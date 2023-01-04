@@ -1,11 +1,11 @@
 .navigate-stations{
    @apply  w-full h-full flex items-center justify-center overflow-hidden;
-   height: 100vh - 64px;
    font-size: 16px;
    box-sizing: border-box;
+
 }
 
-@media (min-width: 1200px) and (max-width: 1500px){
+@media (min-width: 1200px) and (max-width: 1800px){
 
     .join-station{
         margin-right: 16em;
@@ -13,24 +13,29 @@
 
 }
 
+.join-station{
+    max-width: 15rem;
+}
+
+.join-station-container{
+    min-width: 15rem;
+}
 
 @media (max-width: 1199px){
 
     .join-station{
-          @apply  flex flex-col h-full;
-        margin: 6em 0;
+          @apply  flex flex-col w-full ;
+          max-width: 15rem;
 
+    }
+
+    .join-station-container{
+        margin-top: 90px;
     }
 
     .navigate-stations{
-        @apply items-start overflow-hidden ;
+        @apply flex-col justify-start  ;
+        
     }
 
-}
-
-.join-station-phone-portrait{
-    @apply fixed bottom-0 left-0 px-2 border-t border-gray-400 w-full flex flex-col justify-center z-10 ;
-    height: 22vh;
-    min-height: 7em;
-    background-color: rgb(253,253,253);
 }

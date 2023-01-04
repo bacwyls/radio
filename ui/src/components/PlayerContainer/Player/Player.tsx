@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FC } from "react";
-import { useMobileOrientation } from "react-device-detect";
 import ReactPlayer from "react-player";
-import Snowfall from "react-snowfall";
 import { radio } from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../../features/station/stationSlice";
@@ -55,7 +53,9 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
 
     return (
         <div
-            className={`${isPhone() ? (isLandscape ? 'player-phone-landscape' : 'player-phone-portrait') : 'player  '}`}
+            className={` 
+            ${isPhone() ? (isLandscape ? 'player-phone-landscape' : 'player-phone-portrait') : 'player  '}
+            `}
             style={
                 !(isPhone() && isLandscape) ? {}
                     :

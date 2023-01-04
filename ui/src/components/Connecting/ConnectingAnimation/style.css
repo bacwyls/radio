@@ -1,8 +1,8 @@
 .connecting,
 .connecting:after {
   border-radius: 50%;
-  width: 8em;
-  height: 8em;
+  width: 7em;
+  height: 7em;
 }
 .connecting {
   margin: 60px auto;

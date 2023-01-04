@@ -28,7 +28,7 @@ export class Radio {
     //
     tunedTo!: string | null;
 
-    hub: string = '~zod';
+    hub: string = '~nodmyn-dosrux';
 
     constructor(our: string, api: Urbit) {
         this.our = our;
@@ -219,6 +219,8 @@ export class Radio {
     }
 
     public gregPut(description: string, isPublic: boolean) {
+        console.log(description)
+
         this.api.poke({
             app: 'tower',
             mark: 'greg-event',

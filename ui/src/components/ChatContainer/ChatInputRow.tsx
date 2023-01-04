@@ -1,10 +1,9 @@
 import { ArrowLeft } from "phosphor-react";
-import React, { FC, useEffect, useRef, useState } from "react";
-import { radio } from "../../api";
+import React, { FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
-import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen, setPlayerInSync } from "../../features/ui/uiSlice";
-import { handleUserInput, isPhone, tuneTo } from "../../util";
+import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen } from "../../features/ui/uiSlice";
+import { handleUserInput, isPhone } from "../../util";
 
 interface IChatInputRow {
 }
@@ -19,7 +18,6 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
     const spinTime = useAppSelector(selectSpinTime);
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
     const isDarkMode = useAppSelector(selectIsDarkMode);
-    // const inputReference = useRef<HTMLInputElement>(null);
 
     const [inputText, setInputText] = useState('');
 
@@ -45,36 +43,34 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
         setInputText('');
     }
 
-
     return (
+
         <div
-            className={`flex items-start  w-full
-                    // ${isPhone() && 'fixed bottom-0 z-10'}
+            className={`   w-full  flex 
+                    ${isPhone() ? 'fixed bottom-0 left-0   items-center' : 'items-start relative'}
                 `}
             style={{
-                padding: '0 24px 0 24px',
-                height: '88px',
+                padding: '0 24px',
+                height: isPhone() ? '64px' : '88px',
             }}
         >
-            {isPhone() && isChatFullScreen &&
-                <ArrowLeft
-                    size={32}
-                    weight="bold"
-                    className="mr-1 cursor:pointer flex justify-items-start"
-                    onClick={() => dispatch(setIsChatFullScreen(false))} />
-            }
+            {isPhone() && <ArrowLeft
+                size={28}
+                weight="bold"
+                className="mr-2  "
+                onClick={() => dispatch(setIsChatFullScreen(false))} />}
             <input
                 type="text"
-                // ref={inputReference}
-                className={`px-2 flex items-center mt-2 w-full   
-                      border  rounded-md  outline-none focus:shadow
-                    font-bold 
-                    ${isDarkMode ? 'bg-black-70 focus:bg-black-80 border-black-70  text-black-1 placeholder-white' : ' text-black-80  bg-black-10 border-black-10 placeholder-black-80 focus:bg-black-1'}
+                className={`pl-2 flex items-center relative   
+                      border  rounded-md  outline-none focus:shadow 
 
+                    ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-10 placeholder-black-10'
+                        : ' text-black-80  bg-black-10 border-black-10 placeholder-black-80 focus:bg-black-1'}
+                    ${isPhone() ? '' : 'mt-2 '}
                     `}
                 style={{
-                    height: '40px',
-                    fontSize: '.6rem',
+                    height: isPhone() ? '2rem' : '40px',
+                    width: '100%',
                     paddingRight: '6.4em'
                 }}
                 autoCorrect={'off'}
@@ -91,18 +87,17 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 onChange={e => setInputText(e.target.value)}
             />
             < button
-                className={`bg-white rounded mt-2
-                           flex-initial outline-none flex font-bold 
-                            rounded-md 
-                             justify-center items-center  
-                             ${isDarkMode ? 'text-black-90' : '  text-white '}
-                             ${inputText.trim().length > 0 ? 'hover:shadow bg-blue-90   ' : 'cursor-not-allowed	bg-blue-50 text-opacity-50 '} 
+                className={` 
+                            absolute outline-none flex font-bold rounded-md 
+                             justify-center items-center    bg-blue-90 
+                             ${!isPhone() && 'mt-2 '}
+                             ${isDarkMode ? 'text-black-80' : '  text-black-1 '}
+                             ${inputText.trim().length > 0 ? 'hover:shadow ' : 'cursor-not-allowed	opacity-50'} 
                              `}
                 style={{
-                    fontSize: '.6rem',
-                    width: '6em',
-                    height: '40px',
-                    marginLeft: '-6em',
+                    right: '24px',
+                    width: '5em',
+                    height: isPhone() ? '2rem' : '40px',
                 }}
                 onClick={() =>
                     processInput()
@@ -111,5 +106,6 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 Send
             </ button>
         </div >
+
     )
 }

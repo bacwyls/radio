@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import { handleUpdate } from './util';
+import { handleUpdate, isPhone, isSystemDarkMode } from './util';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import './index.css';
 
@@ -21,6 +21,8 @@ import {
 import { radio } from './api';
 import { Home } from './pages/Home/Home';
 import { Station } from './pages/Station/Station';
+import { HomePhone } from './pages/Phone/HomePhone/HomePhone';
+import { JoinStationPhone } from './pages/Phone/JoinStationPhone';
 
 export function App() {
 
@@ -127,12 +129,21 @@ export function App() {
   }, [update]);
 
   return (
-    < BrowserRouter basename='/apps/radio/' >
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/station/:patp" element={<Station />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+    < BrowserRouter basename='/apps/radio/'  >
+      {isPhone() ?
+        <Routes>
+          <Route path="/" element={<HomePhone />} />
+          <Route path="/join/" element={<JoinStationPhone />} />
+          <Route path="/station/:patp" element={<Station />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        :
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/station/:patp" element={<Station />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      }
     </ BrowserRouter >
   );
 }

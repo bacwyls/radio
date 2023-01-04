@@ -65,14 +65,15 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
             style={{
                 backdropFilter: 'blur(0px) brightness(0.8)',
                 top: 0,
-                left: 0
+                left: 0,
+                fontSize: '16px',
             }}
         >
             <div
                 id={warningId}
-                className={`bg-white shadow flex justify-center 
+                className={`bg-white shadow-lg flex justify-center 
                 items-center z-50 rounded-md font-bold cursor-default px-10
-                ${isDarkMode ? ' bg-black-90 ' : ' bg-white border-black-10'}
+                ${isDarkMode ? ' bg-black-95 ' : ' bg-white border-black-10'}
 
                 `}
                 style={{
@@ -82,7 +83,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
             >
                 <div className="flex flex-col">
                     <div className={`flex items-center w-full 
-                                    ${isDarkMode ? ' text-red-200 ' : ' text-red-600'}
+                                    ${isDarkMode ? ' text-red-300 ' : ' text-red-700'}
                                 
                                     `}
 
@@ -90,11 +91,12 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                         <Warning className="mr-1" size={32} weight="bold" />
                         Warning
                     </div>
-                    <div className=" flex flex-col justify-start relative h-7">
-                        <span >Are you sure you want to stop the</span>
-                        <span style={{ left: 0 }} className="justify-items-start absolute left-0 mt-4" > broadcast?</span>
+                    <div className=" flex flex-col   h-7">
+                        <span >Are you sure you want to stop the broadcast?</span>
                     </div>
-                    <div className="gap-1 flex items-center mt-4 justify-end w-full">
+                    <div className="gap-1 flex items-center mt-4 justify-end w-full"
+                        style={{ fontSize: '16px' }}
+                    >
                         <button
                             id={cancelButtonId}
                             className={`flex items-center justify-center
@@ -108,12 +110,10 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                             0px 2px 5px -1px, rgba(0, 0, 0, 0.3)`\
                              0px 1px 3px - 1px ',
                                 height: '40px',
-
                             }}
                         >
                             <span
                                 className='font-bold '
-                                style={{ fontSize: '.65rem' }}
                             >
                                 Cancel
                             </span>
@@ -128,8 +128,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                         </button>
                         <button
                             className={`   text-center  rounded-md   px-2 font-bold
-            flex justify-center items-center  
-            ${isDarkMode ? 'text-red-200 bg-black-80 hover:bg-red-400' : 'text-red-600 bg-black-10 hover:bg-red-200'}
+            flex justify-center items-center  text-red-700 bg-red-300 hover:bg-red-400
                     `}
                             onClick={() => handleStop()}
                             style={{

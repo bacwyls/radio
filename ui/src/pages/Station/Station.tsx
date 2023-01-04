@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { radio } from "../../api";
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { PhoneFooter } from "../../components/Mobile/PhoneFooter/PhoneFooter";
 import { isMobile, isTablet } from "react-device-detect";
 import { UpperRowContainer } from "../../components/UpperRow/UpperRowContainer/UpperRowContainer";
-import { selectIsChatFullScreen, selectIsDarkMode } from "../../features/ui/uiSlice";
+import { selectIsChatFullScreen, selectIsDarkMode, selectIsViewersMenuOpen } from "../../features/ui/uiSlice";
 import './style.css';
 import { Connecting } from "../../components/Connecting/Connecting";
 
@@ -27,28 +27,38 @@ export const Station: FC = () => {
     const radioSub = useAppSelector(selectRadioSub);
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const tunePatP = useAppSelector(selectTunePatP);
-    const viewers = useAppSelector(selectViewers);
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
+    const isViewersMenuOpen = useAppSelector(selectIsViewersMenuOpen);
     const hasPublishedStation = useAppSelector(selectHasPublishedStation);
     const isPublic = useAppSelector(selectIsPublic);
     const description = useAppSelector(selectDescription);
+    const gregInterval = useRef<NodeJS.Timer>();
 
     useEffect(() => {
         setInterval(() => {
             // heartbeat to detect presence
             radio.ping();
 
-            hasPublishedStation &&
-                radio.gregPut(description, isPublic);
-
         }, 1000 * 60 * 2)
 
     }, []);
 
     useEffect(() => {
-        hasPublishedStation &&
+        if (gregInterval.current) {
+            clearInterval(gregInterval.current);
+            gregInterval.current = undefined;
+        }
+
+        if (hasPublishedStation) {
             radio.gregPut(description, isPublic);
-    }, [hasPublishedStation]);
+
+            gregInterval.current =
+                setInterval(() => {
+                    radio.gregPut(description, isPublic);
+                }, 1000 * 60 * 2)
+        }
+
+    }, [hasPublishedStation, description]);
 
     useEffect(() => {
         if (!radioSub) return;
@@ -65,24 +75,24 @@ export const Station: FC = () => {
     }, [patp, radioSub]);
 
     return (
-        <div className={`text-xs fixed station-container 
-                        flex              
-                        ${isDarkMode ? 'bg-black-100 text-black-5' : 'bg-black-2 text-black-80'}
+        <div className={`  station-container 
+                        ${isDarkMode ? 'bg-black-100 text-black-5' : 'bg-black-2 text-black-70'}
                         `}
             style={{
-                height: '100vh',
-                width: '100%',
+                fontSize: '16px',
             }}
         >
-            <div className="upperow-player
-            flex flex-col h-full "
+            <div className={`
+           ${isPhone() ? 'upperow-player-phone' : 'upperow-player'}
+            `}
             >
                 <UpperRowContainer />
                 <PlayerContainerMemo />
             </div>
             <ChatContainerMemo />
-            {/* {patp && viewers.filter(viewer => viewer == tunePatP).length == 0 && <Connecting patp={patp} />} */}
-            {patp && patp != tunePatP && (patp != radio.our) && < Connecting patp={patp} />}
+            {patp && patp != tunePatP && (patp != radio.our) ? < Connecting patp={patp} /> :
+                (isPhone() && (!isChatFullScreen || isViewersMenuOpen) && <PhoneFooter />)
+            }
         </div >
     )
 

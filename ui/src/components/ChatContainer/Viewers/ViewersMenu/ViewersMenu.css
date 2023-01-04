@@ -1,0 +1,73 @@
+.viewers-menu {
+    @apply flex flex-col border  z-20 fixed ;
+    height: calc(100vh - 63px);
+    width: 25vw;
+    top: 63px;
+    right: 0px;
+}
+
+.viewers-menu-phone {
+    @apply fixed top-0 left-0 w-full;
+    height: calc(100% - 64px);
+    z-index: 110;
+}
+
+.viewers-list{
+    @apply top-0  relative overflow-y-auto overflow-x-hidden flex flex-col  ;
+    height: calc(100% - 42px );
+}
+
+.viewers-input-sticky-row{
+    @apply h-10 sticky flex items-center border-b left-0   ;
+    top: -1px;
+    width: calc(25vw - calc(25vw - 100%)); 
+    min-height: 2.25rem;
+}
+
+.viewers-input-sticky-row-phone{
+    @apply h-10 sticky flex items-center border-b left-0   ;
+    top: -1px;
+    width: calc(25vw - calc(25vw - 100%)); 
+    min-height: 2.25rem;
+}
+
+.viewers-input-wrapper{
+    @apply flex   h-10 relative   items-center justify-between z-10;
+    left: 24px;
+    width: calc(100% - 48px);
+}
+
+.viewers-input-wrapper-phone{
+    @apply flex   h-10 relative   items-center justify-between z-10;
+    left: 24px;
+    width: calc(100% - 48px);
+}
+
+.viewers-input{
+    @apply  pl-2 pr-6 focus:shadow  h-6 border  hover:shadow rounded outline-none;
+    width: calc(25vw - 48px);
+}
+
+
+@media (max-width: 1099px){
+
+    .viewers-menu {
+        @apply absolute mb-2 rounded-b-md;
+        width: 100%;
+        height: calc(40vh - 64px);
+        min-height: calc(25em - 64px);
+    }
+
+    .viewers-input-wrapper{
+    }
+   
+    .viewers-input-sticky-row{
+        width: 100%; 
+    }
+
+    .viewers-input{
+        width:100%;
+    }
+
+}
+

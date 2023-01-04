@@ -5,8 +5,17 @@
 }
 
 
-@media (max-width: 1199px){
+@media (max-width: 1099px){
     .player {
-        height: calc(100% - 76px);
+        height: calc(100% - 72px);
     }
+}
+
+.player-phone-landscape{
+    @apply fixed top-0 left-0  ;
+}
+
+.player-phone-portrait{
+    height: 56.25vw;
+    width: 100vw;
 }

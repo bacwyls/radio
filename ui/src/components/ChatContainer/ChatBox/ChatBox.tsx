@@ -7,8 +7,7 @@ import { isPhone } from '../../../util';
 import { Help } from '../Help/Help';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import './style.css';
-import { ViewersMenu } from '../../UpperRow/Viewers/ViewersMenu/ViewersMenu';
-import { ViewersButton } from '../../UpperRow/Viewers/ViewersButton';
+import { ViewersButton } from '../Viewers/ViewersButton';
 
 const ChatMessageMemo = React.memo(ChatMessage);
 
@@ -61,32 +60,33 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   return (
     <div
-      className={` flex flex-col 
+      className={` flex flex-col relative 
                   ${isPhone() ? 'chatbox-container-phone' : 'chatbox-container'}
-                    ${isChatFullScreen ? 'chatbox-container-full' : ''}
+                 ${isChatFullScreen ? 'chatbox-container-full' : ''}
+                    ${isDarkMode ? 'bg-black-95 border-black-85 ' : 'bg-white  border-black-10'} 
+
                 `}
     >
       <div
-        className={`font-extrabold flex items-center justify-between
-                     z-10 
-                     ${isDarkMode ? 'text-black-10' : ''}
-                     
+        className={`font-bold flex items-center justify-between rounded-md
+          
+                     ${isDarkMode ? 'text-black-1 bg-black-95 ' : 'bg-white text-black-80 '}
                      `}
         style={{
           padding: '0 24px 0 24px',
           height: '64px',
-          fontSize: '20px',
-          // boxShadow: chats.length > 0 ? (isDarkMode ? 'rgba(0, 0, 0, .8) 0px 4px 8px -16px, rgba(0, 0, 0, .8) 0px 12px 20px -16px' : 'rgba(0, 0, 0, 0.2) 0px 4px 4px -16px, rgba(0, 0, 0, 0.2) 0px 12px 20px -16px') : 'none',
         }}
       >
-        Chat
+        <span
+          style={{
+            fontSize: '20px',
+          }}
+        >Chat</span>
         <ViewersButton />
-        {/* <Help /> */}
       </div>
       <div
         id={chatboxContainerId}
-        className={`  w-full flex flex-col
-
+        className={`  w-full flex flex-col  bg-b
                   ${isPhone() ? 'chatbox-phone' : 'chatbox'}
                   ${isChatFullScreen ? 'chatbox-full' : ''}
             `}
@@ -112,7 +112,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
           </div>
           :
           <div
-            className={`flex justify-center items-center h-full w-full  '
+            className={`flex justify-center items-center h-full w-full font-medium '
             `}
           >
             There are no messages

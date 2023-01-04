@@ -1,10 +1,5 @@
 .header{
-    @apply flex justify-between  items-center  border-b   fixed left-0 top-0 w-full text-2xl sm:text-3xl md:text-lg ;
+    @apply flex justify-between  items-center  border-b   fixed left-0 top-0 w-full ;
     height: 64px;
     padding: 0 24px;
-}
-
-.header-phone-portrait{
-    @apply fixed bg-white border-b border-gray-400 z-10 top-0 left-0 w-full p-2;
-    height: 13vh;
 }

@@ -1,0 +1,63 @@
+@media (min-width: 800px){
+    .settings-button {
+        @apply absolute  border rounded-md  left-0 flex items-center justify-center  font-bold gap-1;
+        height: 40px;
+        width: 120px;
+     }
+}
+
+.gear{
+    font-size: 24px; 
+ }
+
+@media (max-width: 799px){
+    .settings-button {
+        @apply  rounded-md border  left-0 flex items-center justify-center  font-bold gap-0.5;
+        height: 40px;
+        width: 96px;
+        font-size: 14px ;
+
+     }
+
+     .gear{
+        font-size: 20px ; 
+     }
+    
+}
+
+.settings-button-phone {
+    @apply flex flex-col justify-center items-center font-bold gap-0.5 ;
+    font-size: 16px;
+    width: 20vw;
+}
+
+.settings-menu{
+    @apply flex border flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
+    height: 22rem;
+    width: 24em;
+    left: 24px;
+    bottom: 80px;
+}
+
+@media (max-width: 1099px){
+    .settings-menu{
+        @apply absolute;
+        bottom: 72px;
+    }
+}
+
+.settings-menu-phone{
+
+    @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden drop-shadow-none;
+    height: calc(100% - 64px);
+    position: fixed;
+    padding: 1rem;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 130;
+}
+
+  input[type="radio"] {
+   filter: grayscale(0.6);
+  }

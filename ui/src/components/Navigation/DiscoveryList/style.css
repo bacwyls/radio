@@ -1,0 +1,42 @@
+
+.discovery-list{
+    @apply flex flex-col  absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0  border-l  ;
+    height: calc(100vh - 64px);
+    width: 19rem;
+    zIndex: 2;
+  }
+
+.discovery-list-header{
+  @apply sticky top-0 flex left-0 justify-between   items-center  ;
+  z-index: 3;
+  padding-left: 1.5rem;
+  min-height: 2rem;
+  width: calc(19rem - calc(19rem - 100%));
+  right: 22px;
+}
+
+
+@media (max-width: 1199px){
+    .discovery-list{
+      @apply  relative border shadow rounded-md  mt-2;
+      height: calc(100vh - 15em);
+    }
+
+    .discovery-list-header{
+      padding-left: 1rem;
+      }
+}
+
+.discovery-list-header-phone{
+  @apply absolute w-screen h-10 flex items-center;
+    top: 0;
+  left: 0;
+  padding-left: 1rem;
+  z-index: 3;
+}
+
+.discovery-list-phone{
+  @apply fixed overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full; 
+  top: 64px;
+  height: calc(100% - 128px);
+}

@@ -20,9 +20,9 @@ export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContai
 
   return (
     <div
-      className={` flex justify-between items-center w-full border-b  
+      className={` flex justify-between items-center w-full border-b    
                    ${isPhone() && isLandscape && 'upper-row-phone-landscape'}
-                   ${isDarkMode ? ' bg-black-95  border-black-85' : ' bg-white  border-gray-200'}
+                   ${isDarkMode ? 'bg-black-95 border-black-85' : 'bg-white  border-black-10'}
                 `}
       style={{
         height: '64px',
@@ -32,7 +32,6 @@ export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContai
     >
       <StationTitle />
       <div className="flex  items-center ">
-        {/* <Navigate /> */}
         {!isPhone() && <HomeButton />}
         <ThemeButton />
       </div>

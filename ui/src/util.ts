@@ -21,6 +21,7 @@ import {
 import { browserName, isMobile, isTablet, osName, useDeviceData, useMobileOrientation } from 'react-device-detect';
 import { isValidPatp } from 'urbit-ob'
 import { radio } from './api';
+import { reactRenderer, sigil } from '@tlon/sigil-js';
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any) {
   console.log("radio update", update);
@@ -112,16 +113,16 @@ export function handleUserInput(
       radio.spin(arg);
       radio.chat(chat);
       break;
-    case 'tune':
-      if (arg === '') arg = radio.our;
-      radio.chat(chat);
-      if (isValidPatp(arg)) {
-        tuneTo(arg, radio, dispatch);
-      }
-      else if (isValidPatp('~' + arg)) {
-        tuneTo('~' + arg, radio, dispatch);
-      }
-      break;
+    // case 'tune':
+    //   if (arg === '') arg = radio.our;
+    //   radio.chat(chat);
+    //   if (isValidPatp(arg)) {
+    //     tuneTo(arg, radio, dispatch);
+    //   }
+    //   else if (isValidPatp('~' + arg)) {
+    //     tuneTo('~' + arg, radio, dispatch);
+    //   }
+    //   break;
     case 'time':
       dispatch(setPlayerInSync(true));
       radio.seekToDelta(spinTime);
@@ -234,3 +235,20 @@ export const isPhone = () => {
   return (isMobile && !isTablet);
 }
 
+export const isSystemDarkMode = () => {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return true
+  }
+  else { return false }
+}
+
+export const renderSigil = (patp: string, size: number, isDarkMode: boolean) => {
+  return (
+    sigil({
+      patp: patp,
+      renderer: reactRenderer,
+      size: size,
+      colors: isDarkMode ? ['#60605E', '#FCFDFC'] : ['#4A4948', 'white'],
+    })
+  )
+}

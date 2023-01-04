@@ -1,37 +1,33 @@
+.upperow-player{
+    @apply flex flex-col;
+    width: 75vw;
+}
 
 .station-container{
-    /* @apply font-inter; */
+    @apply flex w-full h-screen top-0 left-0 ;
  }
 
-    @media (min-width: 1200px){
-        .upperow-player{
-            width: 75vw;
-        }
-
-    }
-
-
- 
- @media (max-width: 1199px){
+ @media (max-width: 1099px){
 
     .station-container{
-        @apply flex-col;
+        @apply flex flex-col overflow-y-auto overflow-x-hidden gap-2 ;
+
      }
+     
      .upperow-player{
-        width: 100vw;
-        height: 60vh;
-        max-height: 60vh;
+        width: 100%;
+        height: min-content;
+        min-height: calc(26rem);
      }
 }
 
-
-
-/* .station-padding{
-    padding: 0 3vw 0 3vw;
+.upperow-player-phone {
+    
 }
 
-@media (max-width: 639px){
-    .station-padding{
-        padding: 0;
+@media (max-width: 1099px) and (max-height: 999px) {
+
+    .station-container{
     }
-} */
+
+}

@@ -15,7 +15,7 @@
   ::
   ::  set to a time near the present
   ::  *time is too long ago and causes
-  ::  -the frontend syncing to bug out
+  ::  the frontend syncing to bug out
   spin-time=_~2022.10.3..20.40.15..7021
   :: view=_'' :: https://0x0.st/oS_V.png  :: alpha marble texture
   online=_&
@@ -45,8 +45,8 @@
   ?+    -.sign  (on-agent:def wire sign)
       :: had a really bad bug related to this
       :: arvo pot hole?
+      ::  https://github.com/urbit/urbit/issues/6025
     %poke-ack
-    :: ~&  >  [%tower %poke-ack sign]
     `this
   ==
 ++  on-arvo
@@ -71,6 +71,9 @@
     %0  `this(state old)
   ==
 ++  on-leave
+  ?:  =(path /greg/local)
+  :: potentially fixes #16 host-kicked bug
+  `this
   |=  [=path]
   =.  viewers
     (~(del by viewers) src.bowl)
@@ -212,6 +215,8 @@
       =.  viewers.tow
         ~(wyt by viewers)
       ::
+      =.  public.tow
+        public
       :_  this
       (poke-greg [%put tow])
       :: ::

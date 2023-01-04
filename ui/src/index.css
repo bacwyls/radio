@@ -1,11 +1,12 @@
-@font-face {
+/* @font-face {
     font-family: 'Inter';
     font-weight: 100 1000;
     font-stretch: 0% 200%;
     font-style: normal;
-    src: local('Inter'), url(./assets/fonts/Inter-VariableFont_slnt,wght.ttf) format('truetype');
-}
+    src: local('Inter'), url(/assets/fonts/Inter-VariableFont_slnt,wght.ttf) format('truetype');
+} */
 
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap'); */
 
 @tailwind base;
 @tailwind components;
@@ -21,4 +22,6 @@ html{
 
 body{
     overflow: hidden;
+    font-family: Inter, sans-serif;
 }
+

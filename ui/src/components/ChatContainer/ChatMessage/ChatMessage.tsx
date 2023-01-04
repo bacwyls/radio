@@ -1,4 +1,3 @@
-import { sigil, reactRenderer } from "@tlon/sigil-js";
 import { Megaphone, PlayCircle } from "phosphor-react";
 import React, { useState } from "react";
 import { FC } from "react";
@@ -6,7 +5,7 @@ import { isValidPatp } from 'urbit-ob'
 import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIsDarkMode } from "../../../features/ui/uiSlice";
-import { getCommandArg, isPhone, timestampFromTime } from "../../../util";
+import { getCommandArg, isPhone, renderSigil, timestampFromTime } from "../../../util";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './style.css';
 
@@ -62,9 +61,9 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             isCommand ?
                 <div
-                    className={`flex flex-col   
-                    rounded-md font-semibold ${isPhone() && ''}
-                ${isDarkMode ? ' bg-black-80 text-black-10' : 'bg-black-10 '}
+                    className={`flex flex-col  font-medium 
+                    rounded-md ${isPhone() && ''}
+                ${isDarkMode ? ' bg-black-80 text-black-10' : 'bg-black-10 text-black-80 '}
                         }
                         ${isCommand.command == 'play' && 'cursor-pointer'}
                 `
@@ -72,7 +71,6 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                     style={{
                         marginLeft: '1.6em',
                         lineHeight: '24px',
-                        fontSize: '16px',
                         maxHeight: isCommand.command == 'play' ? '5rem' : 'none',
                     }}
                     onClick={() => handleCopy(isCommand!.command)}
@@ -81,16 +79,16 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         <CopyToClipboard text={isCommand.arg}>
                             <div
                                 style={{
-                                    padding: '0.5em 0.8em',
+                                    padding: '0.5em 1em',
                                 }}
                             >
                                 <div className="flex justify-between relative"
                                 >
-                                    <div className="flex items-center font-extrabold 	 ">
+                                    <div className="flex items-center  font-bold	 ">
                                         <PlayCircle className="mr-0.5" size={20} weight="bold" /> Play
                                     </div>
                                     {showTooltip &&
-                                        <span className="">
+                                        <span style={{ fontSize: '14px' }}>
                                             Copied!
                                         </span>
                                     }
@@ -109,9 +107,9 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         isCommand.command == 'talk' &&
                         <div
                             style={{
-                                padding: '0.5em 0.8em',
+                                padding: '0.5em 1em',
                             }}>
-                            <div className="flex items-center text-center font-extrabold">
+                            <div className="flex items-center text-center font-bold">
                                 <Megaphone className='mr-0.5 mb-0.5' size={20} weight="bold" /> Talk
                             </div>
                             <div className="break-words whitespace-normal">
@@ -122,14 +120,12 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 </div >
                 :
                 <div
-                    className={`font-semibold break-words whitespace-normal 
-                     ${isPhone() && ''}
-                     ${isDarkMode ? 'text-black-10' : 'text-black-90'}
+                    className={`font-medium break-words whitespace-normal 
+                     ${isDarkMode ? 'text-black-10' : 'text-black-80'}
                         `}
                     style={{
-                        paddingLeft: '2.5em',
-                        lineHeight: '24px',
-                        fontSize: '16px',
+                        paddingLeft: '2em',
+                        lineHeight: '26px',
                     }}
                 >
                     {
@@ -153,11 +149,16 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
-                className={` overflow-x-hidden 
-                    ${isDarkMode ? 'hover:bg-black-90 text-black-30' : 'hover:bg-black-5 '}
+                className={` overflow-x-hidden w-full   
+                    ${isPhone() ?
+                        (isDarkMode ?
+                            'text-black-30' : '')
+                        :
+                        (isDarkMode ?
+                            'hover:bg-black-90 text-black-30' : 'hover:bg-black-4 ')
+                    }
         `}
                 style={{
-                    fontSize: '.65rem',
                     paddingTop: '10px',
                     paddingLeft: '24px',
                     paddingBottom: '10px',
@@ -165,36 +166,26 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                     marginRight: 'calc(-1 * calc(25vw - 100%))'
                 }}
             >
-                <div className={`flex justify-between items-center w-4/10  ${isPhone() && 'mr-1'} `}>
-                    <div className={`flex items-center 
-                     ${isDarkMode ? '' : ' '}
+                <div className={`flex justify-between items-center w-4/10 mb-0.5 ${isPhone() && 'mr-1'} `}>
+                    <div className={`flex items-center w-full
                     `}
-                        style={{ marginBottom: '.1em' }}
-
                     >
-                        {
-                            isValidPatp(from) && from.length <= 14 &&
-
-                            <span
-                                className={` mr-1.5 rounded
-                           flex justify-center items-center
-                           ${isDarkMode ? 'bg-black-70' : 'bg-black-80'}
-            `}
-                                style={{
-                                    padding: '.25em'
-                                }}
-                            >{
-                                    sigil({
-                                        patp: '~fidwed-sipwyn',
-                                        renderer: reactRenderer,
-                                        size: 18,
-                                        colors: isDarkMode ? ['#60605E', 'white'] : ['#4A4948', 'white'],
-                                    })
-                                }</span>
-                        }
-                        <span className='font-bold mr-1 mb-0.5   ' style={{ fontSize: '16px' }}>
-                            {/* {from} */}
-                            {from == radio.our ? '~fidwed-sipwyn' : from}{''}
+                        <span className={`  mr-1.5 h-4 w-4
+                          rounded flex justify-center 
+                          items-center
+                          ${isDarkMode ? 'bg-black-70' : 'bg-black-80'}
+ 
+                          `}
+                            style={{ minWidth: '1rem' }}
+                        >{
+                                from && isValidPatp(from) && from.length <= 14 &&
+                                renderSigil(from, 18, isDarkMode)
+                            }
+                        </span>
+                        <span className='font-semibold mr-1 w-full'
+                            style={{ lineHeight: '16px', }}
+                        >
+                            {from == radio.our ? 'You' : from}{''}
                         </span>
                     </div>
                     <span
@@ -202,7 +193,6 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         `}
                         style={{
                             fontSize: '14px',
-                            marginBottom: '.35em'
                         }}
                     >
                         {timestampFromTime(time)}

@@ -1,0 +1,58 @@
+.play-modal{
+   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border;
+   left: 37.5%;
+   transform: translate(-50%, -50%);
+   top: 50%;
+   width: 27em;
+}
+
+@media (max-width: 1099px){
+    .play-modal{
+        @apply absolute;
+        height: min-content;
+        transform: translate(-50%, -50%);
+        top: calc(50% - 35px) ;
+        left: 50%;
+    }
+}
+
+.play-button {
+    @apply   font-bold border  rounded-md  justify-center flex text-center items-center gap-1  ;
+    height: 40px;
+    width: 104px;
+}
+
+.play-button-phone {
+    @apply flex flex-col justify-center items-center font-bold gap-0.5; 
+    font-size: 16px;
+    width: 20vw;
+}
+
+.play-circle{
+    font-size: 24px;
+}
+
+@media (max-width: 799px){
+    .play-button {
+        @apply gap-0.5;
+        height: 40px;
+        width: 80px;
+        font-size: 14px ;
+
+    }
+
+    .play-circle{
+        font-size: 20px ;
+    }
+}
+
+.play-modal-phone {
+
+    @apply fixed flex flex-col z-20 gap-3 py-10 justify-center border-t w-full  drop-shadow-none;
+    left: 0;
+    height: calc(100% - 64px - 64px - 56.25vw - 1rem);
+    min-height: 10rem;
+    bottom: 64px;
+    padding-left:24px;
+    padding-right:24px;
+}

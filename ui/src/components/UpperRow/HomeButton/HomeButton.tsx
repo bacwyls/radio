@@ -34,22 +34,32 @@ export const HomeButton = () => {
     }
 
     return (
-        <button
-            className={`   text-center  rounded   px-2 font-bold
-            flex justify-center items-center relative mr-0.5 
-            ${isPhone() ? '' : ' '} 
-            ${isDarkMode ? 'text-white-dark  hover:bg-black-80 ' : 'hover:bg-black-10 '}
+        <>
+            {isPhone() ?
+                <SignOut size={24} weight="bold" onClick={handleExit} />
+                :
+                <button
+                    className={`   text-center  rounded   px-2 font-bold
+            flex justify-center items-center relative mr-0.5  
+            ${isDarkMode ? ' hover:bg-black-80 ' : 'hover:bg-black-10 '}
                     `}
-            onClick={handleExit}
-            style={{
-                fontSize: '16px',
-                height: '40px',
-            }}
-        >
-            <SignOut className="mr-1" size={24} weight="bold" />
-            {patp == radio.our ? 'Stop Broadcast' :
-                'Exit Station'}
+                    onClick={handleExit}
+                    style={{
+                        height: '40px',
+                    }}
+                >
+                    <SignOut className="mr-1" size={24} weight="bold" />
+                    <span className="hidden sm:flex whitespace-nowrap" >
+                        {patp == radio.our ? 'Stop Broadcast' :
+                            'Exit Station'}
+                    </span>
+                    <span className="flex sm:hidden" >
+                        {patp == radio.our && 'Exit'}
+                    </span>
+                </button>
+            }
             {showWarning && <ExitWarning onCancel={closeWarning} />}
-        </button>
+
+        </>
     )
 }

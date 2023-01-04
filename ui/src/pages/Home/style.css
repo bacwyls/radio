@@ -1,7 +1,7 @@
 .home-container{
+    @apply flex flex-col justify-center items-center ;
     height: 100vh;
     width: 100vw;
-    @apply px-2 sm:px-5 lg:px-10 overflow-hidden  ;
 }
 
 .home-container-phone-portrait{

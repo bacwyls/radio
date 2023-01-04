@@ -56,3 +56,11 @@
     height: 10em;
   }
 }
+
+
+@media (max-width: 640px){
+  .loader{
+    font-size: 8px;
+  }
+
+}

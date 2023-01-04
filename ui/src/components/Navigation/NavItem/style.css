@@ -1,33 +1,25 @@
 .nav-item{
-    /* --nav-item-height: 145px;
-    min-width: var(--nav-item-height);
-    min-height: var(--nav-item-height);
-    max-height: var(--nav-item-height);
-    max-width: var(--nav-item-height); */
+    @apply  w-full   relative text-center  px-6  flex items-center  gap-2   overflow-hidden;
+                     
+    font-size: 16px;
+    white-space: nowrap;
+    min-height: 124px;
+    z-index: 2;
 }
 
-.nav-item-phone-portrait {
-    height: 43vw;
-    width: 43vw;
-}
-/* 
-.nopatp-background{
-    --nav-item-height: 145px;
-    min-width: var(--nav-item-height);
-    min-height: var(--nav-item-height);
-    max-height: var(--nav-item-height);
-    max-width: var(--nav-item-height);
-    background-color: 'rgba(255, 166, 0, 0.1)';
+.nav-item-phone{
+    @apply  relative text-center px-4  flex items-center  gap-2   overflow-hidden;
+                     
+    white-space: nowrap;
+    width: 100%;
+    min-height: 96px;
+    z-index: 2;
 }
 
-.nopatp-background-phone-portrait{
-    min-width: 43vw;
-    min-height: 43vw;
-    background-color: rgb(243,240,233));
-} */
 
-.sigil-background{
-    @apply rounded  border-solid h-full w-full min-h-full min-w-full;
-    border-color: rgb(248,246,238);
-    border-width: 100px;
+@media (max-width: 1199px){
+    .nav-item{
+        @apply px-4;
+    }
+ 
 }
