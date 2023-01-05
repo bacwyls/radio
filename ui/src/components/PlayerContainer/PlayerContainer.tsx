@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Player } from './Player/Player';
 import { SyncActions } from './SyncActions/SyncActions';
 import { isPhone } from '../../util';
 import { radio } from '../../api';
-import { useAppSelector } from '../../app/hooks';
-import { selectIsPublic, selectTunePatP } from '../../features/station/stationSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectIsPublic, selectSpinTime, selectSpinUrl, selectTunePatP } from '../../features/station/stationSlice';
 import { PlayButton } from './DJCommands/PlayButton/PlayButton';
 import { TalkButton } from './DJCommands/TalkButton/TalkButton';
 import { DisabledPlayButton } from './DJCommands/PlayButton/DisabledPlayButton';
@@ -14,6 +14,7 @@ import { SettingsMenu } from './SettingsMenu/SettingsMenu';
 import { SettingsMenuButton } from './SettingsMenu/SettingsMenuButton';
 import { PlayModal } from './DJCommands/PlayButton/PlayModal';
 import { TalkModal } from './DJCommands/TalkButton/TalkModal';
+import { selectPlayerReady, setPlayerInSync } from '../../features/ui/uiSlice';
 
 interface IPlayerContainer {
 
@@ -23,6 +24,28 @@ export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) =
 
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);
+  const playerReady = useAppSelector(selectPlayerReady);
+  const spinUrl = useAppSelector(selectSpinUrl);
+  const spinTime = useAppSelector(selectSpinTime);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setPlayerInSync(true));
+    radio.seekToDelta(spinTime);
+  }, [playerReady]);
+
+  useEffect(() => {
+    if (!radio.player) return;
+    radio.player.url = spinUrl;
+  }, [spinUrl]);
+
+  useEffect(() => {
+    if (!radio.player) return;
+    if (!playerReady) return;
+    dispatch(setPlayerInSync(true));
+    radio.seekToDelta(spinTime);
+  }, [spinTime]);
 
   return (
     <div

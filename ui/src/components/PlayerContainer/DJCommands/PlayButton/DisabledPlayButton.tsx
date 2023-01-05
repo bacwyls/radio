@@ -13,7 +13,6 @@ export const DisabledPlayButton = () => {
             <button
                 className={`  opacity-70 
                  play-button-phone
-                 ${isDarkMode ? ' bg-black-90  ' : ' bg-white  border-black-20'}
                  `}
             >
                 <PlayCircle weight="bold" size={24} style={{ marginBottom: '-4px' }} />

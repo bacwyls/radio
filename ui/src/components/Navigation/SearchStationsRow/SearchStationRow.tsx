@@ -86,10 +86,10 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 type="text"
                 className={`    relative whitespace-nowrap	 h-full rounded-md border font-semibold 
                focus:outline-none focus:shadow 
-            ${isDarkMode ? 'text-black-80 placeholder-black-80 border-2  ' : ' placeholder-black-70  text-black-70 border'}
-            ${isFocused ? (isDarkMode ? 'bg-orange-15  ' : 'bg-orange-10') : (isDarkMode ? 'bg-orange-30  ' : 'bg-orange-20')}
+            ${isDarkMode ? 'text-black-90 placeholder-black-60 border-2  ' : ' placeholder-black-60  text-black-90 border'}
+            ${isFocused ? (isDarkMode ? 'bg-orange-15  ' : 'bg-orange-5') : (isDarkMode ? 'bg-orange-30  ' : 'bg-orange-20')}
             ${isValidPatp(tuneToText) ? ' border-orange-80   ' : ' border-orange-50 '}
-            ${isValidPatp(tuneToText) && tuneToText.length <= 14 ? 'pl-7' : 'pl-2'}
+            ${isValidPatp(tuneToText) ? 'pl-7' : 'pl-2'}
             `}
                 style={{
                     width: '100%',
@@ -111,14 +111,15 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
                 }
             />
-            {isValidPatp(tuneToText) && tuneToText.length <= 14 &&
-                <span
+            {isValidPatp(tuneToText) &&
+                <span opacity-50
                     className={`absolute ml-2 mr-1 h-4 w-4  overflow-hidden 
                                        rounded flex justify-center items-center
                                        ${isDarkMode ? 'bg-black-70' : 'bg-black-80'}
                                        `}
                 >
-                    {renderSigil(tuneToText, 16, isDarkMode)}
+                    {tuneToText.length <= 14 &&
+                        renderSigil(tuneToText, 16, isDarkMode)}
                 </span>
             }
             < button

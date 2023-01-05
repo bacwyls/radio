@@ -12,7 +12,6 @@ export const DisabledTalkButton = () => {
         isPhone() ?
             <button
                 className={` talk-button-phone opacity-70
-                 ${isDarkMode ? ' bg-black-90  ' : ' bg-white'}
                  `}
             >
                 <Megaphone weight="bold" size={24} style={{ marginBottom: '-4px' }} />

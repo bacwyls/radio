@@ -65,7 +65,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                       border  rounded-md  outline-none focus:shadow 
 
                     ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-10 placeholder-black-10'
-                        : ' text-black-80  bg-black-10 border-black-10 placeholder-black-80 focus:bg-black-1'}
+                        : ' text-black-100  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'}
                     ${isPhone() ? '' : 'mt-2 '}
                     `}
                 style={{

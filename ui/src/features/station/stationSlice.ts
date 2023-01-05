@@ -22,6 +22,7 @@ export interface StationState {
   tunePatP: string;
   radioSub: number;
   isPublic: boolean;
+  ourTowerDescription: string;
   viewers: string[];
   chats: ChatMessage[];
   update: any;
@@ -38,19 +39,12 @@ const initialState: StationState = {
   tunePatP: '',
   radioSub: 0,
   isPublic: false,
+  hasPublishedStation: false,
+  ourTowerDescription: '',
   viewers: Array<string>(),
   chats: Array<ChatMessage>(),
   update: Object(),
   towers: Array<IMinitower>(),
-  // towers: Array<IMinitower>({ location: '~tocdem-tocdet', description: 'Join if you enjoy classical music', time: 1, viewers: 20, public: false },
-  //   { location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 1, viewers: 20, public: false },
-  //   { location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 1, viewers: 20, public: false },
-  //   { location: '~harlys-forbec', description: 'World Cup 2022', time: 1, viewers: 20, public: false },
-  //   { location: '~misnex-lonled', description: 'Listening to music and watching random memes', time: 1, viewers: 20, public: false },
-  //   { location: '~hopper-fasrus', description: 'World Cup 2022', time: 1, viewers: 20, public: false },
-
-  // ),
-  hasPublishedStation: false,
   description: '',
   banned: Array<string>(),
 };
@@ -95,6 +89,18 @@ export const stationSlice = createSlice({
         isPublic: action.payload
       }
     },
+    setHasPublishedStation: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        hasPublishedStation: action.payload
+      }
+    },
+    setOurTowerDescription: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        ourTowerDescription: action.payload
+      }
+    },
     setViewers: (state, action: PayloadAction<string[]>) => {
       return {
         ...state,
@@ -131,12 +137,6 @@ export const stationSlice = createSlice({
         update: action.payload
       }
     },
-    setHasPublishedStation: (state, action: PayloadAction<boolean>) => {
-      return {
-        ...state,
-        hasPublishedStation: action.payload
-      }
-    },
     setTowers: (state, action: PayloadAction<Array<IMinitower>>) => {
       return {
         ...state,
@@ -165,6 +165,7 @@ export const {
   setTunePatP,
   setRadioSub,
   setIsPublic,
+  setOurTowerDescription,
   setViewers,
   resetChats,
   setChatsWithChatlog,
@@ -183,11 +184,12 @@ export const selectSpinTime = (state: RootState) => state.station.spinTime;
 export const selectTunePatP = (state: RootState) => state.station.tunePatP;
 export const selectRadioSub = (state: RootState) => state.station.radioSub;
 export const selectIsPublic = (state: RootState) => state.station.isPublic;
+export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
+export const selectOurTowerDescription = (state: RootState) => state.station.ourTowerDescription;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
 export const selectUpdate = (state: RootState) => state.station.update;
 export const selectTowers = (state: RootState) => state.station.towers;
-export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
 export const selectDescription = (state: RootState) => state.station.description;
 export const selectBanned = (state: RootState) => state.station.banned;
 

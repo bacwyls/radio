@@ -5,16 +5,17 @@
 
 }
 
-@media (min-width: 1200px) and (max-width: 1800px){
+/* @media (min-width: 1200px) and (max-width: 1800px){
 
     .join-station{
-        margin-right: 16em;
     }
 
-}
+} */
 
 .join-station{
     max-width: 15rem;
+    margin-right: 16em;
+
 }
 
 .join-station-container{

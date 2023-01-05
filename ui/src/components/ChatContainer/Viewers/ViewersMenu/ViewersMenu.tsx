@@ -61,7 +61,7 @@ export const ViewersMenu = () => {
                     `}
             >
                 <div className={`flex h-7 border-b
-            ${isDarkMode ? 'border-black-60  ' : ' border-black-20'}
+            ${isDarkMode ? 'border-black-60  ' : ' border-black-20 text-black-80'}
             `}
                 >
                     <button
@@ -121,8 +121,8 @@ export const ViewersMenu = () => {
                             < input
                                 type="text"
                                 className={`viewers-input
-                                ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-10 placeholder-black-10'
-                                        : ' text-black-80  bg-black-10 border-black-10 placeholder-black-80 focus:bg-black-1'}
+                                ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-1 placeholder-black-10'
+                                        : ' text-black-90  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'}
                    `}
                                 autoCorrect={'off'}
                                 autoCapitalize={'off'}

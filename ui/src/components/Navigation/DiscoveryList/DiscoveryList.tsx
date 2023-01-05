@@ -16,7 +16,7 @@ export const DiscoveryList = () => {
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const radioSub = useAppSelector(selectRadioSub);
 
-    const [filter, setFilter] = useState<Filter>('All');
+    // const [filter, setFilter] = useState<Filter>('All');
     // const hardCodedTowers = ['~wed', '~harlys-forbec', '~fidwed-sipwyn', '~darpub', '~fidwed', '~tirrel', '~toblut-midmug'];
 
     useEffect(() => {

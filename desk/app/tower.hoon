@@ -58,9 +58,6 @@
   !>(state)
 ++  on-init
   ^-  (quip card _this)
-  ::
-  :: annoyance: now.bowl here is wrong!
-  :: =.  spin-time  now.bowl
   `this
 :: ++  on-load  on-load:def
 ++  on-load
@@ -75,6 +72,9 @@
   :: potentially fixes #16 host-kicked bug
   `this
   |=  [=path]
+  ?:  =(path /greg/local)
+    :: potentially fixes #16 host-kicked bug
+    `this
   =.  viewers
     (~(del by viewers) src.bowl)
   =/  ships=(set ship)

@@ -63,7 +63,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 <div
                     className={`flex flex-col  font-medium 
                     rounded-md ${isPhone() && ''}
-                ${isDarkMode ? ' bg-black-80 text-black-10' : 'bg-black-10 text-black-80 '}
+                ${isDarkMode ? ' bg-black-80 text-black-10' : 'bg-black-10 text-black-90 '}
                         }
                         ${isCommand.command == 'play' && 'cursor-pointer'}
                 `
@@ -121,7 +121,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 :
                 <div
                     className={`font-medium break-words whitespace-normal 
-                     ${isDarkMode ? 'text-black-10' : 'text-black-80'}
+                     ${isDarkMode ? 'text-black-10' : 'text-black-90'}
                         `}
                     style={{
                         paddingLeft: '2em',

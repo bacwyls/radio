@@ -26,9 +26,6 @@ import { JoinStationPhone } from './pages/Phone/JoinStationPhone';
 
 export function App() {
 
-  const playerReady = useAppSelector(selectPlayerReady);
-  const spinUrl = useAppSelector(selectSpinUrl);
-  const spinTime = useAppSelector(selectSpinTime);
   const radioSub = useAppSelector(selectRadioSub);
   const update = useAppSelector(selectUpdate);
 
@@ -69,23 +66,6 @@ export function App() {
     dispatch(setIsLandscape(screen.orientation.type.includes('landscape') ? true : false));
   }
 
-  useEffect(() => {
-    dispatch(setPlayerInSync(true));
-    radio.seekToDelta(spinTime)
-  }, [playerReady]);
-
-  useEffect(() => {
-    if (!radio.player) return;
-    radio.player.url = spinUrl;
-  }, [spinUrl]);
-
-  useEffect(() => {
-    if (!radio.player) return;
-    if (!playerReady) return;
-    dispatch(setPlayerInSync(true));
-    radio.seekToDelta(spinTime)
-  }, [spinTime]);
-
   // initialize subscription
   useEffect(() => {
     if (!radio.api || radioSub) return;
@@ -125,7 +105,7 @@ export function App() {
   useEffect(() => {
     if (!update) return;
     // wrap updates in this effect to get accurate usestate
-    handleUpdate(update, radio, dispatch);
+    handleUpdate(update, dispatch);
   }, [update]);
 
   return (

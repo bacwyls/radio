@@ -10,7 +10,6 @@ import './style.css';
 
 export const Home: FC = () => {
     const dispatch = useAppDispatch();
-    const isLandscape = useAppSelector(selectIsLandscape);
     const isDarkMode = useAppSelector(selectIsDarkMode);
 
     useEffect(() => {

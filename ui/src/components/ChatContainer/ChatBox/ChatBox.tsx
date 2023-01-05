@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
 import { selectIsChatFullScreen, selectIsDarkMode } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
-import { Help } from '../Help/Help';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import './style.css';
 import { ViewersButton } from '../Viewers/ViewersButton';
@@ -70,7 +69,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
       <div
         className={`font-bold flex items-center justify-between rounded-md
           
-                     ${isDarkMode ? 'text-black-1 bg-black-95 ' : 'bg-white text-black-80 '}
+                     ${isDarkMode ? 'text-black-1 bg-black-95 ' : 'bg-white text-black-90 '}
                      `}
         style={{
           padding: '0 24px 0 24px',

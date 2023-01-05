@@ -1,20 +1,5 @@
 import Urbit from "@urbit/http-api";
 
-// const imgUrls = {
-//     'datboi' : 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
-//     'pepe': 'https://i.imgur.com/IGaYzV6.gif',
-//     'wojak': 'https://i.imgur.com/gsTARXr.gif',
-//     'poo' : 'https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif',
-//     'sadpepe': 'https://media.tenor.com/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif',
-
-// }
-
-// const whitebg = 'https://0x0.st/oJ62.png'
-// const blackbg = 'https://0x0.st/oJEy.png'
-// const funnygif = 'https://i.imgur.com/vzkOwHY.gif'
-// const vaporwave = 'https://0x0.st/oJ6_.png'
-
-
 export class Radio {
 
     our: string;
@@ -50,6 +35,9 @@ export class Radio {
     public seekToDelta(startedTime: number) {
         // respond to !time command or seek from update
         // this sets the player to the appropriate time
+
+        // no funny numbers
+        // started time is a unix timestamp
         if (startedTime === 0) return;
 
         if (!this.player) {
@@ -58,14 +46,17 @@ export class Radio {
         }
 
         var currentUnixTime = Date.now() / 1000;
-        var delta = Math.ceil(currentUnixTime - startedTime);
         var duration = this.player.getDuration();
 
-        if (duration) {
-            this.player.seekTo((delta % duration), 'seconds');
-        } else {
-            this.player.seekTo(delta, 'seconds');
-        }
+        if (!duration) return;
+
+
+        let globalProgress = Math.ceil(currentUnixTime - startedTime) % duration;
+
+
+        console.log('seeking to :', globalProgress)
+        this.player.seekTo(globalProgress, 'seconds');
+
     }
 
     public resyncAll(url: string) {
@@ -77,6 +68,19 @@ export class Radio {
             return;
         }
         this.setTime(url, time);
+    }
+
+    public syncLive(url: string) {
+        if (this.tunedTo !== this.our) {
+            return;
+        }
+
+        let duration = this.player.getDuration();
+
+        if (!duration) return;
+        if (!url) return;
+
+        this.setTime(url, duration - 5);
     }
 
     public isAdmin() {
@@ -186,7 +190,7 @@ export class Radio {
     }
 
     public ping() {
-        console.log('ping');
+        console.log('sending presence heartbeat');
         this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
@@ -270,6 +274,7 @@ export class Radio {
         'snake': 'https://media.tenor.com/OGH7rOXh5YIAAAAi/solid-snake-mgs.gif',
         'yoshi': 'https://media.tenor.com/K2cU8bfy97gAAAAi/yoshi-tiptoe.gif',
         'cringe': 'https://media.tenor.com/pbderXHkWfUAAAAi/cringe-0000000.gif',
+        'cow': 'https://media.tenor.com/9egJp0qwy_UAAAAi/polish-cow-polish.gif',
     }
 
     // util

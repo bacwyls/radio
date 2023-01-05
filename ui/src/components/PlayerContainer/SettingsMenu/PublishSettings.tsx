@@ -129,7 +129,7 @@ export const PublishSettings = () => {
                             className={` rounded-md border w-full 
                              px-2 py-1 outline-none focus:shadow	resize-none
                              ${isDarkMode ? 'bg-black-80 focus:bg-black-85 border-black-80  placeholder-black-10 text-black-10  '
-                                    : 'bg-black-10 placeholder-black-80  text-black-80 border-black-10 focus:bg-black-1'}
+                                    : 'bg-black-10 placeholder-black-60  text-black-90 border-black-10 focus:bg-black-1'}
                                     `}
                             placeholder="Write a description..."
                             maxLength={64}

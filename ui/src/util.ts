@@ -10,7 +10,7 @@ import {
   setChatsWithChatlog,
   setChatsWithChat,
   setHasPublishedStation,
-  setBanned
+  setBanned,
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -23,7 +23,7 @@ import { isValidPatp } from 'urbit-ob'
 import { radio } from './api';
 import { reactRenderer, sigil } from '@tlon/sigil-js';
 
-export function handleUpdate(update: any, radio: Radio, dispatch: any) {
+export function handleUpdate(update: any, dispatch: any) {
   console.log("radio update", update);
   let mark = Object.keys(update)[0];
 
@@ -170,6 +170,20 @@ export function handleUserInput(
     case 'logout':
       radio.tune(null);
       break;
+    case 'live':
+      radio.syncLive(spinUrl);
+      radio.chat(chat);
+      break;
+    // case 'publish':
+    //   if (!radio.isAdmin()) {
+    //     return;
+    //   }
+    //   radio.gregPut(arg);
+    //   radio.chat(chat);
+    //   dispatch(setHasPublishedStation(true));
+    //   dispatch(setOurTowerDescription(arg))
+    //   // refresh towers
+    //   radio.gregRequest();
     //
     // image commands
     default:

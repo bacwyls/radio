@@ -18,7 +18,7 @@
 
 @media (max-width: 1199px){
     .discovery-list{
-      @apply  relative border shadow rounded-md  mt-2;
+      @apply  relative border  rounded-md  mt-2;
       height: calc(100vh - 15em);
     }
 
