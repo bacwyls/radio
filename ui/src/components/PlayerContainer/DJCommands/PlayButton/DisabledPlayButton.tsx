@@ -21,7 +21,7 @@ export const DisabledPlayButton = () => {
             :
             <button
                 className={`  play-button   cursor-not-allowed opacity-70
-                ${isDarkMode ? ' border-black-85' : 'border-black-20'}
+                ${isDarkMode ? ' border-black-85 bg-black-90' : 'border-black-20 bg-white'}
         `}
             >
                 <PlayCircle weight="bold" className="megaphone" />

@@ -20,8 +20,7 @@ export const DisabledTalkButton = () => {
             :
             <button
                 className={`  talk-button   cursor-not-allowed	opacity-70
-                ${isDarkMode ? ' border-black-85' : 'border-black-20'}
-        ${isDarkMode ? ' bg-black-90 ' : ' bg-white'}
+                ${isDarkMode ? ' border-black-85 bg-black-90' : 'border-black-20 bg-white'}
         `}
             >
                 <Megaphone weight="bold" className="megaphone" />

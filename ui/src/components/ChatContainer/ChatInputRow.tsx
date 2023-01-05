@@ -1,9 +1,10 @@
 import { ArrowLeft } from "phosphor-react";
 import React, { FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectSpinTime, selectSpinUrl } from "../../features/station/stationSlice";
+import { selectSpinTime, selectSpinUrl, selectTunePatP } from "../../features/station/stationSlice";
 import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen } from "../../features/ui/uiSlice";
 import { handleUserInput, isPhone } from "../../util";
+import { isValidPatp } from 'urbit-ob'
 
 interface IChatInputRow {
 }
@@ -18,6 +19,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
     const spinTime = useAppSelector(selectSpinTime);
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
     const isDarkMode = useAppSelector(selectIsDarkMode);
+    const tunePatP = useAppSelector(selectTunePatP);
 
     const [inputText, setInputText] = useState('');
 
@@ -63,11 +65,12 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 type="text"
                 className={`pl-2 flex items-center relative   
                       border  rounded-md  outline-none focus:shadow 
-
+                ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-not-allowed'}
                     ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-10 placeholder-black-10'
                         : ' text-black-100  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'}
                     ${isPhone() ? '' : 'mt-2 '}
                     `}
+                disabled={!(tunePatP && isValidPatp(tunePatP))}
                 style={{
                     height: isPhone() ? '2rem' : '40px',
                     width: '100%',

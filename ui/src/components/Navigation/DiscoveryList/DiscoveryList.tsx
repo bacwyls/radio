@@ -22,9 +22,11 @@ export const DiscoveryList = () => {
     useEffect(() => {
         radio.gregRequest()
 
-        setInterval(() => {
+        const gregInterval = setInterval(() => {
             radio.gregRequest();
         }, 1000 * 30)
+
+        return () => clearInterval(gregInterval);
 
     }, [radioSub]);
 

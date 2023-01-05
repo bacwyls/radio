@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FC } from "react";
 import { radio } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Header } from "../../components/Header/Header";
 import { NavigateStations } from "../../components/Navigation/NavigateStations/NavigateStations";
-import { selectIsDarkMode, selectIsLandscape, } from "../../features/ui/uiSlice";
-import { isPhone, tuneTo } from "../../util";
+import { selectIsDarkMode, } from "../../features/ui/uiSlice";
+import { tuneTo } from "../../util";
 import './style.css';
 
 export const Home: FC = () => {

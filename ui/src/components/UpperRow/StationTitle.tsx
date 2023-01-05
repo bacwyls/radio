@@ -1,6 +1,7 @@
 import { Radio, Television } from 'phosphor-react';
 import React from 'react';
 import { FC } from 'react';
+import { useParams } from 'react-router';
 import { isValidPatp } from 'urbit-ob'
 import { radio } from '../../api';
 import { useAppSelector } from '../../app/hooks';
@@ -9,17 +10,13 @@ import { selectIsDarkMode } from '../../features/ui/uiSlice';
 import { renderSigil } from '../../util';
 import { IsPublicInfo } from './IsPublicInfo/IsPublicInfo';
 
-
-interface IStationTitle {
-}
-
-export const StationTitle: FC<IStationTitle> = (props: IStationTitle) => {
+export const StationTitle = () => {
 
     const tunePatP = useAppSelector(selectTunePatP);
     const isDarkMode = useAppSelector(selectIsDarkMode);
 
     return (
-        tunePatP && !isValidPatp(tunePatP) ?
+        !(tunePatP && isValidPatp(tunePatP)) ?
             <div
                 className={`flex items-center font-bold  whitespace-nowrap
             ${isDarkMode ? 'text-black-10' : 'text-black-70'}

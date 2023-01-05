@@ -1,30 +1,60 @@
 import React, { useEffect } from "react"
 import { ConnectingAnimation } from "./ConnectingAnimation/ConnectingAnimation"
 import { isValidPatp } from 'urbit-ob'
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectIsDarkMode } from "../../features/ui/uiSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { radio } from "../../api";
 import { Television } from "phosphor-react";
-import { isPhone, renderSigil } from "../../util";
+import { isPhone, renderSigil, tuneTo } from "../../util";
+import { selectRadioSub } from "../../features/station/stationSlice";
 
-interface IConnecting {
-    patp: string;
-}
+export const Connecting = () => {
+    let { patp } = useParams();
 
-export const Connecting = ({ patp }: IConnecting) => {
     const isDarkMode = useAppSelector(selectIsDarkMode);
+    const radioSub = useAppSelector(selectRadioSub);
+
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const handleCancel = () => {
         navigate('/');
     }
 
     useEffect(() => {
+        if (!radioSub) return;
+
+        if (patp && isValidPatp(patp)) {
+            tuneTo(patp, radio, dispatch);
+        }
+
+        else {
+            navigate('/');
+            tuneTo(null, radio, dispatch);
+        }
+
+    }, [patp, radioSub]);
+
+    useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
+
+        const retryInterval = setInterval(() => {
+            if (patp && isValidPatp(patp)) {
+                tuneTo(patp, radio, dispatch);
+            }
+
+            else {
+                navigate('/');
+                tuneTo(null, radio, dispatch);
+            }
+        }, 1000 * 40)
+
         return () => {
+            clearInterval(retryInterval)
             window.removeEventListener("keydown", handleKeyDown);
         };
+
     }, [])
 
     const handleKeyDown = (event: any) => {
@@ -36,7 +66,10 @@ export const Connecting = ({ patp }: IConnecting) => {
 
     return (
         <div
-            className='w-full h-full fixed z-50 flex items-center justify-center'
+
+            className={`w-full h-full fixed z-50 flex items-center justify-center
+        ${patp == radio.our && 'invisible'} 
+            `}
             style={{
                 backdropFilter: 'blur(10px) brightness(0.8)',
                 top: 0,

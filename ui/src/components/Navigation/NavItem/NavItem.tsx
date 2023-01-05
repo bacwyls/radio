@@ -25,9 +25,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
 
   const { patp, flare, title, logout, description, isPublic } = props;
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLandscape = useAppSelector(selectIsLandscape);
   const isDarkMode = useAppSelector(selectIsDarkMode);
 
   const handleNavItemClick = () => {

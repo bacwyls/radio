@@ -44,12 +44,17 @@ export const ViewersButton = () => {
         <div id='viewers-menu' className='w-max	ml-0.5'>
             <button
                 className={` flex items-center tracking-wide px-2 py-1	rounded  font-bold 	
+                ${viewers.length == 0 ? (isDarkMode ? 'cursor-default text-gray-dark bg-black-80 ' : 'cursor-default  text-gray-light bg-black-10')
+                        :
+                        (isDarkMode ? 'hover:bg-black-40 text-gray-dark bg-black-80' : 'hover:bg-black-30 text-gray-light bg-black-10')}
             ${tunePatP && tunePatP.length > 14 && 'justify-center'}   
-            ${isDarkMode ? 'hover:bg-black-40 text-gray-dark bg-black-80' : 'hover:bg-black-30 text-gray-light bg-black-10'}
             ${isViewersMenuOpen && (isDarkMode ? 'bg-black-40' : 'bg-black-30')}
           `}
 
-                onClick={() => dispatch(setIsViewersMenuOpen(!isViewersMenuOpen))}
+                onClick={() => {
+                    if (viewers.length == 0) return;
+                    dispatch(setIsViewersMenuOpen(!isViewersMenuOpen))
+                }}
             >
                 <Users
                     size={24}

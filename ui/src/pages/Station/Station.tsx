@@ -9,7 +9,6 @@ import { isValidPatp } from 'urbit-ob'
 import { selectDescription, selectHasPublishedStation, selectIsPublic, selectRadioSub, selectTunePatP, selectViewers, setHasPublishedStation } from "../../features/station/stationSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { PhoneFooter } from "../../components/Mobile/PhoneFooter/PhoneFooter";
-import { isMobile, isTablet } from "react-device-detect";
 import { UpperRowContainer } from "../../components/UpperRow/UpperRowContainer/UpperRowContainer";
 import { selectIsChatFullScreen, selectIsDarkMode, selectIsViewersMenuOpen } from "../../features/ui/uiSlice";
 import './style.css';
@@ -21,10 +20,6 @@ const ChatContainerMemo = React.memo(ChatContainer);
 export const Station: FC = () => {
     let { patp } = useParams();
 
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
-    const radioSub = useAppSelector(selectRadioSub);
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const tunePatP = useAppSelector(selectTunePatP);
     const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
@@ -32,16 +27,25 @@ export const Station: FC = () => {
     const hasPublishedStation = useAppSelector(selectHasPublishedStation);
     const isPublic = useAppSelector(selectIsPublic);
     const description = useAppSelector(selectDescription);
+
     const gregInterval = useRef<NodeJS.Timer>();
 
     useEffect(() => {
-        setInterval(() => {
+
+        const pingInterval = setInterval(() => {
             // heartbeat to detect presence
             radio.ping();
 
         }, 1000 * 60 * 2)
 
+        return () => {
+            clearInterval(pingInterval)
+            if (gregInterval.current)
+                clearInterval(gregInterval.current)
+        }
+
     }, []);
+
 
     useEffect(() => {
         if (gregInterval.current) {
@@ -60,22 +64,8 @@ export const Station: FC = () => {
 
     }, [hasPublishedStation, description]);
 
-    useEffect(() => {
-        if (!radioSub) return;
-
-        if (patp && isValidPatp(patp)) {
-            tuneTo(patp, radio, dispatch);
-        }
-
-        else {
-            navigate('/');
-            tuneTo(null, radio, dispatch);
-        }
-
-    }, [patp, radioSub]);
-
     return (
-        <div className={`  station-container 
+        <div className={`  station-container
                         ${isDarkMode ? 'bg-black-100 text-black-5' : 'bg-black-2 text-black-70'}
                         `}
             style={{
@@ -90,7 +80,7 @@ export const Station: FC = () => {
                 <PlayerContainerMemo />
             </div>
             <ChatContainerMemo />
-            {patp && patp != tunePatP && (patp != radio.our) ? < Connecting patp={patp} /> :
+            {patp && patp != tunePatP ? < Connecting /> :
                 (isPhone() && (!isChatFullScreen || isViewersMenuOpen) && <PhoneFooter />)
             }
         </div >
