@@ -1,0 +1,18 @@
+.public-info{
+    @apply absolute top-5 left-0 shadow-lg py-2 px-3 rounded h-12 font-semibold   flex items-center border;
+    width: 21.4em;
+    line-height: 18px;
+    z-index: 2;
+    font-size: 16px;
+}
+
+.public-info-phone{
+    @apply fixed  shadow py-2 px-3 rounded h-12 font-semibold  shadow-lg  flex items-center border;
+    transform: translateX(calc(-50%));
+    left: 50%; 
+    top: 58px;
+    width: calc(100% - 48px);
+    line-height: 18px;
+    z-index: 2;
+    font-size: 16px;
+}

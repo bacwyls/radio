@@ -1,12 +1,11 @@
 import { Question } from "phosphor-react";
 import React, { useEffect, useState } from "react"
-import { useAppSelector } from "../../../app/hooks";
-import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 
 export const DiscoveryInfo = () => {
 
     const [showDiscoveryInfo, setShowDiscoveryInfo] = useState(false);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
+
+    const discoveryInfoId = 'discovery-info';
 
     useEffect(() => {
         document.addEventListener(
@@ -19,7 +18,7 @@ export const DiscoveryInfo = () => {
 
     const handleOutsideDiscoveryInfoMenuClick = (event: any) => {
         var clicked = event.target as Element;
-        var discoveryInfo = document.getElementById('discovery-info');
+        var discoveryInfo = document.getElementById(discoveryInfoId);
 
         if (
             clicked != discoveryInfo && !discoveryInfo?.contains(clicked)
@@ -30,12 +29,11 @@ export const DiscoveryInfo = () => {
 
     return (
         <div
-            id="discovery-info"
+            id={discoveryInfoId}
         >
             <button
                 className={`cursor-pointer rounded p-0.5  mt-1  
-                    ${showDiscoveryInfo ? (isDarkMode ? 'bg-black-80' : ' bg-black-10') : ''}
-                    ${isDarkMode ? ' hover:bg-black-80' : ' hover:bg-black-10'}
+                    ${showDiscoveryInfo ? 'bg-hover-default' : ' hover:bg-hover-default'}
                     `}
                 onClick={() => setShowDiscoveryInfo(prev => !prev)}
             >
@@ -46,22 +44,16 @@ export const DiscoveryInfo = () => {
             </button>
             {
                 showDiscoveryInfo && <div
-                    className={`border z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 
-                            rounded  absolute  leading-4 font-bold    
-                            ${isDarkMode ? ' bg-black-95 border-black-85 filter drop-shadow-md-dark' : 'border-black-10 bg-white shadow-lg '}
+                    className={`border z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 left-0 top-0
+                            rounded  absolute  leading-4 font-bold    border-border-default bg-background-default shadow-lg text-base
                             `}
                     style={{
-                        left: 0,
-                        top: 0,
                         width: '20em',
-                        fontSize: '16px'
                     }}
                 >
                     Published stations with the most viewers will appear here.
                 </div>
             }
         </div >
-
     )
-
 }

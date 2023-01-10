@@ -1,12 +1,9 @@
 import { Megaphone } from "phosphor-react";
-import { useAppSelector } from "../../../../app/hooks";
-import { selectIsDarkMode } from "../../../../features/ui/uiSlice";
 import React from "react";
 import { isPhone } from "../../../../util";
 
 export const DisabledTalkButton = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     return (
         isPhone() ?
@@ -19,8 +16,7 @@ export const DisabledTalkButton = () => {
             </button >
             :
             <button
-                className={`  talk-button   cursor-not-allowed	opacity-70
-                ${isDarkMode ? ' border-black-85 bg-black-90' : 'border-black-20 bg-white'}
+                className={`  talk-button   cursor-not-allowed 	opacity-70
         `}
             >
                 <Megaphone weight="bold" className="megaphone" />

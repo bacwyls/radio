@@ -1,9 +1,9 @@
 .talk-modal{
-    @apply fixed border flex flex-col z-20  gap-3 py-7 px-8 rounded-md shadow-lg;
+    @apply fixed border border-border-default bg-background-default shadow-lg flex flex-col z-20  gap-3 py-7 px-8 rounded-md;
     left: 37.5%;
     transform: translate(-50%, -50%);
     top: 50%;
-    width: 27em;
+    width: 27em;    
 }    
 
 
@@ -17,14 +17,13 @@
 }
 
 .talk-button {
-    @apply  font-bold border    rounded-md  justify-center flex text-center items-center gap-1  ;
+    @apply  font-bold border shadow   rounded-md  justify-center flex text-center items-center gap-1 border-border-default;
     height: 40px;
     width: 104px;
 }
 
 .talk-button-phone {
-    @apply  flex flex-col items-center justify-center font-bold gap-0.5;
-    font-size: 16px;
+    @apply  flex flex-col items-center justify-center font-bold gap-0.5 text-base;
     width: 20vw;
 
 }
@@ -36,10 +35,9 @@
 @media (max-width: 799px){
 
     .talk-button {
-        @apply gap-0.5;
+        @apply gap-0.5 text-sm;
         height: 40px;
         width: 80px;
-        font-size: 14px ;
 
     }
 
@@ -47,17 +45,13 @@
         font-size: 20px ; 
     }
 
-    
-
 }
 
 .talk-modal-phone{
-    @apply fixed flex flex-col z-20 gap-3 py-10 justify-center border-t w-full drop-shadow-none;
-    left: 0;
+    @apply fixed border-t   border-border-default bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
     height: calc(100% - 64px - 64px - 56.25vw - 1rem);
     min-height: 10rem;
     bottom: 64px;
-    padding-left:24px;
-    padding-right:24px;
-
 }    
+
+

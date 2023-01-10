@@ -2,13 +2,12 @@ import { Megaphone } from "phosphor-react"
 import React, { useEffect, useState } from "react"
 import { radio } from "../../../../api";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsDarkMode, selectIsTalkModalOpen, setIsTalkModalOpen } from "../../../../features/ui/uiSlice";
+import { selectIsTalkModalOpen, setIsTalkModalOpen } from "../../../../features/ui/uiSlice";
 import { isPhone } from "../../../../util"
 import { talkButtonId } from "./TalkButton";
 
 export const TalkModal = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const isTalkModalOpen = useAppSelector(selectIsTalkModalOpen);
 
     const dispatch = useAppDispatch();
@@ -61,12 +60,11 @@ export const TalkModal = () => {
                 id={talkModalId}
                 className={`  
                     ${isPhone() ? 'talk-modal-phone' : 'talk-modal'}
-                ${isDarkMode ? ' bg-black-95 border-black-85 filter drop-shadow-md-dark' : ' bg-white border-black-10'} `}
-                style={{ fontSize: '16px' }}
+                    `}
             >
                 <div
-                    className='font-semibold '
-                    style={{ fontSize: '18px', lineHeight: '22px' }}
+                    className='font-semibold text-bigger '
+                    style={{ lineHeight: '22px' }}
                 >
                     The text will be converted to speech and broadcasted
                     to everybody.
@@ -78,10 +76,9 @@ export const TalkModal = () => {
                     <textarea
                         id={urlInputId}
                         autoComplete="off"
-                        className={`  rounded-md border w-full f
-                px-2 py-1 outline-none focus:shadow	resize-none	
-                ${isDarkMode ? 'bg-black-80 focus:bg-black-85 border-black-80  placeholder-black-10 text-black-10  '
-                                : 'bg-black-10 placeholder-black-60  text-black-90 border-black-10 focus:bg-black-1'}
+                        className={`bold-placeholder rounded-md border border-border-default w-full
+                px-2 py-1 outline-none focus:shadow resize-none placeholder-text-secondary text-text-default  
+                bg-background-textarea focus:bg-background-input-focused
                 `}
                         placeholder='Text to Speech'
                         value={textToSpeech}
@@ -89,18 +86,16 @@ export const TalkModal = () => {
                         maxLength={64}
                         style={{ height: '5rem' }}
                     />
-                    <span className={`absolute bottom-1 left-2  font-semibold 
-                                    ${isDarkMode ? 'text-black-10  '
-                            : 'text-black-60'}
+                    <span className={`absolute bottom-1 left-2  font-semibold  text-text-secondary
+                        }
 
-                    ` }
+    ` }
                     >{textToSpeech.length + '/64'}</span>
                     <button
-                        className={`flex items-center justify-center 
-                gap-0.5 font-bold  rounded-md absolute bottom-1 right-2   
-                ${isDarkMode ? 'text-black-90' : '  text-black-5 '}
-                ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-90 ' : 'cursor-not-allowed opacity-50 bg-blue-90'} 
-                `}
+                        className={`flex items-center justify-center
+                 gap-0.5 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
+                ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow' : 'cursor-default text-opacity-80 bg-blue-disabled'}
+    `}
                         style={{
                             width: '6em',
                             height: '40px',

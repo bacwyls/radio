@@ -7,27 +7,25 @@ import './index.css';
 import {
   setRadioSub,
   setUpdate,
-  selectSpinUrl,
-  selectSpinTime,
   selectRadioSub,
   selectUpdate,
   setTowers,
 } from './features/station/stationSlice';
 import {
-  setPlayerInSync,
-  selectPlayerReady,
+  selectIsDarkMode,
   setIsLandscape
 } from './features/ui/uiSlice';
 import { radio } from './api';
 import { Home } from './pages/Home/Home';
 import { Station } from './pages/Station/Station';
-import { HomePhone } from './pages/Phone/HomePhone/HomePhone';
-import { JoinStationPhone } from './pages/Phone/JoinStationPhone';
+import { HomePhone } from './pages/Mobile/HomePhone/HomePhone';
+import { JoinStationPhone } from './pages/Mobile/JoinStationPhone';
 
 export function App() {
 
   const radioSub = useAppSelector(selectRadioSub);
   const update = useAppSelector(selectUpdate);
+  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   const dispatch = useAppDispatch();
 
@@ -107,6 +105,16 @@ export function App() {
     // wrap updates in this effect to get accurate usestate
     handleUpdate(update, dispatch);
   }, [update]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+    }
+    else {
+      document.documentElement.classList.remove('dark')
+    }
+
+  }, [isDarkMode]);
 
   return (
     < BrowserRouter basename='/apps/radio/'  >

@@ -1,13 +1,11 @@
 import { Megaphone, PlayCircle } from "phosphor-react";
 import React, { useState } from "react";
 import { FC } from "react";
-import { isValidPatp } from 'urbit-ob'
 import { radio } from "../../../api";
-import { useAppSelector } from "../../../app/hooks";
-import { selectIsDarkMode } from "../../../features/ui/uiSlice";
-import { getCommandArg, isPhone, renderSigil, timestampFromTime } from "../../../util";
+import { getCommandArg, isPhone, timestampFromTime } from "../../../util";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './style.css';
+import { Sigil } from "../../Sigil";
 
 interface IChatMessage {
     from?: string,
@@ -17,8 +15,6 @@ interface IChatMessage {
 
 export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
     const { from, time, message } = props;
-
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const chatToHTML = (key: number, message: string, from?: string, time?: string) => {
 
@@ -53,21 +49,16 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
             if (command != 'play') return;
 
             setShowTooltip(true);
-            setTimeout(() => setShowTooltip(false),
-                1000
-            )
+            setTimeout(() => setShowTooltip(false), 1000)
         }
 
         return (
             isCommand ?
                 <div
                     className={`flex flex-col  font-medium 
-                    rounded-md ${isPhone() && ''}
-                ${isDarkMode ? ' bg-black-80 text-black-10' : 'bg-black-10 text-black-90 '}
-                        }
+                    rounded-md  text-text-primary bg-background-textarea
                         ${isCommand.command == 'play' && 'cursor-pointer'}
-                `
-                    }
+                `}
                     style={{
                         marginLeft: '1.6em',
                         lineHeight: '24px',
@@ -88,15 +79,13 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                                         <PlayCircle className="mr-0.5" size={20} weight="bold" /> Play
                                     </div>
                                     {showTooltip &&
-                                        <span style={{ fontSize: '14px' }}>
+                                        <span className="text-sm">
                                             Copied!
                                         </span>
                                     }
                                 </div>
                                 <div
-                                    className={`  break-words whitespace-normal
-                                            play
-                                            `}
+                                    className='  break-words whitespace-normal play'
                                 >
                                     {isCommand.arg}
                                 </div>
@@ -120,8 +109,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 </div >
                 :
                 <div
-                    className={`font-medium break-words whitespace-normal 
-                     ${isDarkMode ? 'text-black-10' : 'text-black-90'}
+                    className={`font-medium break-words whitespace-normal text-text-primary
                         `}
                     style={{
                         paddingLeft: '2em',
@@ -149,38 +137,23 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
-                className={` overflow-x-hidden w-full   
-                    ${isPhone() ?
-                        (isDarkMode ?
-                            'text-black-30' : '')
-                        :
-                        (isDarkMode ?
-                            'hover:bg-black-90 text-black-30' : 'hover:bg-black-4 ')
-                    }
+                className={` chat-message   
+                    ${!isPhone() && 'hover:bg-hover-mild'}
+                       
         `}
-                style={{
-                    paddingTop: '10px',
-                    paddingLeft: '24px',
-                    paddingBottom: '10px',
-                    paddingRight: '24px',
-                    marginRight: 'calc(-1 * calc(25vw - 100%))'
-                }}
             >
-                <div className={`flex justify-between items-center w-4/10 mb-0.5 ${isPhone() && 'mr-1'} `}>
+                <div className={`flex justify-between items-center w-4/10 mb-1 text-text-secondary ${isPhone() && 'mr-1'} `}>
                     <div className={`flex items-center w-full
                     `}
                     >
                         <span className={`  mr-1.5 h-4 w-4
                           rounded flex justify-center 
-                          items-center
-                          ${isDarkMode ? 'bg-black-70' : 'bg-black-80'}
+                          items-center bg-background-icon
  
                           `}
                             style={{ minWidth: '1rem' }}
-                        >{
-                                from && isValidPatp(from) && from.length <= 14 &&
-                                renderSigil(from, 18, isDarkMode)
-                            }
+                        >
+                            <Sigil patp={from} size={18} />
                         </span>
                         <span className='font-semibold mr-1 w-full'
                             style={{ lineHeight: '16px', }}
@@ -189,11 +162,8 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         </span>
                     </div>
                     <span
-                        className={` font-bold  
+                        className={` font-bold  text-sm
         `}
-                        style={{
-                            fontSize: '14px',
-                        }}
                     >
                         {timestampFromTime(time)}
                     </span>

@@ -1,5 +1,5 @@
 .play-modal{
-   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border;
+   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-md border border-border-default text-base shadow-lg bg-background-default;
    left: 37.5%;
    transform: translate(-50%, -50%);
    top: 50%;
@@ -17,14 +17,13 @@
 }
 
 .play-button {
-    @apply   font-bold border  rounded-md  justify-center flex text-center items-center gap-1  ;
+    @apply   font-bold  shadow rounded-md  justify-center flex text-center items-center gap-1 border border-border-default ;
     height: 40px;
     width: 104px;
 }
 
 .play-button-phone {
-    @apply flex flex-col justify-center items-center font-bold gap-0.5; 
-    font-size: 16px;
+    @apply flex flex-col justify-center items-center font-bold gap-0.5 text-base; 
     width: 20vw;
 }
 
@@ -34,11 +33,9 @@
 
 @media (max-width: 799px){
     .play-button {
-        @apply gap-0.5;
+        @apply gap-0.5 text-sm;
         height: 40px;
         width: 80px;
-        font-size: 14px ;
-
     }
 
     .play-circle{
@@ -47,12 +44,9 @@
 }
 
 .play-modal-phone {
-
-    @apply fixed flex flex-col z-20 gap-3 py-10 justify-center border-t w-full  drop-shadow-none;
-    left: 0;
+    @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t w-full   border-border-default bg-background-default  ;
     height: calc(100% - 64px - 64px - 56.25vw - 1rem);
     min-height: 10rem;
     bottom: 64px;
-    padding-left:24px;
-    padding-right:24px;
 }
+

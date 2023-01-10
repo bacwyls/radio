@@ -1,9 +1,11 @@
 .chatbox-container{
+    @apply w-full flex flex-col relative;
     --height: calc(100vh - 80px);
     height: var(--height);
 }
 
 .chatbox-container-phone {
+    @apply flex flex-col relative;
     --height: 100%;
     height: var(--height);
     min-height: var(--height);
@@ -11,30 +13,27 @@
 }
 
 .chatbox-container-full{
+    @apply fixed w-screen left-0 right-0;
     height: calc(100vh - 6.5em) !important;
-    width: 100vw;
-    position: fixed;
-    left: 0;
-    top: 0;
 }
 
 .chatbox{
+    @apply  w-full flex flex-col;
     height: calc(100vh - 64px - 80px);
-    width: 100%;
+    justify-content: flex-end;
 }
 
 .chatbox-phone{
+    @apply w-full flex flex-col;  
     height: calc(100% - 64px);
-    width: 100%;
+    justify-content: flex-end;
     bottom: 64px;
-    /* position: fixed;     */
 }
 
 .chatbox-full{
+    @apply w-screen fixed;
     height: calc(100% - 64px - 64px);
-    width: 100vw;
     top: 64px; 
-    position: fixed;
 }
 
 @media (max-width: 1099px){

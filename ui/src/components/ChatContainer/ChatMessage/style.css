@@ -7,6 +7,20 @@
 }
 
 .play-cursor{
-
-cursor: pointer;
+    cursor: pointer;
 }
+
+.chat-message{
+    @apply overflow-x-hidden;
+    padding-top: 10px;
+    padding-left: 24px;
+    padding-bottom: 10px;
+    padding-right: calc(24px - calc( 0.7 * calc(25vw - 100%)));
+}
+
+@media (max-width: 1099px){
+    .chat-message{
+        @apply w-full pr-4;
+    }
+}
+

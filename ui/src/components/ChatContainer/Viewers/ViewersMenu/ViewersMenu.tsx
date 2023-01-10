@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { radio } from "../../../../api";
-import { isPhone, tuneTo } from "../../../../util";
+import { isPhone, } from "../../../../util";
 import { ViewersTabOption } from "../ViewersButton";
 import { MagnifyingGlass } from "phosphor-react";
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsDarkMode } from "../../../../features/ui/uiSlice";
+import { useAppSelector } from "../../../../app/hooks";
 import './ViewersMenu.css';
 import { selectBanned, selectTunePatP, selectViewers } from "../../../../features/station/stationSlice";
 import { Banned } from "./Banned";
@@ -16,7 +15,6 @@ import { Viewer } from "./Viewer";
 export const ViewersMenu = () => {
     const viewers = useAppSelector(selectViewers);
     const banned = useAppSelector(selectBanned);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const tunePatP = useAppSelector(selectTunePatP);
 
     const [openTab, setOpenTab] = useState<ViewersTabOption>('Online');
@@ -56,32 +54,26 @@ export const ViewersMenu = () => {
         viewers.length > 0 && (radio.our != tunePatP || banned) ?
             <div
                 className={` 
-            ${isDarkMode ? ' bg-black-95  border-black-85  ' : ' bg-white border-black-10'}
                ${isPhone() ? 'viewers-menu-phone' : ' viewers-menu'}
                     `}
             >
-                <div className={`flex h-7 border-b
-            ${isDarkMode ? 'border-black-60  ' : ' border-black-20 text-black-80'}
+                <div className={`flex h-7 border-b border-border-intense text-text-default
             `}
                 >
                     <button
                         className={`w-1/2  py-2 
-                            flex justify-center items-center 
-                             ${openTab == 'Online' ?
-                                (isDarkMode ? ' font-semibold border-white border-b-2' :
-                                    'border-black-100 font-semibold border-b-2 ')
-                                : 'border-transparent'
+                            flex justify-center items-center  '
+                             ${openTab == 'Online' &&
+                            'border-b-2 border-border-super-intense font-semibold'
                             }
                       ` }
-                        style={{
-                            marginBottom: '-0.1em',
-                        }}
                         onClick={() => handleTabClick('Online')}
+                        style={{ marginBottom: '-1px' }}
                     >
                         Online
-                        <span className={`ml-1 
+                        <span className={`ml-1 text-sm
                         `}
-                            style={{ fontSize: '14px' }}>
+                        >
                             ({viewers.length})
                         </span>
                     </button>
@@ -89,24 +81,21 @@ export const ViewersMenu = () => {
                         className={`w-1/2 
                     py-2 flex justify-center items-center 
                     ${radio.isAdmin() ? '' : 'cursor-not-allowed opacity-50'}
-                        ${openTab == 'Banned'
-                                ? (isDarkMode ? 'border-white  border-b-2 font-semibold' : 'border-black-100  border-b-2 font-semibold')
-                                : 'border-transparent'
-                            } `}
-                        style={{
-                            marginBottom: '-0.1em',
-
-                        }}
+                    ${openTab == 'Banned' &&
+                            'border-border-super-intense font-semibold border-b-2'
+                            }
+                            `}
                         onClick={() => {
                             radio.isAdmin() &&
                                 handleTabClick('Banned')
                         }}
+                        style={{ marginBottom: '-1px' }}
                     >
                         Banned
                         {radio.isAdmin() &&
-                            <span className={`ml-1
+                            <span className={`ml-1 text-sm
                                `}
-                                style={{ fontSize: '14px' }}>
+                            >
                                 ({banned.length})
                             </span>}
                     </button>
@@ -120,10 +109,7 @@ export const ViewersMenu = () => {
                         >
                             < input
                                 type="text"
-                                className={`viewers-input
-                                ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-1 placeholder-black-10'
-                                        : ' text-black-90  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'}
-                   `}
+                                className='viewers-input'
                                 autoCorrect={'off'}
                                 autoCapitalize={'off'}
                                 autoComplete={'off'}
@@ -138,7 +124,6 @@ export const ViewersMenu = () => {
                     >
                         <div className={` 
                                 ${isPhone() ? 'viewers-input-sticky-row-phone' : 'viewers-input-sticky-row'}
-                                ${isDarkMode ? ' bg-black-95  border-black-95' : ' bg-white border-white'}
                 `}
                         >
                         </div>

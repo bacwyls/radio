@@ -1,12 +1,9 @@
 import { PlayCircle } from "phosphor-react";
 import React from "react";
-import { useAppSelector } from "../../../../app/hooks";
-import { selectIsDarkMode } from "../../../../features/ui/uiSlice";
 import { isPhone } from "../../../../util";
 
 export const DisabledPlayButton = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     return (
         isPhone() ?
@@ -20,9 +17,7 @@ export const DisabledPlayButton = () => {
             </button >
             :
             <button
-                className={`  play-button   cursor-not-allowed opacity-70
-                ${isDarkMode ? ' border-black-85 bg-black-90' : 'border-black-20 bg-white'}
-        `}
+                className={`  play-button   cursor-not-allowed opacity-70 `}
             >
                 <PlayCircle weight="bold" className="megaphone" />
                 Play

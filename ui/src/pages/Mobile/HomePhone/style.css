@@ -1,0 +1,4 @@
+
+.sub-heading{
+    @apply leading-5 font-extrabold flex text-text-secondary text-xl;
+}

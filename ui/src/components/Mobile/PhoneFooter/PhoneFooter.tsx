@@ -1,9 +1,8 @@
 import React from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectIsDarkMode, selectIsLandscape, selectIsPlayModalOpen, selectIsSettingsMenuOpen, selectIsTalkModalOpen, selectIsViewersMenuOpen, setIsPlayModalOpen, setIsSettingsMenuOpen, setIsTalkModalOpen, setIsViewersMenuOpen } from "../../../features/ui/uiSlice"
+import { selectIsLandscape, selectIsPlayModalOpen, selectIsSettingsMenuOpen, selectIsTalkModalOpen, selectIsViewersMenuOpen, setIsPlayModalOpen, setIsSettingsMenuOpen, setIsTalkModalOpen, setIsViewersMenuOpen } from "../../../features/ui/uiSlice"
 import { isPhone } from "../../../util"
 import { ChatButton } from "../ChatButton"
-import { ViewersButton } from "../../ChatContainer/Viewers/ViewersButton"
 import { HomeButton } from "../../UpperRow/HomeButton/HomeButton"
 import { PhoneActionsMenu } from "../PhoneActionsMenu"
 import './style.css';
@@ -15,7 +14,6 @@ import { TalkModal } from "../../PlayerContainer/DJCommands/TalkButton/TalkModal
 export const PhoneFooter = () => {
 
     const isLandscape = useAppSelector(selectIsLandscape);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const isViewersMenuOpen = useAppSelector(selectIsViewersMenuOpen);
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
     const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen);
@@ -26,10 +24,9 @@ export const PhoneFooter = () => {
     return (
         <div
             className={`w-screen  fixed 
-                         border-t   
-                        flex items-center 
+                         border-t
+                        flex items-center text-text-default bg-background-default border-border-default
                         ${isPhone() && isLandscape && 'phone-footer-landscape'}
-                        ${isDarkMode ? 'bg-black-95 border-black-85 text-black-10' : 'bg-white text-black-80 border-black-10'}
                         ${(isViewersMenuOpen || isSettingsMenuOpen || isPlayModalOpen || isTalkModalOpen) ? 'justify-start' : 'justify-around'}
                         `}
             style={{ bottom: 0, height: '64px', zIndex: 160, }}

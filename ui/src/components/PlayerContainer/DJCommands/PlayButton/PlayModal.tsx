@@ -2,14 +2,13 @@ import { PlayCircle, Link } from "phosphor-react";
 import React, { useEffect, useState } from "react";
 import { radio } from "../../../../api";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsDarkMode, selectIsPlayModalOpen, setIsPlayModalOpen } from "../../../../features/ui/uiSlice";
+import { selectIsPlayModalOpen, setIsPlayModalOpen } from "../../../../features/ui/uiSlice";
 import { isPhone } from "../../../../util";
 import { playButtonId } from "./PlayButton";
 import './style.css';
 
 export const PlayModal = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen)
 
     const [urlToPlay, setUrlToPlay] = useState('');
@@ -19,6 +18,7 @@ export const PlayModal = () => {
     const dispatch = useAppDispatch();
 
     function processPlay() {
+        if (urlToPlay.trim().length == 0) return;
         radio.spin(urlToPlay);
         radio.chat('!play ' + urlToPlay);
         setUrlToPlay('');
@@ -62,44 +62,34 @@ export const PlayModal = () => {
                 id={playModalId}
                 className={`
         ${isPhone() ? 'play-modal-phone' : 'play-modal'}
-    ${isDarkMode ? ' bg-black-95 border-black-85 filter  drop-shadow-md-dark ' : ' bg-white border-black-10'}
     `}
-                style={{ fontSize: '16px' }}
             >
-                <div className='font-semibold'
-                    style={{ fontSize: '18px' }}
+                <div className='font-semibold text-bigger'
                 >
                     Change the current player content
                 </div>
                 <div
                     className={`
-      flex flex-col
-    ${isDarkMode ? 'text-black-20' : ' text-black-70'}
+      flex flex-col text-text-secondary
     `}
                 >
-                    <span
-                        className='font-semibold'
-                    >Accepts a variety of URLs </span>
-                    <span
-                        className='font-medium'
-                        style={{ fontSize: '14px' }}
-                    >e.g., Youtube, SoundCloud, Twitch, file paths, etc.</span>
+                    <span className='font-semibold'>
+                        Accepts a variety of URLs </span>
+                    <span className='font-medium text-sm'>
+                        e.g., Youtube, SoundCloud, Twitch, file paths, etc.
+                    </span>
                 </div>
                 <div className='flex relative items-center'
                 >
                     <input
                         id={urlInputId}
                         autoComplete="off"
-                        className={`border 
+                        className={`border bold-placeholder
                         flex items-center justify-center pl-7 
-                                    rounded-md w-full  outline-none focus:shadow  '
-
-                        ${isDarkMode
-                                ?
-                                'bg-black-70 focus:bg-black-85  border-black-70  text-black-10 placeholder-black-10'
-                                :
-                                ' text-black-90  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'
-                            }
+                             rounded-md w-full  outline-none focus:shadow  
+                             bg-background-input focus:bg-background-input-focused 
+                             border-background-input text-text-primary
+                              placeholder-text-secondary
                         `}
                         placeholder='Insert URL'
                         value={urlToPlay}
@@ -117,9 +107,8 @@ export const PlayModal = () => {
   } */}
                     <button
                         className={`flex items-center justify-center 
-                                     gap-0.5 font-bold  rounded-md bg-blue-90 
-                                ${isDarkMode ? 'text-black-90' : '  text-white '}
-                             ${urlToPlay.trim().length > 0 ? 'hover:shadow   ' : 'cursor-not-allowed	 opacity-50 '} 
+                                     gap-0.5 font-bold  rounded-md  text-text-button
+                             ${urlToPlay.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow ' : 'cursor-default	 bg-blue-disabled text-opacity-80'} 
                          `}
                         style={{
                             width: '6em',

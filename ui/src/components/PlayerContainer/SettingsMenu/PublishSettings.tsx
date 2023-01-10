@@ -15,7 +15,7 @@ export const PublishSettings = () => {
     const hasPublishedStation = useAppSelector(selectHasPublishedStation);
     const dispatch = useAppDispatch();
 
-    const publishInfoId = 'publish-id';
+    const publishInfoId = 'publish-info-id';
 
     useEffect(() => {
         setNewDescription(description);
@@ -58,33 +58,36 @@ export const PublishSettings = () => {
 
     return (
         <div className=" flex flex-col  left-0">
-            <div className="font-bold flex items-center relative gap-0.5"
+            <div className="font-bold flex items-center relative gap-0.5 "
             >
                 Publish Station
                 <button
                     id={publishInfoId}
-                    className={`cursor-pointer rounded p-0.5 flex items-center justify-center
-                ${showInfo ? (isDarkMode ? 'bg-black-80' : '  bg-black-10') : ''}
-                ${isDarkMode ? ' hover:bg-black-80' : '  hover:bg-black-10'}
+                    className={` cursor-pointer  rounded p-0.5 flex items-center justify-center
+                ${showInfo ? (isDarkMode ? 'bg-black-80' : '  bg-black-10') : (isDarkMode ? ' hover:bg-black-80' : '  hover:bg-black-10')}
                 `}
-                    onClick={() => setShowInfo(prev => !prev)}
-
+                    onClick={(e) => {
+                        setShowInfo(prev => !prev)
+                        e.stopPropagation()
+                    }
+                    }
                 >
                     <Question
                         size={22}
                         weight="bold"
                     />
+                </button>
+                {showInfo &&
                     <div
-                        className={`absolute  top-6 z-10 
-                         px-2 py-4 rounded-md flex  font-bold border cursor-text    
-                         
-                        ${isDarkMode ? 'bg-black-95 border-black-85 filter	 drop-shadow-default-dark ' : 'border-black-10 bg-white shadow'}
+                        className={`absolute  top-6 z-10 w-4/5
+                         px-2 py-4 rounded-md   font-bold border cursor-text    
+                        ${isDarkMode ? 'bg-black-95 border-black-85  filter drop-shadow-md-dark' : 'border-black-10 bg-white shadow-md'}
                          `}
-                        style={{ fontSize: '16px', visibility: showInfo ? 'visible' : 'hidden' }}
+                        style={{ fontSize: '16px', }}
                     >
                         Publishing the station adds it to the discovery pool.
                     </div>
-                </button>
+                }
             </div>
             <div className="flex font-bold"
             >
@@ -126,7 +129,7 @@ export const PublishSettings = () => {
                     <span className="font-semibold mb-1">Description</span>
                     <div className="relative">
                         <textarea
-                            className={` rounded-md border w-full 
+                            className={`bold-placeholder rounded-md border w-full 
                              px-2 py-1 outline-none focus:shadow	resize-none
                              ${isDarkMode ? 'bg-black-80 focus:bg-black-85 border-black-80  placeholder-black-10 text-black-10  '
                                     : 'bg-black-10 placeholder-black-60  text-black-90 border-black-10 focus:bg-black-1'}
@@ -137,20 +140,11 @@ export const PublishSettings = () => {
                             value={newDescription}
                             onChange={handleNewDescriptionChange}
                         />
-                        <>
-                            <span className={`absolute bottom-2.5 left-2 font-semibold 
+                        <span className={`absolute bottom-2.5 left-2 font-semibold 
                               ${isDarkMode ? 'text-black-10  '
-                                    : 'text-black-60'}
+                                : 'text-black-60'}
                             `}
-
-                            >{newDescription.length + '/64'}</span>
-                            {/* <div
-                                className="absolute bottom-2.5 right-14 font-bold px-2 rounded-md bg-gray-300 "
-                            >Cancel</div>
-                            <div className="absolute bottom-2.5 right-2 font-bold px-2 rounded-md "
-                                style={{ backgroundColor: '#B8E4FA' }}
-                            >Save</div> */}
-                        </>
+                        >{newDescription.length + '/64'}</span>
                     </div>
                 </div>
             }

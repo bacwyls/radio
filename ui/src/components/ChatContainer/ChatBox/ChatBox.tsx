@@ -1,8 +1,7 @@
-import { Question } from 'phosphor-react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
-import { selectIsChatFullScreen, selectIsDarkMode } from '../../../features/ui/uiSlice';
+import { selectIsChatFullScreen } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import './style.css';
@@ -23,11 +22,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   const maxChats = 100;
 
-  // const viewers = useAppSelector(selectViewers);
-  const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel',]
-
   const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
-  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   useEffect(() => {
     scrollToBottom();
@@ -59,39 +54,29 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   return (
     <div
-      className={` flex flex-col relative 
+      className={`  
                   ${isPhone() ? 'chatbox-container-phone' : 'chatbox-container'}
                  ${isChatFullScreen ? 'chatbox-container-full' : ''}
-                    ${isDarkMode ? 'bg-black-95 border-black-85 ' : 'bg-white  border-black-10'} 
-
                 `}
     >
       <div
-        className={`font-bold flex items-center justify-between rounded-md
-          
-                     ${isDarkMode ? 'text-black-1 bg-black-95 ' : 'bg-white text-black-90 '}
+        className={`font-bold flex items-center justify-between rounded-md text-text-primary px-4
                      `}
         style={{
-          padding: '0 24px 0 24px',
           height: '64px',
         }}
       >
         <span
-          style={{
-            fontSize: '20px',
-          }}
+          className='text-lg'
         >Chat</span>
         <ViewersButton />
       </div>
       <div
         id={chatboxContainerId}
-        className={`  w-full flex flex-col  bg-b
+        className={` 
                   ${isPhone() ? 'chatbox-phone' : 'chatbox'}
                   ${isChatFullScreen ? 'chatbox-full' : ''}
             `}
-        style={{
-          justifyContent: 'flex-end',
-        }}
       >
         {chats && chats.length > 0 ?
           <div

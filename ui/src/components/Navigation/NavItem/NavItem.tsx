@@ -1,14 +1,12 @@
 import React, { FC } from 'react';
 import { isValidPatp } from 'urbit-ob'
-import { isPhone, renderSigil, tuneTo } from '../../../util';
+import { isPhone } from '../../../util';
 import { radio } from '../../../api';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
-import { selectIsDarkMode, selectIsLandscape } from '../../../features/ui/uiSlice';
 import { Television, Users } from 'phosphor-react';
-
+import { Sigil } from '../../Sigil';
+import { IsPublicBadge } from '../../IsPublicBadge';
 import './style.css';
-
 
 interface INavItem {
   patp: string | null,
@@ -26,33 +24,23 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
   const { patp, flare, title, logout, description, isPublic } = props;
 
   const navigate = useNavigate();
-  const isDarkMode = useAppSelector(selectIsDarkMode);
 
   const handleNavItemClick = () => {
     navigate('/station/' + patp)
   }
 
-  const patpIsValid = patp && patp.length <= 14 && isValidPatp(patp);
+  const patpHasSigil = patp && patp.length > 14 && isValidPatp(patp);
 
   return (
     <button
       className={` 
-                     ${isPhone() ?
-          (isDarkMode ?
-            'nav-item-phone text-black-10'
-            : 'nav-item-phone  text-black-80') :
-          (isDarkMode ?
-            'nav-item   hover:bg-black-85 text-black-10  '
-            : 'nav-item   hover:bg-black-10  text-black-80')
-
-        }
+                     ${isPhone() ? 'nav-item-phone ' : 'nav-item nav-item-grow '}
                      `}
       onClick={handleNavItemClick}
     >
       <span
         className={` rounded flex 
-          items-center justify-center  relative
-          ${isDarkMode ? 'bg-black-70 text-black-10' : 'bg-black-80 text-white'}
+          items-center justify-center  relative bg-background-icon text-text-icon
           `}
         style={{
           height: '88px',
@@ -63,27 +51,21 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
       >
         {patp == radio.hub ?
           <Television weight='bold' size={40} /> :
-          <>
-            {
-              patpIsValid &&
-              renderSigil(patp, 60, isDarkMode)
-            }
-          </>
+          (patp &&
+            <Sigil patp={patp} size={60} />
+          )
         }
         {!(patp == radio.hub) &&
-          <span className={`absolute bottom-0 w-full right-0 flex items-center 
-          justify-center px-1 py-0.5 font-bold rounded-b 
-          ${isDarkMode ? 'bg-black-60 text-black-10' : 'bg-black-70  text-white'}
+          <span className={`absolute bottom-0 w-full right-0 flex items-center  text-sm
+          justify-center px-1 py-0.5 font-bold rounded-b bg-background-navitem-viewers
           `}
-            style={{
-              fontSize: '14px',
-            }}
           >
             <Users
               size={20}
               weight="bold"
               style={{
                 marginRight: '0.25em',
+                marginBottom: '0.095em',
                 zIndex: 10,
               }}
             />
@@ -93,38 +75,27 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
       <div
         className='flex flex-col 	w-full'
       >
-        <div className={`font-bold  flex items-center  w-full mb-0.5
-         ${isDarkMode ? 'text-black-5' : 'text-black-90 '}
- 
+        <div className={`font-bold  flex items-center  w-full 
+        text-text-default mb-0.5
           `}
           style={{
             textAlign: 'left',
-            lineHeight: '18px',
           }}
         >
           <span
             className={`font-bold  flex items-center 
-            ${isPhone() ? 'mb-1' : 'mb-0.5'}
-          ${patpIsValid ? 'whitespace-nowrap' : 'whitespace-normal break-words'}
+          ${!patpHasSigil ? 'whitespace-nowrap' : 'whitespace-normal break-words'}
            `}
-            style={{ maxWidth: '70%' }}
+            style={{
+              maxWidth: '70%',
+              lineHeight: '18px'
+            }}
           >
             {title ? title : patp}
           </span>
-          <span className={`flex items-center justify-center rounded
-                          ml-1  font-bold  text-black-90 h-3  bg-blue-70
-                          ${isPhone() ? 'mb-1' : 'mb-0.5'}
-                          `}
-            style={{
-              fontSize: '14px',
-              padding: '0 .3em'
-            }}
-          >
-            {isPublic ? 'Public' : 'Private'}
-          </span>
+          <IsPublicBadge />
         </div>
-        <div className={`flex font-bold    break-words whitespace-normal
-                    ${isDarkMode ? 'text-black-20' : 'text-black-70'}
+        <div className={`flex font-bold    break-words whitespace-normal text-text-secondary
                     `}
           style={{
             lineHeight: '19.36px',

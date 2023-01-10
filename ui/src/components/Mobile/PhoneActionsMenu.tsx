@@ -1,10 +1,8 @@
 import { List } from "phosphor-react";
 import React, { useEffect, useState } from "react"
-import { MdOutlineMenu } from "react-icons/md";
 import { radio } from "../../api";
 import { useAppSelector } from "../../app/hooks";
 import { selectTunePatP, selectIsPublic } from "../../features/station/stationSlice";
-import { selectIsDarkMode } from "../../features/ui/uiSlice";
 import { DisabledPlayButton } from "../PlayerContainer/DJCommands/PlayButton/DisabledPlayButton";
 import { PlayButton } from "../PlayerContainer/DJCommands/PlayButton/PlayButton";
 import { DisabledTalkButton } from "../PlayerContainer/DJCommands/TalkButton/DisabledTalkButton";
@@ -17,7 +15,6 @@ export const PhoneActionsMenu = () => {
 
     const tunePatP = useAppSelector(selectTunePatP);
     const isPublic = useAppSelector(selectIsPublic);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const phoneActionsMenuId = "phone-actions-menu"
 
@@ -42,8 +39,7 @@ export const PhoneActionsMenu = () => {
 
     return (
         <button
-            className={`rounded-md p-1
-                     ${showActionsMenu ? (isDarkMode ? 'bg-black-80' : ' bg-black-10') : ''}
+            className={`rounded-md p-1 bg-background-default
                      `}
             id={phoneActionsMenuId}
         >
@@ -52,13 +48,10 @@ export const PhoneActionsMenu = () => {
             />
             {showActionsMenu &&
                 <div
-                    className={`fixed flex gap-1 py-2 justify-around items-center border-t 
-                                ${isDarkMode ? 'bg-black-95 border-black-85 text-black-10' : 'bg-white text-black-80 border-black-10'}
+                    className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t bg-background-default text-text-default border-border-default
                                 `}
                     style={{
                         bottom: '64px',
-                        width: '100vw',
-                        left: 0
                     }}
                 >
                     {radio.our == tunePatP && <SettingsMenuButton />}

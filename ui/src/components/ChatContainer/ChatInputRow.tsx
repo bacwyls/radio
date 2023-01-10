@@ -2,9 +2,9 @@ import { ArrowLeft } from "phosphor-react";
 import React, { FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectSpinTime, selectSpinUrl, selectTunePatP } from "../../features/station/stationSlice";
-import { selectIsChatFullScreen, selectIsDarkMode, setIsChatFullScreen } from "../../features/ui/uiSlice";
+import { setIsChatFullScreen } from "../../features/ui/uiSlice";
 import { handleUserInput, isPhone } from "../../util";
-import { isValidPatp } from 'urbit-ob'
+import { isValidPatp } from 'urbit-ob';
 
 interface IChatInputRow {
 }
@@ -17,23 +17,9 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
 
     const spinUrl = useAppSelector(selectSpinUrl);
     const spinTime = useAppSelector(selectSpinTime);
-    const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const tunePatP = useAppSelector(selectTunePatP);
 
     const [inputText, setInputText] = useState('');
-
-    // parse from user input
-    function getCommandArg(chat: string) {
-        // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
-        if (!(chat[0] === '!')) return;
-
-        let splitIdx = chat.indexOf(' ');
-        if (splitIdx === -1) return { 'command': chat.slice(1), 'arg': '' };
-        let command = chat.slice(1, splitIdx);
-        let arg = chat.slice(splitIdx + 1);
-        return { 'command': command, 'arg': arg };
-    }
 
     function processInput() {
         handleUserInput(
@@ -63,18 +49,19 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 onClick={() => dispatch(setIsChatFullScreen(false))} />}
             <input
                 type="text"
-                className={`pl-2 flex items-center relative   
-                      border  rounded-md  outline-none focus:shadow 
-                ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-not-allowed'}
-                    ${isDarkMode ? 'bg-black-70 focus:bg-black-85 border-black-70  text-black-10 placeholder-black-10'
-                        : ' text-black-100  bg-black-10 border-black-10 placeholder-black-60 focus:bg-black-1'}
+                className={`bold-placeholder pl-2 flex items-center relative   font-medium
+                      border  rounded-md  outline-none focus:shadow text-text-primary focus:bg-background-input-focused bg-background-input border-background-input
+                      placeholder-text-default
+                ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-default'}
+                 
                     ${isPhone() ? '' : 'mt-2 '}
                     `}
                 disabled={!(tunePatP && isValidPatp(tunePatP))}
                 style={{
                     height: isPhone() ? '2rem' : '40px',
                     width: '100%',
-                    paddingRight: '6.4em'
+                    paddingRight: '6.4em',
+
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -92,10 +79,9 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
             < button
                 className={` 
                             absolute outline-none flex font-bold rounded-md 
-                             justify-center items-center    bg-blue-90 
+                             justify-center items-center    text-text-button 
                              ${!isPhone() && 'mt-2 '}
-                             ${isDarkMode ? 'text-black-80' : '  text-black-1 '}
-                             ${inputText.trim().length > 0 ? 'hover:shadow ' : 'cursor-not-allowed	opacity-50'} 
+                             ${inputText.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow' : 'cursor-default text-opacity-80 	bg-blue-disabled'} 
                              `}
                 style={{
                     right: '24px',

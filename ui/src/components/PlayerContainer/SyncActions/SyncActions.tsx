@@ -71,7 +71,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     {
                         showOptions &&
                         <div className={`absolute     p-2 flex flex-col rounded-md border gap-1
-                        ${isDarkMode ? ' bg-black-95 filter drop-shadow-md-dark border-black-85 ' : ' bg-white border-black-10 '}
+                        bg-background-default border-border-default
                         `}
                             style={{ width: '20vw', bottom: '3rem' }}
 
@@ -96,9 +96,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     {tunePatP != radio.our ?
                         <button
                             className={` 
-                    resync-button 
-                    ${isDarkMode ? ' border-black-85' : 'border-black-20'}
-                           ${isDarkMode ? ' bg-black-90  hover:bg-black-70 ' : ' bg-white hover:bg-black-5 '}
+                    resync-button
                         	 `}
                             onClick={(e) => {
                                 radio.seekToDelta(spinTime);
@@ -111,11 +109,9 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                         :
                         <div className="relative ">
                             <button
-                                className={` 
-                    resync-split-button  relative z-10 border-l border-t border-b
-                    ${showOptions && isDarkMode && 'filter drop-shadow-md-dark'}
-                    ${showOptions ? 'rounded-b-md shadow' : 'rounded-md'}
-                    ${isDarkMode ? ' border-black-85 bg-black-90  hover:bg-black-70' : 'border-black-20 bg-white hover:bg-black-5'}
+                                className={`  
+                    resync-split-button  relative z-10 border
+                    ${showOptions ? ' bg-hover-intense rounded-b-md' : 'rounded-md'}
                         	 `}
                                 onClick={() => {
                                     radio.seekToDelta(spinTime);
@@ -127,9 +123,10 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                             </button>
                             <button
                                 id={showOptionsId}
-                                className={`z-20  border-t border-r border-b absolute top-0 right-0 h-full w-7 flex items-center justify-center
+                                className={`z-20  border absolute top-0 right-0 h-full w-7 flex items-center justify-center
                                 ${showOptions ? 'rounded-br-md' : 'rounded-r-md '}
-                                ${isDarkMode ? ' border-black-85 border-l-black-80 bg-black-90 hover:bg-black-70 border-l-2 ' : 'border-l  border-black-20  hover:bg-black-10 bg-white'}
+                                ${isDarkMode && 'border-l-2'}
+                                border-border-default bg-background-player-button  hover:bg-hover-intense
                                 `}
                                 onClick={() => setShowOptions(prev => !prev)}
                             >
@@ -138,8 +135,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                             </button>
                             {showOptions &&
                                 <button
-                                    className={`rounded-t resync-split-button absolute border-t border-l border-r 
-                          ${isDarkMode ? ' bg-black-90  hover:bg-black-70  border-black-85 filter drop-shadow-md-dark' : ' bg-white hover:bg-black-5 border-black-20 shadow'}
+                                    className={`resync-split-button absolute border-t border-l border-r  rounded-t 
                           `}
                                     style={{ bottom: '40px' }}
                                     onClick={(e) => {

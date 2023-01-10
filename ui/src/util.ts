@@ -13,15 +13,12 @@ import {
   setBanned,
 } from './features/station/stationSlice';
 import {
-  setUserInteracted,
   setPlayerReady,
   setPlayerInSync,
   setIsConnecting
 } from './features/ui/uiSlice';
-import { browserName, isMobile, isTablet, osName, useDeviceData, useMobileOrientation } from 'react-device-detect';
-import { isValidPatp } from 'urbit-ob'
+import { isMobile, isTablet } from 'react-device-detect';
 import { radio } from './api';
-import { reactRenderer, sigil } from '@tlon/sigil-js';
 
 export function handleUpdate(update: any, dispatch: any) {
   console.log("radio update", update);
@@ -254,15 +251,4 @@ export const isSystemDarkMode = () => {
     return true
   }
   else { return false }
-}
-
-export const renderSigil = (patp: string, size: number, isDarkMode: boolean) => {
-  return (
-    sigil({
-      patp: patp,
-      renderer: reactRenderer,
-      size: size,
-      colors: isDarkMode ? ['#60605E', '#FCFDFC'] : ['#4A4948', 'white'],
-    })
-  )
 }

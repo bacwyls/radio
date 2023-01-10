@@ -7,12 +7,12 @@
     }
     
     .resync-button{
-        @apply border font-bold break-words whitespace-nowrap    flex justify-center items-center rounded-md    gap-1;
+        @apply border  border-border-default hover:bg-hover-intense bg-background-player-button font-bold break-words whitespace-nowrap    flex justify-center items-center rounded-md    gap-1;
         height: 40px;
         width: 156px;
     }
     .resync-split-button{
-        @apply  font-bold break-words whitespace-normal    flex justify-start items-center pl-2     gap-1;
+        @apply  font-bold break-words whitespace-normal  shadow border-border-default bg-background-player-button hover:bg-hover-intense   flex justify-start items-center pl-2     gap-1;
         height: 40px;
         width: 184px;
     }
@@ -35,7 +35,7 @@
 
     }
     .resync-split-button{
-        @apply  font-bold break-words whitespace-normal    flex justify-start items-center pl-2     gap-1;
+        @apply  shadow border-border-default bg-background-player-button hover:bg-hover-intense font-bold break-words whitespace-normal    flex justify-start items-center pl-2     gap-1;
         height: 40px;
         width: 176px;
         font-size: 14px ;

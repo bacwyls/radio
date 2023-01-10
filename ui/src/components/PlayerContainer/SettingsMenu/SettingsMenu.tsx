@@ -1,14 +1,13 @@
 import { Gear } from "phosphor-react";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectIsDarkMode, selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../features/ui/uiSlice";
+import { selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { IsPublicSettings } from "./IsPublicSettings";
 import { PublishSettings } from "./PublishSettings";
 import { settingsButtonId } from "./SettingsMenuButton";
 
 export const SettingsMenu = () => {
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
 
     const dispatch = useAppDispatch();
@@ -42,14 +41,12 @@ export const SettingsMenu = () => {
         isSettingsMenuOpen ?
             <div
                 id={settingsMenuId}
-                className={` cursor-default
-                            ${isDarkMode ? 'bg-black-95 border-black-85 filter drop-shadow-md-dark' : 'bg-white border-black-10 '}
+                className={` 
                             ${isPhone() ? 'settings-menu-phone  ' : 'settings-menu '}
                             `}
             >
                 <div className="flex justify-between">
-                    <div className="flex items-center font-bold"
-                        style={{ fontSize: '18px' }}
+                    <div className="flex items-center font-bold text-bigger"
                     >
                         <Gear weight="bold" className="mr-1 gear" />
                         Settings</div>

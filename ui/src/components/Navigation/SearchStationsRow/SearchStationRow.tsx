@@ -1,11 +1,13 @@
-import { ArrowLeft, MusicNotes, Users, XCircle } from "phosphor-react";
+import { MusicNotes, Users, } from "phosphor-react";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
 import { useAppSelector } from "../../../app/hooks";
 import { selectIsPublic, selectTowers } from "../../../features/station/stationSlice";
 import { selectIsDarkMode } from "../../../features/ui/uiSlice";
-import { isPhone, renderSigil } from "../../../util";
+import { isPhone } from "../../../util";
+import { IsPublicBadge } from "../../IsPublicBadge";
+import { Sigil } from "../../Sigil";
 import './style.css';
 
 interface ISearchStationRow {
@@ -14,9 +16,8 @@ interface ISearchStationRow {
 export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow) => {
 
     const towers = useAppSelector(selectTowers);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
-    const isPublic = useAppSelector(selectIsPublic);
     const [isFocused, setIsFocused] = useState(false)
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const navigate = useNavigate();
 
@@ -77,19 +78,16 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
     return (
         <div
             className={`relative items-center flex w-full 	h-8
-            
             `}
         >
-
             < input
                 id={searchStationInputId}
                 type="text"
-                className={`    relative whitespace-nowrap	 h-full rounded-md border font-semibold 
-               focus:outline-none focus:shadow 
-            ${isDarkMode ? 'text-black-90 placeholder-black-60 border-2  ' : ' placeholder-black-60  text-black-90 border'}
-            ${isFocused ? (isDarkMode ? 'bg-orange-15  ' : 'bg-orange-5') : (isDarkMode ? 'bg-orange-30  ' : 'bg-orange-20')}
-            ${isValidPatp(tuneToText) ? ' border-orange-80   ' : ' border-orange-50 '}
-            ${isValidPatp(tuneToText) ? 'pl-7' : 'pl-2'}
+                className={`outline-black-5 outline    relative whitespace-nowrap	 h-full rounded-md border font-bold
+               focus:outline-none focus:shadow  text-background-icon placeholder-black-60 
+               ${isDarkMode && 'border-2'}
+            ${isFocused ? 'bg-orange-input-focused ' : 'bg-orange-input'} 
+            ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
             `}
                 style={{
                     width: '100%',
@@ -115,26 +113,19 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 <span opacity-50
                     className={`absolute ml-2 mr-1 h-4 w-4  overflow-hidden 
                                        rounded flex justify-center items-center
-                                       ${isDarkMode ? 'bg-black-70' : 'bg-black-80'}
+                                       bg-background-icon
                                        `}
                 >
-                    {tuneToText.length <= 14 &&
-                        renderSigil(tuneToText, 16, isDarkMode)}
+                    <Sigil patp={tuneToText} size={16} />
                 </span>
             }
             < button
-                className={`absolute right-0  rounded-md  h-full outline-none flex  
-            justify-center items-center whitespace-nowrap px-1 font-bold
-            ${isValidPatp(tuneToText) ? 'hover:shadow ' : 'cursor-not-allowed	'} 
-            ${isDarkMode ? 'text-black-80' : 'text-black-1'}
-            ${isValidPatp(tuneToText) ?
-                        (isDarkMode ? 'bg-orange-80 ' : 'bg-orange-80')
-                        :
-                        (isDarkMode ? 'bg-orange-50  text-opacity-50' : 'bg-orange-80 opacity-40')
-                    }
+                className={`absolute right-0  rounded-md  h-full  flex  
+            justify-center items-center whitespace-nowrap px-1 font-bold z-10 text-text-button 
+            ${isValidPatp(tuneToText) ? 'bg-orange button-grow hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
-                    width: '7em'
+                    width: '7em',
                 }}
                 onClick={() =>
                     handleTuneToSubmit()
@@ -149,7 +140,8 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                     id={suggestionsId}
                     className={`absolute border z-10 shadow rounded 
             w-full top-8 flex flex-col py-2 overflow-y-auto mt-1
-            ${isDarkMode ? 'bg-black-95 border-black-85' : 'bg-white border-black-10'}
+            border-border-default bg-background-default text-text-default
+
             `}
                     style={{
                         minHeight: '3em',
@@ -160,8 +152,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                         queriedTowers.map((x) =>
                             <div
                                 className={`w-full flex justify-between h
-                                 cursor-pointer  px-2 py-1.5
-                                 ${isDarkMode ? 'hover:bg-black-80' : 'hover:bg-black-5'}
+                                 cursor-pointer  px-2 py-1.5 hover:bg-hover-default
                                  `}
                                 onClick={
                                     () =>
@@ -172,35 +163,25 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                     <span
                                         className={`mr-1.5 h-4 w-4  overflow-hidden 
                                        rounded flex justify-center items-center
-                                       ${isDarkMode ? 'bg-black-70' : 'bg-black-80 '}
+                                       bg-background-icon
                                        `}
                                         style={{ minWidth: '1rem' }}
                                     >
                                         {x.location.length <= 14 && isValidPatp(x.location) &&
-
-                                            renderSigil(x.location, 18, isDarkMode)
+                                            <Sigil patp={x.location} size={18} />
                                         }
                                     </span>
-                                    <div style={{
-                                        lineHeight: '14px',
-                                    }} >
+                                    <div
+                                        style={{
+                                            maxWidth: '8.5em',
+                                            lineHeight: '14px',
+                                        }} >
                                         {x.location}
                                     </div>
-
+                                    <IsPublicBadge />
                                 </div>
-                                <div className="flex gap-1 items-center">
-
-                                    <span className={`flex items-center justify-center rounded
-                          font-bold text-black-90 h-3 bg-blue-70
-                          `}
-                                        style={{
-                                            fontSize: '14px',
-                                            padding: '0 .3em'
-                                        }}
-                                    >
-                                        {isPublic ? 'Public' : 'Private'}
-                                    </span>
-                                    <span className="flex items-center font-bold ml-1"
+                                <div className="flex gap-1 items-center  ml-1">
+                                    <span className="flex items-center font-bold "
                                     >
                                         <Users
                                             size={20}

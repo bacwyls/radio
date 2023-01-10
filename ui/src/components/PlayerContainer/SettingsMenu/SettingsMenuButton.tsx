@@ -1,20 +1,15 @@
-import { Gear, Question, Lock, Globe } from "phosphor-react";
-import React, { useEffect, useState } from "react"
-import { radio } from "../../../api";
+import { Gear } from "phosphor-react";
+import React from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectDescription, selectHasPublishedStation, selectIsPublic, setDescription, setHasPublishedStation, setIsPublic } from "../../../features/station/stationSlice";
-import { selectIsDarkMode, selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../features/ui/uiSlice";
+import { selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
-import { SettingsMenu } from "./SettingsMenu";
 import './style.css';
 
 export const settingsButtonId = 'settings-button';
 
 export const SettingsMenuButton = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
-
 
     const dispatch = useAppDispatch();
 
@@ -34,9 +29,8 @@ export const SettingsMenuButton = () => {
                 id={settingsButtonId}
                 className={`
                  settings-button 
-                 ${isDarkMode ? ' border-black-85' : 'border-black-20'}
-             ${isSettingsMenuOpen ? (isDarkMode ? 'bg-black-70 ' : 'bg-black-5') : (isDarkMode ? ' bg-black-90  hover:bg-black-70 ' : ' bg-white hover:bg-black-5')}
-             `}
+             ${isSettingsMenuOpen ? 'bg-hover-intense' : 'bg-background-player-button hover:bg-hover-intense'}
+        `}
                 onClick={(e) => {
                     dispatch(setIsSettingsMenuOpen(!isSettingsMenuOpen))
                 }

@@ -4,14 +4,13 @@
 }
 
 .station-container{
-    @apply flex w-full h-screen top-0 left-0 ;
+    @apply flex w-full h-screen top-0 left-0  text-text-default bg-background-darker text-base;
  }
 
  @media (max-width: 1099px){
 
     .station-container{
         @apply flex flex-col overflow-y-auto overflow-x-hidden gap-2 ;
-
      }
      
      .upperow-player{
@@ -20,7 +19,7 @@
         min-height: calc(26rem);
      }
 }
-
+/* 
 .upperow-player-phone {
     
 }
@@ -30,4 +29,4 @@
     .station-container{
     }
 
-}
+} */

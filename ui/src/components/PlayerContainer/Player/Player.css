@@ -1,7 +1,6 @@
 .player {
-    width: 100%;
     height: calc(100% - 80px);
-    position: relative;
+    @apply w-full relative;
 }
 
 
@@ -16,6 +15,6 @@
 }
 
 .player-phone-portrait{
+    @apply w-screen;
     height: 56.25vw;
-    width: 100vw;
 }

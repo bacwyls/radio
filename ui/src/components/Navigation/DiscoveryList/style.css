@@ -1,13 +1,13 @@
 
 .discovery-list{
-    @apply flex flex-col  absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0  border-l  ;
+    @apply flex flex-col bg-background-default border-l  border-border-default  absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
     height: calc(100vh - 64px);
     width: 19rem;
-    zIndex: 2;
+    z-index: 2;
   }
 
 .discovery-list-header{
-  @apply sticky top-0 flex left-0 justify-between   items-center  ;
+  @apply sticky top-0 flex left-0 justify-between  bg-background-default  items-center  ;
   z-index: 3;
   padding-left: 1.5rem;
   min-height: 2rem;
@@ -28,7 +28,7 @@
 }
 
 .discovery-list-header-phone{
-  @apply absolute w-screen h-10 flex items-center;
+  @apply absolute w-screen h-10 flex items-center bg-background-default ;
     top: 0;
   left: 0;
   padding-left: 1rem;
@@ -36,7 +36,7 @@
 }
 
 .discovery-list-phone{
-  @apply fixed overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full; 
+  @apply fixed bg-background-default overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full; 
   top: 64px;
   height: calc(100% - 128px);
 }

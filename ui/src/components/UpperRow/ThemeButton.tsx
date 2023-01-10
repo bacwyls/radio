@@ -12,32 +12,30 @@ export const ThemeButton = () => {
         isPhone() ?
             (isDarkMode ?
                 <Sun size={24} weight="bold"
-                    onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
+                    onClick={() => dispatch(setIsDarkMode(false))}
                 />
                 :
                 <MoonStars size={24} weight="bold"
-                    onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
+                    onClick={() => dispatch(setIsDarkMode(true))}
                 />
             )
             :
             <button
                 className={` rounded flex items-center justify-center 
-            h-7  px-2 rounded-md font-bold
-            ${isDarkMode ? ' hover:bg-black-80' : ' hover:bg-black-10'}
+            h-7  px-2 rounded-md font-bold hover:bg-hover-default
     `}
                 onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
             >
                 {isDarkMode ?
-                    <span className="flex items-center"
-                    >
+                    <>
                         <Sun className="mr-1" size={24} weight="bold" />
                         Light
-                    </span>
+                    </>
                     :
-                    <span className="flex items-center">
+                    <>
                         <MoonStars className="mr-1" size={24} weight="bold" />
                         Dark
-                    </span>
+                    </>
                 }
             </button>
     )

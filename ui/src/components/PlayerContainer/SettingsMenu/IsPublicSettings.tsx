@@ -1,16 +1,12 @@
 import { Globe, Lock } from "phosphor-react";
-import { useState } from "react";
 import { radio } from "../../../api";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectIsPublic, setIsPublic } from "../../../features/station/stationSlice";
-import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import React from 'react'
 
 export const IsPublicSettings = () => {
 
     const isPublic = useAppSelector(selectIsPublic);
-    const [showInfo, setShowInfo] = useState(false);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const dispatch = useAppDispatch();
 
     return (
@@ -38,20 +34,15 @@ export const IsPublicSettings = () => {
                 </button>
             </div>
             <div
-                className={`flex relative items-center h-12 p-2 rounded-md  border   mb-1.5
-                ${!isPublic ?
-                        (isDarkMode ? 'bg-black-75  border-black-50' : 'bg-black-10  border-black-40')
-                        :
-                        (isDarkMode ? ' hover:bg-black-85 cursor-pointer  border-black-60' : 'cursor-pointer hover:bg-black-5  border-black-20')}
+                className={`flex relative items-center h-12 p-2 rounded-md  border  mb-1.5  border-border-intense
+                ${!isPublic ? 'bg-hover-default' : 'cursor-pointer'}
                 `}
                 onClick={() => {
                     dispatch(setIsPublic(false))
                     radio.private()
                 }}
             >
-                <div className={`flex items-center justify-center  rounded-md
-                ${(isDarkMode ? 'bg-black-10 text-black-90' : 'bg-black-80 text-black-10 ')}
-
+                <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
                         height: '2.5em',
@@ -64,9 +55,8 @@ export const IsPublicSettings = () => {
                     <span className="font-bold  " >
                         Private
                     </span>
-                    <span className={`font-semibold h-3
-                         ${isDarkMode ? 'text-black-10' : 'text-black-60'}
-                    `} style={{ fontSize: '14px', lineHeight: '14px' }}>
+                    <span className={`font-semibold h-3 text-sm text-text-secondary
+                    `} style={{ lineHeight: '14px' }}>
                         Only you can use DJ commands
                     </span>
                 </div>
@@ -78,21 +68,16 @@ export const IsPublicSettings = () => {
                     checked={!isPublic}
                     onChange={() => null}
                 /> */}
-            </div>
-            <div className={`flex relative items-center h-12 p-2 rounded-md  border  
-                 ${isPublic ?
-                    (isDarkMode ? 'bg-black-75  border-black-50' : 'bg-black-10  border-black-40')
-                    :
-                    (isDarkMode ? ' hover:bg-black-85 cursor-pointer  border-black-60' : 'cursor-pointer hover:bg-black-5  border-black-20')}
+            </div >
+            <div className={`flex relative items-center h-12 p-2 rounded-md  border   border-border-intense 
+                ${isPublic ? 'bg-hover-default' : 'cursor-pointer'}
              `}
                 onClick={() => {
                     dispatch(setIsPublic(true))
                     radio.public()
                 }}
             >
-                <div className={`flex items-center justify-center  rounded-md
-                ${(isDarkMode ? 'bg-black-10 text-black-90' : 'bg-black-80 text-black-10 ')}
-
+                <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
                         height: '2.5em',
@@ -105,9 +90,8 @@ export const IsPublicSettings = () => {
                     <span className="font-bold " >
                         Public
                     </span>
-                    <span className={`  font-semibold h-3  
-                                        ${isDarkMode ? 'text-black-10' : 'text-black-60'}
-                    `} style={{ fontSize: '14px', lineHeight: '14px' }}>
+                    <span className={`  font-semibold h-3  text-sm text-text-secondary
+                    `} style={{ lineHeight: '14px' }}>
                         Everybody can use DJ commands
                     </span>
                 </div>

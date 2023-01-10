@@ -68,9 +68,6 @@
     %0  `this(state old)
   ==
 ++  on-leave
-  ?:  =(path /greg/local)
-  :: potentially fixes #16 host-kicked bug
-  `this
   |=  [=path]
   ?:  =(path /greg/local)
     :: potentially fixes #16 host-kicked bug

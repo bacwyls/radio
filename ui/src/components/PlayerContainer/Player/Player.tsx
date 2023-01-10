@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import { radio } from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../../features/station/stationSlice";
-import { selectIsDarkMode, selectIsLandscape, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape, selectIsPlayModalOpen, selectIsSettingsMenuOpen, selectIsTalkModalOpen, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { PlayerLoadingAnimation } from "../PlayerLoadingAnimation/PlayerLoadingAnimation";
 import './Player.css';
@@ -21,6 +21,10 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
     const spinTime = useAppSelector(selectSpinTime);
     const isLandscape = useAppSelector(selectIsLandscape);
     const isDarkMode = useAppSelector(selectIsDarkMode);
+    const isTalkModalOpen = useAppSelector(selectIsTalkModalOpen);
+    const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen)
+    const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
+
 
     const dispatch = useAppDispatch();
 
@@ -51,6 +55,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
         }
     }
 
+
     return (
         <div
             className={` 
@@ -67,14 +72,9 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     }}
         >
             {!playerReady &&
-                <div
+                <div className="w-full h-full shadow-md rounded-md"
                     style={{
-                        width: '100%',
-                        height: '100%',
                         backgroundColor: isDarkMode ? '#4A4948' : '#D2D1D1',
-                        borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
-                        overflow: 'hidden',
-                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
                     }}
                 >
                     <span className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -91,14 +91,14 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                 controls={true}
                 loop={true}
                 onReady={() => dispatch(setPlayerReady(true))}
-                // onSeek={e => console.log('onSeek', e)}
                 onProgress={e => handleProgress(e)}
 
                 style={{
                     backgroundColor: isDarkMode ? '#3F3D3C' : '#D2D1D1',
                     borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     overflow: 'hidden',
-                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                    filter: (!isPhone() && (isPlayModalOpen || isTalkModalOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(40%)' : '',
+                    boxShadow: isDarkMode ? '0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -1px rgba(0, 0, 0, 0.36)' : '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.072)',
                     visibility: playerReady ? 'visible' : 'hidden',
                 }}
                 config={{
@@ -108,7 +108,6 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     },
                 }}
             />
-
         </div >
     )
 }

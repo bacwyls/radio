@@ -1,18 +1,9 @@
 import React from "react";
-import { FC } from "react";
-import { useAppSelector } from "../../../app/hooks";
 import { SearchStationRow } from "../SearchStationsRow/SearchStationRow";
 import './style.css';
-import { selectIsDarkMode, } from "../../../features/ui/uiSlice";
 import { DiscoveryList } from "../DiscoveryList/DiscoveryList";
 
-interface INavigateStations {
-
-}
-
-export const NavigateStations: FC<INavigateStations> = (props: INavigateStations) => {
-
-    const isDarkMode = useAppSelector(selectIsDarkMode);
+export const NavigateStations = () => {
 
     return (
         <div
@@ -21,15 +12,12 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
             <div className="join-station-container">
                 <div className={` join-station  `}>
                     <div
-                        className={`md:text-2xl flex items-center  relative  
-                whitespace-nowrap font-bold tracking-tighter mb-1
-                ${isDarkMode ? 'text-black-5' : 'text-black-80'}
+                        className={` flex items-center  relative  
+                whitespace-nowrap font-bold tracking-tighter mb-1 text-text-primary text-4xl
                 `}
                         style={{
-                            fontSize: '40px',
                             width: '15rem',
                             height: '2rem',
-
                         }}
                     >
                         Join Station:
@@ -38,7 +26,6 @@ export const NavigateStations: FC<INavigateStations> = (props: INavigateStations
                 </div >
                 <DiscoveryList />
             </div>
-
         </div >
     )
 }

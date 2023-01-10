@@ -1,19 +1,14 @@
-import { CaretDown, CaretUp } from "phosphor-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
 import { IMinitower, selectRadioSub, selectTowers } from "../../../features/station/stationSlice";
-import { selectIsDarkMode, selectIsLandscape } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { DiscoveryInfo } from "./DiscoveryInfo";
-import { Filter } from "../NavigateStations/FilterDropdown";
 import { NavItem } from "../NavItem/NavItem";
 import './style.css';
 
 export const DiscoveryList = () => {
     const towers = useAppSelector(selectTowers);
-    const isLandscape = useAppSelector(selectIsLandscape);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const radioSub = useAppSelector(selectRadioSub);
 
     // const [filter, setFilter] = useState<Filter>('All');
@@ -34,20 +29,16 @@ export const DiscoveryList = () => {
         <div
             className={`
             ${isPhone() ? 'discovery-list-phone' : 'discovery-list '}              
-            ${isDarkMode ? 'bg-black-95 border-black-85' : 'bg-white border-black-10  '}
         `}
         >
             <div
                 className={`
                 ${isPhone() ? 'discovery-list-header-phone' : 'discovery-list-header'} 
-                    ${isDarkMode ? 'bg-black-95' : 'bg-white'}
                     `}
             >
                 <div
-                    className={`flex items-center  h-6 font-bold  gap-0.5
-                    
+                    className={`flex items-center  h-6 font-bold  gap-0.5 text-lg
                 `}
-                    style={{ fontSize: '20px' }}
                 >
                     Discovery
                     <DiscoveryInfo />
@@ -64,13 +55,6 @@ export const DiscoveryList = () => {
             />
             {
                 towers.map((tower: IMinitower, i: number) =>
-                    // <NavItem
-                    //     key={tower.location}
-                    //     patp={tower.location}
-                    //     flare={tower.viewers - 1 + ''}
-                    //     description={tower.description}
-                    //     isPublic={tower.public}
-                    // />
                     <NavItem
                         key={tower.location}
                         patp={tower.location}

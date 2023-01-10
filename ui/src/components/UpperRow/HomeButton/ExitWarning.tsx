@@ -61,20 +61,16 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
 
     return (
         <div
-            className='w-full h-full fixed z-50 flex items-center justify-center cursor-default'
+            className='w-full top-0 left-0 text-base h-full fixed z-50 flex items-center justify-center cursor-default'
             style={{
-                backdropFilter: 'blur(0px) brightness(0.8)',
-                top: 0,
-                left: 0,
-                fontSize: '16px',
+                backdropFilter: 'brightness(0.5)',
             }}
         >
             <div
                 id={warningId}
-                className={`bg-white shadow-lg flex justify-center 
+                className={` shadow-lg flex justify-center border
                 items-center z-50 rounded-md font-bold cursor-default px-10
-                ${isDarkMode ? ' bg-black-95 ' : ' bg-white border-black-10'}
-
+                    bg-background-default border-border-default
                 `}
                 style={{
                     width: '24em',
@@ -83,8 +79,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
             >
                 <div className="flex flex-col">
                     <div className={`flex items-center w-full 
-                                    ${isDarkMode ? ' text-red-300 ' : ' text-red-700'}
-                                
+                                ${isDarkMode ? 'text-red-400' : 'text-red-700'}
                                     `}
 
                     >
@@ -94,16 +89,14 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                     <div className=" flex flex-col   h-7">
                         <span >Are you sure you want to stop the broadcast?</span>
                     </div>
-                    <div className="gap-1 flex items-center mt-4 justify-end w-full"
-                        style={{ fontSize: '16px' }}
+                    <div className="gap-1 flex items-center mt-4 justify-end w-full text-base"
                     >
                         <button
                             id={cancelButtonId}
                             className={`flex items-center justify-center
                         rounded-md 
                          text-bold px-2 py-1 h-6
-                         
-                         ${isDarkMode ? 'bg-black-80 hover:bg-black-70' : ' bg-black-10 hover:bg-black-20'}
+                            bg-hover-default hover:bg-hover-intense
                          `}
                             style={{
                                 boxShadow: 'rgba(50, 50, 93, 0.25) \

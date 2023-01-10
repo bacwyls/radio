@@ -1,5 +1,5 @@
 .nav-item{
-    @apply  w-full   relative text-center  px-6  flex items-center  gap-2   overflow-hidden;
+    @apply  w-full  hover:bg-hover-default relative text-center  px-6  flex items-center  gap-2.5   overflow-hidden;
                      
     font-size: 16px;
     white-space: nowrap;
@@ -7,8 +7,17 @@
     z-index: 2;
 }
 
+
+.nav-item-grow { 
+    transition: all .2s ease-in-out; 
+    }
+    
+.nav-item-grow:hover { 
+    transform: scale(1.02); 
+}
+    
 .nav-item-phone{
-    @apply  relative text-center px-4  flex items-center  gap-2   overflow-hidden;
+    @apply  relative text-center px-4  flex items-center  gap-2.5   overflow-hidden;
                      
     white-space: nowrap;
     width: 100%;
