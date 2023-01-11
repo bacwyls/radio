@@ -23,7 +23,7 @@
 }
 
 .talk-button-phone {
-    @apply  flex flex-col items-center justify-center font-bold gap-0.5 text-base;
+    @apply  flex flex-col items-center justify-center font-bold gap-0.5 text-sm;
     width: 20vw;
 
 }

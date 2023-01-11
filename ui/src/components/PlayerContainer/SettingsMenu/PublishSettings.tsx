@@ -2,11 +2,9 @@ import { Question } from "phosphor-react";
 import React, { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectDescription, selectHasPublishedStation, setDescription, setHasPublishedStation } from "../../../features/station/stationSlice";
-import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 
 export const PublishSettings = () => {
 
-    const isDarkMode = useAppSelector(selectIsDarkMode);
     const [showInfo, setShowInfo] = useState(false);
     const [newDescription, setNewDescription] = useState('');
     const description = useAppSelector(selectDescription);
@@ -64,7 +62,7 @@ export const PublishSettings = () => {
                 <button
                     id={publishInfoId}
                     className={` cursor-pointer  rounded p-0.5 flex items-center justify-center
-                ${showInfo ? (isDarkMode ? 'bg-black-80' : '  bg-black-10') : (isDarkMode ? ' hover:bg-black-80' : '  hover:bg-black-10')}
+                ${showInfo ? 'bg-hover-default' : 'hover:bg-hover-default'}
                 `}
                     onClick={(e) => {
                         setShowInfo(prev => !prev)
@@ -79,11 +77,9 @@ export const PublishSettings = () => {
                 </button>
                 {showInfo &&
                     <div
-                        className={`absolute  top-6 z-10 w-4/5
+                        className={`absolute  top-6 z-10 w-4/5 text-base border-border-default shadow bg-background-default
                          px-2 py-4 rounded-md   font-bold border cursor-text    
-                        ${isDarkMode ? 'bg-black-95 border-black-85  filter drop-shadow-md-dark' : 'border-black-10 bg-white shadow-md'}
                          `}
-                        style={{ fontSize: '16px', }}
                     >
                         Publishing the station adds it to the discovery pool.
                     </div>
@@ -91,8 +87,8 @@ export const PublishSettings = () => {
             </div>
             <div className="flex font-bold"
             >
-                <div className={`flex items-center mr-2 px-2 py-1   rounded-md 
-                ${hasPublishedStation ? (isDarkMode ? 'cursor-pointer hover:bg-black-80' : 'cursor-pointer hover:bg-black-10') : ''}
+                <div className={`flex items-center mr-2 px-2 py-1   rounded-md
+                ${hasPublishedStation ? 'cursor-pointer' : ' hover:bg-hover-default'}
 
                 `}
                     onClick={() => dispatch(setHasPublishedStation(false))}
@@ -107,7 +103,7 @@ export const PublishSettings = () => {
                     No
                 </div>
                 <div className={`flex items-center px-2 py-1 rounded-md 
-                ${!hasPublishedStation ? (isDarkMode ? 'cursor-pointer hover:bg-black-80' : 'cursor-pointer hover:bg-black-10') : ''}
+                ${hasPublishedStation ? 'cursor-pointer' : ' hover:bg-hover-default'}
                 `}
                     onClick={() => dispatch(setHasPublishedStation(true))}
                 >
@@ -129,10 +125,8 @@ export const PublishSettings = () => {
                     <span className="font-semibold mb-1">Description</span>
                     <div className="relative">
                         <textarea
-                            className={`bold-placeholder rounded-md border w-full 
-                             px-2 py-1 outline-none focus:shadow	resize-none
-                             ${isDarkMode ? 'bg-black-80 focus:bg-black-85 border-black-80  placeholder-black-10 text-black-10  '
-                                    : 'bg-black-10 placeholder-black-60  text-black-90 border-black-10 focus:bg-black-1'}
+                            className={`bold-placeholder placeholder-text-secondary text-text-primary rounded-md border w-full 
+                             px-2 py-1 outline-none focus:shadow	resize-none  border-background-textarea bg-background-textarea focus:bg-background-textarea-focused
                                     `}
                             placeholder="Write a description..."
                             maxLength={64}
@@ -140,9 +134,7 @@ export const PublishSettings = () => {
                             value={newDescription}
                             onChange={handleNewDescriptionChange}
                         />
-                        <span className={`absolute bottom-2.5 left-2 font-semibold 
-                              ${isDarkMode ? 'text-black-10  '
-                                : 'text-black-60'}
+                        <span className={`absolute bottom-2.5 left-2 font-semibold text-text-secondary 
                             `}
                         >{newDescription.length + '/64'}</span>
                     </div>

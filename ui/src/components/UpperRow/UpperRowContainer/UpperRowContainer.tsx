@@ -4,7 +4,7 @@ import { selectIsLandscape } from '../../../features/ui/uiSlice';
 import { isPhone } from '../../../util';
 import { HomeButton } from '../HomeButton/HomeButton';
 import { StationTitle } from '../StationTitle';
-import { ThemeButton } from '../ThemeButton';
+import { ThemeButton } from '../../ThemeButton';
 import './style.css';
 
 interface IUpperRowContainer {

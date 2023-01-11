@@ -16,7 +16,7 @@ export const DisabledTalkButton = () => {
             </button >
             :
             <button
-                className={`  talk-button   cursor-not-allowed 	opacity-70
+                className={`  talk-button   cursor-default 	opacity-70 bg-background-player-button
         `}
             >
                 <Megaphone weight="bold" className="megaphone" />

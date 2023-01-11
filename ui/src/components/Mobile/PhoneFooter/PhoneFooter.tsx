@@ -34,7 +34,7 @@ export const PhoneFooter = () => {
             {(isSettingsMenuOpen) &&
                 <>
                     < ArrowLeft
-                        size={24}
+                        size={28}
                         weight="bold"
                         style={{ marginLeft: '24px' }}
                         onClick={() => {

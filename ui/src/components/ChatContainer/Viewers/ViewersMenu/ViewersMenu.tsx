@@ -80,7 +80,7 @@ export const ViewersMenu = () => {
                     <button
                         className={`w-1/2 
                     py-2 flex justify-center items-center 
-                    ${radio.isAdmin() ? '' : 'cursor-not-allowed opacity-50'}
+                    ${radio.isAdmin() ? '' : 'cursor-default opacity-50'}
                     ${openTab == 'Banned' &&
                             'border-border-super-intense font-semibold border-b-2'
                             }

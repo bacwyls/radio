@@ -49,19 +49,16 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 onClick={() => dispatch(setIsChatFullScreen(false))} />}
             <input
                 type="text"
-                className={`bold-placeholder pl-2 flex items-center relative   font-medium
-                      border  rounded-md  outline-none focus:shadow text-text-primary focus:bg-background-input-focused bg-background-input border-background-input
-                      placeholder-text-default
+                className={`bold-placeholder  pl-2 flex items-center relative   font-medium
+                      border  border-border-intense  rounded-md  outline-none focus:shadow text-text-primary focus:bg-background-input-focused bg-background-input 
+                      placeholder-text-secondary w-full
                 ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-default'}
-                 
                     ${isPhone() ? '' : 'mt-2 '}
                     `}
                 disabled={!(tunePatP && isValidPatp(tunePatP))}
                 style={{
                     height: isPhone() ? '2rem' : '40px',
-                    width: '100%',
                     paddingRight: '6.4em',
-
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -81,7 +78,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                             absolute outline-none flex font-bold rounded-md 
                              justify-center items-center    text-text-button 
                              ${!isPhone() && 'mt-2 '}
-                             ${inputText.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow' : 'cursor-default text-opacity-80 	bg-blue-disabled'} 
+                             ${inputText.trim().length > 0 ? 'hover:shadow  bg-blue-button' : 'cursor-default text-opacity-80 	bg-blue-disabled'} 
                              `}
                 style={{
                     right: '24px',

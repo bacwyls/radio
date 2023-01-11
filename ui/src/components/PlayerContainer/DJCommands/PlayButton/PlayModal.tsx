@@ -88,7 +88,7 @@ export const PlayModal = () => {
                         flex items-center justify-center pl-7 
                              rounded-md w-full  outline-none focus:shadow  
                              bg-background-input focus:bg-background-input-focused 
-                             border-background-input text-text-primary
+                             border-border-intense   text-text-primary
                               placeholder-text-secondary
                         `}
                         placeholder='Insert URL'
@@ -108,7 +108,7 @@ export const PlayModal = () => {
                     <button
                         className={`flex items-center justify-center 
                                      gap-0.5 font-bold  rounded-md  text-text-button
-                             ${urlToPlay.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow ' : 'cursor-default	 bg-blue-disabled text-opacity-80'} 
+                             ${urlToPlay.trim().length > 0 ? 'hover:shadow  bg-blue-button  ' : 'cursor-default	 bg-blue-disabled text-opacity-80'} 
                          `}
                         style={{
                             width: '6em',

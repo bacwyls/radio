@@ -30,6 +30,7 @@ export const DiscoveryList = () => {
             className={`
             ${isPhone() ? 'discovery-list-phone' : 'discovery-list '}              
         `}
+
         >
             <div
                 className={`

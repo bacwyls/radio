@@ -2,7 +2,7 @@ import { Broadcast, } from "phosphor-react";
 import React from "react"
 import { useNavigate } from "react-router-dom";
 import { radio } from "../../api";
-import { ThemeButton } from "../UpperRow/ThemeButton";
+import { ThemeButton } from "../ThemeButton";
 import './style.css';
 
 export const Header = () => {

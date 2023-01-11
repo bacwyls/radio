@@ -7,7 +7,7 @@ import './style.css';
 
 export const settingsButtonId = 'settings-button';
 
-export const SettingsMenuButton = () => {
+export const SettingsButton = () => {
 
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
 

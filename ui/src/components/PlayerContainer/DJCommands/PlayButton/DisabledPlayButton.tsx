@@ -17,7 +17,7 @@ export const DisabledPlayButton = () => {
             </button >
             :
             <button
-                className={`  play-button   cursor-not-allowed opacity-70 `}
+                className={`  play-button   cursor-default opacity-70 bg-background-player-button `}
             >
                 <PlayCircle weight="bold" className="megaphone" />
                 Play

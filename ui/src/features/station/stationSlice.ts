@@ -45,16 +45,6 @@ const initialState: StationState = {
   chats: Array<ChatMessage>(),
   update: Object(),
   towers: Array<IMinitower>(),
-  // towers: Array<IMinitower>({
-  //   location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-  // },
-  //   {
-  //     location: '~harlys-forbec', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-  //   },
-  //   {
-  //     location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-  // }
-  // ),
   description: '',
   banned: Array<string>(),
 };

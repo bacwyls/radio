@@ -10,7 +10,7 @@ import { TalkButton } from './DJCommands/TalkButton/TalkButton';
 import { DisabledPlayButton } from './DJCommands/PlayButton/DisabledPlayButton';
 import { DisabledTalkButton } from './DJCommands/TalkButton/DisabledTalkButton';
 import { SettingsMenu } from './SettingsMenu/SettingsMenu';
-import { SettingsMenuButton } from './SettingsMenu/SettingsMenuButton';
+import { SettingsButton } from './SettingsMenu/SettingsButton';
 import { PlayModal } from './DJCommands/PlayButton/PlayModal';
 import { TalkModal } from './DJCommands/TalkButton/TalkModal';
 import { selectPlayerReady, setPlayerInSync } from '../../features/ui/uiSlice';
@@ -59,7 +59,7 @@ export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) =
       {!isPhone() &&
         <div className=' w-full flex-wrap relative pb-2 sm:pb-0 pt-2 flex justify-center gap-2 '
         >
-          {tunePatP == radio.our && <SettingsMenuButton />}
+          {tunePatP == radio.our && <SettingsButton />}
           {(radio.our != tunePatP && !isPublic) || !(tunePatP && isValidPatp(tunePatP)) ? <>
             <DisabledPlayButton />
             <DisabledTalkButton />

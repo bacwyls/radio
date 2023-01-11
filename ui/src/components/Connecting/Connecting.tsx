@@ -75,7 +75,7 @@ export const Connecting = () => {
             }}
         >
             <div
-                className={`shadow flex items-center  justify-center rounded-md bg-background-default border-border-intense
+                className={`shadow-lg flex items-center  justify-center rounded-md bg-background-default border-border-default
                 ${isPhone() ? '' : 'px-8'}
         `}
                 style={{

@@ -44,7 +44,7 @@
 }
 
 .viewers-input{
-    @apply  pl-2 pr-6 focus:shadow  h-6 border  hover:shadow rounded outline-none  bg-background-input focus:bg-background-input-focused border-background-input placeholder-text-secondary ;
+    @apply  pl-2 pr-6 focus:shadow  h-6 border  hover:shadow rounded outline-none  bg-background-input focus:bg-background-input-focused border-background-input focus:border-border-intense placeholder-text-secondary ;
     width: calc(25vw - 48px);
 }
 

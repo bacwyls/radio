@@ -1,5 +1,5 @@
 .play-modal{
-   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-md border border-border-default text-base shadow-lg bg-background-default;
+   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border border-border-default text-base  bg-background-default;
    left: 37.5%;
    transform: translate(-50%, -50%);
    top: 50%;
@@ -23,7 +23,7 @@
 }
 
 .play-button-phone {
-    @apply flex flex-col justify-center items-center font-bold gap-0.5 text-base; 
+    @apply flex flex-col justify-center items-center font-bold gap-0.5 text-sm; 
     width: 20vw;
 }
 

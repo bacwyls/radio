@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { DiscoveryList } from '../../components/Navigation/DiscoveryList/DiscoveryList';
 import { SearchStationRow } from '../../components/Navigation/SearchStationsRow/SearchStationRow';
-import { ThemeButton } from '../../components/UpperRow/ThemeButton';
+import { ThemeButton } from '../../components/ThemeButton';
 import { selectIsDarkMode } from '../../features/ui/uiSlice';
 import { isPhone } from '../../util';
 

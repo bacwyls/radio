@@ -24,12 +24,12 @@
 }
 
 .settings-button-phone {
-    @apply flex flex-col justify-center items-center font-bold gap-0.5 text-base;
+    @apply flex flex-col justify-center items-center font-bold gap-0.5 text-sm;
     width: 20vw;
 }
 
 .settings-menu{
-    @apply flex border border-border-default bg-background-default shadow-lg flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
+    @apply flex border border-border-default bg-background-default flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
     height: 22rem;
     width: 24em;
     left: 22px;

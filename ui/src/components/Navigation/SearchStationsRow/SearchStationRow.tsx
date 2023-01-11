@@ -83,7 +83,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < input
                 id={searchStationInputId}
                 type="text"
-                className={`outline-black-5 outline    relative whitespace-nowrap	 h-full rounded-md border font-bold
+                className={`   relative whitespace-nowrap	 h-full rounded-md border font-bold
                focus:outline-none focus:shadow  text-background-icon placeholder-black-60 
                ${isDarkMode && 'border-2'}
             ${isFocused ? 'bg-orange-input-focused ' : 'bg-orange-input'} 
@@ -122,7 +122,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < button
                 className={`absolute right-0  rounded-md  h-full  flex  
             justify-center items-center whitespace-nowrap px-1 font-bold z-10 text-text-button 
-            ${isValidPatp(tuneToText) ? 'bg-orange button-grow hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
+            ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
                     width: '7em',
@@ -138,7 +138,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 tuneToText.trim().length > 0 && queriedTowers.length > 0 && !isValidPatp(tuneToText) && isFocused && !isPhone() &&
                 <div
                     id={suggestionsId}
-                    className={`absolute border z-10 shadow rounded 
+                    className={`absolute border z-10 shadow-md rounded-md 
             w-full top-8 flex flex-col py-2 overflow-y-auto mt-1
             border-border-default bg-background-default text-text-default
 

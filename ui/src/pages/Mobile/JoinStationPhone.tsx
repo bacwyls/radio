@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { DiscoveryList } from '../../components/Navigation/DiscoveryList/DiscoveryList';
 import { SearchStationRow } from '../../components/Navigation/SearchStationsRow/SearchStationRow';
-import { ThemeButton } from '../../components/UpperRow/ThemeButton';
+import { ThemeButton } from '../../components/ThemeButton';
 import { isPhone } from '../../util';
 
 export const JoinStationPhone = () => {

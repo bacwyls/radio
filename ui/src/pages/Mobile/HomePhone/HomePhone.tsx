@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { radio } from '../../../api';
 import { useAppDispatch } from '../../../app/hooks';
-import { ThemeButton } from '../../../components/UpperRow/ThemeButton';
+import { ThemeButton } from '../../../components/ThemeButton';
 import { tuneTo } from '../../../util';
 import './style.css';
 

@@ -76,7 +76,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         className='flex flex-col 	w-full'
       >
         <div className={`font-bold  flex items-center  w-full 
-        text-text-default mb-0.5
+        text-text-default mb-1
           `}
           style={{
             textAlign: 'left',

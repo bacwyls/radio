@@ -7,7 +7,7 @@ import { DisabledPlayButton } from "../PlayerContainer/DJCommands/PlayButton/Dis
 import { PlayButton } from "../PlayerContainer/DJCommands/PlayButton/PlayButton";
 import { DisabledTalkButton } from "../PlayerContainer/DJCommands/TalkButton/DisabledTalkButton";
 import { TalkButton } from "../PlayerContainer/DJCommands/TalkButton/TalkButton";
-import { SettingsMenuButton } from "../PlayerContainer/SettingsMenu/SettingsMenuButton";
+import { SettingsButton } from "../PlayerContainer/SettingsMenu/SettingsButton";
 import { SyncActions } from "../PlayerContainer/SyncActions/SyncActions";
 
 export const PhoneActionsMenu = () => {
@@ -48,13 +48,13 @@ export const PhoneActionsMenu = () => {
             />
             {showActionsMenu &&
                 <div
-                    className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t bg-background-default text-text-default border-border-default
+                    className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t bg-background-default text-text-default border-border-default text-sm
                                 `}
                     style={{
                         bottom: '64px',
                     }}
                 >
-                    {radio.our == tunePatP && <SettingsMenuButton />}
+                    {radio.our == tunePatP && <SettingsButton />}
                     {(radio.our != tunePatP && !isPublic) ? <>
                         <DisabledPlayButton />
                         <DisabledTalkButton />

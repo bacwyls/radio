@@ -72,7 +72,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     }}
         >
             {!playerReady &&
-                <div className="w-full h-full shadow-md rounded-md"
+                <div className="w-full h-full rounded-md"
                     style={{
                         backgroundColor: isDarkMode ? '#4A4948' : '#D2D1D1',
                     }}
@@ -98,7 +98,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     overflow: 'hidden',
                     filter: (!isPhone() && (isPlayModalOpen || isTalkModalOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(40%)' : '',
-                    boxShadow: isDarkMode ? '0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -1px rgba(0, 0, 0, 0.36)' : '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.072)',
+                    boxShadow: isDarkMode ? '0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6)' : '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)   ',
                     visibility: playerReady ? 'visible' : 'hidden',
                 }}
                 config={{

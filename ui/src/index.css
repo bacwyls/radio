@@ -19,10 +19,4 @@ body{
     font-weight: bold;
 }
 
-.button-grow { 
-    transition: all .2s ease-in-out; 
-    }
-    
-.button-grow:hover { 
-    transform: scale(1.05); 
-}
+

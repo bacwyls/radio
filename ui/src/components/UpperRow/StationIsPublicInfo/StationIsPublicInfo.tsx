@@ -19,7 +19,7 @@ export const StationIsPublicInfo = () => {
                 <div
                     className={` 
                     ${isPhone() ? 'public-info-phone' : 'public-info'}
-                    shadow-md border-border-default text-text-default bg-background-default
+                   
                             `}
                 >
                     {isPublic ? 'This station is public and everybody can use DJ commands (Play & Talk).'

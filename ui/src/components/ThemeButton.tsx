@@ -1,8 +1,8 @@
 import { MoonStars, Sun } from "phosphor-react"
 import React from "react"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { selectIsDarkMode, setIsDarkMode } from "../../features/ui/uiSlice"
-import { isPhone } from "../../util"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { selectIsDarkMode, setIsDarkMode } from "../features/ui/uiSlice"
+import { isPhone } from "../util"
 
 export const ThemeButton = () => {
     const isDarkMode = useAppSelector(selectIsDarkMode);

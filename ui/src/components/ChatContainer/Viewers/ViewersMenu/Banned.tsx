@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { radio } from "../../../../api";
 import { useAppSelector, useAppDispatch } from "../../../../app/hooks";
 import { selectBanned, setBanned } from "../../../../features/station/stationSlice";
+import { selectIsDarkMode } from "../../../../features/ui/uiSlice";
 import { Sigil } from "../../../Sigil";
 
 interface IBanned {
@@ -14,8 +15,11 @@ export const Banned = (props: IBanned) => {
     const { ship, index } = props;
 
     const [isFocused, setIsFocused] = useState(false);
+
     const dispatch = useAppDispatch();
+
     const banned = useAppSelector(selectBanned);
+    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const handleBannedClick = (ship) => {
         if (ship == radio.our) return;
@@ -40,12 +44,10 @@ export const Banned = (props: IBanned) => {
             id={'banned-' + ship}
 
             className={`flex  hover:bg-hover-default
-            justify-between py-1.5
-            ${!radio.isAdmin() && 'cursor-default'}
+            justify-between py-1.5 px-4
             ${isFocused ? 'bg-hover-default py-2.5 gap-1 items-center flex-wrap'
                     : 'items-center '
                 } `}
-            style={{ paddingLeft: '24px', paddingRight: '24px' }}
             onClick={() => handleBannedClick(ship)}
         >
             <span className='flex items-center ' >
@@ -80,10 +82,25 @@ export const Banned = (props: IBanned) => {
                         profile
                     </span>
                 </a> */}
-                <span className={`cursor-pointer font-bold 
+                <a
+                    href={'/apps/talk/dm/' + ship}
+                    target="_blank"
+                >
+                    <button className={` font-semibold
+                                     h-4 w-7 flex items-center justify-center
+                                    rounded  font-bold text-text-primary text-sm text-black bg-white
+                                       text-sm   
+                                ${isDarkMode ? ' hover:bg-black-30    ' : 'shadow hover:border hover:border-black'}
+                                    `}
+                    >
+                        chat
+                    </button>
+                </a>
+                <button className={` font-bold 
                                       h-4 w-9 flex items-center justify-center  text-red-600 
-                                     rounded bg-white shadow hover:shadow-none  text-sm hover:bg-black-5   hover:border hover:border-red-600
-                   text-sm
+                                     rounded bg-white  text-sm   
+                                     ${isDarkMode ? ' hover:bg-red-200    ' : 'shadow hover:border hover:border-red-600 '}
+
                                      `}
                     onClick={() => {
                         dispatch(setBanned(banned.filter(x => x != ship)))
@@ -91,7 +108,7 @@ export const Banned = (props: IBanned) => {
                     }}
                 >
                     unban
-                </span>
+                </button>
             </div>}
         </button>
     )

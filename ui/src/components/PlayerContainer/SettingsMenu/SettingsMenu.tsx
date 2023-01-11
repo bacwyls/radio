@@ -5,7 +5,7 @@ import { selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../featur
 import { isPhone } from "../../../util";
 import { IsPublicSettings } from "./IsPublicSettings";
 import { PublishSettings } from "./PublishSettings";
-import { settingsButtonId } from "./SettingsMenuButton";
+import { settingsButtonId } from "./SettingsButton";
 
 export const SettingsMenu = () => {
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);

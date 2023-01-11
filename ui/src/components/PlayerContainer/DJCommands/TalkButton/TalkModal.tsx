@@ -76,9 +76,9 @@ export const TalkModal = () => {
                     <textarea
                         id={urlInputId}
                         autoComplete="off"
-                        className={`bold-placeholder rounded-md border border-border-default w-full
-                px-2 py-1 outline-none focus:shadow resize-none placeholder-text-secondary text-text-default  
-                bg-background-textarea focus:bg-background-input-focused
+                        className={`bold-placeholder rounded-md border border-background-textarea  w-full
+                px-2 py-1 outline-none focus:shadow resize-none placeholder-text-secondary text-text-primary  
+                bg-background-textarea focus:bg-background-textarea-focused 
                 `}
                         placeholder='Text to Speech'
                         value={textToSpeech}
@@ -94,7 +94,7 @@ export const TalkModal = () => {
                     <button
                         className={`flex items-center justify-center
                  gap-0.5 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
-                ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-button button-grow' : 'cursor-default text-opacity-80 bg-blue-disabled'}
+                ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-button ' : 'cursor-default text-opacity-80 bg-blue-disabled'}
     `}
                         style={{
                             width: '6em',
