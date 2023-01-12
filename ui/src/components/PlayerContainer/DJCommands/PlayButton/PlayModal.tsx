@@ -95,11 +95,11 @@ export const PlayModal = () => {
                         value={urlToPlay}
                         onChange={e => setUrlToPlay(e.target.value)}
                         style={{
-                            height: '40px',
-                            paddingRight: '6.3em',
+                            height: '1.666rem',
+                            paddingRight: '3.8rem',
                         }}
                     />
-                    <Link className='absolute left-2' size={22} weight="bold" />
+                    <Link className='absolute left-2 text-xl' weight="bold" />
                     {/* {urlToPlay.trim().length != 0 &&
     <XCircle className="absolute cursor-pointer" style={{ right: '6.2em' }} size={22} weight="bold"
       onClick={() => setUrlToPlay('')}
@@ -107,17 +107,16 @@ export const PlayModal = () => {
   } */}
                     <button
                         className={`flex items-center justify-center 
-                                     gap-0.5 font-bold  rounded-md  text-text-button
+                                     gap-1 font-bold  rounded-md  text-text-button
                              ${urlToPlay.trim().length > 0 ? 'hover:shadow  bg-blue-button  ' : 'cursor-default	 bg-blue-disabled text-opacity-80'} 
                          `}
                         style={{
-                            width: '6em',
-                            height: '40px',
-                            marginLeft: '-6em',
+                            width: '3.5rem',
+                            height: '1.666rem',
+                            marginLeft: '-3.5rem',
                         }}
                         onClick={processPlay}
                     >
-                        <PlayCircle size={22} weight="bold" />
                         Play
                     </button>
                 </div>

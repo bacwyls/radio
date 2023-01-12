@@ -71,8 +71,8 @@ export const PublishSettings = () => {
                     }
                 >
                     <Question
-                        size={22}
                         weight="bold"
+                        className="text-lg"
                     />
                 </button>
                 {showInfo &&
@@ -95,7 +95,7 @@ export const PublishSettings = () => {
                     style={{ marginLeft: '-.5rem' }}
                 >
                     <input className={`mr-1 ${hasPublishedStation && 'cursor-pointer'}`}
-                        style={{ top: '13.5px', height: '.85em', width: '.85em' }}
+                        style={{ top: '0.5325rem', height: '.566rem', width: '.566rem' }}
                         type={'radio'}
                         checked={!hasPublishedStation}
                         onChange={() => null}
@@ -111,7 +111,7 @@ export const PublishSettings = () => {
                     ${!hasPublishedStation && 'cursor-pointer'}`
 
                     }
-                        style={{ top: '13.5px', height: '.85em', width: '.85em' }}
+                        style={{ top: '0.5625rem', height: '.566rem', width: '.566rem' }}
                         type={'radio'}
                         checked={hasPublishedStation}
                         onChange={() => null}

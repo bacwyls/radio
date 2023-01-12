@@ -33,7 +33,7 @@ export const HomeButton = () => {
     return (
         <>
             {isPhone() ?
-                <SignOut size={24} weight="bold" onClick={handleExit} />
+                <SignOut weight="bold" onClick={handleExit} className='text-xl' />
                 :
                 <button
                     className={`   text-center  rounded   px-2 font-bold
@@ -41,10 +41,10 @@ export const HomeButton = () => {
                     `}
                     onClick={handleExit}
                     style={{
-                        height: '40px',
+                        height: '1.666rem',
                     }}
                 >
-                    <SignOut className="mr-1" size={24} weight="bold" />
+                    <SignOut className="mr-1 text-xl" weight="bold" />
                     <span className="hidden sm:flex whitespace-nowrap" >
                         {patp == radio.our ? 'Stop Broadcast' :
                             'Exit Station'}
@@ -55,7 +55,6 @@ export const HomeButton = () => {
                 </button>
             }
             {showWarning && <ExitWarning onCancel={closeWarning} />}
-
         </>
     )
 }

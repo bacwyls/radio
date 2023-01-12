@@ -1,9 +1,7 @@
 .nav-item{
-    @apply  w-full  hover:bg-hover-default relative text-center  px-6  flex items-center  gap-2.5   overflow-hidden;
-                     
-    font-size: 16px;
+    @apply  w-full  hover:bg-hover-default relative text-center  px-6  flex items-center  gap-2.5   overflow-hidden text-base;
     white-space: nowrap;
-    min-height: 124px;
+    min-height: 5.12rem;
     z-index: 2;
 }
 
@@ -21,14 +19,22 @@
                      
     white-space: nowrap;
     width: 100%;
-    min-height: 96px;
+    min-height: 4rem;
     z-index: 2;
 }
 
 
-@media (max-width: 1199px){
+@media (width <= 1300px){
     .nav-item{
         @apply px-4;
     }
  
+}
+
+.nav-item-icon{
+    font-size: 1.666rem;
+}
+
+.nav-item-viewers-icon{
+    font-size: 0.833rem;
 }

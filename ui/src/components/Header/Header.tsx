@@ -37,7 +37,7 @@ export const Header = () => {
                         navigate('/station/' + radio.our)
                     }}
                 >
-                    <Broadcast size={24} weight="bold" />
+                    <Broadcast weight="bold" className='text-xl' />
                     <span
                         className='ml-1	flex items-center 
                  font-bold'

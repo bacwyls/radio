@@ -20,7 +20,7 @@ export const PlayButton = () => {
                 className='play-button-phone'
                 onClick={() => dispatch(setIsPlayModalOpen(true))}
             >
-                <PlayCircle weight="bold" size={24} />
+                <PlayCircle weight="bold" className="text-xl" />
                 Play
             </button >
             :

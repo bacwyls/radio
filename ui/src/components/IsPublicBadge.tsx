@@ -11,7 +11,7 @@ export const IsPublicBadge = () => {
                           ml-1.5  font-bold  text-black-90 h-3 bg-background-badge text-sm
                           `}
             style={{
-                padding: '0 .3em'
+                padding: '0.2rem'
             }}
         >
             {isPublic ? 'Public' : 'Private'}

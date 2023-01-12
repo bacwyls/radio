@@ -3,23 +3,23 @@
    left: 37.5%;
    transform: translate(-50%, -50%);
    top: 50%;
-   width: 27em;
+   width: 18rem;
 }
 
-@media (max-width: 1099px){
+@media (width <= 1300px){
     .play-modal{
         @apply absolute;
         height: min-content;
         transform: translate(-50%, -50%);
-        top: calc(50% - 35px) ;
+        top: calc(50% - 1.458rem) ;
         left: 50%;
     }
 }
 
 .play-button {
     @apply   font-bold  shadow rounded-md  justify-center flex text-center items-center gap-1 border border-border-default ;
-    height: 40px;
-    width: 104px;
+    height: 1.666rem;
+    width: 4.333rem;
 }
 
 .play-button-phone {
@@ -28,25 +28,25 @@
 }
 
 .play-circle{
-    font-size: 24px;
+    font-size: 1rem;
 }
 
-@media (max-width: 799px){
+@media (width <= 1000px){
     .play-button {
         @apply gap-0.5 text-sm;
-        height: 40px;
-        width: 80px;
+        height: 1.666rem;
+        width: 3.333rem;
     }
 
     .play-circle{
-        font-size: 20px ;
+        font-size: 0.8333rem ;
     }
 }
 
 .play-modal-phone {
     @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t w-full   border-border-default bg-background-default  ;
-    height: calc(100% - 64px - 64px - 56.25vw - 1rem);
+    height: calc(100% - 2.666rem - 2.666rem - 56.25vw - 1rem);
     min-height: 10rem;
-    bottom: 64px;
+    bottom: 2.666rem;
 }
 

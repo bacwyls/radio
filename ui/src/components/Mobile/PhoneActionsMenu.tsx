@@ -43,7 +43,7 @@ export const PhoneActionsMenu = () => {
                      `}
             id={phoneActionsMenuId}
         >
-            <List size={24} weight="bold"
+            <List weight="bold" className="text-xl"
                 onClick={() => setShowActionsMenu(prev => !prev)}
             />
             {showActionsMenu &&
@@ -51,7 +51,7 @@ export const PhoneActionsMenu = () => {
                     className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t bg-background-default text-text-default border-border-default text-sm
                                 `}
                     style={{
-                        bottom: '64px',
+                        bottom: '2.666rem',
                     }}
                 >
                     {radio.our == tunePatP && <SettingsButton />}

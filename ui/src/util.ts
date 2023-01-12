@@ -9,13 +9,11 @@ import {
   resetChats,
   setChatsWithChatlog,
   setChatsWithChat,
-  setHasPublishedStation,
   setBanned,
 } from './features/station/stationSlice';
 import {
   setPlayerReady,
   setPlayerInSync,
-  setIsConnecting
 } from './features/ui/uiSlice';
 import { isMobile, isTablet } from 'react-device-detect';
 import { radio } from './api';
@@ -44,7 +42,6 @@ export function handleUpdate(update: any, dispatch: any) {
     case 'tune':
       let tune = update['tune'];
       dispatch(setTunePatP(tune));
-      dispatch(setIsConnecting(false));
       radio.tunedTo = tune;
       if (tune === null) {
         resetPage(dispatch);
@@ -194,12 +191,8 @@ export function tuneTo(patp: string | null, radio: Radio, dispatch) {
   resetPage(dispatch);
   radio.tune(patp);
 
-  if (radio.tunedTo != patp) {
-    dispatch(setHasPublishedStation(false));
-  }
   radio.tunedTo = null;
   dispatch(setTunePatP(patp ? patp + ' (loading...)' : ''));
-  dispatch(setIsConnecting(true));
 }
 
 // parse from user input
@@ -228,17 +221,15 @@ export const timestampFromTime = (time: string) => {
   const localHours = '' + date.getHours();
   const localMinutes = '' + date.getMinutes();
 
-  // this is weird sometimes
-  // const oneDayOld = (Date.now() - date.getTime()) > (1000 * 60 * 60 * 24);
-
   // if the msg is older than 12 hours and from a different day
   let today = new Date();
+
   const oneDayOld = today.getDate() != (+localDay) || today.getMonth() != (+localMonth);
   const hoursSince = (today.getHours() + (24 - (+localHours)));
   const olderMessage = oneDayOld && (hoursSince >= 12);
 
   return olderMessage
-    ? `${localMonth.padStart(2, '0')}/${localDay.padStart(2, '0')}`
+    ? `${((+localMonth + 1) + '').padStart(2, '0')}/${localDay.padStart(2, '0')}`
     : `${localHours.padStart(2, '0')}:${localMinutes.padStart(2, '0')}`;
 }
 
@@ -251,4 +242,8 @@ export const isSystemDarkMode = () => {
     return true
   }
   else { return false }
+}
+
+export const isLogged = () => {
+  return window.ship ? true : false;
 }

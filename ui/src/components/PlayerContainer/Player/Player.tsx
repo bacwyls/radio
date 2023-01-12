@@ -72,9 +72,10 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     }}
         >
             {!playerReady &&
-                <div className="w-full h-full rounded-md"
+                <div className="w-full h-full"
                     style={{
                         backgroundColor: isDarkMode ? '#4A4948' : '#D2D1D1',
+                        borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     }}
                 >
                     <span className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -92,7 +93,6 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                 loop={true}
                 onReady={() => dispatch(setPlayerReady(true))}
                 onProgress={e => handleProgress(e)}
-
                 style={{
                     backgroundColor: isDarkMode ? '#3F3D3C' : '#D2D1D1',
                     borderRadius: `${isPhone() ? '0' : '0.375rem'}`,

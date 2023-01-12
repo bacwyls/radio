@@ -1,20 +1,20 @@
 .viewers-menu {
     @apply flex flex-col border border-border-default bg-background-default  z-20 fixed ;
-    height: calc(100vh - 63px);
+    height: calc(100vh - 2.7rem);
     width: 25vw;
-    top: 63px;
-    right: 0px;
+    top: calc(2.7rem - 1px);
+    right: 0;
 }
 
 .viewers-menu-phone {
     @apply fixed top-0 left-0 w-full bg-background-default ;
-    height: calc(100% - 64px);
+    height: calc(100% - 2.7rem);
     z-index: 110;
 }
 
 .viewers-list{
     @apply top-0  relative overflow-y-auto overflow-x-hidden flex flex-col  ;
-    height: calc(100% - 42px );
+    height: calc(100% - 1.75rem );
 }
 
 .viewers-input-sticky-row{
@@ -33,29 +33,29 @@
 
 .viewers-input-wrapper{
     @apply flex   h-10 relative   items-center justify-between z-10;
-    left: 24px;
-    width: calc(100% - 48px);
+    left: 1rem;
+    width: calc(100% - 2rem);
 }
 
 .viewers-input-wrapper-phone{
     @apply flex   h-10 relative   items-center justify-between z-10;
-    left: 24px;
-    width: calc(100% - 48px);
+    left: 1rem;
+    width: calc(100% - 2rem);
 }
 
 .viewers-input{
     @apply  pl-2 pr-6 focus:shadow  h-6 border  hover:shadow rounded outline-none  bg-background-input focus:bg-background-input-focused border-background-input focus:border-border-intense placeholder-text-secondary ;
-    width: calc(25vw - 48px);
+    width: calc(25vw - 2rem);
 }
 
 
-@media (max-width: 1099px){
+@media (width <= 1300px){
 
     .viewers-menu {
-        @apply absolute mb-2 rounded-b-md;
+        @apply absolute mb-2 rounded-b-md overflow-hidden;
         width: 100%;
-        height: calc(40vh - 64px);
-        min-height: calc(25em - 64px);
+        height: calc(40vh - 2.7rem);
+        min-height: calc(17rem - 2.7rem);
     }
 
     .viewers-input-wrapper{

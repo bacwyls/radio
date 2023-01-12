@@ -1,24 +1,24 @@
-@media (min-width: 800px){
+@media (width > 1000px){
     .settings-button {
         @apply absolute shadow border  border-border-default rounded-md  left-0 flex items-center justify-center  font-bold gap-1;
-        height: 40px;
-        width: 120px;
+        height: 1.666rem;
+        width: 5rem;
      }
 }
 
 .gear{
-    font-size: 24px; 
+    font-size: 1rem; 
  }
 
-@media (max-width: 799px){
+@media (width <= 1000px){
     .settings-button {
         @apply  rounded-md border border-border-default  shadow left-0 flex items-center justify-center  font-bold gap-0.5 text-sm ;
-        height: 40px;
-        width: 96px;
+        height: 1.666rem;
+        width: 4rem;
      }
 
      .gear{
-        font-size: 20px ; 
+        font-size: 0.833rem ; 
      }
     
 }
@@ -31,21 +31,21 @@
 .settings-menu{
     @apply flex border border-border-default bg-background-default flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
     height: 22rem;
-    width: 24em;
-    left: 22px;
-    bottom: 79px;
+    width: 16rem;
+    left: 0.916rem;
+    bottom: 3.291rem;
 }
 
-@media (max-width: 1099px){
+@media (width <= 1300px){
     .settings-menu{
         @apply absolute;
-        bottom: 72px;
+        bottom: 3rem;
     }
 }
 
 .settings-menu-phone{
     @apply fixed top-0 left-0 w-screen flex flex-col gap-4 overflow-y-auto overflow-x-hidden bg-background-default p-4;
-    height: calc(100% - 64px);
+    height: calc(100% - 2.666rem);
     z-index: 130;
 }
 

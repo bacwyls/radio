@@ -48,7 +48,7 @@ export const SettingsMenu = () => {
                 <div className="flex justify-between">
                     <div className="flex items-center font-bold text-bigger"
                     >
-                        <Gear weight="bold" className="mr-1 gear" />
+                        <Gear weight="bold" className="mr-1 text-xl" />
                         Settings</div>
                     {/* <button
                         className=' flex items-center justify-center

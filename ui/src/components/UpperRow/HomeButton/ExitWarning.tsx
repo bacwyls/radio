@@ -1,8 +1,9 @@
-import { SignOut, Warning } from "phosphor-react"
+import { Warning } from "phosphor-react"
 import React, { useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, } from "react-router-dom";
 import { radio } from "../../../api";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { setHasPublishedStation } from "../../../features/station/stationSlice";
 import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 
 interface IExitWarning {
@@ -12,11 +13,12 @@ interface IExitWarning {
 export const ExitWarning = ({ onCancel }: IExitWarning) => {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const warningId = 'warning';
     const cancelButtonId = 'cancel-button';
-
 
     useEffect(() => {
         document.addEventListener(
@@ -24,20 +26,11 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
             handleWarningClose
         )
 
-        // document.addEventListener("keydown", handleKeyDown);
-
         return () => {
             document.removeEventListener('click', handleWarningClose)
-            // document.removeEventListener("keydown", handleKeyDown);
         }
     }, []);
 
-    // const handleKeyDown = (event: any) => {
-    //     if (event.key == 'Escape') {
-    //         event.preventDefault();
-    //         onCancel();
-    //     }
-    // }
 
     const handleWarningClose = (event: any) => {
         var clicked = event.target as Element;
@@ -55,6 +48,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
     }
 
     const handleStop = () => {
+        dispatch(setHasPublishedStation(false));
         radio.stop();
         navigate('/');
     }
@@ -63,7 +57,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
         <div
             className='w-full top-0 left-0 text-base h-full fixed z-50 flex items-center justify-center cursor-default'
             style={{
-                backdropFilter: 'brightness(0.5)',
+                backdropFilter: 'brightness(0.3)',
             }}
         >
             <div
@@ -73,8 +67,8 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                     bg-background-default border-border-default
                 `}
                 style={{
-                    width: '24em',
-                    height: '12em',
+                    width: '16rem',
+                    height: '8rem',
                 }}
             >
                 <div className="flex flex-col">
@@ -83,7 +77,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                                     `}
 
                     >
-                        <Warning className="mr-1" size={32} weight="bold" />
+                        <Warning className="mr-1 text-2xl" weight="bold" />
                         Warning
                     </div>
                     <div className=" flex flex-col   h-7">
@@ -95,14 +89,14 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                             id={cancelButtonId}
                             className={`flex items-center justify-center
                         rounded-md 
-                         text-bold px-2 py-1 h-6
+                         text-bold w-14 h-6
                             bg-hover-default hover:bg-hover-intense
                          `}
                             style={{
                                 boxShadow: 'rgba(50, 50, 93, 0.25) \
                             0px 2px 5px -1px, rgba(0, 0, 0, 0.3)`\
                              0px 1px 3px - 1px ',
-                                height: '40px',
+                                height: '1.666rem',
                             }}
                         >
                             <span
@@ -121,11 +115,11 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                         </button>
                         <button
                             className={`   text-center  rounded-md   px-2 font-bold
-            flex justify-center items-center  text-red-700 bg-red-300 hover:bg-red-400
+            flex justify-center items-center  text-red-700 bg-red-300 hover:bg-red-400  w-14 
                     `}
                             onClick={() => handleStop()}
                             style={{
-                                height: '40px',
+                                height: '1.666rem',
                             }}
                         >
                             {/* <SignOut className="mr-1" size={26} weight="bold" /> */}

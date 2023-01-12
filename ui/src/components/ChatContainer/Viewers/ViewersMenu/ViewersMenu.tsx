@@ -117,7 +117,7 @@ export const ViewersMenu = () => {
                                 value={viewersQuery}
                                 onChange={handleViewersInputTextChange}
                             />
-                            <MagnifyingGlass className="absolute right-2  " size={16} weight="bold" />
+                            <MagnifyingGlass className="absolute right-2 text-base " weight="bold" />
                         </div>
                     </div>
                     <div className="viewers-list"

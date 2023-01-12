@@ -19,7 +19,7 @@ export const TalkButton = () => {
                 className='talk-button-phone'
                 onClick={() => dispatch(setIsTalkModalOpen(!isTalkModalOpen))}
             >
-                <Megaphone weight="bold" size={24} />
+                <Megaphone weight="bold" className="text-xl" />
                 Talk
             </button >
             :

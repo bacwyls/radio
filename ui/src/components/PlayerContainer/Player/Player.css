@@ -1,12 +1,12 @@
 .player {
-    height: calc(100% - 80px);
+    height: calc(100% - 3.333rem);
     @apply w-full relative;
 }
 
 
-@media (max-width: 1099px){
+@media (width <= 1300px){
     .player {
-        height: calc(100% - 72px);
+        height: calc(100% - 3rem);
     }
 }
 

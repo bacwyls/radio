@@ -46,25 +46,23 @@ export const FilterDropdown = ({ filter, setFilter }: IFilterDropdown) => {
     return (
         <div
             id={filterDropdownId}
-            style={{ fontSize: '16px' }}
+            className='text-base'
         >
             <button className={`border border-gray-200 rounded-t-md  
         flex px-1.5 py-0.5 font-bold items-center relative z-10
         ${!showOptions && 'rounded-b-md'}
         `}
                 onClick={() => setShowOptions(prev => !prev)}
-                style={{ width: '7em' }}
+                style={{ width: '4.666rem' }}
             >
                 {filter}
                 <CaretUp
-                    size={18}
                     weight="bold"
-                    className={` absolute right-2 ${showOptions ? 'visible' : 'invisible'}`}
+                    className={`text-bigger absolute right-2 ${showOptions ? 'visible' : 'invisible'}`}
                 />
                 <CaretDown
-                    size={18}
                     weight="bold"
-                    className={`absolute right-2  ${!showOptions ? 'visible' : 'invisible'}`}
+                    className={`ext-bigger absolute right-2  ${!showOptions ? 'visible' : 'invisible'}`}
                 />
             </button>
             {showOptions &&

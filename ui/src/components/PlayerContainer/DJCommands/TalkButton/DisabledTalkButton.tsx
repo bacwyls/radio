@@ -11,7 +11,7 @@ export const DisabledTalkButton = () => {
                 className={` talk-button-phone opacity-70
                  `}
             >
-                <Megaphone weight="bold" size={24} style={{ marginBottom: '-4px' }} />
+                <Megaphone weight="bold" className="text-xl" style={{ marginBottom: '-0.1666rem' }} />
                 Talk
             </button >
             :

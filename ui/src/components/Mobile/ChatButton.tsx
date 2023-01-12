@@ -13,7 +13,7 @@ export const ChatButton: FC<IChatButton> = (props: IChatButton) => {
 
     return (
         <Chat
-            size={24}
+            className='text-xl'
             weight="bold"
             onClick={() => {
                 dispatch(setIsChatFullScreen(!isChatFullScreen))

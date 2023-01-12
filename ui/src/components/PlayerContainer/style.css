@@ -5,10 +5,3 @@
 .player-container-phone {
     @apply relative flex flex-col py-2 w-full;
 }
-
-/* @media (max-width: 1099px){
-
-    .player-container {
-        min-height: 24rem;
-    }
-} */

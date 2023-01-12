@@ -6,6 +6,8 @@ import { getCommandArg, isPhone, timestampFromTime } from "../../../util";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './style.css';
 import { Sigil } from "../../Sigil";
+import { selectDocumentFontSize } from "../../../features/ui/uiSlice";
+import { useAppSelector } from "../../../app/hooks";
 
 interface IChatMessage {
     from?: string,
@@ -61,7 +63,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 `}
                     style={{
                         marginLeft: '1.6em',
-                        lineHeight: '24px',
+                        lineHeight: '1rem',
                         maxHeight: isCommand.command == 'play' ? '5rem' : 'none',
                     }}
                     onClick={() => handleCopy(isCommand!.command)}
@@ -76,7 +78,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                                 <div className="flex justify-between relative"
                                 >
                                     <div className="flex items-center  font-bold	 ">
-                                        <PlayCircle className="mr-0.5" size={20} weight="bold" /> Play
+                                        <PlayCircle className="mr-0.5 text-lg" weight="bold" /> Play
                                     </div>
                                     {showTooltip &&
                                         <span className="text-sm">
@@ -96,10 +98,10 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         isCommand.command == 'talk' &&
                         <div
                             style={{
-                                padding: '0.5em 1em',
+                                padding: '0.3333rem 0.6666rem',
                             }}>
                             <div className="flex items-center text-center font-bold">
-                                <Megaphone className='mr-0.5 mb-0.5' size={20} weight="bold" /> Talk
+                                <Megaphone className='mr-0.5 mb-0.5 text-lg' weight="bold" /> Talk
                             </div>
                             <div className="break-words whitespace-normal">
                                 {isCommand.arg}
@@ -112,8 +114,8 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                     className={`font-medium break-words whitespace-normal text-text-primary
                         `}
                     style={{
-                        paddingLeft: '2em',
-                        lineHeight: '26px',
+                        paddingLeft: '1.333rem',
+                        lineHeight: '1rem',
                     }}
                 >
                     {
@@ -134,6 +136,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
     }
 
     const chatToHTMLWithTimeAndFrom = (key: number, from: string, time: string, message: string) => {
+
         return (
             <div
                 key={message.slice(-5) + ('' + time).slice(-5)}
@@ -153,10 +156,10 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                           `}
                             style={{ minWidth: '1rem' }}
                         >
-                            <Sigil patp={from} size={18} />
+                            <Sigil patp={from} size={0.75} />
                         </span>
                         <span className='font-semibold mr-1 w-full'
-                            style={{ lineHeight: '16px', }}
+                            style={{ lineHeight: '0.666rem', }}
                         >
                             {from == radio.our ? 'You' : from}{''}
                         </span>
@@ -165,6 +168,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         className={` font-bold  text-sm
         `}
                     >
+
                         {timestampFromTime(time)}
                     </span>
                 </div>

@@ -29,14 +29,13 @@ export const PhoneFooter = () => {
                         ${isPhone() && isLandscape && 'phone-footer-landscape'}
                         ${(isViewersMenuOpen || isSettingsMenuOpen || isPlayModalOpen || isTalkModalOpen) ? 'justify-start' : 'justify-around'}
                         `}
-            style={{ bottom: 0, height: '64px', zIndex: 160, }}
+            style={{ bottom: 0, height: '2.666rem', zIndex: 160, }}
         >
             {(isSettingsMenuOpen) &&
                 <>
                     < ArrowLeft
-                        size={28}
+                        className='ml-4 text-2xl'
                         weight="bold"
-                        style={{ marginLeft: '24px' }}
                         onClick={() => {
                             dispatch(setIsSettingsMenuOpen(false))
                         }}
@@ -48,9 +47,8 @@ export const PhoneFooter = () => {
             {(isPlayModalOpen) &&
                 <>
                     < ArrowLeft
-                        size={28}
                         weight="bold"
-                        style={{ marginLeft: '24px' }}
+                        className='ml-4 text-2xl'
                         onClick={() => {
                             dispatch(setIsPlayModalOpen(false))
                         }}
@@ -62,9 +60,8 @@ export const PhoneFooter = () => {
             {(isTalkModalOpen) &&
                 <>
                     < ArrowLeft
-                        size={28}
                         weight="bold"
-                        style={{ marginLeft: '24px' }}
+                        className='ml-4 text-2xl'
                         onClick={() => {
                             dispatch(setIsTalkModalOpen(false))
                         }}
@@ -76,9 +73,8 @@ export const PhoneFooter = () => {
             {(isViewersMenuOpen) &&
                 <>
                     < ArrowLeft
-                        size={28}
                         weight="bold"
-                        style={{ marginLeft: '24px' }}
+                        className='ml-4 text-2xl'
                         onClick={() => {
                             dispatch(setIsViewersMenuOpen(false))
                         }}

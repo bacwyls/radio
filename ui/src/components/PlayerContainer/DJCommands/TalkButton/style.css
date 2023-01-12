@@ -3,23 +3,23 @@
     left: 37.5%;
     transform: translate(-50%, -50%);
     top: 50%;
-    width: 27em;    
+    width: 18rem;    
 }    
 
 
-@media (max-width: 1099px){
+@media (width <= 1300px){
     .talk-modal{
         @apply absolute;
         left: 50%;
-        top: calc(50% - 35px);
+        top: calc(50% - 1.458rem);
         height: min-content;
     }
 }
 
 .talk-button {
     @apply  font-bold border shadow   rounded-md  justify-center flex text-center items-center gap-1 border-border-default;
-    height: 40px;
-    width: 104px;
+    height: 1.666rem;
+    width: 4.333rem;
 }
 
 .talk-button-phone {
@@ -29,29 +29,29 @@
 }
 
 .megaphone{
-    font-size: 24px;
+    font-size: 1rem;
 }
 
-@media (max-width: 799px){
+@media (width <= 1000px){
 
     .talk-button {
         @apply gap-0.5 text-sm;
-        height: 40px;
-        width: 80px;
+        height: 1.666rem;
+        width: 3.333rem;
 
     }
 
     .megaphone{
-        font-size: 20px ; 
+        font-size: 0.833rem ; 
     }
 
 }
 
 .talk-modal-phone{
     @apply fixed border-t   border-border-default bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
-    height: calc(100% - 64px - 64px - 56.25vw - 1rem);
+    height: calc(100% - 2.666rem - 2.666rem - 56.25vw - 1rem);
     min-height: 10rem;
-    bottom: 64px;
+    bottom: 2.666rem;
 }    
 
 

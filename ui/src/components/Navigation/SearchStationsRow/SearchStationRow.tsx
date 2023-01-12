@@ -1,9 +1,9 @@
-import { MusicNotes, Users, } from "phosphor-react";
+import { MusicNotes, Users, X, } from "phosphor-react";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
 import { useAppSelector } from "../../../app/hooks";
-import { selectIsPublic, selectTowers } from "../../../features/station/stationSlice";
+import { IMinitower, selectIsPublic, selectTowers } from "../../../features/station/stationSlice";
 import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { IsPublicBadge } from "../../IsPublicBadge";
@@ -77,22 +77,21 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
     return (
         <div
-            className={`relative items-center flex w-full 	h-8
+            className={`relative items-center flex w-full 	h-8 
             `}
         >
             < input
                 id={searchStationInputId}
                 type="text"
-                className={`   relative whitespace-nowrap	 h-full rounded-md border font-bold
+                className={`   relative whitespace-nowrap	w-full h-full rounded-md border font-bold
                focus:outline-none focus:shadow  text-background-icon placeholder-black-60 
                ${isDarkMode && 'border-2'}
             ${isFocused ? 'bg-orange-input-focused ' : 'bg-orange-input'} 
             ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
             `}
                 style={{
-                    width: '100%',
-                    paddingBottom: '0.1em',
-                    paddingRight: '7.6em',
+                    paddingBottom: '0.0666rem',
+                    paddingRight: '5rem',
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -116,7 +115,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                        bg-background-icon
                                        `}
                 >
-                    <Sigil patp={tuneToText} size={16} />
+                    <Sigil patp={tuneToText} size={0.666} />
                 </span>
             }
             < button
@@ -125,31 +124,31 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
-                    width: '7em',
+                    width: isPhone() ? '4rem' : '4.666rem',
                 }}
                 onClick={() =>
                     handleTuneToSubmit()
                 }
             >
-                <MusicNotes size={20} weight="bold" className="mr-0.5" />
+                {!isPhone() && <MusicNotes weight="bold" className="mr-0.5 text-lg" />}
                 Tune In
             </ button>
             {
                 tuneToText.trim().length > 0 && queriedTowers.length > 0 && !isValidPatp(tuneToText) && isFocused && !isPhone() &&
                 <div
                     id={suggestionsId}
-                    className={`absolute border z-10 shadow-md rounded-md 
+                    className={`absolute border z-10 shadow-lg rounded-md 
             w-full top-8 flex flex-col py-2 overflow-y-auto mt-1
             border-border-default bg-background-default text-text-default
 
             `}
                     style={{
-                        minHeight: '3em',
-                        maxHeight: '9em',
+                        minHeight: '2rem',
+                        maxHeight: '6rem',
                     }}
                 >
                     {
-                        queriedTowers.map((x) =>
+                        queriedTowers.map((x: IMinitower) =>
                             <div
                                 className={`w-full flex justify-between h
                                  cursor-pointer  px-2 py-1.5 hover:bg-hover-default
@@ -168,13 +167,13 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                         style={{ minWidth: '1rem' }}
                                     >
                                         {x.location.length <= 14 && isValidPatp(x.location) &&
-                                            <Sigil patp={x.location} size={18} />
+                                            <Sigil patp={x.location} size={0.75} />
                                         }
                                     </span>
                                     <div
                                         style={{
-                                            maxWidth: '8.5em',
-                                            lineHeight: '14px',
+                                            maxWidth: '5.666rem',
+                                            lineHeight: '0.583rem',
                                         }} >
                                         {x.location}
                                     </div>
@@ -184,13 +183,12 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                     <span className="flex items-center font-bold "
                                     >
                                         <Users
-                                            size={20}
                                             weight="bold"
-                                            className="mr-0.5"
+                                            className="mr-0.5 text-lg"
                                             style={{
                                             }}
                                         />
-                                        20
+                                        {x.viewers}
                                     </span>
                                 </div>
                             </div>

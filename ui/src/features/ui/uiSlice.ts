@@ -1,6 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
+
+const isSystemDarkMode = () => {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return true
+  }
+  else { return false }
+}
+
 export interface UIState {
   userInteracted: boolean;
   playerReady: boolean;
@@ -12,14 +20,7 @@ export interface UIState {
   isDarkMode: boolean,
   isPlayModalOpen: boolean,
   isTalkModalOpen: boolean,
-}
-
-
-const isSystemDarkMode = () => {
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return true
-  }
-  else { return false }
+  documentFontSize: number,
 }
 
 const initialState: UIState = {
@@ -33,6 +34,7 @@ const initialState: UIState = {
   isDarkMode: isSystemDarkMode(),
   isPlayModalOpen: false,
   isTalkModalOpen: false,
+  documentFontSize: 29,
 };
 
 export const uiSlice = createSlice({
@@ -75,12 +77,6 @@ export const uiSlice = createSlice({
         isDarkMode: action.payload,
       }
     },
-    setIsConnecting: (state, action: PayloadAction<boolean>) => {
-      return {
-        ...state,
-        isConnecting: action.payload,
-      }
-    },
     setIsViewersMenuOpen: (state, action: PayloadAction<boolean>) => {
       return {
         ...state,
@@ -105,6 +101,12 @@ export const uiSlice = createSlice({
         isTalkModalOpen: action.payload,
       }
     },
+    setDocumentFontSize: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        documentFontSize: action.payload,
+      }
+    },
   }
 });
 
@@ -115,11 +117,11 @@ export const {
   setIsChatFullScreen,
   setIsLandscape,
   setIsDarkMode,
-  setIsConnecting,
   setIsViewersMenuOpen,
   setIsSettingsMenuOpen,
   setIsPlayModalOpen,
   setIsTalkModalOpen,
+  setDocumentFontSize,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;
@@ -132,5 +134,6 @@ export const selectIsViewersMenuOpen = (state: RootState) => state.ui.isViewersM
 export const selectIsSettingsMenuOpen = (state: RootState) => state.ui.isSettingsMenuOpen;
 export const selectIsPlayModalOpen = (state: RootState) => state.ui.isPlayModalOpen;
 export const selectIsTalkModalOpen = (state: RootState) => state.ui.isTalkModalOpen;
+export const selectDocumentFontSize = (state: RootState) => state.ui.documentFontSize;
 
 export default uiSlice.reducer;

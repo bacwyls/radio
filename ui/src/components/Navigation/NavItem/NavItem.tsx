@@ -7,6 +7,8 @@ import { Television, Users } from 'phosphor-react';
 import { Sigil } from '../../Sigil';
 import { IsPublicBadge } from '../../IsPublicBadge';
 import './style.css';
+import { selectDocumentFontSize } from '../../../features/ui/uiSlice';
+import { useAppSelector } from '../../../app/hooks';
 
 interface INavItem {
   patp: string | null,
@@ -43,16 +45,16 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           items-center justify-center  relative bg-background-icon text-text-icon
           `}
         style={{
-          height: '88px',
-          width: '88px',
-          minWidth: '88px',
-          minHeight: '88px',
+          height: '3.666rem',
+          width: '3.666rem',
+          minWidth: '3.666rem',
+          minHeight: '3.666rem',
         }}
       >
         {patp == radio.hub ?
-          <Television weight='bold' size={40} /> :
+          <Television weight='bold' className='nav-item-icon' /> :
           (patp &&
-            <Sigil patp={patp} size={60} />
+            <Sigil patp={patp} size={2.2} />
           )
         }
         {!(patp == radio.hub) &&
@@ -61,12 +63,11 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           `}
           >
             <Users
-              size={20}
               weight="bold"
+              className='nav-item-viewers-icon z-10'
               style={{
-                marginRight: '0.25em',
-                marginBottom: '0.095em',
-                zIndex: 10,
+                marginRight: '0.166rem',
+                marginBottom: '0.05rem',
               }}
             />
             {flare}
@@ -88,7 +89,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
            `}
             style={{
               maxWidth: '70%',
-              lineHeight: '18px'
+              lineHeight: '0.75rem'
             }}
           >
             {title ? title : patp}
@@ -98,9 +99,9 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         <div className={`flex font-bold    break-words whitespace-normal text-text-secondary
                     `}
           style={{
-            lineHeight: '19.36px',
+            lineHeight: '0.85rem',
             textAlign: 'left',
-            letterSpacing: '.4px',
+            letterSpacing: '0.02rem',
           }}
         >
           {description}

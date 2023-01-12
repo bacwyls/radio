@@ -64,7 +64,7 @@ export const TalkModal = () => {
             >
                 <div
                     className='font-semibold text-bigger '
-                    style={{ lineHeight: '22px' }}
+                    style={{ lineHeight: '0.916rem' }}
                 >
                     The text will be converted to speech and broadcasted
                     to everybody.
@@ -92,18 +92,16 @@ export const TalkModal = () => {
     ` }
                     >{textToSpeech.length + '/64'}</span>
                     <button
-                        className={`flex items-center justify-center
-                 gap-0.5 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
+                        className={`flex items-center justify-center 
+                 gap-1 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
                 ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-button ' : 'cursor-default text-opacity-80 bg-blue-disabled'}
     `}
                         style={{
-                            width: '6em',
-                            height: '40px',
-                            marginLeft: '-6em',
+                            width: '3.5rem',
+                            height: '1.666rem',
                         }}
                         onClick={processTalk}
                     >
-                        <Megaphone size={22} weight="bold" />
                         Talk
                     </button>
                 </div>

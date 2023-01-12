@@ -1,50 +1,46 @@
 
 
 
-@media (min-width: 800px){
+@media (width > 1000px){
     .sync-actions{
         @apply absolute right-0 gap-2 flex justify-end;
     }
     
     .resync-button{
         @apply border  border-border-default hover:bg-hover-intense bg-background-player-button font-bold break-words whitespace-nowrap    flex justify-center items-center rounded-md    gap-1;
-        height: 40px;
-        width: 156px;
+        height: 1.666rem;
+        width: 6.5rem;
     }
     .resync-split-button{
         @apply  font-bold break-words whitespace-normal  shadow border-border-default bg-background-player-button hover:bg-hover-intense   flex justify-start items-center pl-2     gap-1;
-        height: 40px;
-        width: 184px;
+        height: 1.666rem;
+        width: 7.666rem;
     }
 }
 
 .resync-icon{
-    font-size: 24px;
+    font-size: 1rem;
 }
 
-@media (max-width: 799px){
+@media (width <= 999px){
     .sync-actions{
         @apply  right-0 gap-2 flex justify-end;
     }
 
     .resync-button{
-        @apply border font-bold break-words whitespace-nowrap    flex justify-center items-center rounded-md    gap-1;
-        height: 40px;
-        width: 136px;
-        font-size: 14px ;
+        @apply border font-bold break-words whitespace-nowrap    flex justify-center items-center rounded-md    gap-1 text-sm;
+        height: 1.666rem;
+        width: 5.666rem;
 
     }
     .resync-split-button{
-        @apply  shadow border-border-default bg-background-player-button hover:bg-hover-intense font-bold break-words whitespace-normal    flex justify-start items-center pl-2     gap-1;
-        height: 40px;
-        width: 176px;
-        font-size: 14px ;
-
+        @apply  shadow border-border-default bg-background-player-button hover:bg-hover-intense font-bold break-words whitespace-normal    flex justify-start items-center pl-2     gap-1 text-sm;
+        height: 1.666rem;
+        width: 7.333rem;
     }
-
     
     .resync-icon{
-        font-size: 20px;
+        font-size: 0.833rem;
     }
 }
 

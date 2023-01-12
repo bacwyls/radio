@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import { handleUpdate, isPhone, isSystemDarkMode } from './util';
+import { handleUpdate, isLogged, isPhone } from './util';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import './index.css';
 
@@ -13,6 +13,7 @@ import {
 } from './features/station/stationSlice';
 import {
   selectIsDarkMode,
+  setDocumentFontSize,
   setIsLandscape
 } from './features/ui/uiSlice';
 import { radio } from './api';
@@ -58,6 +59,19 @@ export function App() {
     return () => {
       screen.orientation.removeEventListener("change", updateOrientation);
     };
+  }, []);
+
+  useEffect(() => {
+    if (!isLogged()) {
+      window.location.assign('/~/login')
+    }
+  }, []);
+
+  // This font size controls the size of all elements and text
+  useEffect(() => {
+    let size = isPhone() ? 24 : 29;
+    document.documentElement.style.fontSize = size + 'px'
+    dispatch(setDocumentFontSize(size));
   }, []);
 
   const updateOrientation = () => {

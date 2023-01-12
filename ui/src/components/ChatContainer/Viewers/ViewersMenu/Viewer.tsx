@@ -18,6 +18,7 @@ export const Viewer = (props: IViewer) => {
 
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const viewers = useAppSelector(selectViewers);
+
     const dispatch = useAppDispatch();
 
     const handleViewerClick = () => {
@@ -53,7 +54,7 @@ export const Viewer = (props: IViewer) => {
                          `}
                         style={{ minWidth: '1rem' }}
                     >
-                        <Sigil patp={ship} size={18} />
+                        <Sigil patp={ship} size={0.75} />
                     </span>
                     <span
                         className={'font-medium'}
@@ -80,11 +81,12 @@ export const Viewer = (props: IViewer) => {
                                      `}
                         style={{ minWidth: '1rem' }}
                     >
-                        <Sigil patp={ship} size={18} />
+                        <Sigil patp={ship} size={0.75} />
                     </span>
                     <span
                         className={'font-medium whitespace-normal break-words'}
-                        style={{ textAlign: 'left' }}
+                        style={{ textAlign: 'left', lineHeight: '0.666rem' }}
+
                     >
                         {ship}
                     </span>
@@ -100,7 +102,6 @@ export const Viewer = (props: IViewer) => {
                                     ${isDarkMode ? ' bg-black-1  hover:bg-black-20 text-black-90 hover:shadow ' : ' bg-white shadow border border-black-10 hover:bg-black-5 '}
 
                                     `}
-                            style={{ fontSize: '14px' }}
                         >
                             profile
                         </span>

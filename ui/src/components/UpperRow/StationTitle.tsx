@@ -23,17 +23,16 @@ export const StationTitle = () => {
             <div
                 className={`flex items-center  w-full text-bigger text-text-default
             `}
-
             >
                 {tunePatP == radio.hub &&
                     <>
                         <span
                             className={`rounded flex items-center justify-center bg-background-icon text-text-icon`}
-                            style={{ maxHeight: '40px', maxWidth: '40px', minHeight: '40px', minWidth: '40px' }}
+                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
                         >
                             <Television
-                                size={24}
                                 weight="bold"
+                                className='text-xl'
                             />
                         </span>
                         <span className='ml-1.5 font-bold'>Hub</span>
@@ -45,11 +44,11 @@ export const StationTitle = () => {
                         < span
                             className={`rounded flex items-center justify-center bg-background-icon text-text-icon
                          `}
-                            style={{ maxHeight: '40px', maxWidth: '40px', minHeight: '40px', minWidth: '40px' }}
+                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
                         >
                             <Radio
-                                size={24}
                                 weight="bold"
+                                className='text-xl'
                             />
                         </span >
                         <div
@@ -68,21 +67,16 @@ export const StationTitle = () => {
                             className={`  overflow-hidden  
                            rounded flex justify-center items-center bg-background-icon
                            `}
-                            style={{
-                                maxHeight: '40px',
-                                maxWidth: '40px',
-                                minHeight: '40px',
-                                minWidth: '40px'
-                            }}
+                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
                         >
-                            <Sigil patp={tunePatP} size={24} />
+                            <Sigil patp={tunePatP} size={1} />
                         </span>
                         <span
                             className={`ml-1.5 font-bold 
                                                         `}
                             style={{
-                                maxWidth: '8.5em',
-                                lineHeight: '16px',
+                                maxWidth: '0.354rem',
+                                lineHeight: '0.666rem',
                             }}
                         >
                             {tunePatP}

@@ -53,9 +53,8 @@ export const ViewersButton = () => {
                 }}
             >
                 <Users
-                    size={24}
                     weight="bold"
-                    className='mr-0.5'
+                    className='mr-0.5 text-xl'
                 />
                 {viewers.length}
             </button>

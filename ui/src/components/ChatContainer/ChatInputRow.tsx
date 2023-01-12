@@ -34,22 +34,20 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
     return (
 
         <div
-            className={`   w-full  flex 
+            className={`   w-full  flex px-4 
                     ${isPhone() ? 'fixed bottom-0 left-0   items-center' : 'items-start relative'}
                 `}
             style={{
-                padding: '0 24px',
-                height: isPhone() ? '64px' : '88px',
+                height: isPhone() ? '2.666rem' : '3.666rem',
             }}
         >
             {isPhone() && <ArrowLeft
-                size={28}
                 weight="bold"
-                className="mr-2  "
+                className="mr-2  text-2xl"
                 onClick={() => dispatch(setIsChatFullScreen(false))} />}
             <input
                 type="text"
-                className={`bold-placeholder  pl-2 flex items-center relative   font-medium
+                className={`bold-placeholder  pl-2 pr-16     flex items-center relative   font-medium
                       border  border-border-intense  rounded-md  outline-none focus:shadow text-text-primary focus:bg-background-input-focused bg-background-input 
                       placeholder-text-secondary w-full
                 ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-default'}
@@ -57,8 +55,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                     `}
                 disabled={!(tunePatP && isValidPatp(tunePatP))}
                 style={{
-                    height: isPhone() ? '2rem' : '40px',
-                    paddingRight: '6.4em',
+                    height: isPhone() ? '2rem' : '1.666rem',
                 }}
                 autoCorrect={'off'}
                 autoCapitalize={'off'}
@@ -81,9 +78,9 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                              ${inputText.trim().length > 0 ? 'hover:shadow  bg-blue-button' : 'cursor-default text-opacity-80 	bg-blue-disabled'} 
                              `}
                 style={{
-                    right: '24px',
-                    width: '5em',
-                    height: isPhone() ? '2rem' : '40px',
+                    right: '1rem',
+                    width: '3.5rem',
+                    height: isPhone() ? '2rem' : '1.666rem',
                 }}
                 onClick={() =>
                     processInput()

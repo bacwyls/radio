@@ -1,15 +1,13 @@
 .connecting,
 .connecting:after {
   border-radius: 50%;
-  width: 7em;
-  height: 7em;
+  width: 3rem;
+  height: 3rem;
 }
 .connecting {
-  margin: 60px auto;
-  font-size: 10px;
+  font-size: 0.5rem;
+  margin: 2.5rem auto;
   position: relative;
-  text-indent: -9999em;
-
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

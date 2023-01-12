@@ -11,29 +11,29 @@ export const ThemeButton = () => {
     return (
         isPhone() ?
             (isDarkMode ?
-                <Sun size={24} weight="bold"
+                <Sun weight="bold" className="text-xl"
                     onClick={() => dispatch(setIsDarkMode(false))}
                 />
                 :
-                <MoonStars size={24} weight="bold"
+                <MoonStars weight="bold" className="text-xl"
                     onClick={() => dispatch(setIsDarkMode(true))}
                 />
             )
             :
             <button
                 className={` rounded flex items-center justify-center 
-            h-7  px-2 rounded-md font-bold hover:bg-hover-default
+            h-7  px-2 rounded font-bold hover:bg-hover-default
     `}
                 onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
             >
                 {isDarkMode ?
                     <>
-                        <Sun className="mr-1" size={24} weight="bold" />
+                        <Sun className="mr-1 text-xl" weight="bold" />
                         Light
                     </>
                     :
                     <>
-                        <MoonStars className="mr-1" size={24} weight="bold" />
+                        <MoonStars className="mr-1 text-xl" weight="bold" />
                         Dark
                     </>
                 }

@@ -21,7 +21,7 @@ export const SettingsButton = () => {
          `}
                 onClick={() => dispatch(setIsSettingsMenuOpen(!isSettingsMenuOpen))}
             >
-                <Gear weight="bold" size={24} />
+                <Gear weight="bold" className="text-xl" />
                 Settings
             </button >
             :

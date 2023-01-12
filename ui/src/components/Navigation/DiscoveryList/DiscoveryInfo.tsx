@@ -38,7 +38,7 @@ export const DiscoveryInfo = () => {
                 onClick={() => setShowDiscoveryInfo(prev => !prev)}
             >
                 <Question
-                    size={22}
+                    className="text-xl"
                     weight="bold"
                 />
             </button>

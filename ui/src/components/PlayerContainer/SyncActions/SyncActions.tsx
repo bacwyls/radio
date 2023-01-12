@@ -66,7 +66,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                         }
                     }}
                 >
-                    <ArrowsClockwise weight="bold" size={24} />
+                    <ArrowsClockwise weight="bold" className='text-xl' />
                     Resync
                     {
                         showOptions &&
@@ -130,14 +130,14 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                                 `}
                                 onClick={() => setShowOptions(prev => !prev)}
                             >
-                                <CaretDown size={20} weight="bold" className={showOptions ? 'visible' : 'hidden'} />
-                                <CaretUp size={20} weight="bold" className={showOptions ? 'hidden' : 'visible'} />
+                                <CaretDown weight="bold" className={`text-lg ${showOptions ? 'visible' : 'hidden'} `} />
+                                <CaretUp weight="bold" className={`text-lg ${showOptions ? 'hidden' : 'visible'} `} />
                             </button>
                             {showOptions &&
                                 <button
                                     className={`resync-split-button absolute border-t border-l border-r  rounded-t 
                           `}
-                                    style={{ bottom: '40px' }}
+                                    style={{ bottom: '1.666rem' }}
                                     onClick={(e) => {
                                         radio.resyncAll(spinUrl)
                                     }}

@@ -21,8 +21,8 @@ export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContai
                    ${isPhone() && isLandscape && 'upper-row-phone-landscape'}
                 `}
       style={{
-        height: '64px',
-        minHeight: '64px',
+        height: '2.7rem',
+        minHeight: '2.7rem',
       }}
     >
       <StationTitle />

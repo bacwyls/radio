@@ -12,7 +12,7 @@ export const DisabledPlayButton = () => {
                  play-button-phone
                  `}
             >
-                <PlayCircle weight="bold" size={24} style={{ marginBottom: '-4px' }} />
+                <PlayCircle weight="bold" className="text-xl" style={{ marginBottom: '-0.166rem' }} />
                 Play
             </button >
             :

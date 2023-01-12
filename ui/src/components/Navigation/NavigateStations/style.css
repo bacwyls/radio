@@ -1,14 +1,13 @@
 .navigate-stations{
-   @apply  w-full h-full flex items-center justify-center overflow-hidden;
-   font-size: 16px;
+   @apply  w-full h-full flex items-center justify-center overflow-hidden text-base;
    box-sizing: border-box;
 
 }
 
-@media (min-width: 1200px) {
+@media (width > 1300px) {
 
     .join-station{
-        margin-right: 16em;
+        margin-right: 10.666rem;
     }
 
 
@@ -22,7 +21,7 @@
     min-width: 15rem;
 }
 
-@media (max-width: 1199px){
+@media (width <= 1300px){
 
     .join-station{
           @apply  flex flex-col w-full ;
@@ -31,12 +30,11 @@
     }
 
     .join-station-container{
-        margin-top: 90px;
+        margin-top: 3.75rem;
     }
 
     .navigate-stations{
         @apply flex-col justify-start  ;
-        
     }
 
 }

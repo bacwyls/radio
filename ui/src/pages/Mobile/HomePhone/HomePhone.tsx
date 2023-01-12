@@ -22,7 +22,7 @@ export const HomePhone = () => {
         `}
         >
             <div className=' flex px-4 top-0 left-0 justify-end items-center w-full'
-                style={{ height: '64px' }}
+                style={{ height: '2.666rem' }}
             >
                 <ThemeButton />
             </div>
@@ -37,7 +37,7 @@ export const HomePhone = () => {
                     <span
                         className="font-black whitespace-nowrap 
                   flex 	 flex items-end "
-                        style={{ fontSize: '56px' }}
+                        style={{ fontSize: '2.333rem' }}
                     >
                         radio
                     </span>
@@ -46,15 +46,14 @@ export const HomePhone = () => {
                 `}
                 >Watch videos and listen to music with your friends</span>
             </div>
-            <div className=' bottom-0 left-0 w-full '
-                style={{ padding: '0 24px' }}>
+            <div className=' bottom-0 left-0 w-full px-4'>
 
-                <div className=' w-full flex flex-col gap-3'
-                    style={{ marginBottom: '5vh', marginTop: '10vh', fontSize: '18px' }}
+                <div className=' w-full flex flex-col gap-3 text-bigger'
+                    style={{ marginBottom: '5vh', marginTop: '10vh', }}
                 >
                     <button
                         className='w-full bg-black-70 rounded-md text-white font-extrabold shadow'
-                        style={{ height: '56px', }}
+                        style={{ height: '2.333rem', }}
                         onClick={() => {
                             radio.start()
                             navigate('/station/' + radio.our)
@@ -62,7 +61,7 @@ export const HomePhone = () => {
                     >Broadcast</button>
                     <button
                         className='w-full bg-black-70 rounded-md text-white font-extrabold shadow'
-                        style={{ height: '56px', }}
+                        style={{ height: '2.333rem', }}
                         onClick={() => navigate('/join/')}
                     >Join Station</button>
                 </div>

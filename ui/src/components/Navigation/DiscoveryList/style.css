@@ -1,7 +1,7 @@
 
 .discovery-list{
     @apply flex flex-col bg-background-default border-l  border-border-default  absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 2.666rem);
     width: 19rem;
     z-index: 2;
   }
@@ -12,12 +12,12 @@
   padding-left: 1.5rem;
   min-height: 2rem;
   width: calc(19rem - calc(19rem - 100%));
-  right: 22px;
+  right: 1.09rem;
 }
 
 
-@media (max-width: 1199px){
-    .discovery-list{
+@media (width <= 1300px){
+  .discovery-list{
       @apply  relative border  rounded-md  mt-2;
       height: calc(100vh - 15em);
     }
@@ -28,15 +28,12 @@
 }
 
 .discovery-list-header-phone{
-  @apply absolute w-screen h-10 flex items-center bg-background-default ;
-    top: 0;
-  left: 0;
-  padding-left: 1rem;
+  @apply absolute w-screen h-10 flex items-center bg-background-default top-0 left-0 pl-4;
   z-index: 3;
 }
 
 .discovery-list-phone{
-  @apply fixed bg-background-default overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full; 
-  top: 64px;
-  height: calc(100% - 128px);
+  @apply fixed bg-background-default overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full border border-background-default; 
+  top: 2.666rem;
+  height: calc(100% - 5.333rem);
 }

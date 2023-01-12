@@ -45,18 +45,18 @@ export const IsPublicSettings = () => {
                 <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
-                        height: '2.5em',
-                        width: '2.5em'
+                        height: '1.666rem',
+                        width: '1.666rem',
                     }}
                 >
-                    <Lock size={24} weight="bold" />
+                    <Lock className="text-xl" weight="bold" />
                 </div>
                 <div className=" flex flex-col ml-1.5  justify-center h-full">
-                    <span className="font-bold  " >
+                    <span className="font-bold text-text-primary " >
                         Private
                     </span>
                     <span className={`font-semibold h-3 text-sm text-text-secondary
-                    `} style={{ lineHeight: '14px' }}>
+                    `} style={{ lineHeight: '0.583rem' }}>
                         Only you can use DJ commands
                     </span>
                 </div>
@@ -80,18 +80,18 @@ export const IsPublicSettings = () => {
                 <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
-                        height: '2.5em',
-                        width: '2.5em'
+                        height: '1.666rem',
+                        width: '1.666rem',
                     }}
                 >
-                    <Globe size={24} weight="bold" />
+                    <Globe className="text-xl" weight="bold" />
                 </div>
                 <div className=" flex flex-col ml-1.5  justify-center h-full">
-                    <span className="font-bold " >
+                    <span className="font-bold text-text-primary " >
                         Public
                     </span>
                     <span className={`  font-semibold h-3  text-sm text-text-secondary
-                    `} style={{ lineHeight: '14px' }}>
+                    `} style={{ lineHeight: '0.583rem' }}>
                         Everybody can use DJ commands
                     </span>
                 </div>
