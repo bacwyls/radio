@@ -11,7 +11,7 @@ export const StationIsPublicInfo = () => {
 
     return (
         <span
-            className="w-min relative h-min"
+            className="  w-min relative h-min"
             onMouseEnter={() => setShowInfo(true)}
             onMouseLeave={() => setShowInfo(false)}
         >

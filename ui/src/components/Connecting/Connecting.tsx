@@ -120,7 +120,7 @@ export const Connecting = () => {
                                 style={{ minWidth: '1.25rem' }}
 
                             >
-                                <Sigil patp={patp} size={0.9} />
+                                <Sigil patp={patp} size={0.8} />
                             </span>
                         }
                         {patp == radio.hub ? 'Hub' : patp}

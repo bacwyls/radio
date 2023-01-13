@@ -42,51 +42,29 @@ const initialState: StationState = {
   hasPublishedStation: false,
   ourTowerDescription: '',
   viewers: Array<string>(),
-  // chats: Array<ChatMessage>(),
-  chats: Array<ChatMessage>(
-    {
-      message: '!play https://youtu.be/pA96m95T3NA',
-      from: '~zod',
-      time: '~2023.1.11..14.37.37..e661',
-    },
-    {
-      message: 'Another gorgeous performance from a superb artist. These videos are incredibly special and it is a true treat to watch them.',
-      from: '~martyr-martel',
-      time: '~2023.1.11..14.37.37..e661',
-    },
-    {
-      message: 'Beautiful place of mexico',
-      from: '~fidwed-sipwyn',
-      time: '~2023.1.11..14.37.37..e661',
-    },
-    {
-      message: 'Mexico is so beautiful 😍 and underrated.  Just wow!!!',
-      from: '~harlys-forbec',
-      time: '~2023.1.11..14.37.37..e661',
-    },
-  ),
+  chats: Array<ChatMessage>(),
   update: Object(),
-  // towers: Array<IMinitower>(),
-  towers: Array<IMinitower>(
-    {
-      location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    },
-    {
-      location: '~harlys-forbec', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    },
-    {
-      location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    },
-    {
-      location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    },
-    {
-      location: '~harlys-forbec', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    },
-    {
-      location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
-    }
-  ),
+  towers: Array<IMinitower>(),
+  // towers: Array<IMinitower>(
+  //   {
+  //     location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   },
+  //   {
+  //     location: '~harlys-forbec', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   },
+  //   {
+  //     location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   },
+  //   {
+  //     location: '~fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   },
+  //   {
+  //     location: '~harlys-forbec', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   },
+  //   {
+  //     location: '~tasrym-sorrup-fidwed-sipwyn', description: 'Listening to music and watching random memes', time: 0, public: true, viewers: 20
+  //   }
+  // ),
   description: '',
   banned: Array<string>(),
 };

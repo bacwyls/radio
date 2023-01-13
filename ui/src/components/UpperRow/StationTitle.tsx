@@ -35,7 +35,7 @@ export const StationTitle = () => {
                                 className='text-xl'
                             />
                         </span>
-                        <span className='ml-1.5 font-bold'>Hub</span>
+                        <span className='ml-2 font-bold'>Hub</span>
                     </>
                 }
                 {
@@ -52,7 +52,7 @@ export const StationTitle = () => {
                             />
                         </span >
                         <div
-                            className={`flex items-center font-bold  ml-1.5  whitespace-nowrap`}
+                            className={`flex items-center font-bold  ml-2  whitespace-nowrap`}
                         >
                             My Station
                         </div>
@@ -72,10 +72,10 @@ export const StationTitle = () => {
                             <Sigil patp={tunePatP} size={1} />
                         </span>
                         <span
-                            className={`ml-1.5 font-bold 
+                            className={`ml-2 font-bold 
                                                         `}
                             style={{
-                                maxWidth: '0.354rem',
+                                maxWidth: '6.5rem',
                                 lineHeight: '0.666rem',
                             }}
                         >

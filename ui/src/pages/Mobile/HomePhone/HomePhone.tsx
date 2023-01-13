@@ -17,16 +17,16 @@ export const HomePhone = () => {
     }, []);
 
     return (
-        <div className={`absolute top-0 left-0 flex flex-col h-full w-full justify-between
+        <div className={`fixed top-0 left-0 flex flex-col h-full w-full justify-between
          bg-background-darker text-text-default
         `}
         >
-            <div className=' flex px-4 top-0 left-0 justify-end items-center w-full'
+            <div className=' flex px-4 justify-end items-center w-full'
                 style={{ height: '2.666rem' }}
             >
                 <ThemeButton />
             </div>
-            <div className='px-4  left-0'>
+            <div className='px-4  '>
                 <div className='flex  gap-1  mb-3  items-center rounded-md '
                 >
                     <img
@@ -46,8 +46,7 @@ export const HomePhone = () => {
                 `}
                 >Watch videos and listen to music with your friends</span>
             </div>
-            <div className=' bottom-0 left-0 w-full px-4'>
-
+            <div className=' w-full px-4'>
                 <div className=' w-full flex flex-col gap-3 text-bigger'
                     style={{ marginBottom: '5vh', marginTop: '10vh', }}
                 >

@@ -11,7 +11,7 @@
 }
 
 .player-phone-landscape{
-    @apply fixed top-0 left-0  ;
+    @apply fixed top-0 left-0  h-full w-full;
 }
 
 .player-phone-portrait{
