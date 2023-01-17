@@ -1,9 +1,10 @@
 .talk-modal{
-    @apply fixed border border-border-default bg-background-default shadow-lg flex flex-col z-20  gap-3 py-7 px-8 rounded-md;
+    @apply fixed border  border-border-default  bg-background-default shadow-lg flex flex-col z-20  gap-3 py-7 px-8 rounded-md;
     left: 37.5%;
     transform: translate(-50%, -50%);
     top: 50%;
     width: 18rem;    
+
 }    
 
 
@@ -17,9 +18,9 @@
 }
 
 .talk-button {
-    @apply  font-bold border shadow   rounded-md  justify-center flex text-center items-center gap-1 border-border-default;
-    height: 1.666rem;
-    width: 4.333rem;
+    @apply  font-bold border  shadow   rounded-md  justify-center flex text-center items-center gap-1 border-border-default ;
+    height: 1.7rem;
+    width: 4.4rem;
 }
 
 .talk-button-phone {
@@ -29,29 +30,29 @@
 }
 
 .megaphone{
-    font-size: 1rem;
+    @apply text-xl;
 }
 
 @media (width <= 1000px){
 
     .talk-button {
         @apply gap-0.5 text-sm;
-        height: 1.666rem;
-        width: 3.333rem;
+        height: 1.7rem;
+        width: 3.4rem;
 
     }
 
     .megaphone{
-        font-size: 0.833rem ; 
+        font-size: 0.84rem ; 
     }
 
 }
 
 .talk-modal-phone{
-    @apply fixed border-t   border-border-default bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
-    height: calc(100% - 2.666rem - 2.666rem - 56.25vw - 1rem);
+    @apply fixed border-t      border-border-default  bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
+    height: calc(100% - 2.7rem - 2.7rem - 56.25vw - 1rem);
     min-height: 10rem;
-    bottom: 2.666rem;
+    bottom: 2.7rem;
 }    
 
 

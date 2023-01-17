@@ -57,7 +57,8 @@ export const Viewer = (props: IViewer) => {
                         <Sigil patp={ship} size={0.75} />
                     </span>
                     <span
-                        className={'font-medium'}
+                        className={`font-medium
+                        `}
                     >
                         You
                     </span>
@@ -84,8 +85,9 @@ export const Viewer = (props: IViewer) => {
                         <Sigil patp={ship} size={0.75} />
                     </span>
                     <span
-                        className={'font-medium whitespace-normal break-words'}
-                        style={{ textAlign: 'left', lineHeight: '0.666rem' }}
+                        className={`font-medium whitespace-normal break-words 
+                        `}
+                        style={{ textAlign: 'left', lineHeight: '0.7rem' }}
 
                     >
                         {ship}
@@ -99,7 +101,7 @@ export const Viewer = (props: IViewer) => {
                         <span className={`cursor-pointer font-semibold
                                      h-4 w-10 flex items-center justify-center
                                     rounded  font-bold 
-                                    ${isDarkMode ? ' bg-black-1  hover:bg-black-20 text-black-90 hover:shadow ' : ' bg-white shadow border border-black-10 hover:bg-black-5 '}
+                                    ${isDarkMode ? ' bg-black-1  hover:bg-black-20 text-black-90 hover:shadow ' : ' bg-white shadow border  border-black-10 hover:bg-black-5 '}
 
                                     `}
                         >
@@ -114,7 +116,7 @@ export const Viewer = (props: IViewer) => {
                                      h-4 w-7 flex items-center justify-center
                                     rounded  font-bold text-text-primary text-sm text-black bg-white
                                        text-sm   
-                                ${isDarkMode ? ' hover:bg-black-30    ' : 'shadow hover:border hover:border-black'}
+                                ${isDarkMode ? ' hover:bg-black-30    ' : 'shadow hover:border  hover:border-black'}
                                     `}
                         >
                             chat
@@ -123,7 +125,7 @@ export const Viewer = (props: IViewer) => {
                     {radio.isAdmin() && <button className={` font-bold 
                                       h-4 w-7 flex items-center justify-center  text-red-600 
                                      rounded bg-white  text-sm   
-                                     ${isDarkMode ? ' hover:bg-red-200    ' : 'shadow hover:border hover:border-red-600 '}
+                                     ${isDarkMode ? ' hover:bg-red-200    ' : 'shadow hover:border  hover:border-red-600 '}
 
                                      `}
                         onClick={() => {

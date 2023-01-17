@@ -48,12 +48,12 @@ export const FilterDropdown = ({ filter, setFilter }: IFilterDropdown) => {
             id={filterDropdownId}
             className='text-base'
         >
-            <button className={`border border-gray-200 rounded-t-md  
+            <button className={`border  border-border-default  rounded-t-md  
         flex px-1.5 py-0.5 font-bold items-center relative z-10
         ${!showOptions && 'rounded-b-md'}
         `}
                 onClick={() => setShowOptions(prev => !prev)}
-                style={{ width: '4.666rem' }}
+                style={{ width: '4.7rem' }}
             >
                 {filter}
                 <CaretUp
@@ -62,15 +62,15 @@ export const FilterDropdown = ({ filter, setFilter }: IFilterDropdown) => {
                 />
                 <CaretDown
                     weight="bold"
-                    className={`ext-bigger absolute right-2  ${!showOptions ? 'visible' : 'invisible'}`}
+                    className={`text-bigger absolute right-2  ${!showOptions ? 'visible' : 'invisible'}`}
                 />
             </button>
             {showOptions &&
                 <button
-                    className={`absolute z-10 flex items-center   border-r border-l border-b
-                   border-gray-200 rounded-b-md px-1.5 h-6 bg-white font-bold 
+                    className={`absolute z-10 flex items-center   border-r  border-l  border-b
+                   border-border-default  rounded-b-md px-1.5 h-6 bg-background-default font-bold 
                 `}
-                    style={{ width: '7em', }}
+                    style={{ width: '4,7rem', }}
                     onClick={
                         () => handleFilterClick()
                     }>

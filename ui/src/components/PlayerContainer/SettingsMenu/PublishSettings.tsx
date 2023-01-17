@@ -77,8 +77,8 @@ export const PublishSettings = () => {
                 </button>
                 {showInfo &&
                     <div
-                        className={`absolute  top-6 z-10 w-4/5 text-base border-border-default shadow bg-background-default
-                         px-2 py-4 rounded-md   font-bold border cursor-text    
+                        className={`absolute  top-6 z-10 w-4/5 text-base border-border-default  shadow-md bg-background-default
+                         px-2 py-4 rounded-md   font-bold border  cursor-text     text-center
                          `}
                     >
                         Publishing the station adds it to the discovery pool.
@@ -125,7 +125,7 @@ export const PublishSettings = () => {
                     <span className="font-semibold mb-1">Description</span>
                     <div className="relative">
                         <textarea
-                            className={`bold-placeholder placeholder-text-secondary text-text-primary rounded-md border w-full 
+                            className={`bold-placeholder placeholder-text-secondary text-text-primary rounded-md border  w-full 
                              px-2 py-1 outline-none focus:shadow	resize-none  border-background-textarea bg-background-textarea focus:bg-background-textarea-focused
                                     `}
                             placeholder="Write a description..."

@@ -9,8 +9,8 @@ import { selectBanned, selectTunePatP, selectViewers } from "../../../../feature
 import { Banned } from "./Banned";
 import { Viewer } from "./Viewer";
 
-// const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel',]
-// const viewers = ['~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn--tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel']
+// const viewers = ['~zod', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel',]
+// const viewers = ['~zod', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn--tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel']
 
 export const ViewersMenu = () => {
     const viewers = useAppSelector(selectViewers);
@@ -57,14 +57,14 @@ export const ViewersMenu = () => {
                ${isPhone() ? 'viewers-menu-phone' : ' viewers-menu'}
                     `}
             >
-                <div className={`flex h-7 border-b border-border-intense text-text-default
+                <div className={`flex h-7 border-b  border-border-intense text-text-default
             `}
                 >
                     <button
                         className={`w-1/2  py-2 
                             flex justify-center items-center  '
                              ${openTab == 'Online' &&
-                            'border-b-2 border-border-super-intense font-semibold'
+                            'border-b-2  border-border-super-intense font-semibold'
                             }
                       ` }
                         onClick={() => handleTabClick('Online')}
@@ -82,7 +82,7 @@ export const ViewersMenu = () => {
                     py-2 flex justify-center items-center 
                     ${radio.isAdmin() ? '' : 'cursor-default opacity-50'}
                     ${openTab == 'Banned' &&
-                            'border-border-super-intense font-semibold border-b-2'
+                            'border-border-super-intense font-semibold border-b-2 '
                             }
                             `}
                         onClick={() => {

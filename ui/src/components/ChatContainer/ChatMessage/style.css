@@ -11,10 +11,9 @@
 }
 
 .chat-message{
-    @apply overflow-x-hidden;
-    padding-top: 0.416rem;
-    padding-left: 1rem;
-    padding-bottom: 0.416rem;
+    @apply overflow-x-hidden pl-4;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     padding-right: calc(1rem - calc( 0.7 * calc(25vw - 100%)));
 }
 

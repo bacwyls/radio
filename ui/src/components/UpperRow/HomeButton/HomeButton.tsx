@@ -41,7 +41,7 @@ export const HomeButton = () => {
                     `}
                     onClick={handleExit}
                     style={{
-                        height: '1.666rem',
+                        height: '1.7rem',
                     }}
                 >
                     <SignOut className="mr-1 text-xl" weight="bold" />

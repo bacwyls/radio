@@ -45,14 +45,14 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           items-center justify-center  relative bg-background-icon text-text-icon
           `}
         style={{
-          height: '3.666rem',
-          width: '3.666rem',
-          minWidth: '3.666rem',
-          minHeight: '3.666rem',
+          height: '3.7rem',
+          width: '3.7rem',
+          minWidth: '3.7rem',
+          minHeight: '3.7rem',
         }}
       >
         {patp == radio.hub ?
-          <Television weight='bold' className='nav-item-icon' /> :
+          <Television weight='bold' className='text-4xl' /> :
           (patp &&
             <Sigil patp={patp} size={2.2} />
           )
@@ -64,10 +64,10 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           >
             <Users
               weight="bold"
-              className='nav-item-viewers-icon z-10'
+              className='text-lg z-10'
               style={{
-                marginRight: '0.166rem',
-                marginBottom: '0.05rem',
+                marginRight: '0.17rem',
+                marginBottom: '0.04rem',
               }}
             />
             {flare}

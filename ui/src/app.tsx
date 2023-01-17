@@ -61,6 +61,10 @@ export function App() {
     };
   }, []);
 
+  const updateOrientation = () => {
+    dispatch(setIsLandscape(screen.orientation.type.includes('landscape') ? true : false));
+  }
+
   useEffect(() => {
     if (!isLogged()) {
       window.location.assign('/~/login')
@@ -73,11 +77,6 @@ export function App() {
     document.documentElement.style.fontSize = size + 'px'
     dispatch(setDocumentFontSize(size));
   }, []);
-
-  const updateOrientation = () => {
-    dispatch(setIsLandscape(screen.orientation.type.includes('landscape') ? true : false));
-  }
-
   // initialize subscription
   useEffect(() => {
     if (!radio.api || radioSub) return;
@@ -120,7 +119,16 @@ export function App() {
     handleUpdate(update, dispatch);
   }, [update]);
 
+  // Toggles tailwind themes
   useEffect(() => {
+
+    if (isPhone()) {
+      document.documentElement.classList.add('phone')
+    }
+    else {
+      document.documentElement.classList.remove('phone')
+    }
+
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
     }

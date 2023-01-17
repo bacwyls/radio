@@ -88,8 +88,8 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     backgroundColor: isDarkMode ? '#3F3D3C' : '#D2D1D1',
                     borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     overflow: 'hidden',
-                    filter: (!isPhone() && (isPlayModalOpen || isTalkModalOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(40%) ' : '',
-                    boxShadow: isDarkMode ? '0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6)' : '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)   ',
+                    filter: (!isPhone() && (isPlayModalOpen || isTalkModalOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(30%)  ' : '',
+                    boxShadow: isDarkMode ? '0 4px 6px -1px rgb(0 0 0 / 0.7), 0 2px 4px -2px rgb(0 0 0 / 0.7)' : '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)   ',
                     visibility: playerReady ? 'visible' : 'hidden',
                 }}
                 config={{

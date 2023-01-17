@@ -1,5 +1,5 @@
 .player {
-    height: calc(100% - 3.333rem);
+    height: calc(100% - 3.4rem);
     @apply w-full relative;
 }
 

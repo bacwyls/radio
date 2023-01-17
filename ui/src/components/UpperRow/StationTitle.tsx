@@ -28,7 +28,7 @@ export const StationTitle = () => {
                     <>
                         <span
                             className={`rounded flex items-center justify-center bg-background-icon text-text-icon`}
-                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
+                            style={{ maxHeight: '1.7rem', maxWidth: '1.7rem', minHeight: '1.7rem', minWidth: '1.7rem' }}
                         >
                             <Television
                                 weight="bold"
@@ -44,7 +44,7 @@ export const StationTitle = () => {
                         < span
                             className={`rounded flex items-center justify-center bg-background-icon text-text-icon
                          `}
-                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
+                            style={{ maxHeight: '1.7rem', maxWidth: '1.7rem', minHeight: '1.7rem', minWidth: '1.7rem' }}
                         >
                             <Radio
                                 weight="bold"
@@ -67,7 +67,7 @@ export const StationTitle = () => {
                             className={`  overflow-hidden  
                            rounded flex justify-center items-center bg-background-icon
                            `}
-                            style={{ maxHeight: '1.666rem', maxWidth: '1.666rem', minHeight: '1.666rem', minWidth: '1.666rem' }}
+                            style={{ maxHeight: '1.7rem', maxWidth: '1.7rem', minHeight: '1.7rem', minWidth: '1.7rem' }}
                         >
                             <Sigil patp={tunePatP} size={1} />
                         </span>
@@ -76,7 +76,7 @@ export const StationTitle = () => {
                                                         `}
                             style={{
                                 maxWidth: '6.5rem',
-                                lineHeight: '0.666rem',
+                                lineHeight: '0.7rem',
                             }}
                         >
                             {tunePatP}

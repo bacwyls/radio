@@ -17,9 +17,7 @@ export const StationIsPublicInfo = () => {
         >
             {showInfo &&
                 <div
-                    className={` 
-                    ${isPhone() ? 'public-info-phone' : 'public-info'}
-                   
+                    className={` public-info
                             `}
                 >
                     {isPublic ? 'This station is public and everybody can use DJ commands (Play & Talk).'

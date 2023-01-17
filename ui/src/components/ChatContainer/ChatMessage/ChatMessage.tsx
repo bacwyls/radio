@@ -4,44 +4,42 @@ import { FC } from "react";
 import { radio } from "../../../api";
 import { getCommandArg, isPhone, timestampFromTime } from "../../../util";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import './style.css';
 import { Sigil } from "../../Sigil";
-import { selectDocumentFontSize } from "../../../features/ui/uiSlice";
-import { useAppSelector } from "../../../app/hooks";
+import './style.css';
 
 interface IChatMessage {
-    from?: string,
-    time?: string,
+    from: string,
+    time: string,
     message: string,
 }
 
 export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
     const { from, time, message } = props;
 
-    const chatToHTML = (key: number, message: string, from?: string, time?: string) => {
+    // const chatToHTML = (message: string, from?: string, time?: string) => {
 
-        // let msg = chat.message;
-        // let from = from;
-        // let time = chat.time;
+    // let msg = chat.message;
+    // let from = from;
+    // let time = chat.time;
 
-        // let split = chat.indexOf(': ');
-        // if(split === -1) return chatToHTML_default(key, chat);
+    // let split = chat.indexOf(': ');
+    // if(split === -1) return chatToHTML_default(key, chat);
 
-        // let from = chat.slice(0, split+2)
-        // let message = chat.slice(split+2)
+    // let from = chat.slice(0, split+2)
+    // let message = chat.slice(split+2)
 
-        // console.log(`processing chat from ${from} with message ${message}`)
+    // console.log(`processing chat from ${from} with message ${message}`)
 
-        return (!from || !time)
-            ? chatToHTML_default(key, message)
-            : chatToHTMLWithTimeAndFrom(key, from, time, message);
-    }
+    //     return (!from || !time)
+    //         ? chatToHTML_default(message)
+    //         : chatToHTMLWithTimeAndFrom(from, time, message);
+    // }
 
-    const chatToHTML_default = (key: number, message: string) => {
-        return (
-            <p key={message.slice(-10)}>{message}</p>
-        );
-    }
+    // const chatToHTML_default = (message: string) => {
+    //     return (
+    //         <p >{message}</p>
+    //     );
+    // }
 
     const renderMessage = (message) => {
         let isCommand = getCommandArg(message);
@@ -55,14 +53,13 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         }
 
         return (
-            isCommand ?
+            (isCommand && (isCommand.command == 'play' || isCommand.command == 'talk')) ?
                 <div
-                    className={`flex flex-col  font-medium 
+                    className={`flex flex-col  font-medium ml-4
                     rounded-md  text-text-primary bg-background-textarea
                         ${isCommand.command == 'play' && 'cursor-pointer'}
                 `}
                     style={{
-                        marginLeft: '1.6em',
                         lineHeight: '1rem',
                         maxHeight: isCommand.command == 'play' ? '5rem' : 'none',
                     }}
@@ -72,10 +69,10 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         <CopyToClipboard text={isCommand.arg}>
                             <div
                                 style={{
-                                    padding: '0.5em 1em',
+                                    padding: '0.3rem 0.7rem',
                                 }}
                             >
-                                <div className="flex justify-between relative"
+                                <div className="flex justify-between relative text-text-default"
                                 >
                                     <div className="flex items-center  font-bold	 ">
                                         <PlayCircle className="mr-0.5 text-lg" weight="bold" /> Play
@@ -98,9 +95,9 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                         isCommand.command == 'talk' &&
                         <div
                             style={{
-                                padding: '0.3333rem 0.6666rem',
+                                padding: '0.3rem 0.7rem',
                             }}>
-                            <div className="flex items-center text-center font-bold">
+                            <div className="flex items-center text-center font-bold text-text-default">
                                 <Megaphone className='mr-0.5 mb-0.5 text-lg' weight="bold" /> Talk
                             </div>
                             <div className="break-words whitespace-normal">
@@ -114,7 +111,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                     className={`font-medium break-words whitespace-normal text-text-primary
                         `}
                     style={{
-                        paddingLeft: '1.333rem',
+                        paddingLeft: '1.4rem',
                         lineHeight: '1rem',
                     }}
                 >
@@ -126,7 +123,6 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                                     maxHeight: '12vh',
                                     objectFit: 'cover',
                                 }}
-                            // onLoad={() => scrollToBottom()}
                             />
                             :
                             message
@@ -135,40 +131,39 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         )
     }
 
-    const chatToHTMLWithTimeAndFrom = (key: number, from: string, time: string, message: string) => {
+    const chatToHTMLWithTimeAndFrom = (from: string, time: string, message: string) => {
 
         return (
             <div
-                key={message.slice(-5) + ('' + time).slice(-5)}
                 className={` chat-message   
                     ${!isPhone() && 'hover:bg-hover-mild'}
                        
         `}
             >
-                <div className={`flex justify-between items-center w-4/10 mb-1 text-text-secondary ${isPhone() && 'mr-1'} `}>
+                <div className={`flex justify-between items-center w-4/10 mb-1 text-text-secondary ${isPhone() && 'mr-1'} 
+                
+                `}>
                     <div className={`flex items-center w-full
                     `}
                     >
                         <span className={`  mr-1.5 h-4 w-4
                           rounded flex justify-center 
                           items-center bg-background-icon
- 
                           `}
                             style={{ minWidth: '1rem' }}
                         >
                             <Sigil patp={from} size={0.75} />
                         </span>
                         <span className='font-semibold mr-1 w-full'
-                            style={{ lineHeight: '0.666rem', }}
+                            style={{ lineHeight: '0.7rem', }}
                         >
                             {from == radio.our ? 'You' : from}{''}
                         </span>
                     </div>
                     <span
-                        className={` font-bold  text-sm
+                        className={` font-bold  text-sm whitespace-nowrap
         `}
                     >
-
                         {timestampFromTime(time)}
                     </span>
                 </div>
@@ -184,7 +179,7 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
     }
 
     return (
-        chatToHTML(1, message, from, time)
+        chatToHTMLWithTimeAndFrom(from, time, message)
     )
 
 }

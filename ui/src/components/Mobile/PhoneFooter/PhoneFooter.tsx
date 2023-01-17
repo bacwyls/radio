@@ -25,11 +25,11 @@ export const PhoneFooter = () => {
         <div
             className={`w-screen  fixed 
                          border-t
-                        flex items-center text-text-default bg-background-default border-border-default
+                        flex items-center text-text-default bg-background-default border-border-default 
                         ${isPhone() && isLandscape && 'phone-footer-landscape'}
                         ${(isViewersMenuOpen || isSettingsMenuOpen || isPlayModalOpen || isTalkModalOpen) ? 'justify-start' : 'justify-around'}
                         `}
-            style={{ bottom: 0, height: '2.666rem', zIndex: 160, }}
+            style={{ bottom: 0, height: '2.7rem', zIndex: 160, }}
         >
             {(isSettingsMenuOpen) &&
                 <>

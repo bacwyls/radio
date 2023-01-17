@@ -1,5 +1,5 @@
 .header{
-    @apply flex justify-between px-4 items-center  border-b border-border-default bg-background-default fixed left-0 top-0 w-full ;
-    height: 2.666rem;
+    @apply flex justify-between px-4 items-center  border-b  border-border-default  bg-background-default fixed left-0 top-0 w-full ;
+    height: 2.7rem;
     z-index: 3;
 }

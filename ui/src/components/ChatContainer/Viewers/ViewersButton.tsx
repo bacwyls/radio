@@ -46,7 +46,6 @@ export const ViewersButton = () => {
                 ${viewers.length == 0 && 'cursor-default'}
                 ${isViewersMenuOpen ? 'bg-hover-super-intense' : 'bg-hover-default'}
           `}
-
                 onClick={() => {
                     if (viewers.length == 0) return;
                     dispatch(setIsViewersMenuOpen(!isViewersMenuOpen))
@@ -55,6 +54,9 @@ export const ViewersButton = () => {
                 <Users
                     weight="bold"
                     className='mr-0.5 text-xl'
+                    style={{
+                        marginBottom: '0.04rem',
+                    }}
                 />
                 {viewers.length}
             </button>

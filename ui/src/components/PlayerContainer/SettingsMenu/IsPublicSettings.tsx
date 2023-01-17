@@ -34,7 +34,7 @@ export const IsPublicSettings = () => {
                 </button>
             </div>
             <div
-                className={`flex relative items-center h-12 p-2 rounded-md  border  mb-1.5  border-border-intense
+                className={`flex relative items-center h-12 p-2 rounded-md  border   mb-1.5  border-border-intense
                 ${!isPublic ? 'bg-hover-default' : 'cursor-pointer'}
                 `}
                 onClick={() => {
@@ -45,14 +45,14 @@ export const IsPublicSettings = () => {
                 <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
-                        height: '1.666rem',
-                        width: '1.666rem',
+                        height: '1.7rem',
+                        width: '1.7rem',
                     }}
                 >
                     <Lock className="text-xl" weight="bold" />
                 </div>
                 <div className=" flex flex-col ml-1.5  justify-center h-full">
-                    <span className="font-bold text-text-primary " >
+                    <span className="font-bold text-text-default " >
                         Private
                     </span>
                     <span className={`font-semibold h-3 text-sm text-text-secondary
@@ -69,7 +69,7 @@ export const IsPublicSettings = () => {
                     onChange={() => null}
                 /> */}
             </div >
-            <div className={`flex relative items-center h-12 p-2 rounded-md  border   border-border-intense 
+            <div className={`flex relative items-center h-12 p-2 rounded-md  border    border-border-intense 
                 ${isPublic ? 'bg-hover-default' : 'cursor-pointer'}
              `}
                 onClick={() => {
@@ -80,14 +80,14 @@ export const IsPublicSettings = () => {
                 <div className={`flex items-center justify-center  rounded-md text-text-button bg-text-default
                 `}
                     style={{
-                        height: '1.666rem',
-                        width: '1.666rem',
+                        height: '1.7rem',
+                        width: '1.7rem',
                     }}
                 >
                     <Globe className="text-xl" weight="bold" />
                 </div>
                 <div className=" flex flex-col ml-1.5  justify-center h-full">
-                    <span className="font-bold text-text-primary " >
+                    <span className="font-bold text-text-default" >
                         Public
                     </span>
                     <span className={`  font-semibold h-3  text-sm text-text-secondary

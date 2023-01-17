@@ -4,7 +4,7 @@ import { FC } from "react";
 import { radio } from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectSpinTime, selectSpinUrl, selectTunePatP } from "../../../features/station/stationSlice";
-import { selectIsDarkMode, selectPlayerInSync, setPlayerInSync } from "../../../features/ui/uiSlice";
+import { selectPlayerInSync, setPlayerInSync } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import './style.css';
 
@@ -18,7 +18,6 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
     const tunePatP = useAppSelector(selectTunePatP);
     const playerInSync = useAppSelector(selectPlayerInSync);
     const spinUrl = useAppSelector(selectSpinUrl);
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const dispatch = useAppDispatch();
 
@@ -70,8 +69,8 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     Resync
                     {
                         showOptions &&
-                        <div className={`absolute     p-2 flex flex-col rounded-md border gap-1
-                        bg-background-default border-border-default
+                        <div className={`absolute     p-2 flex flex-col rounded-md border  gap-1
+                        bg-background-default border-border-default 
                         `}
                             style={{ width: '20vw', bottom: '3rem' }}
 
@@ -110,7 +109,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                         <div className="relative ">
                             <button
                                 className={`  
-                    resync-split-button  relative z-10 border
+                    resync-split-button  relative z-10 border 
                     ${showOptions ? ' bg-hover-intense rounded-b-md' : 'rounded-md'}
                         	 `}
                                 onClick={() => {
@@ -123,10 +122,9 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                             </button>
                             <button
                                 id={showOptionsId}
-                                className={`z-20  border absolute top-0 right-0 h-full w-7 flex items-center justify-center
-                                ${showOptions ? 'rounded-br-md' : 'rounded-r-md '}
-                                ${isDarkMode && 'border-l-2'}
-                                border-border-default bg-background-player-button  hover:bg-hover-intense
+                                className={`z-20  border  border-l-border-intense  absolute top-0 right-0 h-full w-7 flex items-center justify-center
+                                ${showOptions ? 'rounded-br-md ' : 'rounded-r-md '}
+                                border-border-default  bg-background-player-button  hover:bg-hover-intense
                                 `}
                                 onClick={() => setShowOptions(prev => !prev)}
                             >
@@ -135,9 +133,9 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                             </button>
                             {showOptions &&
                                 <button
-                                    className={`resync-split-button absolute border-t border-l border-r  rounded-t 
+                                    className={`resync-split-button absolute border-t    border-l  border-r   rounded-t 
                           `}
-                                    style={{ bottom: '1.666rem' }}
+                                    style={{ bottom: '1.7rem' }}
                                     onClick={(e) => {
                                         radio.resyncAll(spinUrl)
                                     }}

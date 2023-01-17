@@ -38,20 +38,20 @@ export const DiscoveryInfo = () => {
                 onClick={() => setShowDiscoveryInfo(prev => !prev)}
             >
                 <Question
-                    className="text-xl"
+                    className="text-lg"
                     weight="bold"
                 />
             </button>
             {
                 showDiscoveryInfo && <div
-                    className={`border z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 left-0 top-0
-                            rounded  absolute  leading-4 font-bold    border-border-default bg-background-default shadow-lg text-base
+                    className={`border  z-10 px-2 py-4   ml-2 sm:ml-4 mt-8 left-0 top-0 text-center
+                            rounded  absolute  leading-4 font-bold    border-border-default  bg-background-default shadow-lg text-base
                             `}
                     style={{
-                        width: '20em',
+                        width: '14rem',
                     }}
                 >
-                    Published stations with the most viewers will appear here.
+                    Published stations will appear here.
                 </div>
             }
         </div >

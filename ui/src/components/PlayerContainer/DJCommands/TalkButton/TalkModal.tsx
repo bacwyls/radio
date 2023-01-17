@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react"
 import { radio } from "../../../../api";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { selectIsTalkModalOpen, setIsTalkModalOpen } from "../../../../features/ui/uiSlice";
-import { isPhone } from "../../../../util"
+import { isPhone, scrollToBottom } from "../../../../util"
+import { chatboxId } from "../../../ChatContainer/ChatBox/ChatBox";
 import { talkButtonId } from "./TalkButton";
 
 export const TalkModal = () => {
@@ -18,10 +19,14 @@ export const TalkModal = () => {
 
     const processTalk = () => {
         if (textToSpeech.trim().length == 0) return;
+
         radio.chat('!talk ' + textToSpeech);
         radio.talk(textToSpeech);
+
         setTextToSpeech('');
+
         dispatch(setIsTalkModalOpen(false));
+
     }
 
     useEffect(() => {
@@ -76,7 +81,7 @@ export const TalkModal = () => {
                     <textarea
                         id={urlInputId}
                         autoComplete="off"
-                        className={`bold-placeholder rounded-md border border-background-textarea  w-full
+                        className={`bold-placeholder rounded-md border  border-background-textarea  w-full
                 px-2 py-1 outline-none focus:shadow resize-none placeholder-text-secondary text-text-primary  
                 bg-background-textarea focus:bg-background-textarea-focused 
                 `}
@@ -93,15 +98,16 @@ export const TalkModal = () => {
                     >{textToSpeech.length + '/64'}</span>
                     <button
                         className={`flex items-center justify-center 
-                 gap-1 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
+                 gap-0.5 font-bold  rounded-md absolute bottom-1 right-2   text-text-button
                 ${textToSpeech.trim().length > 0 ? 'hover:shadow  bg-blue-button ' : 'cursor-default text-opacity-80 bg-blue-disabled'}
     `}
                         style={{
-                            width: '3.5rem',
-                            height: '1.666rem',
+                            width: '4rem',
+                            height: '1.7rem',
                         }}
                         onClick={processTalk}
                     >
+                        <Megaphone weight="bold" className="text-xl" />
                         Talk
                     </button>
                 </div>

@@ -1,6 +1,6 @@
 .chatbox-container{
     @apply w-full flex flex-col relative;
-    --height: calc(100vh - 3.333rem);
+    --height: calc(100vh - 3.4rem);
     height: var(--height);
 }
 
@@ -19,32 +19,32 @@
 
 .chatbox{
     @apply  w-full flex flex-col;
-    height: calc(100vh - 2.666rem - 3.333rem);
+    height: calc(100vh - 2.7rem - 3.4rem);
     justify-content: flex-end;
 }
 
 .chatbox-phone{
     @apply w-full flex flex-col;  
-    height: calc(100% - 2.666rem);
+    height: calc(100% - 2.7rem);
     justify-content: flex-end;
-    bottom: 2.666rem;
+    bottom: 2.7rem;
 }
 
 .chatbox-full{
     @apply w-screen fixed;
-    height: calc(100% - 2.666rem - 2.666rem);
-    top: 2.666rem; 
+    height: calc(100% - 2.7rem - 2.7rem);
+    top: 2.7rem; 
 }
 
 @media (width <= 1300px){
 
     .chatbox-container{
         @apply rounded-md;
-        height: calc(100% - 2.666rem);
+        height: calc(100% - 2.7rem);
 
     }    
 
     .chatbox {
-        height: calc(100% - 2.666rem );
+        height: calc(100% - 2.7rem );
     }
 }

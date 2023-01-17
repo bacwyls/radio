@@ -1,16 +1,20 @@
 .public-info{
-    @apply  shadow-lg border-border-default text-text-default bg-background-default absolute top-5 left-0  py-2 px-3 rounded h-12 font-semibold   flex items-center border text-base;
-    width: 14.26rem;
+    @apply  shadow-lg border-border-default  text-text-default bg-background-default absolute top-5 left-0  py-2 px-3 rounded h-12 font-semibold   flex items-center border  text-base text-center;
+    width: 15rem;
     line-height: 0.75rem;
     z-index: 2;
 }
 
-.public-info-phone{
-    @apply fixed  shadow-lg border-border-default text-text-default bg-background-default  py-2 px-3 rounded h-12 font-semibold    flex items-center border  text-base;
-    transform: translateX(calc(-50%));
-    left: 50%; 
-    top: 2.416rem;
-    width: calc(100% - 2rem);
-    line-height: 0.75rem;
-    z-index: 2;
+@media (width <= 700px){
+    .public-info{
+        @apply fixed  shadow-lg border-border-default  text-text-default bg-background-default  py-2 px-3 rounded h-12 font-semibold    flex items-center border   text-base text-center;
+        transform: translateX(-50%);
+        left: 50%; 
+        top: 2.4rem;
+        width: calc(100% - 2rem);
+        line-height: 0.75rem;
+        z-index: 2;
+    }
+    
+
 }

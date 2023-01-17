@@ -1,16 +1,15 @@
 const themeSwapper = require('tailwindcss-theme-swapper')
 
  const fontSizes =  {
-  'xs': '0.5rem',
-  'sm': '0.583rem',
-   'base': '0.666rem',
+  'xs': '0.4rem',
+  'sm': '0.55rem',
+   'base': '0.67rem',
    'bigger' : '0.75rem',
-   'lg': '0.833rem',
+   'lg': '0.8rem',
    'xl': '1rem',
-   '2xl': '1.16rem',
-   '4xl': '1.666rem',
-   '5xl': '2.333rem',
-
+   '2xl': '1.2rem',
+   '4xl': '1.7rem',
+   '5xl': '2.4rem',
  };
  
 const darkColors = {
@@ -18,19 +17,21 @@ const darkColors = {
   'background-darker' : '#1D1B1A',
   'background-icon' : '#60605E',
   'background-badge' : '#76C3F7',
-  'background-input' : '#60605E',
+  'background-input' : '#575553',
   'background-textarea' : '#4A4948',
   'background-textarea-focused' : '#3F3D3C',
-  'background-input-focused' : '#3F3D3C',
+  'background-input-focused' : '#1D1B1A',
   'background-player-button' : '#343330',  
   'background-shortcut-button' : '#777777',
  'background-navitem-viewers' : '#777777', 
   'text-icon' : '#F3F2F2',
   'text-primary' : '#F3F2F2',
   'text-default' :  '#DCDDDC',
-  'text-secondary' : '#D2D1D1',
+  'text-secondary' : '#C7C6C4',
   'text-full' : '#FFFFFFF',
-  'text-button' : '#4A4948',
+  'text-button' : '#343330',
+  'text-admin' : '#FF8D0A',
+  'text-self' : '#1D9AF1',
   'border-mild' : '#3F3D3C',
   'border-default': '#4A4948',
   'border-intense' : '#60605E',
@@ -39,7 +40,7 @@ const darkColors = {
   'hover-default' :  '#4A4948',
   'hover-intense' : '#60605E',
   'hover-super-intense' : '#8F8D8C',
-  'orange' : '#F5970A',
+  'orange' : '#FF8D0A',
   'orange-90' : '#F6A322',
   'orange-80' : '#F6AD3B',
   'orange-70' : '#F8B754',
@@ -51,18 +52,18 @@ const darkColors = {
   'orange-15' : '#FFF0DB',
   'orange-10' : '#FEF5E7',
   'orange-5' : '#FFFBF2',
- 'orange-disabled': '#FACA84',
- 'orange-input' : '#FDEBCF',
- 'orange-input-focused' : '#FFFBF2',
+  'orange-disabled': '#E0A34A',
+  'orange-input' : '#E1CBAC',
+  'orange-input-focused' : '#F6EBD4',
   'blue' : '#1D9AF1',
   'blue-90' : '#34A5F3',
-  'blue-80' : '#4BAFF4',
-  'blue-70' : '#61B9F6',
-  'blue-60' : '#76C3F7',
+  'blue-80' : '#4AAFF5',
+  'blue-70' : '#61B8F7',
+  'blue-60' : '#77C2F7',
   'blue-50' : '#8ECCF9',
-  'blue-20' : '#D2EAFD',
+  'blue-20' : '#D3EAFC',
   'blue-disabled' : '#4F86A2',
-  'blue-button' : '#4BAFF4',
+  'blue-button' : '#2A9DE5',
   'black-100' : '#1D1B1A',
   'black-98' : '#20211E',
   'black-95' : '#282626',
@@ -93,21 +94,23 @@ const lightColors = {
       'background-badge' : '#8ECCF9',
       'background-input' : '#E9E8E9',
       'background-textarea' : '#E9E8E9',
-      'background-textarea-focused' : '#FCFDFC',
+      'background-textarea-focused' : '#F3F2F2',
       'background-input-focused' : '#FCFDFC',
       'background-player-button' : '#FFFFFF',
       'background-shortcut-button' : '#FFFFFF',
       'background-navitem-viewers' : '#60605E', 
       'text-icon' : '#FFFFFF',
-      'text-primary' : '#4A4948',
+      'text-primary' : '#1D1B1A',
       'text-default' :  '#60605E',
       'text-secondary' : '#777777',
       'text-primary-inverted' : '#F3F2F2',
       'text-full' : '#000000',
       'text-button' : '#FFFFFF',
+      'text-admin' : '#d97f00',
+      'text-self' : '#007acd',
       'border-mild' : '#DCDDDC',
       'border-default': '#D2D1D1',
-      'border-intense' : '#BDBBBA',
+      'border-intense' : '#C7C6C4',
       'border-super-intense' : '#4A4948',
       'hover-mild' :  '#F6F7F7',
       'hover-default' :  '#E9E8E9',
@@ -125,16 +128,16 @@ const lightColors = {
        'orange-15' : '#FFF0DB',
        'orange-10' : '#FEF5E7',
        'orange-5' : '#FFFBF2',
-      'orange-disabled': '#FACA84',
+      'orange-disabled': '#EFB664',
       'orange-input' : '#FDEBCF',
       'orange-input-focused' : '#FFFBF2',
       'blue' : '#1D9AF1',
       'blue-90' : '#34A5F3',
-      'blue-80' : '#4BAFF4',
-      'blue-70' : '#61B9F6',
-      'blue-60' : '#76C3F7',
+      'blue-80' : '#4AAFF5',
+      'blue-70' : '#61B8F7',
+      'blue-60' : '#77C2F7',
       'blue-50' : '#8ECCF9',
-      'blue-20' : '#D2EAFD',
+      'blue-20' : '#D3EAFC',
       'blue-disabled' : '#76C3F7',
       'blue-button' : '#1D9AF1',
       'black-100' : '#1D1B1A',
@@ -160,64 +163,92 @@ const lightColors = {
       'black-1' : '#FCFDFC',
 };
 
+const lightShadows = {
+  sm: '0 1px 2px 0 rgb(0 0 0 / 0.1)',
+  DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.2)',
+  md: '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)',
+  lg: '0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2)',
+  xl: '0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2)',
+  '2xl':  '0 25px 50px -12px rgb(0 0 0 / 0.05)',
+  inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.1)',
+  none: '0 0 #0000',
+}
+
+const darkShadows = {
+    sm: '0 1px 2px 0 rgb(0 0 0 / 0.35)',
+    DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.7), 0 1px 2px -1px rgb(0 0 0 / 0.7)',
+    md: '0 4px 6px -1px rgb(0 0 0 / 0.7), 0 2px 4px -2px rgb(0 0 0 / 0.7)',
+    lg: '0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.7)',
+    xl: '0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7)',
+    '2xl':  '0 25px 50px -12px rgb(0 0 0 / 0.175)',
+    inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.35)',
+    none: '0 0 #0000',
+}
+
+const lightOpacity = {
+  'disabled' : '.7',
+}
+
+const darkOpacity = {
+  'disabled' : '.5',
+}
+
+const borders  = {
+  DEFAULT: '1px',
+  '0': '0',
+  '2': '2px',
+ '3': '3px',
+  '4': '4px',
+ '6': '6px',
+ '8': '8px',
+}
+
+const phoneBorders  = {
+  DEFAULT: '1px',
+  '0': '0',
+  '2': '1px',
+ '3': '3px',
+  '4': '4px',
+ '6': '6px',
+ '8': '8px',
+}
+
 const base = {
   theme: {
     colors: lightColors,
-    boxShadow: {
-      sm: '0 1px 2px 0 rgb(0 0 0 / 0.75)',
-      DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.15), 0 1px 2px -1px rgb(0 0 0 / 0.15)',
-      md: '0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
-      lg: '0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15)',
-      xl: '0 20px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.15)',
-      '2xl':  '0 25px 50px -12px rgb(0 0 0 / 0.375)',
-      inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.75)',
-      none: '0 0 #0000',
-    }, 
+    boxShadow: lightShadows,
     fontSize: fontSizes,
-    opacity: {
-      'disabled' : '.7',
-    }
+    opacity: lightOpacity,
+    borderWidth: borders,
   },
 };
-
 
 const dark = {
   theme: {
     colors: darkColors,
-    boxShadow: {
-      sm: '0 1px 2px 0 rgb(0 0 0 / 0.3)',
-      DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.6)',
-      md: '0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6)',
-      lg: '0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6)',
-      xl: '0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6)',
-      '2xl':  '0 25px 50px -12px rgb(0 0 0 / 0.15)',
-      inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.3)',
-      none: '0 0 #0000',
-    }, 
+    boxShadow: darkShadows,
     fontSize: fontSizes,
-    opacity: {
-      'disabled' : '.5',
+    opacity: darkOpacity,
+    borderWidth: borders,
     }
-  },
+};
+
+const phone = {
+  theme: {
+    borderWidth: phoneBorders,
+  }
 };
 
 module.exports = {
   mode: 'jit',
   purge: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class', // or 'media' or 'class',
-  theme: {
-    extend: {
-      dropShadow: {
-        'default-dark': '0 1px 2px rgba(0, 0, 0, 0.7)',
-        'md-dark': '0 4px 3px rgba(0, 0, 0, 0.55)',
-      },
-    }
-  },
   plugins: [
     themeSwapper({
       themes: [
         { name: 'base', selectors: [':root'], theme: base.theme },
         { name: 'dark', selectors: ['.dark'], theme: dark.theme },
+        { name: 'phone', selectors: ['.phone'], theme: phone.theme },
       ],
     }),
   ]

@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
 import { useAppSelector } from "../../../app/hooks";
-import { IMinitower, selectIsPublic, selectTowers } from "../../../features/station/stationSlice";
+import { IMinitower, selectTowers } from "../../../features/station/stationSlice";
 import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { IsPublicBadge } from "../../IsPublicBadge";
@@ -83,14 +83,12 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < input
                 id={searchStationInputId}
                 type="text"
-                className={`   relative whitespace-nowrap	w-full h-full rounded-md border font-bold
-               focus:outline-none focus:shadow  text-background-icon placeholder-black-60 
-               ${isDarkMode && 'border-2'}
-            ${isFocused ? 'bg-orange-input-focused ' : 'bg-orange-input'} 
-            ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
-            `}
+                className={`   relative whitespace-nowrap	w-full h-full rounded-md  font-bold
+               text-background-icon placeholder-black-60    focus:outline-none
+             ${isFocused ? 'bg-orange-input-focused  border-2 shadow ' : 'bg-orange-input border'}
+             ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
+             `}
                 style={{
-                    paddingBottom: '0.0666rem',
                     paddingRight: '5rem',
                 }}
                 autoCorrect={'off'}
@@ -115,7 +113,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                        bg-background-icon
                                        `}
                 >
-                    <Sigil patp={tuneToText} size={0.666} />
+                    <Sigil patp={tuneToText} size={0.7} />
                 </span>
             }
             < button
@@ -124,7 +122,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
-                    width: isPhone() ? '4rem' : '4.666rem',
+                    width: isPhone() ? '4rem' : '4.7rem',
                 }}
                 onClick={() =>
                     handleTuneToSubmit()
@@ -137,9 +135,9 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 tuneToText.trim().length > 0 && queriedTowers.length > 0 && !isValidPatp(tuneToText) && isFocused && !isPhone() &&
                 <div
                     id={suggestionsId}
-                    className={`absolute border z-10 shadow-lg rounded-md 
+                    className={`absolute border  z-10 shadow-lg rounded-md 
             w-full top-8 flex flex-col py-2 overflow-y-auto mt-1
-            border-border-default bg-background-default text-text-default
+            border-border-default  bg-background-default text-text-default
 
             `}
                     style={{
@@ -172,7 +170,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                     </span>
                                     <div
                                         style={{
-                                            maxWidth: '5.666rem',
+                                            maxWidth: '5.7rem',
                                             lineHeight: '0.583rem',
                                         }} >
                                         {x.location}
@@ -180,12 +178,13 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                     <IsPublicBadge />
                                 </div>
                                 <div className="flex gap-1 items-center  ml-1">
-                                    <span className="flex items-center font-bold "
+                                    <span className="flex items-center font-bold text-sm "
                                     >
                                         <Users
                                             weight="bold"
                                             className="mr-0.5 text-lg"
                                             style={{
+                                                marginBottom: '0.04rem',
                                             }}
                                         />
                                         {x.viewers}

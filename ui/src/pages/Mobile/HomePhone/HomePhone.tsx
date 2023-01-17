@@ -22,7 +22,7 @@ export const HomePhone = () => {
         `}
         >
             <div className=' flex px-4 justify-end items-center w-full'
-                style={{ height: '2.666rem' }}
+                style={{ height: '2.7rem' }}
             >
                 <ThemeButton />
             </div>
@@ -37,7 +37,7 @@ export const HomePhone = () => {
                     <span
                         className="font-black whitespace-nowrap 
                   flex 	 flex items-end "
-                        style={{ fontSize: '2.333rem' }}
+                        style={{ fontSize: '2.4rem' }}
                     >
                         radio
                     </span>
@@ -52,7 +52,7 @@ export const HomePhone = () => {
                 >
                     <button
                         className='w-full bg-black-70 rounded-md text-white font-extrabold shadow'
-                        style={{ height: '2.333rem', }}
+                        style={{ height: '2.4rem', }}
                         onClick={() => {
                             radio.start()
                             navigate('/station/' + radio.our)
@@ -60,7 +60,7 @@ export const HomePhone = () => {
                     >Broadcast</button>
                     <button
                         className='w-full bg-black-70 rounded-md text-white font-extrabold shadow'
-                        style={{ height: '2.333rem', }}
+                        style={{ height: '2.4rem', }}
                         onClick={() => navigate('/join/')}
                     >Join Station</button>
                 </div>

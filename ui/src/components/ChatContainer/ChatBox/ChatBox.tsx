@@ -2,21 +2,22 @@ import React, { FC, useEffect, } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chopChats, selectChats } from '../../../features/station/stationSlice';
 import { selectIsChatFullScreen } from '../../../features/ui/uiSlice';
-import { isPhone } from '../../../util';
+import { isPhone, scrollToBottom } from '../../../util';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import './style.css';
 import { ViewersButton } from '../Viewers/ViewersButton';
 
 const ChatMessageMemo = React.memo(ChatMessage);
+const chatboxContainerId = 'chatbox-container-radio';
+export const chatboxId = 'chatbox-radio';
 
 interface IChatBox {
 }
 
+
 export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   const chats = useAppSelector(selectChats);
-  const chatboxId = 'chatbox-radio';
-  const chatboxContainerId = 'chatbox-container-radio'
 
   const dispatch = useAppDispatch();
 
@@ -25,7 +26,22 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
   const isChatFullScreen = useAppSelector(selectIsChatFullScreen);
 
   useEffect(() => {
-    scrollToBottom();
+
+    let chatbox = document.getElementById(chatboxId)
+
+    // if the user scrolls up half of the chatbox height 
+    // it stops auto-scrolling to bottom on every new msg
+    // with the exception of his own msgs (check the handler for chat update in util.ts) 
+
+    if (chatbox) {
+      let halfHeight = chatbox.clientHeight / 2;
+      let msgHeight = 89;
+      let position = ((chatbox.scrollHeight - chatbox.clientHeight) - (chatbox.scrollTop + msgHeight));
+
+      if (position < halfHeight) {
+        scrollToBottom(chatboxId)
+      }
+    }
 
     if (chats.length > maxChats) {
       dispatch(chopChats(chats));
@@ -34,23 +50,8 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
   }, [chats]);
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(chatboxId);
   }, [isChatFullScreen]);
-
-  const scrollToBottom = () => {
-    let chatWindow = document.getElementById(chatboxId) as HTMLDivElement;
-    if (!chatWindow) return;
-    var xH = chatWindow.scrollHeight;
-    chatWindow.scrollTo(0, xH);
-  }
-
-  const generateUniqueKey = (chat, index) => {
-    if (!chat.time || !chat.from) {
-      return index;
-    }
-    else
-      return ('' + chat.time) + chat.from;
-  }
 
   return (
     <div
@@ -60,8 +61,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
                 `}
     >
       <div
-        className={`font-bold flex items-center justify-between rounded-md text-text-primary px-4
-                     `}
+        className={`font-bold flex items-center justify-between rounded-md text-text-primary px-4 `}
         style={{
           height: '2.7rem',
         }}
@@ -80,24 +80,22 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
       >
         {chats && chats.length > 0 ?
           <div
-            className={`overflow-y-auto overflow-x-hidden
-          `}
+            className={`overflow-y-auto overflow-x-hidden`}
             id={chatboxId}
           >
             {
-              chats.map((x: any, i: any) =>
+              chats.map((chat: any) =>
                 <ChatMessageMemo
-                  key={generateUniqueKey(x, i)}
-                  from={x.from}
-                  message={x.message}
-                  time={x.time}
+                  key={('' + chat.time) + chat.from}
+                  from={chat.from}
+                  message={chat.message}
+                  time={chat.time}
                 />)
             }
           </div>
           :
           <div
-            className={`flex justify-center items-center h-full w-full font-medium '
-            `}
+            className={`flex justify-center items-center h-full w-full font-medium '`}
           >
             There are no messages
           </div>

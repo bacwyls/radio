@@ -2,7 +2,3 @@
     @apply w-screen h-screen flex flex-col justify-center items-center bg-background-darker text-text-default text-base ;
 }
 
-.home-container-phone-portrait{
-    @apply w-full h-full min-h-screen;
-}
-

@@ -1,7 +1,7 @@
 
 .discovery-list{
-    @apply flex flex-col bg-background-default border-l  border-border-default  absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
-    height: calc(100vh - 2.666rem);
+    @apply flex flex-col bg-background-default border-l   border-border-default   absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
+    height: calc(100vh - 2.7rem);
     width: 19rem;
     z-index: 2;
   }
@@ -18,12 +18,12 @@
 
 @media (width <= 1300px){
   .discovery-list{
-      @apply  relative border  rounded-md  mt-2;
+      @apply  relative border   rounded-md  mt-2;
       height: calc(100vh - 15em);
     }
 
     .discovery-list-header{
-      padding-left: 1rem;
+      @apply pl-4;
       }
 }
 
@@ -33,7 +33,7 @@
 }
 
 .discovery-list-phone{
-  @apply fixed bg-background-default overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full border border-background-default; 
-  top: 2.666rem;
-  height: calc(100% - 5.333rem);
+  @apply fixed bg-background-default overflow-y-auto overflow-x-hidden left-0 pt-10 flex flex-col gap-2 w-full border  border-background-default; 
+  top: 2.7rem;
+  height: calc(100% - 5.4rem);
 }

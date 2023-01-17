@@ -17,6 +17,7 @@ import {
 } from './features/ui/uiSlice';
 import { isMobile, isTablet } from 'react-device-detect';
 import { radio } from './api';
+import { chatboxId } from './components/ChatContainer/ChatBox/ChatBox';
 
 export function handleUpdate(update: any, dispatch: any) {
   console.log("radio update", update);
@@ -54,6 +55,9 @@ export function handleUpdate(update: any, dispatch: any) {
     case 'chat':
       let chat = update['chat'];
       dispatch(setChatsWithChat(chat));
+      if (chat.from == radio.our) {
+        scrollToBottom(chatboxId)
+      }
       break;
     case 'viewers':
       dispatch(setViewers(update['viewers']));
@@ -62,8 +66,12 @@ export function handleUpdate(update: any, dispatch: any) {
       dispatch(setIsPublic(update['public']))
       break;
     case 'chatlog':
-      let chatlog = update['chatlog']
+      let chatlog = update['chatlog'];
       dispatch(setChatsWithChatlog(chatlog));
+      setTimeout(() => {
+        scrollToBottom(chatboxId)
+      }, 500)
+      break;
     case 'banned':
       dispatch(setBanned(update['banned']));
       break;
@@ -78,11 +86,19 @@ export function resetPage(dispatch: any) {
   dispatch(setSpinUrl(''));
 }
 
+export const scrollToBottom = (chatboxId) => {
+  let chatWindow = document.getElementById(chatboxId) as HTMLDivElement;
+  if (!chatWindow) return;
+  var xH = chatWindow.scrollHeight;
+  chatWindow.scrollTo(0, xH);
+}
+
 export function handleUserInput(
   dispatch: any,
   chat: string,
   spinTime: number,
   spinUrl: string,
+  isPublic: boolean,
 ) {
 
   if (chat === '') return;
@@ -100,10 +116,12 @@ export function handleUserInput(
   let arg = got.arg;
   switch (command) {
     case 'talk':
+      if (!(isPublic || radio.isAdmin())) return;
       radio.chat(chat);
       radio.talk(arg);
       break;
     case 'play':
+      if (!(isPublic || radio.isAdmin())) return;
       radio.spin(arg);
       radio.chat(chat);
       break;
@@ -207,6 +225,10 @@ export function getCommandArg(chat: string) {
   return { 'command': command, 'arg': arg };
 }
 
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+  "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+];
+
 export const timestampFromTime = (time: string) => {
   const utcTime = time.slice(1).split(".")!;
   const minutes = utcTime[5];
@@ -229,7 +251,7 @@ export const timestampFromTime = (time: string) => {
   const olderMessage = oneDayOld && (hoursSince >= 12);
 
   return olderMessage
-    ? `${((+localMonth + 1) + '').padStart(2, '0')}/${localDay.padStart(2, '0')}`
+    ? monthNames[(+localMonth)] + ' ' + localDay.padStart(2, '0')
     : `${localHours.padStart(2, '0')}:${localMinutes.padStart(2, '0')}`;
 }
 

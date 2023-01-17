@@ -42,7 +42,7 @@ export const DiscoveryList = () => {
                 `}
                 >
                     Discovery
-                    <DiscoveryInfo />
+                    {/* <DiscoveryInfo /> */}
                 </div>
                 {/* <FilterDropdown filter={filter} setFilter={setFilter} /> */}
             </div>

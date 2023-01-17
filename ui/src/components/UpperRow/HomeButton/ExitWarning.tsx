@@ -57,22 +57,22 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
         <div
             className='w-full top-0 left-0 text-base h-full fixed z-50 flex items-center justify-center cursor-default'
             style={{
-                backdropFilter: 'brightness(0.3)',
+                backdropFilter: 'brightness(0.2)',
             }}
         >
             <div
                 id={warningId}
                 className={` shadow-lg flex justify-center border
                 items-center z-50 rounded-md font-bold cursor-default px-10
-                    bg-background-default border-border-default
+                    bg-background-default border-border-default 
                 `}
                 style={{
-                    width: '16rem',
-                    height: '8rem',
+                    width: '17rem',
+                    height: '8.5rem',
                 }}
             >
-                <div className="flex flex-col">
-                    <div className={`flex items-center w-full 
+                <div className="flex flex-col ">
+                    <div className={`flex items-center w-full text-bigger mb-1
                                 ${isDarkMode ? 'text-red-400' : 'text-red-700'}
                                     `}
 
@@ -80,30 +80,26 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                         <Warning className="mr-1 text-2xl" weight="bold" />
                         Warning
                     </div>
-                    <div className=" flex flex-col   h-7">
+                    <div className=" flex flex-col   h-7 mb-4">
                         <span >Are you sure you want to stop the broadcast?</span>
                     </div>
-                    <div className="gap-1 flex items-center mt-4 justify-end w-full text-base"
+                    <div className="gap-1.5 flex items-center  justify-end w-full text-base"
                     >
                         <button
                             id={cancelButtonId}
                             className={`flex items-center justify-center
                         rounded-md 
-                         text-bold w-14 h-6
+                         text-bold w-14 h-6 font-bold 
                             bg-hover-default hover:bg-hover-intense
                          `}
                             style={{
                                 boxShadow: 'rgba(50, 50, 93, 0.25) \
                             0px 2px 5px -1px, rgba(0, 0, 0, 0.3)`\
                              0px 1px 3px - 1px ',
-                                height: '1.666rem',
+                                height: '1.7rem',
                             }}
                         >
-                            <span
-                                className='font-bold '
-                            >
-                                Cancel
-                            </span>
+                            Cancel
                             {/* <span className=' text-gray-500 ml-1 px-1  font-bold
                                        bg-white border-gray-300 rounded-md border'
                                 style={{
@@ -119,7 +115,7 @@ export const ExitWarning = ({ onCancel }: IExitWarning) => {
                     `}
                             onClick={() => handleStop()}
                             style={{
-                                height: '1.666rem',
+                                height: '1.7rem',
                             }}
                         >
                             {/* <SignOut className="mr-1" size={26} weight="bold" /> */}

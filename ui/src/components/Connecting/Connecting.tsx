@@ -74,17 +74,17 @@ export const Connecting = () => {
             }}
         >
             <div
-                className={`shadow-lg flex items-center  justify-center rounded-md bg-background-default border-border-default
+                className={`shadow-lg flex items-center  justify-center rounded-md bg-background-default border-border-default 
                 ${isPhone() ? '' : 'px-8'}
         `}
                 style={{
-                    width: '30em',
-                    height: '14em',
+                    width: '20rem',
+                    height: '9.3rem',
                     zIndex: 51,
                 }}
             >
 
-                <div style={{ marginTop: '-3em' }}>
+                <div style={{ marginTop: '-2rem' }}>
                     <ConnectingAnimation />
                 </div>
                 <div className=" flex flex-col gap-2 font-bold ml-6 "
@@ -140,7 +140,7 @@ export const Connecting = () => {
                         </span>
                         {!isPhone() &&
                             <span className={`ml-1 px-1  font-bold 
-                                        rounded border text-sm border-border-intense text-text-primary bg-background-shortcut-button
+                                        rounded border  text-sm border-border-intense text-text-primary bg-background-shortcut-button
                                         `}
                             >
                                 Esc

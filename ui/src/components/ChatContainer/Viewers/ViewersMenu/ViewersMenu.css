@@ -1,6 +1,6 @@
 .viewers-menu {
-    @apply flex flex-col border border-border-default bg-background-default  z-20 fixed ;
-    height: calc(100vh - 2.7rem);
+    @apply flex flex-col border-t   border-l  border-border-default  bg-background-default  z-20 fixed ;
+    height: calc(100vh - 2.7rem );
     width: 25vw;
     top: calc(2.7rem - 1px);
     right: 0;
@@ -18,33 +18,31 @@
 }
 
 .viewers-input-sticky-row{
-    @apply h-10 sticky flex items-center border-b left-0 bg-background-default border-background-default   ;
-    top: -1px;
+    @apply h-10 sticky flex items-center border-b  left-0 bg-background-default border-background-default   ;
+    top: -2px;
     width: calc(25vw - calc(25vw - 100%)); 
     min-height: 2.25rem;
 }
 
 .viewers-input-sticky-row-phone{
-    @apply h-10 sticky flex items-center border-b left-0  bg-background-default border-background-default ;
-    top: -1px;
+    @apply h-10 sticky flex items-center border-b  left-0  bg-background-default border-background-default ;
+    top: -2px;
     width: calc(25vw - calc(25vw - 100%)); 
     min-height: 2.25rem;
 }
 
 .viewers-input-wrapper{
-    @apply flex   h-10 relative   items-center justify-between z-10;
-    left: 1rem;
+    @apply flex  left-4 h-10 relative   items-center justify-between z-10;
     width: calc(100% - 2rem);
 }
 
 .viewers-input-wrapper-phone{
-    @apply flex   h-10 relative   items-center justify-between z-10;
-    left: 1rem;
+    @apply flex  left-4 h-10 relative   items-center justify-between z-10;
     width: calc(100% - 2rem);
 }
 
 .viewers-input{
-    @apply  pl-2 pr-6 focus:shadow  h-6 border  hover:shadow rounded outline-none  bg-background-input focus:bg-background-input-focused border-background-input focus:border-border-intense placeholder-text-secondary ;
+    @apply  pl-2 pr-6 focus:shadow  h-6 border-2    rounded outline-none  bg-background-input focus:bg-background-input-focused border-background-input focus:border-border-intense placeholder-text-secondary focus:focus:border-blue-button;
     width: calc(25vw - 2rem);
 }
 

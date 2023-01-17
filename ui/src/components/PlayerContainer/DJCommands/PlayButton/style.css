@@ -1,5 +1,5 @@
 .play-modal{
-   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border border-border-default text-base  bg-background-default;
+   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border  border-border-default  text-base  bg-background-default;
    left: 37.5%;
    transform: translate(-50%, -50%);
    top: 50%;
@@ -17,9 +17,9 @@
 }
 
 .play-button {
-    @apply   font-bold  shadow rounded-md  justify-center flex text-center items-center gap-1 border border-border-default ;
-    height: 1.666rem;
-    width: 4.333rem;
+    @apply   font-bold  shadow rounded-md  justify-center flex text-center items-center gap-1 border  border-border-default  ;
+    height: 1.7rem;
+    width: 4.4rem;
 }
 
 .play-button-phone {
@@ -28,25 +28,25 @@
 }
 
 .play-circle{
-    font-size: 1rem;
+    @apply text-xl;
 }
 
 @media (width <= 1000px){
     .play-button {
         @apply gap-0.5 text-sm;
-        height: 1.666rem;
-        width: 3.333rem;
+        height: 1.7rem;
+        width: 3.4rem;
     }
 
     .play-circle{
-        font-size: 0.8333rem ;
+        font-size: 0.84rem ;
     }
 }
 
 .play-modal-phone {
-    @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t w-full   border-border-default bg-background-default  ;
-    height: calc(100% - 2.666rem - 2.666rem - 56.25vw - 1rem);
+    @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t    w-full   border-border-default  bg-background-default  ;
+    height: calc(100% - 2.7rem - 2.7rem - 56.25vw - 1rem);
     min-height: 10rem;
-    bottom: 2.666rem;
+    bottom: 2.7rem;
 }
 

@@ -14,8 +14,8 @@ export const JoinStationPhone = () => {
         <div className='text-text-default bg-background-default text-base px-4'
         >
             <div className='fixed top-0 left-0  w-full flex justify-between items-center  border
-           bg-background-default border-r-background-default border-t-background-default border-l-background-default border-border-default px-4'
-                style={{ height: '2.666rem', }}
+           bg-background-default border-r-background-default border-t-background-default border-l-background-default border-border-default  px-4'
+                style={{ height: '2.7rem', }}
             >
                 <div className='flex items-center font-bold text-xl'
                 >
@@ -24,7 +24,7 @@ export const JoinStationPhone = () => {
                 <ThemeButton />
             </div>
             <DiscoveryList />
-            <div className={`fixed px-4 bottom-0 left-0  flex items-center w-full bg-background-default border border-background-default
+            <div className={`fixed px-4 bottom-0 left-0  flex items-center w-full bg-background-default border  border-background-default
                    `}
                 style={{ height: '2.708rem', }}
             >
