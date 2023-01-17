@@ -84,7 +84,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 id={searchStationInputId}
                 type="text"
                 className={`   relative whitespace-nowrap	w-full h-full rounded-md  font-bold
-               text-background-icon placeholder-black-60    focus:outline-none
+               text-black-80 placeholder-black-60    focus:outline-none
              ${isFocused ? 'bg-orange-input-focused  border-2 shadow ' : 'bg-orange-input border'}
              ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
              `}
@@ -119,7 +119,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < button
                 className={`absolute right-0  rounded-md  h-full  flex  
             justify-center items-center whitespace-nowrap px-1 font-bold z-10 text-text-button 
-            ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow-md' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
+            ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
                     width: isPhone() ? '4rem' : '4.7rem',

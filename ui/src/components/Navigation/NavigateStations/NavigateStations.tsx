@@ -14,7 +14,7 @@ export const NavigateStations = () => {
                 <div className={` join-station  `}>
                     <div
                         className={` flex items-center  relative  
-                whitespace-nowrap font-bold tracking-tighter mb-1 text-text-primary text-4xl
+                whitespace-nowrap font-bold tracking-tighter mb-1 text-text-default text-4xl
                 `}
                         style={{
                             width: '15rem',
