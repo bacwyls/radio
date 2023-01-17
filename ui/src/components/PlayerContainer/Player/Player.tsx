@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FC } from "react";
 import ReactPlayer from "react-player";
 import { radio } from "../../../api";
@@ -50,11 +50,27 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
         if (diff > 2) {
             // client scrub to host
             console.log('client scrubbing to host')
-            radio.seekToDelta(spinTime);
+            radio.seekToGlobal(spinTime);
             return;
         }
     }
 
+    useEffect(() => {
+        dispatch(setPlayerInSync(true));
+        radio.seekToGlobal(spinTime);
+    }, [playerReady]);
+
+    useEffect(() => {
+        if (!radio.player) return;
+        radio.player.url = spinUrl;
+    }, [spinUrl]);
+
+    useEffect(() => {
+        if (!radio.player) return;
+        if (!playerReady) return;
+        dispatch(setPlayerInSync(true));
+        radio.seekToGlobal(spinTime);
+    }, [spinTime]);
 
     return (
         <div

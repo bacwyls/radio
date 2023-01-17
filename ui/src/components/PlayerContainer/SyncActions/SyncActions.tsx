@@ -57,7 +57,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                  `}
                     onClick={(e) => {
                         if (tunePatP != radio.our) {
-                            radio.seekToDelta(spinTime);
+                            radio.seekToGlobal(spinTime);
                             dispatch(setPlayerInSync(true));
                         }
                         else {
@@ -73,19 +73,19 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                         bg-background-default border-border-default 
                         `}
                             style={{ width: '20vw', bottom: '3rem' }}
-
                         >
                             <span
                                 onClick={(e) => {
-                                    radio.seekToDelta(spinTime);
+                                    radio.seekToGlobal(spinTime);
                                     dispatch(setPlayerInSync(true));
                                 }}
                             >Self</span>
-                            <span
-                                onClick={(e) => {
-                                    radio.resyncAll(spinUrl)
-                                }}
-                            >All</span>
+                            {tunePatP == radio.our &&
+                                <span
+                                    onClick={(e) => {
+                                        radio.resyncAll(spinUrl)
+                                    }}
+                                >All</span>}
                         </div>
                     }
                 </button >
@@ -98,7 +98,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     resync-button
                         	 `}
                             onClick={(e) => {
-                                radio.seekToDelta(spinTime);
+                                radio.seekToGlobal(spinTime);
                                 dispatch(setPlayerInSync(true));
                             }}
                         >
@@ -113,7 +113,7 @@ export const SyncActions: FC<ISyncActions> = (props: ISyncActions) => {
                     ${showOptions ? ' bg-hover-intense rounded-b-md' : 'rounded-md'}
                         	 `}
                                 onClick={() => {
-                                    radio.seekToDelta(spinTime);
+                                    radio.seekToGlobal(spinTime);
                                     dispatch(setPlayerInSync(true));
                                 }}
                             >

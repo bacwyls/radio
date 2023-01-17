@@ -137,7 +137,7 @@ export function handleUserInput(
     //   break;
     case 'time':
       dispatch(setPlayerInSync(true));
-      radio.seekToDelta(spinTime);
+      radio.seekToGlobal(spinTime);
       radio.chat(chat);
       break;
     case 'set-time':

@@ -32,7 +32,7 @@ export class Radio {
         this.player = p;
     }
 
-    public seekToDelta(startedTime: number) {
+    public seekToGlobal(startedTime: number) {
         // respond to !time command or seek from update
         // this sets the player to the appropriate time
 
@@ -223,7 +223,6 @@ export class Radio {
     }
 
     public gregPut(description: string, isPublic: boolean) {
-        console.log(description)
 
         this.api.poke({
             app: 'tower',
