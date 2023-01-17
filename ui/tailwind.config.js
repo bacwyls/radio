@@ -23,7 +23,7 @@ const darkColors = {
   'background-input-focused' : '#1D1B1A',
   'background-player-button' : '#343330',  
   'background-shortcut-button' : '#777777',
- 'background-navitem-viewers' : '#777777', 
+  'background-navitem-viewers' : '#777777', 
   'text-icon' : '#F3F2F2',
   'text-primary' : '#F3F2F2',
   'text-default' :  '#DCDDDC',

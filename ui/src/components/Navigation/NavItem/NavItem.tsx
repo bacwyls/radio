@@ -59,7 +59,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
         }
         {!(patp == radio.hub) &&
           <span className={`absolute bottom-0 w-full right-0 flex items-center  text-sm
-          justify-center px-1 py-0.5 font-bold rounded-b bg-background-navitem-viewers
+          justify-center px-1 py-0.5 font-bold rounded-b bg-background-navitem-viewers text-white
           `}
           >
             <Users

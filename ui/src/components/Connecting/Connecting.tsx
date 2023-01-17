@@ -79,7 +79,7 @@ export const Connecting = () => {
         `}
                 style={{
                     width: '20rem',
-                    height: '9.3rem',
+                    height: '10rem',
                     zIndex: 51,
                 }}
             >
@@ -113,14 +113,14 @@ export const Connecting = () => {
                             </>
                             :
                             patp && isValidPatp(patp) && patp.length <= 14 &&
-                            <span className={`  mr-1.5 h-5 w-5
+                            <span className={`  mr-1.5 h-4 w-4
                                 rounded flex justify-center
                                 items-center bg-background-icon 
                          `}
-                                style={{ minWidth: '1.25rem' }}
+                                style={{ minWidth: '1rem' }}
 
                             >
-                                <Sigil patp={patp} size={0.8} />
+                                <Sigil patp={patp} size={0.75} />
                             </span>
                         }
                         {patp == radio.hub ? 'Hub' : patp}

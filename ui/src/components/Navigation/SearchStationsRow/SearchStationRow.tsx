@@ -113,7 +113,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                        bg-background-icon
                                        `}
                 >
-                    <Sigil patp={tuneToText} size={0.7} />
+                    <Sigil patp={tuneToText} size={0.75} />
                 </span>
             }
             < button
