@@ -127,6 +127,8 @@ export const PublishSettings = () => {
                         <textarea
                             className={`bold-placeholder placeholder-text-secondary text-text-primary rounded-md border  w-full 
                              px-2 py-1 outline-none focus:shadow	resize-none  border-background-textarea bg-background-textarea focus:bg-background-textarea-focused
+                            focus:border-2
+                             ${newDescription.trim().length > 0 ? 'focus:border-blue-button' : 'focus:border-blue-disabled'}
                                     `}
                             placeholder="Write a description..."
                             maxLength={64}

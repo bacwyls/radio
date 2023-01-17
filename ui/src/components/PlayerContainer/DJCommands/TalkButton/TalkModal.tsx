@@ -83,7 +83,8 @@ export const TalkModal = () => {
                         autoComplete="off"
                         className={`bold-placeholder rounded-md border  border-background-textarea  w-full
                 px-2 py-1 outline-none focus:shadow resize-none placeholder-text-secondary text-text-primary  
-                bg-background-textarea focus:bg-background-textarea-focused 
+                bg-background-textarea focus:bg-background-textarea-focused  focus:border-2
+                ${textToSpeech.trim().length > 0 ? 'focus:border-blue-button' : 'focus:border-blue-disabled'}
                 `}
                         placeholder='Text to Speech'
                         value={textToSpeech}

@@ -109,7 +109,9 @@ export const ViewersMenu = () => {
                         >
                             < input
                                 type="text"
-                                className='viewers-input'
+                                className={`viewers-input
+                                ${viewersQuery.trim().length > 0 ? 'focus:border-blue-button' : 'focus:border-blue-disabled'}
+                                `}
                                 autoCorrect={'off'}
                                 autoCapitalize={'off'}
                                 autoComplete={'off'}
@@ -117,7 +119,7 @@ export const ViewersMenu = () => {
                                 value={viewersQuery}
                                 onChange={handleViewersInputTextChange}
                             />
-                            <MagnifyingGlass className="absolute right-2 text-base " weight="bold" />
+                            <MagnifyingGlass className="absolute right-2 text-base text-text-default " weight="bold" />
                         </div>
                     </div>
                     <div className="viewers-list"
