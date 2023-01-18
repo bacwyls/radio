@@ -61,7 +61,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
                 `}
     >
       <div
-        className={`font-bold flex items-center justify-between rounded-md text-text-primary px-4 `}
+        className={`font-bold flex items-center justify-between rounded-md text-text-default px-4 `}
         style={{
           height: '2.7rem',
         }}

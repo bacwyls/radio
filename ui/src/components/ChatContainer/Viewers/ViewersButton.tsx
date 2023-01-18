@@ -42,7 +42,7 @@ export const ViewersButton = () => {
         <div id='viewers-menu' className='w-max	ml-0.5'>
             <button
                 className={` flex items-center tracking-wide px-2 py-1	rounded  font-bold 	
-                hover:bg-hover-super-intense
+                hover:bg-hover-super-intense 
                 ${viewers.length == 0 && 'cursor-default'}
                 ${isViewersMenuOpen ? 'bg-hover-super-intense' : 'bg-hover-default'}
           `}
