@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIsPublic } from "../../../features/station/stationSlice";
-import { isPhone } from "../../../util";
 import { IsPublicBadge } from "../../IsPublicBadge";
 import './style.css';
 
@@ -25,7 +24,7 @@ export const StationIsPublicInfo = () => {
                         'This station is private and only the host can use DJ commands (Play & Talk).'
                     }
                 </div>}
-            <IsPublicBadge />
+            <IsPublicBadge isPublic={isPublic} />
         </span >
     )
 }

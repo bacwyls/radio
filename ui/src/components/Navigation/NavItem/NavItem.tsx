@@ -97,7 +97,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
           >
             {title ? title : patp}
           </span>
-          <IsPublicBadge />
+          <IsPublicBadge isPublic={isPublic} />
         </div>
         <div className={`flex font-bold    break-words whitespace-normal text-text-secondary
                     `}

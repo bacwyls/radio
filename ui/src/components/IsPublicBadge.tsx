@@ -1,10 +1,6 @@
 import React from "react"
-import { useAppSelector } from "../app/hooks";
-import { selectIsPublic } from "../features/station/stationSlice";
 
-export const IsPublicBadge = () => {
-
-    const isPublic = useAppSelector(selectIsPublic);
+export const IsPublicBadge = ({ isPublic }) => {
 
     return (
         <span className={`flex items-center justify-center rounded 

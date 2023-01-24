@@ -173,7 +173,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                                         }} >
                                         {x.location}
                                     </div>
-                                    <IsPublicBadge />
+                                    <IsPublicBadge isPublic={x.public} />
                                 </div>
                                 <div className="flex gap-1 items-center  ml-1">
                                     <span className="flex items-center font-bold text-sm "
