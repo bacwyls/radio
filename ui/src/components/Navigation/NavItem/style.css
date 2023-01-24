@@ -1,28 +1,22 @@
 .nav-item{
-    @apply  w-full  hover:bg-hover-default relative text-center  px-6  flex items-center  gap-2.5   overflow-hidden text-base;
-    white-space: nowrap;
+    @apply  w-full whitespace-nowrap hover:bg-hover-default relative text-center  px-6  flex items-center  gap-2.5   overflow-hidden text-base;
     min-height: 5.12rem;
     z-index: 2;
 }
 
-
 .nav-item-grow { 
     transition: all .2s ease-in-out; 
-    }
+}
     
 .nav-item-grow:hover { 
     transform: scale(1.02); 
 }
     
 .nav-item-phone{
-    @apply  relative text-center px-4  flex items-center  gap-2.5   overflow-hidden;
-                     
-    white-space: nowrap;
-    width: 100%;
+    @apply  relative text-center px-4 w-full  flex items-center  gap-2.5   overflow-hidden whitespace-nowrap;
     min-height: 4rem;
     z-index: 2;
 }
-
 
 @media (width <= 1300px){
     .nav-item{

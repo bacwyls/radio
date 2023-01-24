@@ -28,6 +28,9 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
   const navigate = useNavigate();
 
   const handleNavItemClick = () => {
+    if (patp == radio.our) {
+      radio.start();
+    }
     navigate('/station/' + patp)
   }
 

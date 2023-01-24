@@ -2,14 +2,13 @@ import { Megaphone } from "phosphor-react"
 import React, { useEffect, useState } from "react"
 import { radio } from "../../../../api";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsTalkModalOpen, setIsTalkModalOpen } from "../../../../features/ui/uiSlice";
-import { isPhone, scrollToBottom } from "../../../../util"
-import { chatboxId } from "../../../ChatContainer/ChatBox/ChatBox";
+import { selectIsTalkMenuOpen, setIsTalkMenuOpen } from "../../../../features/ui/uiSlice";
+import { isPhone, } from "../../../../util"
 import { talkButtonId } from "./TalkButton";
 
-export const TalkModal = () => {
+export const TalkMenu = () => {
 
-    const isTalkModalOpen = useAppSelector(selectIsTalkModalOpen);
+    const isTalkMenuOpen = useAppSelector(selectIsTalkMenuOpen);
 
     const dispatch = useAppDispatch();
 
@@ -25,46 +24,46 @@ export const TalkModal = () => {
 
         setTextToSpeech('');
 
-        dispatch(setIsTalkModalOpen(false));
+        dispatch(setIsTalkMenuOpen(false));
 
     }
 
     useEffect(() => {
         setTextToSpeech('')
-    }, [isTalkModalOpen]);
+    }, [isTalkMenuOpen]);
 
 
-    const talkModalId = 'talk-modal';
+    const talkMenuId = 'talk-menu';
 
     useEffect(() => {
         if (isPhone()) return;
 
         document.addEventListener(
             "click",
-            handleOutsideTalkModalClick
+            handleOutsideTalkMenuClick
         )
 
-        return () => document.removeEventListener('click', handleOutsideTalkModalClick)
+        return () => document.removeEventListener('click', handleOutsideTalkMenuClick)
     }, []);
 
-    const handleOutsideTalkModalClick = (event: any) => {
+    const handleOutsideTalkMenuClick = (event: any) => {
         var clicked = event.target as Element;
-        var talkModal = document.getElementById(talkModalId);
+        var talkMenu = document.getElementById(talkMenuId);
         var talkButton = document.getElementById(talkButtonId);
 
         if (
-            talkModal && clicked != talkModal && !talkModal.contains(clicked) && clicked != talkButton && !talkButton?.contains(clicked)
+            talkMenu && clicked != talkMenu && !talkMenu.contains(clicked) && clicked != talkButton && !talkButton?.contains(clicked)
         ) {
-            dispatch(setIsTalkModalOpen(false));
+            dispatch(setIsTalkMenuOpen(false));
         }
     }
 
     return (
-        isTalkModalOpen ?
+        isTalkMenuOpen ?
             <div
-                id={talkModalId}
+                id={talkMenuId}
                 className={`  
-                    ${isPhone() ? 'talk-modal-phone' : 'talk-modal'}
+                    ${isPhone() ? 'talk-menu-phone' : 'talk-menu'}
                     `}
             >
                 <div

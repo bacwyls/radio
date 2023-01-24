@@ -11,8 +11,8 @@ import { DisabledPlayButton } from './DJCommands/PlayButton/DisabledPlayButton';
 import { DisabledTalkButton } from './DJCommands/TalkButton/DisabledTalkButton';
 import { SettingsMenu } from './SettingsMenu/SettingsMenu';
 import { SettingsButton } from './SettingsMenu/SettingsButton';
-import { PlayModal } from './DJCommands/PlayButton/PlayModal';
-import { TalkModal } from './DJCommands/TalkButton/TalkModal';
+import { PlayMenu } from './DJCommands/PlayButton/PlayMenu';
+import { TalkMenu } from './DJCommands/TalkButton/TalkMenu';
 import { isValidPatp } from 'urbit-ob'
 import './style.css';
 
@@ -31,8 +31,8 @@ export const PlayerContainer: FC<IPlayerContainer> = (props: IPlayerContainer) =
     >
       <Player />
       <SettingsMenu />
-      <PlayModal />
-      <TalkModal />
+      <PlayMenu />
+      <TalkMenu />
       {!isPhone() &&
         <div className=' w-full flex-wrap relative pb-2 sm:pb-0 pt-2 flex justify-center gap-2 '
         >

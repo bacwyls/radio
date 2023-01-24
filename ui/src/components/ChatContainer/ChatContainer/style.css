@@ -1,5 +1,5 @@
 .chat-container {
-   @apply flex flex-col justify-between  h-full border-l  border-border-default  bg-background-default   ;
+   @apply flex flex-col justify-between  h-full border-l-2  border-border-mild  bg-background-default   ;
 }
 
 @media (width > 1300px){
@@ -13,7 +13,7 @@
 @media (width <= 1300px){
 
     .chat-container{
-        @apply shadow rounded-md border  mb-2 mx-4;
+        @apply shadow rounded-md border-2  mb-2 mx-4;
         width: calc(100% - 1.7rem);
         height: 40vh;
         min-height: 17rem;
@@ -25,7 +25,7 @@
 }
 
 .chat-container-phone{
-    @apply  w-full border-t    fixed  left-0 bg-background-default border-border-default  ;
+    @apply  w-full border-t   fixed  left-0 bg-background-default border-border-mild  ;
     bottom: 2.7rem;
     height: calc(100% - 2.7rem - 2.7rem - 56.25vw - 1rem);
 }

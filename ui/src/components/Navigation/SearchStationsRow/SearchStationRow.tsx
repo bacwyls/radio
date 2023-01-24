@@ -2,9 +2,9 @@ import { MusicNotes, Users, X, } from "phosphor-react";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidPatp } from 'urbit-ob'
+import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
 import { IMinitower, selectTowers } from "../../../features/station/stationSlice";
-import { selectIsDarkMode } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { IsPublicBadge } from "../../IsPublicBadge";
 import { Sigil } from "../../Sigil";
@@ -17,7 +17,6 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
     const towers = useAppSelector(selectTowers);
     const [isFocused, setIsFocused] = useState(false)
-    const isDarkMode = useAppSelector(selectIsDarkMode);
 
     const navigate = useNavigate();
 
@@ -56,7 +55,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
         let text = e.target.value
         setTuneToText(text);
         if (text.trim().length > 0) {
-            setQueriedTowers(towers.filter(x => x.location.includes(text)));
+            setQueriedTowers(towers.filter(x => x.location.includes(text) && x.location != radio.our));
         }
         else {
             setQueriedTowers(towers);
@@ -64,7 +63,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
     }
 
     const handleTuneToSubmit = () => {
-        if (!isValidPatp(tuneToText)) { return; };
+        if (!isValidPatp(tuneToText) || tuneToText == radio.our) { return; };
 
         setTuneToText('');
         navigate('/station/' + tuneToText);
@@ -77,16 +76,15 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
     return (
         <div
-            className={`relative items-center flex w-full 	h-8 
-            `}
+            className={`relative items-center flex w-full 	h-8  `}
         >
             < input
                 id={searchStationInputId}
                 type="text"
                 className={`   relative whitespace-nowrap	w-full h-full rounded-md  font-bold
-               text-black-80 placeholder-black-60    focus:outline-none
+               text-black-80 placeholder-black-60    focus:outline-none slow-animation
              ${isFocused ? 'bg-orange-input-focused  border-2 shadow ' : 'bg-orange-input border'}
-             ${isValidPatp(tuneToText) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
+             ${(isValidPatp(tuneToText) && tuneToText != radio.our) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
              `}
                 style={{
                     paddingRight: '5rem',
@@ -106,7 +104,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
                 }
             />
-            {isValidPatp(tuneToText) &&
+            {isValidPatp(tuneToText) && tuneToText != radio.our &&
                 <span opacity-50
                     className={`absolute ml-2 mr-1 h-4 w-4  overflow-hidden 
                                        rounded flex justify-center items-center
@@ -119,7 +117,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < button
                 className={`absolute right-0  rounded-md  h-full  flex  
             justify-center items-center whitespace-nowrap px-1 font-bold z-10 text-text-button 
-            ${isValidPatp(tuneToText) ? 'bg-orange hover:shadow' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
+            ${(isValidPatp(tuneToText) && tuneToText != radio.our) ? 'bg-orange hover:shadow' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
                     width: isPhone() ? '4rem' : '4.7rem',

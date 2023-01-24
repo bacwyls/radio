@@ -17,7 +17,7 @@ import {
 } from './features/ui/uiSlice';
 import { isMobile, isTablet } from 'react-device-detect';
 import { radio } from './api';
-import { chatboxId } from './components/ChatContainer/ChatBox/ChatBox';
+import { chatboxId, } from './components/ChatContainer/ChatBox/ChatBox';
 
 export function handleUpdate(update: any, dispatch: any) {
   console.log("radio update", update);
@@ -54,10 +54,7 @@ export function handleUpdate(update: any, dispatch: any) {
       break;
     case 'chat':
       let chat = update['chat'];
-      dispatch(setChatsWithChat(chat));
-      if (chat.from == radio.our) {
-        scrollToBottom(chatboxId)
-      }
+      setChat(dispatch, chat);
       break;
     case 'viewers':
       dispatch(setViewers(update['viewers']));
@@ -67,10 +64,7 @@ export function handleUpdate(update: any, dispatch: any) {
       break;
     case 'chatlog':
       let chatlog = update['chatlog'];
-      dispatch(setChatsWithChatlog(chatlog));
-      setTimeout(() => {
-        scrollToBottom(chatboxId)
-      }, 500)
+      setChatlog(dispatch, chatlog);
       break;
     case 'banned':
       dispatch(setBanned(update['banned']));
@@ -86,11 +80,58 @@ export function resetPage(dispatch: any) {
   dispatch(setSpinUrl(''));
 }
 
-export const scrollToBottom = (chatboxId) => {
+const setChatlog = async (dispatch, chatlog) => {
+
+  await dispatch(setChatsWithChatlog(chatlog));
+
+  setTimeout(() => {
+    scrollToBottom(chatboxId, 'auto')
+  }, 100)
+}
+
+const setChat = async (dispatch, chat) => {
+
+  let scroll = chat.from == radio.our ? true : shouldScroll();
+
+  await dispatch(setChatsWithChat(chat));
+
+  if (scroll) {
+    setTimeout(() => {
+      scrollToBottom(chatboxId, 'auto')
+    }, 100)
+  }
+}
+
+export const shouldScroll = () => {
+  let chatbox = document.getElementById(chatboxId)
+
+  // if the user scrolls up half of the chatbox height 
+  // it stops auto-scrolling to bottom on every new msg
+
+  if (chatbox) {
+    let halfHeight = chatbox.clientHeight / 2;
+    let position = ((chatbox.scrollHeight - chatbox.clientHeight) - (chatbox.scrollTop));
+
+    if (position < halfHeight) {
+      return true
+    }
+
+    return false;
+  }
+
+  return false;
+}
+
+export const scrollToBottom = (chatboxId, behavior: ScrollBehavior) => {
+
   let chatWindow = document.getElementById(chatboxId) as HTMLDivElement;
+
   if (!chatWindow) return;
+
   var xH = chatWindow.scrollHeight;
-  chatWindow.scrollTo(0, xH);
+
+
+  chatWindow.scrollTo({ top: xH, left: 0, behavior: behavior });
 }
 
 export function handleUserInput(

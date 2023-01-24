@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { radio } from '../../../api';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ThemeButton } from '../../../components/ThemeButton';
+import { selectTunePatP } from '../../../features/station/stationSlice';
+import { setIsPlayMenuOpen, setIsTalkMenuOpen, setIsChatFullScreen, setIsSettingsMenuOpen } from '../../../features/ui/uiSlice';
 import { tuneTo } from '../../../util';
 import './style.css';
 
@@ -12,8 +14,15 @@ export const HomePhone = () => {
 
     const dispatch = useAppDispatch();
 
+    const tunePatP = useAppSelector(selectTunePatP);
+
     useEffect(() => {
-        tuneTo(null, radio, dispatch);
+        dispatch(setIsPlayMenuOpen(false));
+        dispatch(setIsTalkMenuOpen(false));
+        dispatch(setIsChatFullScreen(false));
+        dispatch(setIsSettingsMenuOpen(false));
+
+        tunePatP && tuneTo(null, radio, dispatch);
     }, []);
 
     return (

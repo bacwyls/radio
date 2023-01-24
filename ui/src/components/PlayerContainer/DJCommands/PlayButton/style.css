@@ -1,5 +1,5 @@
-.play-modal{
-   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border  border-border-default  text-base  bg-background-default;
+.play-menu{
+   @apply fixed flex flex-col z-20 gap-3 py-10 px-8 rounded-md shadow-lg border-2  border-border-mild  text-base  bg-background-default;
    left: 37.5%;
    transform: translate(-50%, -50%);
    top: 50%;
@@ -7,7 +7,7 @@
 }
 
 @media (width <= 1300px){
-    .play-modal{
+    .play-menu{
         @apply absolute;
         height: min-content;
         transform: translate(-50%, -50%);
@@ -43,8 +43,8 @@
     }
 }
 
-.play-modal-phone {
-    @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t    w-full   border-border-default  bg-background-default  ;
+.play-menu-phone {
+    @apply fixed left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center border-t    w-full   border-border-mild  bg-background-default  ;
     height: calc(100% - 2.7rem - 2.7rem - 56.25vw - 1rem);
     min-height: 10rem;
     bottom: 2.7rem;

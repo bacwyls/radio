@@ -2,15 +2,14 @@ import { PlayCircle, Link } from "phosphor-react";
 import React, { useEffect, useState } from "react";
 import { radio } from "../../../../api";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsPlayModalOpen, setIsPlayModalOpen } from "../../../../features/ui/uiSlice";
-import { isPhone, scrollToBottom } from "../../../../util";
-import { chatboxId } from "../../../ChatContainer/ChatBox/ChatBox";
+import { selectIsPlayMenuOpen, setIsPlayMenuOpen } from "../../../../features/ui/uiSlice";
+import { isPhone, } from "../../../../util";
 import { playButtonId } from "./PlayButton";
 import './style.css';
 
-export const PlayModal = () => {
+export const PlayMenu = () => {
 
-    const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen)
+    const isPlayMenuOpen = useAppSelector(selectIsPlayMenuOpen)
 
     const [urlToPlay, setUrlToPlay] = useState('');
 
@@ -26,57 +25,51 @@ export const PlayModal = () => {
 
         setUrlToPlay('');
 
-        dispatch(setIsPlayModalOpen(false));
+        dispatch(setIsPlayMenuOpen(false));
 
     }
 
     useEffect(() => {
         setUrlToPlay('')
-    }, [isPlayModalOpen]);
+    }, [isPlayMenuOpen]);
 
 
-    const playModalId = 'play-modal';
+    const playMenuId = 'play-menu';
 
     useEffect(() => {
         if (isPhone()) return;
 
         document.addEventListener(
             "click",
-            handleOutsidePlayModalClick
+            handleOutsidePlayMenuClick
         )
 
-        return () => document.removeEventListener('click', handleOutsidePlayModalClick)
+        return () => document.removeEventListener('click', handleOutsidePlayMenuClick)
     }, []);
 
-    const handleOutsidePlayModalClick = (event: any) => {
+    const handleOutsidePlayMenuClick = (event: any) => {
         var clicked = event.target as Element;
-        var playModal = document.getElementById(playModalId);
+        var playMenu = document.getElementById(playMenuId);
         var playButton = document.getElementById(playButtonId);
 
         if (
-            playModal && clicked != playModal && !playModal.contains(clicked) && clicked != playButton && !playButton?.contains(clicked)
+            playMenu && clicked != playMenu && !playMenu.contains(clicked) && clicked != playButton && !playButton?.contains(clicked)
         ) {
-            dispatch(setIsPlayModalOpen(false));
+            dispatch(setIsPlayMenuOpen(false));
         }
     }
 
     return (
-        isPlayModalOpen
+        isPlayMenuOpen
             ?
             <div
-                id={playModalId}
-                className={`
-        ${isPhone() ? 'play-modal-phone' : 'play-modal'}
-    `}
-            >
-                <div className='font-semibold text-bigger'
-                >
+                id={playMenuId}
+                className={`  ${isPhone() ? 'play-menu-phone' : 'play-menu'}`}>
+                <div className='font-semibold text-bigger'>
                     Change the current player content
                 </div>
                 <div
-                    className={`
-      flex flex-col text-text-secondary
-    `}
+                    className={`flex flex-col text-text-secondary `}
                 >
                     <span className='font-semibold'>
                         Accepts a variety of URLs </span>
@@ -84,8 +77,7 @@ export const PlayModal = () => {
                         e.g., Youtube, SoundCloud, Twitch, file paths, etc.
                     </span>
                 </div>
-                <div className='flex relative items-center'
-                >
+                <div className='flex relative items-center'>
                     <input
                         id={urlInputId}
                         autoComplete="off"

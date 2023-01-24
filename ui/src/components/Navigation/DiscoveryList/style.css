@@ -1,6 +1,6 @@
 
 .discovery-list{
-    @apply flex flex-col bg-background-default border-l   border-border-default   absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
+    @apply flex flex-col bg-background-default border-l-2   border-border-mild   absolute overflow-y-auto overflow-x-hidden  right-0 bottom-0   ;
     height: calc(100vh - 2.7rem);
     width: 19rem;
     z-index: 2;

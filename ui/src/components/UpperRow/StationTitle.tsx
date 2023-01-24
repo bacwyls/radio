@@ -1,5 +1,5 @@
-import { Radio, Television } from 'phosphor-react';
 import React from 'react';
+import { Radio, Television } from 'phosphor-react';
 import { isValidPatp } from 'urbit-ob'
 import { radio } from '../../api';
 import { useAppSelector } from '../../app/hooks';
@@ -69,7 +69,7 @@ export const StationTitle = () => {
                            `}
                             style={{ maxHeight: '1.7rem', maxWidth: '1.7rem', minHeight: '1.7rem', minWidth: '1.7rem' }}
                         >
-                            <Sigil patp={tunePatP} size={1} />
+                            <Sigil patp={tunePatP} size={1.1} />
                         </span>
                         <span
                             className={`ml-2 font-bold 

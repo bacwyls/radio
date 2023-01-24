@@ -48,7 +48,7 @@ export const PhoneActionsMenu = () => {
             />
             {showActionsMenu &&
                 <div
-                    className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t    bg-background-default text-text-default border-border-default  text-sm
+                    className={`fixed flex left-0 w-screen gap-1 py-2 justify-around items-center border-t    bg-background-default text-text-default border-border-mild  text-sm
                                 `}
                     style={{
                         bottom: '2.7rem',

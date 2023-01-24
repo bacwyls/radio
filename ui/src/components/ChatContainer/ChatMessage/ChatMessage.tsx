@@ -1,5 +1,5 @@
 import { Megaphone, PlayCircle } from "phosphor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { FC } from "react";
 import { radio } from "../../../api";
 import { getCommandArg, isPhone, timestampFromTime } from "../../../util";
@@ -15,31 +15,6 @@ interface IChatMessage {
 
 export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
     const { from, time, message } = props;
-
-    // const chatToHTML = (message: string, from?: string, time?: string) => {
-
-    // let msg = chat.message;
-    // let from = from;
-    // let time = chat.time;
-
-    // let split = chat.indexOf(': ');
-    // if(split === -1) return chatToHTML_default(key, chat);
-
-    // let from = chat.slice(0, split+2)
-    // let message = chat.slice(split+2)
-
-    // console.log(`processing chat from ${from} with message ${message}`)
-
-    //     return (!from || !time)
-    //         ? chatToHTML_default(message)
-    //         : chatToHTMLWithTimeAndFrom(from, time, message);
-    // }
-
-    // const chatToHTML_default = (message: string) => {
-    //     return (
-    //         <p >{message}</p>
-    //     );
-    // }
 
     const renderMessage = (message) => {
         let isCommand = getCommandArg(message);
@@ -108,12 +83,12 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
                 </div >
                 :
                 <div
-                    className={`font-medium break-words whitespace-normal text-text-primary
-                        `}
+                    className={`font-medium break-words whitespace-normal text-text-primary `}
                     style={{
                         paddingLeft: '1.4rem',
                         lineHeight: '1rem',
                     }}
+
                 >
                     {
                         checkURL(message)
@@ -131,55 +106,49 @@ export const ChatMessage: FC<IChatMessage> = (props: IChatMessage) => {
         )
     }
 
-    const chatToHTMLWithTimeAndFrom = (from: string, time: string, message: string) => {
-
-        return (
-            <div
-                className={` chat-message   
-                    ${!isPhone() && 'hover:bg-hover-mild'}
-                       
-        `}
-            >
-                <div className={`flex justify-between items-center w-4/10 mb-1 text-text-secondary ${isPhone() && 'mr-1'} 
-                
-                `}>
-                    <div className={`flex items-center w-full
-                    `}
-                    >
-                        <span className={`  mr-1.5 h-4 w-4
-                          rounded flex justify-center 
-                          items-center bg-background-icon
-                          `}
-                            style={{ minWidth: '1rem' }}
-                        >
-                            <Sigil patp={from} size={0.75} />
-                        </span>
-                        <span className='font-semibold mr-1 w-full'
-                            style={{ lineHeight: '0.7rem', }}
-                        >
-                            {from == radio.our ? 'You' : from}{''}
-                        </span>
-                    </div>
-                    <span
-                        className={` font-bold  text-sm whitespace-nowrap
-        `}
-                    >
-                        {timestampFromTime(time)}
-                    </span>
-                </div>
-                {
-                    renderMessage(message)
-                }
-            </div >
-        );
-    }
-
     function checkURL(url: string) {
         return (url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|webp)(\?(.*))?$/gmi) != null);
     }
 
     return (
-        chatToHTMLWithTimeAndFrom(from, time, message)
+        <div
+            className={` chat-message   
+            ${!isPhone() && 'hover:bg-hover-mild'}
+`}
+        >
+            <div className={`flex justify-between items-center w-4/10 mb-1 text-text-secondary ${isPhone() && 'mr-1'} 
+        
+        `}>
+                <div className={`flex items-center w-full
+            `}
+                >
+                    <span className={`  mr-1.5 h-4 w-4
+                  rounded flex justify-center 
+                  items-center bg-background-icon
+                  `}
+                        style={{ minWidth: '1rem' }}
+                    >
+                        <Sigil patp={from} size={0.75} />
+                    </span>
+                    <span className={`font-semibold mr-1 w-full
+      
+                `}
+                        style={{ lineHeight: '0.7rem', }}
+                    >
+                        {from == radio.our ? 'You' : from}{''}
+                    </span>
+                </div>
+                <span
+                    className={` font-bold  text-sm whitespace-nowrap
+`}
+                >
+                    {timestampFromTime(time)}
+                </span>
+            </div>
+            {
+                renderMessage(message)
+            }
+        </div >
     )
 
 }

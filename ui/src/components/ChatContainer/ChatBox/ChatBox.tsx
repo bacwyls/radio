@@ -4,8 +4,8 @@ import { chopChats, selectChats } from '../../../features/station/stationSlice';
 import { selectIsChatFullScreen } from '../../../features/ui/uiSlice';
 import { isPhone, scrollToBottom } from '../../../util';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
-import './style.css';
 import { ViewersButton } from '../Viewers/ViewersButton';
+import './style.css';
 
 const ChatMessageMemo = React.memo(ChatMessage);
 const chatboxContainerId = 'chatbox-container-radio';
@@ -13,7 +13,6 @@ export const chatboxId = 'chatbox-radio';
 
 interface IChatBox {
 }
-
 
 export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
@@ -27,30 +26,15 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
 
   useEffect(() => {
 
-    let chatbox = document.getElementById(chatboxId)
-
-    // if the user scrolls up half of the chatbox height 
-    // it stops auto-scrolling to bottom on every new msg
-    // with the exception of his own msgs (check the handler for chat update in util.ts) 
-
-    if (chatbox) {
-      let halfHeight = chatbox.clientHeight / 2;
-      let msgHeight = 89;
-      let position = ((chatbox.scrollHeight - chatbox.clientHeight) - (chatbox.scrollTop + msgHeight));
-
-      if (position < halfHeight) {
-        scrollToBottom(chatboxId)
-      }
-    }
-
     if (chats.length > maxChats) {
       dispatch(chopChats(chats));
     }
 
   }, [chats]);
 
+
   useEffect(() => {
-    scrollToBottom(chatboxId);
+    scrollToBottom(chatboxId, 'auto');
   }, [isChatFullScreen]);
 
   return (
@@ -64,6 +48,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
         className={`font-bold flex items-center justify-between rounded-md text-text-default px-4 `}
         style={{
           height: '2.7rem',
+          minHeight: '2.7rem',
         }}
       >
         <span
@@ -80,7 +65,7 @@ export const ChatBox: FC<IChatBox> = (props: IChatBox) => {
       >
         {chats && chats.length > 0 ?
           <div
-            className={`overflow-y-auto overflow-x-hidden`}
+            className={`overflow-y-auto overflow-x-hidden smooth-scroll`}
             id={chatboxId}
           >
             {

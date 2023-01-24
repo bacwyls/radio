@@ -16,8 +16,8 @@ export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContai
 
   return (
     <div
-      className={` flex justify-between items-center w-full border-b 
-      border-border-default  bg-background-default px-4 
+      className={` flex justify-between items-center w-full border-b-2 
+      border-border-mild  bg-background-default px-4 
                    ${isPhone() && isLandscape && 'upper-row-phone-landscape'}
                 `}
       style={{

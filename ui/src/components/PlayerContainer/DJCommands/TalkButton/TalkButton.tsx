@@ -1,7 +1,7 @@
 import { Megaphone } from "phosphor-react";
 import React, { } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsTalkModalOpen, setIsTalkModalOpen } from "../../../../features/ui/uiSlice";
+import { selectIsTalkMenuOpen, setIsTalkMenuOpen } from "../../../../features/ui/uiSlice";
 import { isPhone } from "../../../../util";
 import './style.css';
 
@@ -9,7 +9,7 @@ export const talkButtonId = 'talk-button';
 
 export const TalkButton = () => {
 
-    const isTalkModalOpen = useAppSelector(selectIsTalkModalOpen);
+    const isTalkMenuOpen = useAppSelector(selectIsTalkMenuOpen);
 
     const dispatch = useAppDispatch();
 
@@ -17,7 +17,7 @@ export const TalkButton = () => {
         isPhone() ?
             <button
                 className='talk-button-phone'
-                onClick={() => dispatch(setIsTalkModalOpen(!isTalkModalOpen))}
+                onClick={() => dispatch(setIsTalkMenuOpen(!isTalkMenuOpen))}
             >
                 <Megaphone weight="bold" className="text-xl" />
                 Talk
@@ -27,9 +27,9 @@ export const TalkButton = () => {
                 id={talkButtonId}
                 className={` 
                     talk-button 
-                     ${isTalkModalOpen ? 'bg-hover-intense' : 'bg-background-player-button  hover:bg-hover-intense'}
+                     ${isTalkMenuOpen ? 'bg-hover-intense' : 'bg-background-player-button  hover:bg-hover-intense'}
                 `}
-                onClick={() => dispatch(setIsTalkModalOpen(!isTalkModalOpen))}
+                onClick={() => dispatch(setIsTalkMenuOpen(!isTalkMenuOpen))}
             >
                 <Megaphone weight="bold" className="megaphone" />
                 Talk

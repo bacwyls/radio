@@ -78,8 +78,11 @@ export const PublishSettings = () => {
                 {showInfo &&
                     <div
                         className={`absolute  top-6 z-10 w-4/5 text-base border-border-default  shadow-md bg-background-default
-                         px-2 py-4 rounded-md   font-bold border  cursor-text     text-center
+                         px-2 py-3   rounded-md   font-bold border  cursor-text     text-center 
                          `}
+                        style={{
+                            lineHeight: '0.8rem'
+                        }}
                     >
                         Publishing the station adds it to the discovery pool.
                     </div>

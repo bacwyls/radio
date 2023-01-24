@@ -29,7 +29,7 @@
 }
 
 .settings-menu{
-    @apply flex border  border-border-default  bg-background-default flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
+    @apply flex border-2  border-border-mild  bg-background-default flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
     height: 22rem;
     width: 16rem;
     left: 0.9rem;

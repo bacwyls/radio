@@ -4,10 +4,11 @@ import { isPhone, } from "../../../../util";
 import { ViewersTabOption } from "../ViewersButton";
 import { MagnifyingGlass } from "phosphor-react";
 import { useAppSelector } from "../../../../app/hooks";
-import './ViewersMenu.css';
 import { selectBanned, selectTunePatP, selectViewers } from "../../../../features/station/stationSlice";
 import { Banned } from "./Banned";
 import { Viewer } from "./Viewer";
+import './style.css';
+import { selectIsViewersMenuOpen } from "../../../../features/ui/uiSlice";
 
 // const viewers = ['~zod', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel',]
 // const viewers = ['~zod', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', '~tasrym-sorrup-fidwed-sipwyn--tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel', '~harlys-forbec', '~tasrym-sorrup-fidwed-sipwyn', "~bosdys", '~martyr-martel']
@@ -16,6 +17,7 @@ export const ViewersMenu = () => {
     const viewers = useAppSelector(selectViewers);
     const banned = useAppSelector(selectBanned);
     const tunePatP = useAppSelector(selectTunePatP);
+    const isViewersMenuOpen = useAppSelector(selectIsViewersMenuOpen)
 
     const [openTab, setOpenTab] = useState<ViewersTabOption>('Online');
     const [viewersQuery, setViewersQuery] = useState('');
@@ -57,49 +59,54 @@ export const ViewersMenu = () => {
                ${isPhone() ? 'viewers-menu-phone' : ' viewers-menu'}
                     `}
             >
-                <div className={`flex h-7 border-b  border-border-intense text-text-default
+                {
+                    radio.isAdmin() &&
+                    <div className={`flex h-7 border-b-2  border-transparent text-text-default
             `}
-                >
-                    <button
-                        className={`w-1/2  py-2 
-                            flex justify-center items-center  '
-                             ${openTab == 'Online' &&
-                            'border-b-2  border-border-super-intense font-semibold'
-                            }
+                    >
+                        <button
+                            className={`w-1/2  py-2 
+                            flex justify-center items-center border-b-2
+                             ${openTab == 'Online' ?
+                                    '  border-text-default font-semibold  '
+                                    :
+                                    ' border-border-default'
+                                }
                       ` }
-                        onClick={() => handleTabClick('Online')}
-                        style={{ marginBottom: '-1px' }}
-                    >
-                        Online
-                        <span className={`ml-1 text-sm
-                        `}
+                            style={{ marginBottom: '-1px' }}
+                            onClick={() => handleTabClick('Online')}
                         >
-                            ({viewers.length})
-                        </span>
-                    </button>
-                    <button
-                        className={`w-1/2 
-                    py-2 flex justify-center items-center 
-                    ${radio.isAdmin() ? '' : 'cursor-default opacity-50'}
-                    ${openTab == 'Banned' &&
-                            'border-border-super-intense font-semibold border-b-2 '
-                            }
-                            `}
-                        onClick={() => {
-                            radio.isAdmin() &&
-                                handleTabClick('Banned')
-                        }}
-                        style={{ marginBottom: '-1px' }}
-                    >
-                        Banned
-                        {radio.isAdmin() &&
-                            <span className={`ml-1 text-sm
-                               `}
+                            Online
+                            <span className={`ml-1 text-sm  bg-hover-default px-1.5 h-4 flex items-center justify-center rounded
+                                                     ${openTab == 'Online' && ' bg-hover-intense  font-bold'}
+
+                        `}
                             >
-                                ({banned.length})
-                            </span>}
-                    </button>
-                </div>
+                                {viewers.length}
+                            </span>
+                        </button>
+                        <button
+                            className={`w-1/2 
+                 py-2 flex justify-center items-center border-b-2
+                 ${openTab == 'Banned' ?
+                                    'border-text-default  font-semibold border-b-2 '
+                                    : 'border-border-default '}
+                         `}
+                            onClick={() => {
+                                handleTabClick('Banned')
+                            }}
+                            style={{ marginBottom: '-1px' }}
+                        >
+                            Banned
+                            <span className={`ml-1 text-sm  bg-hover-default px-1.5 h-4 flex items-center justify-center rounded
+                                                                                 ${openTab == 'Banned' && ' bg-hover-intense font-bold'}
+                     `}
+                            >
+                                {banned.length}
+                            </span>
+                        </button>
+                    </div>
+                }
                 <div className="relative h-full "
                 >
                     <div className="absolute w-full h-10 top-0 left-0 "
@@ -123,6 +130,9 @@ export const ViewersMenu = () => {
                         </div>
                     </div>
                     <div className="viewers-list"
+                        style={{
+                            height: radio.isAdmin() ? 'calc(100% - 1.75rem)' : '100%'
+                        }}
                     >
                         <div className={` 
                                 ${isPhone() ? 'viewers-input-sticky-row-phone' : 'viewers-input-sticky-row'}
@@ -148,3 +158,69 @@ export const ViewersMenu = () => {
             <></>
     )
 }
+
+
+
+// <div className={`flex h-7 border-b-2  border-transparent text-text-default
+//             `}
+//                     >
+//                         <button
+//                             className={`w-1/2  py-2
+//                             flex justify-center items-center border-b-2
+//                              ${openTab == 'Online' ?
+//                                     '  border-text-default font-semibold  '
+//                                     :
+//                                     ' border-border-default'
+//                                 }
+//                       ` }
+//                             style={{ marginBottom: '-2px' }}
+//                             onClick={() => handleTabClick('Online')}
+//                         >
+//                             Online
+
+//                             {!radio.isAdmin() &&
+//                                 <span className={`ml-1 text-sm  bg-hover-default px-1.5 h-4 flex items-center justify-center rounded
+//                                                      ${openTab == 'Online' && ' bg-hover-intense  font-bold'}
+
+//                         `}
+//                                 >
+//                                     {viewers.length}
+//                                 </span>
+//                             }
+//                         </button>
+//                         {!radio.isAdmin() ?
+//                             <button
+//                                 className={`w-1/2
+//                  py-2 flex justify-center items-center border-b-2
+//                  ${openTab == 'Banned' ?
+//                                         'border-text-default  font-semibold border-b-2 '
+//                                         : 'border-border-default '}
+//                          `}
+//                                 onClick={() => {
+//                                     handleTabClick('Banned')
+//                                 }}
+//                                 style={{ marginBottom: '-2px' }}
+//                             >
+//                                 Banned
+//                                 <span className={`ml-1 text-sm  bg-hover-default px-1.5 h-4 flex items-center justify-center rounded
+//                                                                                  ${openTab == 'Banned' && ' bg-hover-intense font-bold'}
+//                      `}
+//                                 >
+//                                     {banned.length}
+//                                 </span>
+//                             </button>
+//                             :
+//                             <button
+//                                 className={`w-1/2
+//                     py-2 flex justify-center items-center border-b-2
+//                     cursor-default opacity-50
+//                     ${openTab == 'Banned' ?
+//                                         'border-text-default  font-semibold border-b-2 '
+//                                         : 'border-border-default '}
+//                             `}
+//                                 style={{ marginBottom: '-2px' }}
+//                             >
+//                                 Banned
+//                             </button>
+//                         }
+//                     </div>

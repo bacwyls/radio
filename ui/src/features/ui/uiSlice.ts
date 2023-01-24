@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-
 const isSystemDarkMode = () => {
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     return true
@@ -18,8 +17,8 @@ export interface UIState {
   isSettingsMenuOpen: boolean,
   isLandscape: boolean,
   isDarkMode: boolean,
-  isPlayModalOpen: boolean,
-  isTalkModalOpen: boolean,
+  isPlayMenuOpen: boolean,
+  isTalkMenuOpen: boolean,
   documentFontSize: number,
 }
 
@@ -32,8 +31,8 @@ const initialState: UIState = {
   isSettingsMenuOpen: false,
   isLandscape: false,
   isDarkMode: isSystemDarkMode(),
-  isPlayModalOpen: false,
-  isTalkModalOpen: false,
+  isPlayMenuOpen: false,
+  isTalkMenuOpen: false,
   documentFontSize: 29,
 };
 
@@ -89,16 +88,16 @@ export const uiSlice = createSlice({
         isSettingsMenuOpen: action.payload,
       }
     },
-    setIsPlayModalOpen: (state, action: PayloadAction<boolean>) => {
+    setIsPlayMenuOpen: (state, action: PayloadAction<boolean>) => {
       return {
         ...state,
-        isPlayModalOpen: action.payload,
+        isPlayMenuOpen: action.payload,
       }
     },
-    setIsTalkModalOpen: (state, action: PayloadAction<boolean>) => {
+    setIsTalkMenuOpen: (state, action: PayloadAction<boolean>) => {
       return {
         ...state,
-        isTalkModalOpen: action.payload,
+        isTalkMenuOpen: action.payload,
       }
     },
     setDocumentFontSize: (state, action: PayloadAction<number>) => {
@@ -119,8 +118,8 @@ export const {
   setIsDarkMode,
   setIsViewersMenuOpen,
   setIsSettingsMenuOpen,
-  setIsPlayModalOpen,
-  setIsTalkModalOpen,
+  setIsPlayMenuOpen,
+  setIsTalkMenuOpen,
   setDocumentFontSize,
 } = uiSlice.actions;
 
@@ -132,8 +131,8 @@ export const selectIsLandscape = (state: RootState) => state.ui.isLandscape;
 export const selectIsDarkMode = (state: RootState) => state.ui.isDarkMode;
 export const selectIsViewersMenuOpen = (state: RootState) => state.ui.isViewersMenuOpen;
 export const selectIsSettingsMenuOpen = (state: RootState) => state.ui.isSettingsMenuOpen;
-export const selectIsPlayModalOpen = (state: RootState) => state.ui.isPlayModalOpen;
-export const selectIsTalkModalOpen = (state: RootState) => state.ui.isTalkModalOpen;
+export const selectIsPlayMenuOpen = (state: RootState) => state.ui.isPlayMenuOpen;
+export const selectIsTalkMenuOpen = (state: RootState) => state.ui.isTalkMenuOpen;
 export const selectDocumentFontSize = (state: RootState) => state.ui.documentFontSize;
 
 export default uiSlice.reducer;

@@ -55,7 +55,7 @@ export const ChatInputRow: FC<IChatInputRow> = (props: IChatInputRow) => {
                 type="text"
                 className={`bold-placeholder  pl-2  flex items-center relative   font-medium
                       border focus:border-2  border-border-intense  rounded-md  outline-none focus:shadow text-text-primary focus:bg-background-input-focused bg-background-input 
-                      placeholder-text-secondary w-full 
+                      placeholder-text-secondary w-full slow-animation
                 ${!(tunePatP && isValidPatp(tunePatP)) && 'cursor-default '}
                 ${inputText.trim().length > 0 ? 'focus:border-blue-button' : 'focus:border-blue-disabled'}
                     ${isPhone() ? '' : 'mt-2 '}

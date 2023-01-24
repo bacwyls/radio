@@ -32,8 +32,8 @@ const darkColors = {
   'text-button' : '#343330',
   'text-admin' : '#FF8D0A',
   'text-self' : '#1D9AF1',
-  'border-mild' : '#3F3D3C',
-  'border-default': '#4A4948',
+  'border-mild' : '#4A4948',
+  'border-default': '#575553',
   'border-intense' : '#60605E',
   'border-super-intense' : '#F3F2F2',
   'hover-mild' :  '#343330',
@@ -89,7 +89,7 @@ const darkColors = {
 
 const lightColors = {
   'background-default' : '#FFFFFF',
-      'background-darker' : '#FBFAFA',
+      'background-darker' : '#F6F7F7',
       'background-icon' : '#4A4948',
       'background-badge' : '#8ECCF9',
       'background-input' : '#E9E8E9',

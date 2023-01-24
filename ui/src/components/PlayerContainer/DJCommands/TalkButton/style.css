@@ -1,5 +1,5 @@
-.talk-modal{
-    @apply fixed border  border-border-default  bg-background-default shadow-lg flex flex-col z-20  gap-3 py-7 px-8 rounded-md;
+.talk-menu{
+    @apply fixed border-2  border-border-mild  bg-background-default shadow-lg flex flex-col z-20  gap-3 py-7 px-8 rounded-md;
     left: 37.5%;
     transform: translate(-50%, -50%);
     top: 50%;
@@ -9,7 +9,7 @@
 
 
 @media (width <= 1300px){
-    .talk-modal{
+    .talk-menu{
         @apply absolute;
         left: 50%;
         top: calc(50% - 1.458rem);
@@ -48,8 +48,8 @@
 
 }
 
-.talk-modal-phone{
-    @apply fixed border-t      border-border-default  bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
+.talk-menu-phone{
+    @apply fixed border-t      border-border-mild  bg-background-default left-0 px-4 flex flex-col z-20 gap-3 py-10 justify-center w-full;
     height: calc(100% - 2.7rem - 2.7rem - 56.25vw - 1rem);
     min-height: 10rem;
     bottom: 2.7rem;

@@ -22,8 +22,7 @@ export const ThemeButton = () => {
             :
             <button
                 className={` rounded flex items-center justify-center 
-            h-7  px-2 rounded font-bold hover:bg-hover-default
-    `}
+            h-7  px-2 rounded font-bold hover:bg-hover-default`}
                 onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
             >
                 {isDarkMode ?

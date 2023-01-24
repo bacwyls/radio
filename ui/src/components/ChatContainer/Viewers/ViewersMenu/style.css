@@ -1,9 +1,8 @@
 .viewers-menu {
-    @apply flex flex-col border-t   border-l  border-border-default  bg-background-default  z-20 fixed text-text-primary ;
+    @apply flex flex-col border-t-2  right-0 border-l-2  border-border-mild  bg-background-default  z-20 fixed text-text-primary ;
     height: calc(100vh - 2.7rem );
     width: 25vw;
-    top: calc(2.7rem - 1px);
-    right: 0;
+    top: calc(2.7rem - 1.2px);
 }
 
 .viewers-menu-phone {
@@ -14,7 +13,6 @@
 
 .viewers-list{
     @apply top-0  relative overflow-y-auto overflow-x-hidden flex flex-col  ;
-    height: calc(100% - 1.75rem );
 }
 
 .viewers-input-sticky-row{
@@ -50,7 +48,7 @@
 @media (width <= 1300px){
 
     .viewers-menu {
-        @apply absolute mb-2 rounded-b-md overflow-hidden;
+        @apply absolute mb-2 rounded-b-md overflow-hidden border-l-transparent;
         width: 100%;
         height: calc(40vh - 2.7rem);
         min-height: calc(17rem - 2.7rem);

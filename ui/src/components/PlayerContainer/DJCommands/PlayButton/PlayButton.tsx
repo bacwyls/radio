@@ -1,7 +1,7 @@
 import { PlayCircle } from "phosphor-react";
 import React, { } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { selectIsPlayModalOpen, setIsPlayModalOpen } from "../../../../features/ui/uiSlice";
+import { selectIsPlayMenuOpen, setIsPlayMenuOpen } from "../../../../features/ui/uiSlice";
 import { isPhone } from "../../../../util";
 import './style.css';
 
@@ -9,7 +9,7 @@ export const playButtonId = 'play-button-id';
 
 export const PlayButton = () => {
 
-    const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen)
+    const isPlayMenuOpen = useAppSelector(selectIsPlayMenuOpen)
 
     const dispatch = useAppDispatch();
 
@@ -18,7 +18,7 @@ export const PlayButton = () => {
         isPhone() ?
             <button
                 className='play-button-phone'
-                onClick={() => dispatch(setIsPlayModalOpen(true))}
+                onClick={() => dispatch(setIsPlayMenuOpen(true))}
             >
                 <PlayCircle weight="bold" className="text-xl" />
                 Play
@@ -28,10 +28,10 @@ export const PlayButton = () => {
                 id={playButtonId}
                 className={`  
                    play-button 
-              ${isPlayModalOpen ? 'bg-hover-intense' : 'bg-background-player-button hover:bg-hover-intense'}
+              ${isPlayMenuOpen ? 'bg-hover-intense' : 'bg-background-player-button hover:bg-hover-intense'}
                  `}
                 onClick={(e) => {
-                    dispatch(setIsPlayModalOpen(!isPlayModalOpen))
+                    dispatch(setIsPlayMenuOpen(!isPlayMenuOpen))
                 }}
             >
                 <PlayCircle weight="bold" className="play-circle" />

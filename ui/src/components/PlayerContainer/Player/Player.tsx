@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import { radio } from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectSpinTime, selectSpinUrl } from "../../../features/station/stationSlice";
-import { selectIsDarkMode, selectIsLandscape, selectIsPlayModalOpen, selectIsSettingsMenuOpen, selectIsTalkModalOpen, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
+import { selectIsDarkMode, selectIsLandscape, selectIsPlayMenuOpen, selectIsSettingsMenuOpen, selectIsTalkMenuOpen, selectPlayerReady, setPlayerInSync, setPlayerReady } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
 import { PlayerLoadingAnimation } from "../PlayerLoadingAnimation/PlayerLoadingAnimation";
 import './Player.css';
@@ -21,10 +21,9 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
     const spinTime = useAppSelector(selectSpinTime);
     const isLandscape = useAppSelector(selectIsLandscape);
     const isDarkMode = useAppSelector(selectIsDarkMode);
-    const isTalkModalOpen = useAppSelector(selectIsTalkModalOpen);
-    const isPlayModalOpen = useAppSelector(selectIsPlayModalOpen)
+    const isTalkMenuOpen = useAppSelector(selectIsTalkMenuOpen);
+    const isPlayMenuOpen = useAppSelector(selectIsPlayMenuOpen)
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
-
 
     const dispatch = useAppDispatch();
 
@@ -81,7 +80,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
             {!playerReady &&
                 <div className="w-full h-full"
                     style={{
-                        backgroundColor: isDarkMode ? '#4A4948' : '#D2D1D1',
+                        backgroundColor: isDarkMode ? '#4A4948' : '#DCDDDC',
                         borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     }}
                 >
@@ -104,7 +103,7 @@ export const Player: FC<IPlayer> = (props: IPlayer) => {
                     backgroundColor: isDarkMode ? '#3F3D3C' : '#D2D1D1',
                     borderRadius: `${isPhone() ? '0' : '0.375rem'}`,
                     overflow: 'hidden',
-                    filter: (!isPhone() && (isPlayModalOpen || isTalkModalOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(20%)  ' : '',
+                    filter: (!isPhone() && (isPlayMenuOpen || isTalkMenuOpen || isSettingsMenuOpen)) ? 'blur(2px) brightness(20%)  ' : '',
                     boxShadow: isDarkMode ? '0 4px 6px -1px rgb(0 0 0 / 0.7), 0 2px 4px -2px rgb(0 0 0 / 0.7)' : '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)   ',
                     visibility: playerReady ? 'visible' : 'hidden',
                 }}
