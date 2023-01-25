@@ -1,9 +1,13 @@
 import { Question } from "phosphor-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectDescription, selectHasPublishedStation, setDescription, setHasPublishedStation } from "../../../features/station/stationSlice";
 
-export const PublishSettings = () => {
+interface IPublishSettings {
+    setShowSaveButton: Dispatch<SetStateAction<boolean>>,
+}
+
+export const PublishSettings = ({ setShowSaveButton }: IPublishSettings) => {
 
     const [showInfo, setShowInfo] = useState(false);
     const [newDescription, setNewDescription] = useState('');
@@ -23,7 +27,6 @@ export const PublishSettings = () => {
             dispatch(setDescription(newDescriptionRef.current))
         }
     }, [description]);
-
 
     useEffect(() => {
 
@@ -49,6 +52,7 @@ export const PublishSettings = () => {
     }
 
     const handleNewDescriptionChange = (e) => {
+        setShowSaveButton(true)
         let text = e.target.value;
         setNewDescription(text)
         newDescriptionRef.current = text;
@@ -94,7 +98,11 @@ export const PublishSettings = () => {
                 ${hasPublishedStation ? 'cursor-pointer' : ' hover:bg-hover-default'}
 
                 `}
-                    onClick={() => dispatch(setHasPublishedStation(false))}
+                    onClick={() => {
+                        dispatch(setHasPublishedStation(false))
+                        setShowSaveButton(true)
+                    }
+                    }
                     style={{ marginLeft: '-.5rem' }}
                 >
                     <input className={`mr-1 ${hasPublishedStation && 'cursor-pointer'}`}
@@ -108,7 +116,11 @@ export const PublishSettings = () => {
                 <div className={`flex items-center px-2 py-1 rounded-md 
                 ${hasPublishedStation ? 'cursor-pointer' : ' hover:bg-hover-default'}
                 `}
-                    onClick={() => dispatch(setHasPublishedStation(true))}
+                    onClick={() => {
+                        dispatch(setHasPublishedStation(true))
+                        setShowSaveButton(true)
+                    }
+                    }
                 >
                     <input className={`mr-1 
                     ${!hasPublishedStation && 'cursor-pointer'}`
@@ -117,7 +129,8 @@ export const PublishSettings = () => {
                         style={{ top: '0.5625rem', height: '.566rem', width: '.566rem' }}
                         type={'radio'}
                         checked={hasPublishedStation}
-                        onChange={() => null}
+                        onChange={() => null
+                        }
                     />
                     Yes
                 </div>

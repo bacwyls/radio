@@ -2,9 +2,14 @@ import { Globe, Lock } from "phosphor-react";
 import { radio } from "../../../api";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectIsPublic, setIsPublic } from "../../../features/station/stationSlice";
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
-export const IsPublicSettings = () => {
+
+interface IIsPublicSettings {
+    setShowSaveButton: Dispatch<SetStateAction<boolean>>,
+}
+
+export const IsPublicSettings = ({ setShowSaveButton }: IIsPublicSettings) => {
 
     const isPublic = useAppSelector(selectIsPublic);
     const dispatch = useAppDispatch();
@@ -39,6 +44,7 @@ export const IsPublicSettings = () => {
                 `}
                 onClick={() => {
                     dispatch(setIsPublic(false))
+                    setShowSaveButton(true)
                     radio.private()
                 }}
             >
@@ -74,6 +80,7 @@ export const IsPublicSettings = () => {
              `}
                 onClick={() => {
                     dispatch(setIsPublic(true))
+                    setShowSaveButton(true)
                     radio.public()
                 }}
             >

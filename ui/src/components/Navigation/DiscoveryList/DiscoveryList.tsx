@@ -3,7 +3,6 @@ import { radio } from "../../../api";
 import { useAppSelector } from "../../../app/hooks";
 import { IMinitower, selectRadioSub, selectTowers } from "../../../features/station/stationSlice";
 import { isPhone } from "../../../util";
-import { DiscoveryInfo } from "./DiscoveryInfo";
 import { NavItem } from "../NavItem/NavItem";
 import './style.css';
 

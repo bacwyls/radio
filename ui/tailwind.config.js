@@ -33,7 +33,7 @@ const darkColors = {
   'text-admin' : '#FF8D0A',
   'text-self' : '#1D9AF1',
   'border-mild' : '#4A4948',
-  'border-default': '#575553',
+  'border-default': '#4A4948',
   'border-intense' : '#60605E',
   'border-super-intense' : '#F3F2F2',
   'hover-mild' :  '#343330',

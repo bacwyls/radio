@@ -1,5 +1,5 @@
 import { Gear } from "phosphor-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectIsSettingsMenuOpen, setIsSettingsMenuOpen } from "../../../features/ui/uiSlice";
 import { isPhone } from "../../../util";
@@ -8,11 +8,21 @@ import { PublishSettings } from "./PublishSettings";
 import { settingsButtonId } from "./SettingsButton";
 
 export const SettingsMenu = () => {
+
+    const [showSaveButton, setShowSaveButton] = useState(false);
+
     const isSettingsMenuOpen = useAppSelector(selectIsSettingsMenuOpen);
 
     const dispatch = useAppDispatch();
 
     const settingsMenuId = 'settings-menu';
+    const saveButtonId = 'save-button';
+
+
+    useEffect(() => {
+        setShowSaveButton(false);
+    }, [isSettingsMenuOpen]);
+
 
     useEffect(() => {
         if (isPhone()) return;
@@ -29,8 +39,13 @@ export const SettingsMenu = () => {
         var clicked = event.target as Element;
         var settingsMenu = document.getElementById(settingsMenuId);
         var settingsButton = document.getElementById(settingsButtonId);
+        var saveButton = document.getElementById(saveButtonId);
 
         if (
+            saveButton && (clicked == saveButton || saveButton.contains(clicked))) {
+            dispatch(setIsSettingsMenuOpen(false));
+        }
+        else if (
             settingsMenu && clicked != settingsMenu && !settingsMenu.contains(clicked) && clicked != settingsButton && !settingsButton?.contains(clicked)
         ) {
             dispatch(setIsSettingsMenuOpen(false));
@@ -45,34 +60,29 @@ export const SettingsMenu = () => {
                             ${isPhone() ? 'settings-menu-phone  ' : 'settings-menu '}
                             `}
             >
-                <div className="flex justify-between">
+                <div className="flex flex-col items-between gap-3">
                     <div className="flex items-center font-bold text-bigger"
                     >
                         <Gear weight="bold" className="mr-1 text-xl" />
                         Settings</div>
-                    {/* <button
-                        className=' flex items-center justify-center
-                         border-gray-400 rounded-md  hover:border-black
-                         text-bold px-2 py-1 h-6
-                         bg-gray-100 '
-                        style={{
-                            boxShadow: 'rgba(50, 50, 93, 0.25) \
-                            0px 2px 5px -1px, rgba(0, 0, 0, 0.3)`\
-                             0px 1px 3px - 1px ',
-                            height: '40px',
-
-                        }}
-                        onClick={() => setShowConfigMenu(false)}
-                    >
-                        <span
-                            className='font-bold '
-                        >
-                            Close
-                        </span>
-                    </button> */}
+                    <IsPublicSettings setShowSaveButton={setShowSaveButton} />
+                    <PublishSettings setShowSaveButton={setShowSaveButton} />
                 </div>
-                <IsPublicSettings />
-                <PublishSettings />
+                {showSaveButton && <button
+                    id={saveButtonId}
+                    className={`flex items-center justify-center
+                        rounded-md w-full whitespace-nowrap
+                         text-bold  font-bold 
+                            bg-hover-default hover:bg-hover-intense
+                         `}
+                    style={{
+                        height: '1.7rem ',
+                        minHeight: '1.7rem ',
+
+                    }}
+                >
+                    Save
+                </button>}
             </div>
             :
             <></>

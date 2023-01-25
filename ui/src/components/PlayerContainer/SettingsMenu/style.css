@@ -29,8 +29,9 @@
 }
 
 .settings-menu{
-    @apply flex border-2  border-border-mild  bg-background-default flex-col p-4  rounded-md gap-3 shadow-lg fixed z-20 ;
-    height: 22rem;
+    @apply flex border-2  border-border-mild  bg-background-default flex-col gap-4 justify-between p-4  rounded-md  shadow-lg fixed z-20 overflow-x-hidden overflow-y-auto;
+    height: 24rem;
+    max-height: 85vh;
     width: 16rem;
     left: 0.9rem;
     bottom: 3.3rem;
@@ -44,7 +45,7 @@
 }
 
 .settings-menu-phone{
-    @apply fixed top-0 left-0 w-screen flex flex-col gap-4 overflow-y-auto overflow-x-hidden bg-background-default p-4;
+    @apply fixed top-0 left-0 w-screen flex flex-col justify-between  overflow-y-auto overflow-x-hidden bg-background-default p-4;
     height: calc(100% - 2.7rem);
     z-index: 130;
 }

@@ -10,8 +10,8 @@ import { useAppSelector } from "../../app/hooks";
 import { PhoneFooter } from "../../components/Mobile/PhoneFooter/PhoneFooter";
 import { UpperRowContainer } from "../../components/UpperRow/UpperRowContainer/UpperRowContainer";
 import { selectIsChatFullScreen, selectIsLandscape, selectIsViewersMenuOpen } from "../../features/ui/uiSlice";
-import './style.css';
 import { Connecting } from "../../components/Connecting/Connecting";
+import './style.css';
 
 const PlayerContainerMemo = React.memo(PlayerContainer);
 const ChatContainerMemo = React.memo(ChatContainer);
