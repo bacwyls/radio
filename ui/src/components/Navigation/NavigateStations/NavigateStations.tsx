@@ -1,14 +1,13 @@
 import React from "react";
 import { SearchStationRow } from "../SearchStationsRow/SearchStationRow";
-import './style.css';
 import { DiscoveryList } from "../DiscoveryList/DiscoveryList";
+import './style.css';
 
 export const NavigateStations = () => {
 
     return (
         <div
             className="navigate-stations "
-
         >
             <div className="join-station-container">
                 <div className={` join-station  `}>

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector, } from "../../app/hooks";
 import { Header } from "../../components/Header/Header";
 import { NavigateStations } from "../../components/Navigation/NavigateStations/NavigateStations";
 import { selectTunePatP } from "../../features/station/stationSlice";
-import { setIsChatFullScreen, setIsPlayMenuOpen, setIsSettingsMenuOpen, setIsTalkMenuOpen } from "../../features/ui/uiSlice";
+import { setIsChatFullScreen, setIsNavigateMenuOpen, setIsPlayMenuOpen, setIsSettingsMenuOpen, setIsTalkMenuOpen } from "../../features/ui/uiSlice";
 import { tuneTo } from "../../util";
 import './style.css';
 
@@ -18,6 +18,7 @@ export const Home: FC = () => {
         dispatch(setIsTalkMenuOpen(false));
         dispatch(setIsChatFullScreen(false));
         dispatch(setIsSettingsMenuOpen(false));
+        dispatch(setIsNavigateMenuOpen(false));
 
         tunePatP && tuneTo(null, radio, dispatch);
     }, []);

@@ -4,7 +4,6 @@ import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectIsPublic, setIsPublic } from "../../../features/station/stationSlice";
 import React, { Dispatch, SetStateAction } from 'react'
 
-
 interface IIsPublicSettings {
     setShowSaveButton: Dispatch<SetStateAction<boolean>>,
 }

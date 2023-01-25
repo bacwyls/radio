@@ -37,20 +37,17 @@ export const HomeButton = () => {
                 :
                 <button
                     className={`   text-center  rounded   px-2 font-bold
-            flex justify-center items-center relative mr-0.5  hover:bg-hover-default
+            flex justify-center items-center relative mr-0.5  gap-1 hover:bg-hover-default
                     `}
                     onClick={handleExit}
                     style={{
                         height: '1.7rem',
                     }}
                 >
-                    <SignOut className="mr-1 text-xl" weight="bold" />
+                    <SignOut className=" text-xl" weight="bold" />
                     <span className="hidden sm:flex whitespace-nowrap" >
                         {patp == radio.our ? 'Stop Broadcast' :
                             'Exit Station'}
-                    </span>
-                    <span className="flex sm:hidden" >
-                        {patp == radio.our && 'Exit'}
                     </span>
                 </button>
             }

@@ -19,6 +19,7 @@ export interface UIState {
   isDarkMode: boolean,
   isPlayMenuOpen: boolean,
   isTalkMenuOpen: boolean,
+  isNavigateMenuOpen: boolean,
   documentFontSize: number,
 }
 
@@ -33,6 +34,7 @@ const initialState: UIState = {
   isDarkMode: isSystemDarkMode(),
   isPlayMenuOpen: false,
   isTalkMenuOpen: false,
+  isNavigateMenuOpen: false,
   documentFontSize: 29,
 };
 
@@ -106,6 +108,12 @@ export const uiSlice = createSlice({
         documentFontSize: action.payload,
       }
     },
+    setIsNavigateMenuOpen: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isNavigateMenuOpen: action.payload,
+      }
+    },
   }
 });
 
@@ -121,6 +129,7 @@ export const {
   setIsPlayMenuOpen,
   setIsTalkMenuOpen,
   setDocumentFontSize,
+  setIsNavigateMenuOpen,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;
@@ -133,6 +142,7 @@ export const selectIsViewersMenuOpen = (state: RootState) => state.ui.isViewersM
 export const selectIsSettingsMenuOpen = (state: RootState) => state.ui.isSettingsMenuOpen;
 export const selectIsPlayMenuOpen = (state: RootState) => state.ui.isPlayMenuOpen;
 export const selectIsTalkMenuOpen = (state: RootState) => state.ui.isTalkMenuOpen;
+export const selectIsNavigateMenuOpen = (state: RootState) => state.ui.isNavigateMenuOpen;
 export const selectDocumentFontSize = (state: RootState) => state.ui.documentFontSize;
 
 export default uiSlice.reducer;

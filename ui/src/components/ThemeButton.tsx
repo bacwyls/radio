@@ -9,34 +9,30 @@ export const ThemeButton = () => {
     const dispatch = useAppDispatch();
 
     return (
-        isPhone() ?
-            (isDarkMode ?
-                <Sun weight="bold" className="text-xl"
-                    onClick={() => dispatch(setIsDarkMode(false))}
-                />
-                :
-                <MoonStars weight="bold" className="text-xl"
-                    onClick={() => dispatch(setIsDarkMode(true))}
-                />
-            )
-            :
-            <button
-                className={` rounded flex items-center justify-center 
-            h-7  px-2 rounded font-bold hover:bg-hover-default`}
-                onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
-            >
-                {isDarkMode ?
-                    <>
-                        <Sun className="mr-1 text-xl" weight="bold" />
+        <button
+            className={` rounded flex items-center justify-center 
+            h-7  px-2 rounded font-bold 
+            ${!isPhone() && 'hover:bg-hover-default'}
+            `}
+            onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
+        >
+            {isDarkMode ?
+                <>
+                    <Sun className="mr-1 text-xl" weight="bold" />
+                    <span className="hidden sm:flex " >
                         Light
-                    </>
-                    :
-                    <>
-                        <MoonStars className="mr-1 text-xl" weight="bold" />
+                    </span >
+
+                </>
+                :
+                <>
+                    <MoonStars className="mr-1 text-xl" weight="bold" />
+                    <span className="hidden sm:flex " >
                         Dark
-                    </>
-                }
-            </button>
+                    </span >
+                </>
+            }
+        </button>
     )
 
 }

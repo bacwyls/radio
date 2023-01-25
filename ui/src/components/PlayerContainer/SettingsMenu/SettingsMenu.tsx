@@ -18,7 +18,6 @@ export const SettingsMenu = () => {
     const settingsMenuId = 'settings-menu';
     const saveButtonId = 'save-button';
 
-
     useEffect(() => {
         setShowSaveButton(false);
     }, [isSettingsMenuOpen]);
@@ -56,9 +55,7 @@ export const SettingsMenu = () => {
         isSettingsMenuOpen ?
             <div
                 id={settingsMenuId}
-                className={` 
-                            ${isPhone() ? 'settings-menu-phone  ' : 'settings-menu '}
-                            `}
+                className={`  ${isPhone() ? 'settings-menu-phone  ' : 'settings-menu '}`}
             >
                 <div className="flex flex-col items-between gap-3">
                     <div className="flex items-center font-bold text-bigger"
@@ -78,7 +75,9 @@ export const SettingsMenu = () => {
                     style={{
                         height: '1.7rem ',
                         minHeight: '1.7rem ',
-
+                    }}
+                    onClick={() => {
+                        isPhone() && dispatch(setIsSettingsMenuOpen(false))
                     }}
                 >
                     Save

@@ -7,13 +7,13 @@
   }
 
 .discovery-list-header{
-  @apply sticky top-0 flex left-0 justify-between  bg-background-default  items-center  ;
-  z-index: 3;
-  padding-left: 1.5rem;
-  min-height: 2rem;
-  width: calc(19rem - calc(19rem - 100%));
-  right: 1.09rem;
-}
+    @apply sticky top-0 flex left-0 justify-between  bg-background-default  items-center  ;
+    z-index: 3;
+    padding-left: 1.5rem;
+    min-height: 2rem;
+    width: calc(19rem - calc(19rem - 100%));
+    right: 1.09rem;
+  }
 
 
 @media (width <= 1300px){

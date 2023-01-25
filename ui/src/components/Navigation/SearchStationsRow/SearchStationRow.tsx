@@ -16,12 +16,12 @@ interface ISearchStationRow {
 export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow) => {
 
     const towers = useAppSelector(selectTowers);
+
     const [isFocused, setIsFocused] = useState(false)
-
-    const navigate = useNavigate();
-
     const [tuneToText, setTuneToText] = useState('');
     const [queriedTowers, setQueriedTowers] = useState(towers);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.addEventListener(
@@ -52,10 +52,11 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
     }
 
     const handleInputTextChange = (e) => {
+
         let text = e.target.value
         setTuneToText(text);
         if (text.trim().length > 0) {
-            setQueriedTowers(towers.filter(x => x.location.includes(text) && x.location != radio.our));
+            setQueriedTowers(towers.filter(x => x.location.includes(text)));
         }
         else {
             setQueriedTowers(towers);
@@ -63,7 +64,11 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
     }
 
     const handleTuneToSubmit = () => {
-        if (!isValidPatp(tuneToText) || tuneToText == radio.our) { return; };
+        if (!isValidPatp(tuneToText)) { return; };
+
+        if (tuneToText == radio.our) {
+            radio.start()
+        }
 
         setTuneToText('');
         navigate('/station/' + tuneToText);
@@ -84,7 +89,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                 className={`   relative whitespace-nowrap	w-full h-full rounded-md  font-bold
                text-black-80 placeholder-black-60    focus:outline-none slow-animation
              ${isFocused ? 'bg-orange-input-focused  border-2 shadow ' : 'bg-orange-input border'}
-             ${(isValidPatp(tuneToText) && tuneToText != radio.our) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
+             ${(isValidPatp(tuneToText)) ? '  pl-7 border-orange ' : '  pl-2 border-orange-disabled '}
              `}
                 style={{
                     paddingRight: '5rem',
@@ -104,7 +109,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
 
                 }
             />
-            {isValidPatp(tuneToText) && tuneToText != radio.our &&
+            {isValidPatp(tuneToText) &&
                 <span opacity-50
                     className={`absolute ml-2 mr-1 h-4 w-4  overflow-hidden 
                                        rounded flex justify-center items-center
@@ -117,7 +122,7 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
             < button
                 className={`absolute right-0  rounded-md  h-full  flex  
             justify-center items-center whitespace-nowrap px-1 font-bold z-10 text-text-button 
-            ${(isValidPatp(tuneToText) && tuneToText != radio.our) ? 'bg-orange hover:shadow' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
+            ${(isValidPatp(tuneToText)) ? 'bg-orange hover:shadow' : 'bg-orange-disabled cursor-default text-opacity-disabled'}
             `}
                 style={{
                     width: isPhone() ? '4rem' : '4.7rem',
@@ -136,7 +141,6 @@ export const SearchStationRow: FC<ISearchStationRow> = (props: ISearchStationRow
                     className={`absolute border  z-10 shadow-lg rounded-md 
             w-full top-8 flex flex-col py-2 overflow-y-auto mt-1
             border-border-default  bg-background-default text-text-default
-
             `}
                     style={{
                         minHeight: '2rem',

@@ -14,6 +14,7 @@ import {
 import {
   setPlayerReady,
   setPlayerInSync,
+  setIsNavigateMenuOpen,
 } from './features/ui/uiSlice';
 import { isMobile, isTablet } from 'react-device-detect';
 import { radio } from './api';
@@ -251,7 +252,9 @@ export function tuneTo(patp: string | null, radio: Radio, dispatch) {
   radio.tune(patp);
 
   radio.tunedTo = null;
+
   dispatch(setTunePatP(patp ? patp + ' (loading...)' : ''));
+  dispatch(setIsNavigateMenuOpen(false));
 }
 
 // parse from user input

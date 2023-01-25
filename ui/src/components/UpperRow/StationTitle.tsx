@@ -38,7 +38,7 @@ export const StationTitle = () => {
                         <span className='ml-2 font-bold'>Hub</span>
                     </>
                 }
-                {
+                {/* {
                     tunePatP == radio.our && tunePatP != radio.hub &&
                     <>
                         < span
@@ -57,11 +57,10 @@ export const StationTitle = () => {
                             My Station
                         </div>
                     </>
-                }
+                } */}
                 {
                     tunePatP &&
-                    tunePatP != radio.hub
-                    && tunePatP != radio.our &&
+                    tunePatP != radio.hub &&
                     <>
                         <span
                             className={`  overflow-hidden  

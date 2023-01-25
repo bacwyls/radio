@@ -5,6 +5,7 @@ import { isPhone } from '../../../util';
 import { HomeButton } from '../HomeButton/HomeButton';
 import { StationTitle } from '../StationTitle';
 import { ThemeButton } from '../../ThemeButton';
+import { NavigateButton } from '../../Navigation/NavigateMenu/NavigateButton';
 import './style.css';
 
 interface IUpperRowContainer {
@@ -27,7 +28,12 @@ export const UpperRowContainer: FC<IUpperRowContainer> = (props: IUpperRowContai
     >
       <StationTitle />
       <div className="flex  items-center ">
-        {!isPhone() && <HomeButton />}
+        {!isPhone() &&
+          <>
+            <NavigateButton />
+            <HomeButton />
+          </>
+        }
         <ThemeButton />
       </div>
     </div >
