@@ -249,6 +249,7 @@ export class Radio {
         'yoshi':'https://media.tenor.com/K2cU8bfy97gAAAAi/yoshi-tiptoe.gif',
         'cringe':'https://media.tenor.com/pbderXHkWfUAAAAi/cringe-0000000.gif',
         'cow':'https://media.tenor.com/9egJp0qwy_UAAAAi/polish-cow-polish.gif',
+        'milady':'https://f8n-production.s3.us-east-2.amazonaws.com/collections/9ynz3s9hx-IMG_2052.GIF',
     }
 
     // util
