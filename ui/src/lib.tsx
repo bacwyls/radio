@@ -221,6 +221,12 @@ export class Radio {
         this.chat(img);
     }
 
+    public soundUrls = {
+        'fart':'https://www.myinstants.com/media/sounds/fart-with-reverb.mp3',
+        'click':'https://www.myinstants.com/media/sounds/minecraft_click.mp3',
+        'orb':'https://www.myinstants.com/media/sounds/orb.mp3',
+    }
+
     public imgUrls = {
         'datboi': 'https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp',
         'pepe': 'https://i.imgur.com/IGaYzV6.gif',

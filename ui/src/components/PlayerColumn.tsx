@@ -153,25 +153,42 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
         {!playerReady &&
           <p className='text-center'>loading media player ...</p>
         }
-        <ReactPlayer
-          ref={radio.playerRef}
-          url={spinUrl}
-          playing={true}
-          width='100%'
-          height={isMobile ? '30vh' : '80vh'}
-          controls={true}
-          loop={true}
-          onReady={() => dispatch(setPlayerReady(true))}
-          // onSeek={e => console.log('onSeek', e)}
-          onProgress={e => handleProgress(e)}
-          style={{ backgroundColor:'lightgray' }}
-          config={{
-            file: {
-              // makes the audio player look nice
-              attributes:{ style: { height: '50%', width: '100%' }}
-            },
+
+        <div
+          style={{
+            width:'100%',
+            height:isMobile ? '30vh' : '80vh',
+            backgroundColor:'black'
           }}
-        />
+        >
+          <ReactPlayer
+            ref={radio.playerRef}
+            url={spinUrl}
+            playing={true}
+            controls={true}
+            width='100%'
+            height='100%'
+            loop={true}
+            onReady={() => dispatch(setPlayerReady(true))}
+            // onSeek={e => console.log('onSeek', e)}
+            onProgress={e => handleProgress(e)}
+            style={{ display:'flex',
+                     flexDirection:'column',
+                     justifyContent:'center',
+                  }}
+            config={{
+              file: {
+                // makes the audio player look nice
+                attributes:{
+                  style:{
+                    height:'default',
+                    width:'100%'
+                  }
+                }
+              },
+            }}
+          />
+        </div>
         <div className='flex flex-row'>
           <div
             className='flex-1'

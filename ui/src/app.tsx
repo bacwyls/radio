@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import Urbit from '@urbit/http-api';
@@ -35,7 +35,7 @@ let radio : Radio;
 radio = new Radio(our, api);
 
 // should it be radio.hub?
-const tuneInitial = radio.hub;
+const tuneInitial = radio.hub
 
 
 export function App() {
@@ -49,6 +49,9 @@ export function App() {
   const radioSub = useAppSelector(selectRadioSub);
   const chats = useAppSelector(selectChats);
   const update = useAppSelector(selectUpdate);
+
+  const [focus, setFocus] = useState(true);
+  const [unseenChanges, setUnseenChanges] = useState(0);
   
   const dispatch = useAppDispatch();
 
@@ -70,6 +73,14 @@ export function App() {
       // heartbeat to detect presence
       radio.ping();
     }, 1000 * 60 * 3)
+
+    window.addEventListener('focus', function (event) {
+      setFocus(true);
+      setUnseenChanges(0);
+    });
+    window.addEventListener('blur', function (event) {
+      setFocus(false);
+    });
   }, []);
 
   const maxChats = 100;
@@ -137,8 +148,23 @@ export function App() {
     if (!update) return;
     // wrap updates in this effect to get accurate usestate
     handleUpdate(update, radio, dispatch, userInteracted);
+    //
+    // set notif if got an update when not focused
+    if(!focus) {
+      setUnseenChanges(unseenChanges+1);
+    }
+
   }, [update]);
+
+  useEffect(()=>{
+    if(unseenChanges===0) {
+      document.title = 'radio'
+    } else {
+      document.title = 'radio ('+unseenChanges+')'
+    }
+  }, [unseenChanges])
   
+
   function tuneTo(patp: string|null) {
     radio.tune(patp)
     radio.tunedTo = null;

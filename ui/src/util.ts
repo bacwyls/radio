@@ -60,9 +60,24 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
     case 'chat':
       let chat = update['chat'];
       dispatch(setChatsWithChat(chat));
+      // lol
+      // if(chat.message==='BRAP') {
+      //   let audio = new Audio(radio.soundUrls.fart)
+      //   audio.play()
+      // }
       break;
     case 'viewers':
-      dispatch(setViewers(update['viewers']));
+      let viewers = update['viewers'];
+      /*
+      if(radio.tunedTo === radio.our) {
+        // TODO finish this and make it toggleable
+        // play a sound for new viewers
+        // (if we're the host)
+        let audio = new Audio(radio.soundUrls.orb)
+        audio.play()
+      }
+      */
+      dispatch(setViewers(viewers));
       break;
     case 'public':
       dispatch(setIsPublic(update['public']))
