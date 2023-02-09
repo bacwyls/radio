@@ -19,21 +19,21 @@ export const HelpMenu: FC<IHelpMenu> = (props: IHelpMenu) => {
         transform: 'translate(-100%, -100%)'
       }}
     >
-    <p className="mb-4">to interact with radio, enter commands in chat</p>
-    <p className='italic mb-2'>NAVIGATION:</p>
+    <p className='mb-4'> click <strong>navigation</strong> in the top left to discover active stations</p>
+    <p className="">enter commands in chat:</p>
     <p className="font-bold">!tune ~sampel-palnet</p>
     <div className="ml-4 mb-4">
       <p> change radio stations. try ~nodmyn-dosrux </p>
     </div>
     <p className="font-bold">!tune</p>
     <div className="ml-4 mb-4">
-      <p>(no argument) brings you to your home station</p>
+      <p>(no argument) go to your home station</p>
     </div>
       <p>-----------</p>
       <p className='italic mb-2'>DJ COMMANDS:</p>
       <p className="font-bold">!play https://www.youtube.com/watch?v=3vLHelBuTRM</p>
       <div className="ml-4 mb-4">
-        <p>change the current song / video / livestream</p>
+        <p>change the current media </p>
         <p>(youtube, soundcloud, twitch, vimeo, audio/video URLs)</p>
       </div>
       <p className="font-bold">!talk hello world</p>
@@ -51,8 +51,10 @@ export const HelpMenu: FC<IHelpMenu> = (props: IHelpMenu) => {
       <div className="ml-4 mb-4">
         <p>only the host can use DJ commands</p>
       </div>
-      <p className="font-bold mb-4">!ban ~zod</p>
-      <p className="font-bold">!unban ~zod</p>
+      <p className="font-bold">!ban ~zod</p>
+      <p className="font-bold mb-4">!unban ~zod</p>
+      <p className="font-bold">!publish my epic station 😎</p>
+        <p className="ml-4">put your station in the nav bar, with a custom description</p>
     
       {/* <p className="font-bold">
       !set-time
