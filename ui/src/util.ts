@@ -61,10 +61,10 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       let chat = update['chat'];
       dispatch(setChatsWithChat(chat));
       // lol
-      // if(chat.message==='BRAP') {
-      //   let audio = new Audio(radio.soundUrls.fart)
-      //   audio.play()
-      // }
+       if(chat.message==='BRAP') {
+         let audio = new Audio(radio.soundUrls.fart)
+         audio.play()
+       }
       break;
     case 'viewers':
       let viewers = update['viewers'];
