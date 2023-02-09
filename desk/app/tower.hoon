@@ -59,18 +59,19 @@
 ++  on-init
   ^-  (quip card _this)
   `this
-:: ++  on-load  on-load:def
 ++  on-load
   |=  old-state=vase
   ^-  (quip card _this)
-  =/  old  !<(versioned-state old-state)
-  ?-  -.old
-    %0  `this(state old)
-  ==
+  ?:  =(-:old-state -:!>(state))
+    :: if type matches, remember
+    =/  old  !<(versioned-state old-state)
+    `this(state old)
+  :: else, forget
+  `this
 ++  on-leave
   |=  [=path]
   ?:  =(path /greg/local)
-    :: potentially fixes #16 host-kicked bug
+    :: potentially fixes #16 host-kicked bug?
     `this
   =.  viewers
     (~(del by viewers) src.bowl)
