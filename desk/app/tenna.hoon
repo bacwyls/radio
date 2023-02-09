@@ -1,6 +1,6 @@
 /-  store=radio
 /+  radio
-/+  default-agent, dbug, agentio
+/+  default-agent, dbug, verb, agentio
 =,  format
 :: ::
 |%
@@ -14,6 +14,7 @@
   ==
 +$  card     card:agent:gall
 --
+%+  verb  |
 %-  agent:dbug
 =|  state-0
 =*  state  -
@@ -27,7 +28,7 @@
 ::
 ++  on-fail   on-fail:def
 ++  on-peek   on-peek:def
-++  on-load  on-load:def
+++  on-load   on-load:def
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
@@ -44,7 +45,6 @@
   |=  [=path]
   :: ~&  >>>  [%tenna %on-leave src.bowl]
   `this
-  ::
   ::
   ::  actually... this breaks everything
   ::

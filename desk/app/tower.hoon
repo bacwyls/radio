@@ -1,6 +1,6 @@
 /-  store=radio, gore=greg
 /+  rib=radio
-/+  default-agent, dbug, agentio
+/+  default-agent, verb, dbug, agentio
 =,  format
 ::
 |%
@@ -26,6 +26,7 @@
   ==
 +$  card     card:agent:gall
 --
+%+  verb  &
 %-  agent:dbug
 =|  state-0
 =*  state  -

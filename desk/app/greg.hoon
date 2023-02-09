@@ -1,6 +1,6 @@
 /-  store=greg, rore=radio
 /+  greg, rib=radio
-/+  default-agent, dbug, agentio
+/+  default-agent, dbug, verb, agentio
 =,  format
 :: ::
 |%
@@ -14,6 +14,7 @@
   ==
 +$  card     card:agent:gall
 --
+%+  verb  &
 %-  agent:dbug
 =|  state-0
 =*  state  -
@@ -30,7 +31,7 @@
 ++  on-load   on-load:def
 ++  on-leave  on-leave:def
 ++  on-watch  on-watch:def
-++  on-agent   on-agent:def
+++  on-agent  on-agent:def
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
