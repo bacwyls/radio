@@ -204,6 +204,16 @@ export function handleUserInput(
       dispatch(setOurTowerDescription(arg))
       // refresh towers
       radio.gregRequest();
+      break;
+    case 'qublish':
+      if (!radio.isAdmin()) {
+        return;
+      }
+      radio.gregPut(arg);
+      dispatch(setHasPublishedStation(true));
+      dispatch(setOurTowerDescription(arg))
+      // refresh towers
+      radio.gregRequest();
     //
     // image commands
     default:
