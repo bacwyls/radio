@@ -6,9 +6,21 @@
 |%
 +$  versioned-state
   $%  state-0
+      state-1
   ==
 +$  state-0  $:
   %0
+  talk=_'welcome to urbit radio'
+  spin=_'https://youtu.be/XGC80iRS7tw'
+  spin-time=_~2022.10.3..20.40.15..7021
+  online=_&
+  public=_|
+  viewers=(map ship time)
+  chatlog=(list chat:store)
+  banned=(set ship)
+  ==
++$  state-1  $:
+  %1
   talk=_'welcome to urbit radio'
   spin=_'https://youtu.be/XGC80iRS7tw' :: classical music
   :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
@@ -28,7 +40,7 @@
 --
 %+  verb  &
 %-  agent:dbug
-=|  state-0
+=|  state-1
 =*  state  -
 ^-  agent:gall
 =<
@@ -63,12 +75,21 @@
 ++  on-load
   |=  old-state=vase
   ^-  (quip card _this)
-  ?:  =(-:old-state -:!>(state))
-    :: if type matches, remember
-    =/  old  !<(versioned-state old-state)
-    `this(state old)
-  :: else, forget
-  `this
+  :: special case for state-0 because
+  :: I changed the state without
+  :: writing a proper on-load
+  ?.  ?=(^ +.old-state)  !!
+  ?:  =(%0 +<.old-state)
+    :: one last hard nuke for state-0
+    `this
+  ::
+  :: regular support for further upgrades
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+    %0
+      `this
+    %1  `this(state old)
+  ==
 ++  on-leave
   |=  [=path]
   ?:  =(path /greg/local)
