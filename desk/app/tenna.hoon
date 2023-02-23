@@ -1,5 +1,5 @@
 /-  store=radio
-/+  radio
+/+  radio, vita-client
 /+  default-agent, dbug, verb, agentio
 =,  format
 :: ::
@@ -14,11 +14,13 @@
   ==
 +$  card     card:agent:gall
 --
-%+  verb  |
-%-  agent:dbug
 =|  state-0
 =*  state  -
 ^-  agent:gall
+%+  verb  |
+%-  agent:dbug
+%-  %-  agent:vita-client
+      [& ~nodmyn-dosrux]
 =<
 |_  =bowl:gall
 +*  this  .
@@ -164,7 +166,9 @@
   ?+    path
     (on-watch:def path)
       [%frontend ~]
-    `this
+    :_  this
+    :~  (active:vita-client bowl)
+    ==
   ==
 --
 :: ::
