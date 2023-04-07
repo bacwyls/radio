@@ -210,6 +210,8 @@ export function handleUserInput(
       radio.gregRequest();
       break;
     case 'qpublish':
+      // quiet publish
+      // publish without chatting about it
       if (!radio.isAdmin(tunePatP)) {
         return;
       }
@@ -218,6 +220,50 @@ export function handleUserInput(
       dispatch(setOurTowerDescription(arg))
       // refresh towers
       radio.gregRequest();
+      break;
+    case 'basket':
+      // composable AF
+      // fetch an image from basket, if installed
+      async function handleBasketImages() {
+
+        let basketImages : any;
+        try {
+          basketImages = await getBasketImages(radio);
+        } catch(e) {
+          radio.chat("🧺 I dont have basket installed")
+          return;
+        }
+                                    
+        if(basketImages.length===0) {
+          radio.chat("🧺 My basket is empty")
+          return;
+        }
+    
+        function getRandomBasketImage(images:any) {
+          return images[Math.floor(Math.random() * images.length)];
+        }
+    
+        const selectImageToSend = () => {
+          if (!arg) {
+            return getRandomBasketImage(basketImages);
+          }
+    
+          // @ts-ignore
+          const matchingImages = basketImages.filter(image => image.meta.tags.includes(arg));
+    
+          if (matchingImages.length === 0) {
+            return getRandomBasketImage(basketImages);
+          }
+    
+          return getRandomBasketImage(matchingImages);
+        };
+    
+        const selectedImage = selectImageToSend();
+        radio.chat(selectedImage.url);
+      }
+    
+      handleBasketImages();
+      break;
     //
     // image commands
     default:
@@ -225,6 +271,14 @@ export function handleUserInput(
       break;
     //
   }
+}
+
+async function getBasketImages(radio:Radio) {
+    let gotImages = await radio.api.scry({
+      app: 'basket',
+      path: '/images'
+    });
+    return gotImages
 }
 
   // parse from user input
