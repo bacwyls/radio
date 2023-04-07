@@ -1,17 +1,21 @@
 import React, { FC } from 'react';
+import { useAppDispatch } from '../app/hooks';
+import { Radio } from '../lib';
 
 interface INavItem {
   patp: string|null,
-  tuneTo: ((patp: string|null) => void);
   flare?: string,
   title?: string,
   // logout?: boolean,
+  radio: Radio;
   description?: string
 }
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
 
-  const {patp, tuneTo, flare, title, description} = props;
+  const dispatch = useAppDispatch();
+
+  const {patp, radio, flare, title, description} = props;
   return(
    
       <button
@@ -19,7 +23,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
                     border px-1 text-left inline-block \
                     flex-initial mr-2 my-1"
           style={{ whiteSpace:'nowrap' }}
-          onClick={() => tuneTo(patp)}
+          onClick={() => radio.tuneTo(dispatch, patp)}
         >
           <span>
             {flare && `${flare} `}

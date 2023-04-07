@@ -12,8 +12,9 @@ const initialState: UIState = {
   userInteracted: false,
   playerReady: false,
   playerInSync: false,
-  navigationOpen: false
+  navigationOpen: false,
 };
+  
 
 export const uiSlice = createSlice({
   name: 'ui',
@@ -42,7 +43,7 @@ export const uiSlice = createSlice({
         ...state,
         navigationOpen: action.payload,
       }
-    }
+    },
   }
 });
 
@@ -50,7 +51,7 @@ export const {
   setUserInteracted,
   setPlayerReady,
   setPlayerInSync,
-  setNavigationOpen
+  setNavigationOpen,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;

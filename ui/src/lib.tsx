@@ -1,40 +1,55 @@
 import Urbit from "@urbit/http-api";
-
+import ReactPlayer from "react-player";
+import store from './app/store';
+import { useAppDispatch } from "./app/hooks";
+import { setTunePatP } from "./features/station/stationSlice";
+import { resetPage } from "./util";
 
 
 export class Radio {
 
     our: string;
     api: Urbit;
-    //
-    // react player npm
-    player: any;
-    //
+    
     // window.speechSynthesizer
     synth: any;
-    //
-    tunedTo!: string|null;
 
     hub:string = '~nodmyn-dosrux';
 
-    constructor(our: string, api: Urbit) {
-        this.our = our;
-        this.api = api
-        this.tunedTo = null;
+    constructor() {
+        this.our = "~"+window.ship;
+        this.api = new Urbit('', '', window.desk);
+        this.api.ship = window.ship;
         this.synth = window.speechSynthesis;
-        this.synth.onvoiceschanged = (v: any) => {
-            console.log('radio voices', v)
-            // TODO check if voices is empty
-            //  users have had empty voices in ubuntu + brave
-        }
-
+        // this.synth.onvoiceschanged = (v: any) => {
+        //     console.log('radio voices', v)
+        //     // TODO check if voices is empty
+        //     //  users have had empty voices in ubuntu + brave
+        // }
     }
 
-    public playerRef = (p:any) => {
-        this.player = p;
+    public watchTenna(handleSub:any) {
+      this.api
+        .subscribe({
+            app: "tenna",
+            path: "/frontend",
+            event: handleSub,
+            quit: ()=> alert('lost connection to your urbit. please refresh'),
+            err: (e)=> console.log('radio err', e),
+        })
+        .then((subscriptionId) => {
+          //
+          window.addEventListener("beforeunload", () => {
+            this.tune(null);
+            this.api.unsubscribe(subscriptionId);
+            this.api.delete();
+          });    
+          // tune to hub by default
+          this.tune(this.hub);
+          });
       }
 
-    public seekToGlobal(startedTime:number) {
+    public seekToGlobal(player:ReactPlayer | null, startedTime:number) {
         // respond to !time command or seek from update
         // this sets the player to the appropriate time
 
@@ -42,42 +57,37 @@ export class Radio {
         // started time is a unix timestamp
         if (startedTime === 0) return;
 
-        if (!this.player) {
-            console.log('player is not defined :(')
-            return;
-        }
-
+        if (!player) return;
+        
         var currentUnixTime = Date.now() / 1000;
-        var duration = this.player.getDuration();
+        var duration = player.getDuration();
 
         if (!duration) return;
 
-
         let globalProgress = Math.ceil(currentUnixTime - startedTime) % duration;
 
-
         console.log('seeking to :', globalProgress)
-        this.player.seekTo(globalProgress, 'seconds');
+        player.seekTo(globalProgress, 'seconds');
 
     }
 
-    public resyncAll(url: string) {
-        let time = this.player.getCurrentTime();
+    public resyncAll(player:ReactPlayer | null, hostPatp: string, url: string) {
+        if (!player) return;
+        let time = player.getCurrentTime();
         if (!time) return;
         if (!url) return;
 
-        if (this.tunedTo !== this.our) {
+        if (hostPatp !== this.our) {
           return;
         }
         this.setTime(url, time);
     }
 
-    public syncLive(url: string) {
-        if (this.tunedTo !== this.our) {
-          return;
-        }
+    public syncLive(player:ReactPlayer | null, hostPatp: string, url: string) {
+        if (hostPatp !== this.our) return;
+        if (!player) return;
 
-        let duration = this.player.getDuration();
+        let duration = player.getDuration();
 
         if (!duration) return;
         if (!url) return;
@@ -85,8 +95,8 @@ export class Radio {
         this.setTime(url, duration-5);
     }
 
-    public isAdmin() {
-        return this.tunedTo === this.our;
+    public isAdmin(hostPatp: string) {
+        return hostPatp === this.our;
     }
 
 
@@ -263,11 +273,18 @@ export class Radio {
         let url;
 
         try {
-          url = new URL(string);
+            url = new URL(string);
         } catch (_) {
-          return false;
+            return false;
         }
 
         return url.protocol === "http:" || url.protocol === "https:";
-      }
+    }
+    
+    public tuneTo(dispatch:any, patp: string|null) {
+        this.tune(patp)
+        // this.tunedTo = null;
+        dispatch(setTunePatP(patp+' (LOADING)'));
+        resetPage(dispatch);
+    }
 }

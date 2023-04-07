@@ -1,39 +1,58 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { Radio } from '../lib';
 
 import { handleUserInput } from '../util';
 import { ChatBox } from './ChatBox';
-import { selectSpinUrl, selectSpinTime } from '../features/station/stationSlice';
+import { selectSpinUrl, selectSpinTime, selectTunePatP, selectChats, chopChats } from '../features/station/stationSlice';
 
-interface IChatColumn {
-  our: string;
-  radio: Radio;
-  tuneTo: ((patp: string|null) => void);
-  inputReference: React.RefObject<HTMLInputElement>;
-}
 
-export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
 
-  const {our, radio, tuneTo, inputReference} = props;
+let radio : Radio = new Radio();
+
+export const ChatColumn: FC= () => {
+
+  const inputReference = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // autofocus input
+    if (!inputReference) return;
+    if (!inputReference.current) return;
+    window.setTimeout(() => {
+      // use a slight delay for better UX
+      // @ts-ignore
+      if(!inputReference.current) return;
+      inputReference.current.focus();
+    }, 1000);
+  }, []);
 
   const spinUrl = useAppSelector(selectSpinUrl);
+  const chats = useAppSelector(selectChats);
   const spinTime = useAppSelector(selectSpinTime);
+  const tunePatP = useAppSelector(selectTunePatP);
   const dispatch = useAppDispatch();
 
   const chatInputId ='radio-chat-input';
 
+  
+  const maxChats = 100;
+  useEffect(() => {
+    // maximum chats
+    if (chats.length > maxChats) {
+      dispatch(chopChats(chats));
+    }
+  }, [chats]);
 
   function processInput() {
     handleUserInput(
       radio,
-      tuneTo, 
       dispatch,
       chatInputId,
       spinTime,
       spinUrl,
-      our
+      tunePatP,
+      // window.playerRef, // TODO wtf
     );
   }
 
@@ -43,7 +62,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
 
   return(
     <div
-      className="flex-1 flex-col flex"
+      className="flex-1 flex-col flex text-xs font-mono"
       style={{maxWidth}}
     >
       <ChatBox/>

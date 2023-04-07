@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import store from './app/store';
 import { Radio } from './lib';
 import {
   setTalkMsg,
@@ -21,6 +22,7 @@ import {
 } from './features/ui/uiSlice';
 
 import {isValidPatp} from 'urbit-ob';
+import ReactPlayer from 'react-player';
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
@@ -47,7 +49,7 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
     case 'tune':
       let tune = update['tune'];
       dispatch(setTunePatP(tune));
-      radio.tunedTo = tune;
+      // radio.tunedTo = tune;
       if (tune === null) {
         resetPage(dispatch);
         dispatch(setUserInteracted(false));
@@ -97,16 +99,18 @@ export function resetPage(dispatch: any) {
   dispatch(setNavigationOpen(false));
 }
 
+// TODO clean this up
 export function handleUserInput(
   radio: Radio,
-  tuneTo: (patp: string|null) => void,
   dispatch: any,
   chatInputId: string,
   spinTime: number,
   spinUrl: string,
-  our: string
+  tunePatP: string,
 ) {
   let input = document.getElementById(chatInputId) as HTMLInputElement;
+  // @ts-ignore
+  let player:any = !window.playerRef ? null : window.playerRef.current
 
   let chat = input.value;
   input.value = '';
@@ -134,50 +138,50 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'tune':
-      if (arg === '') arg = our;
+      if (arg === '') arg = radio.our;
       radio.chat(chat);
       if(isValidPatp(arg)) {
-        tuneTo(arg);
+        radio.tuneTo(dispatch, arg);
       }
       else if(isValidPatp('~'+arg)) {
-        tuneTo('~'+arg);
+        radio.tuneTo(dispatch, '~'+arg);
       }
       break;
     case 'time':
       dispatch(setPlayerInSync(true));
-      radio.seekToGlobal(spinTime);
+      radio.seekToGlobal(player, spinTime);
       radio.chat(chat);
       break;
     case 'set-time':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      radio.resyncAll(spinUrl);
+      // if(!radio.isAdmin())) {
+      //   return;
+      // }
+      radio.resyncAll(player, tunePatP, spinUrl);
       radio.chat(chat);
       break;
     case 'public':
-      if(!radio.isAdmin()) {
+      if(!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.public();
       radio.chat(chat);
       break;
     case 'private':
-      if(!radio.isAdmin()) {
+      if(!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.private();
       radio.chat(chat);
       break;
     case 'ban':
-      if(!radio.isAdmin()) {
+      if(!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.ban(arg);
       radio.chat(chat);
       break;
     case 'unban':
-      if(!radio.isAdmin()) {
+      if(!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.unban(arg);
@@ -191,11 +195,11 @@ export function handleUserInput(
       radio.tune(null);
       break;
     case 'live':
-      radio.syncLive(spinUrl);
+      radio.syncLive(player, tunePatP, spinUrl);
       radio.chat(chat);
       break;
     case 'publish':
-      if (!radio.isAdmin()) {
+      if (!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.gregPut(arg);
@@ -205,8 +209,8 @@ export function handleUserInput(
       // refresh towers
       radio.gregRequest();
       break;
-    case 'qublish':
-      if (!radio.isAdmin()) {
+    case 'qpublish':
+      if (!radio.isAdmin(tunePatP)) {
         return;
       }
       radio.gregPut(arg);

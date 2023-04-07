@@ -5,11 +5,6 @@ import { selectTunePatP, selectIsPublic, selectHasPublishedStation, setHasPublis
 import { setNavigationOpen, selectNavigationOpen } from '../features/ui/uiSlice';
 import { Radio } from '../lib';
 
-interface INavigation {
-  our: string;
-  tuneTo: ((patp: string|null) => void);
-  radio: Radio;
-}
 
 interface IMinitower {
   location: string;
@@ -18,9 +13,11 @@ interface IMinitower {
   viewers:number;
 }
 
-export const Navigation: FC<INavigation> = (props: INavigation) => {
+let radio : Radio = new Radio();
 
-  const {our, tuneTo, radio} = props;
+
+export const Navigation: FC = () => {
+
 
   const tunePatP = useAppSelector(selectTunePatP);
   const isPublic = useAppSelector(selectIsPublic);
@@ -32,6 +29,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
   const [towers, setTowers] = useState<Array<IMinitower>>([])
  
   useEffect(()=>{
+    // console.log('subscribing to tower /greg/local from navigation')
     radio.api
     .subscribe({
         app: "tower",
@@ -51,7 +49,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
     })
     radio.gregRequest();
   }, [])
-
+  
   useInterval(() => {
     if(!hasPublishedStation) return;
 
@@ -108,7 +106,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
           }}
         >
           navigation
-          {(radio.tunedTo===radio.our && !hasPublishedStation) && ' *'}
+          {(tunePatP===radio.our && !hasPublishedStation) && ' *'}
         </button>
 
         {navigationOpen &&
@@ -117,8 +115,7 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
               className='flex flex-col bg-white border border-black absolute \
               p-2 overflow-scroll z-10 items-start mt-1'
             >
-              {/* <NavItem tuneTo={tuneTo} patp={null} logout/> */}
-              {(radio.tunedTo===radio.our && !hasPublishedStation) &&
+              {(tunePatP===radio.our && !hasPublishedStation) &&
                   <button
                   className="hover:pointer border-blue-700 text-blue-700  \
                             border px-1 text-left inline-block \
@@ -134,21 +131,23 @@ export const Navigation: FC<INavigation> = (props: INavigation) => {
                 </button>
               }
 
-              {radio.tunedTo!==radio.our &&
+              {tunePatP!==radio.our &&
                 <NavItem
-                      tuneTo={tuneTo}
-                      patp={our}
+                      patp={radio.our}
+                      radio={radio}
                       title={'my station'}/>
               }
 
-              {radio.tunedTo!==radio.hub &&
+              {tunePatP!==radio.hub &&
                 <NavItem
-                      tuneTo={tuneTo}
+                      // tuneTo={radio.tuneTo}
                       patp={radio.hub}
+                      radio={radio}
                       title={'hub'}/>
               }
               {towers.map((tower:any, i:number) =>
-                  <NavItem tuneTo={tuneTo}
+                  <NavItem
+                      radio={radio}
                       key={i}
                       patp={tower.location}
                       flare={tower.viewers.toString()}

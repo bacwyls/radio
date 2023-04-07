@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { isMobile } from 'react-device-detect';
 import { Radio } from '../lib';
@@ -16,17 +16,13 @@ import {
   setPlayerInSync,
   selectPlayerInSync,
   selectPlayerReady,
+  // setPlayerRef
 } from '../features/ui/uiSlice';
 
-interface IPlayerColumn {
-  our: string;
-  radio: Radio;
-  tuneTo: ((patp:string | null) => void);
-}
+let radio : Radio = new Radio();
 
-export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
 
-  const {our, radio, tuneTo} = props;
+export const PlayerColumn: FC = () => {
 
   const spinUrl = useAppSelector(selectSpinUrl);
   const spinTime = useAppSelector(selectSpinTime);
@@ -41,11 +37,25 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
   const [helpMenuTop, setHelpMenuTop] = useState(0);
   const [helpMenuLeft, setHelpMenuLeft] = useState(0);
 
+  const playerRef = useRef<ReactPlayer | null>(null);
+
+  useEffect(() => {
+    //@ts-ignore
+    window.playerRef = playerRef;
+  }, [playerRef]);
+  
+  useEffect(() => {
+    radio.seekToGlobal(playerRef.current, spinTime)
+    dispatch(setPlayerInSync(true));
+  }, [playerReady]);
+
+
   function handleProgress(progress: any) {
     // turn on scrub buttons if out of sync
 
     var currentUnixTime = Date.now() / 1000;
-    var duration = radio.player.getDuration();
+    if (!playerRef.current) return;
+    var duration = playerRef.current.getDuration();
     if(!duration) return;
 
 
@@ -75,6 +85,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
     }
   }
 
+
   const buttonRow =
     <div style={{ display: 'flex', marginLeft: 'auto' }}>
       {!playerInSync &&
@@ -85,13 +96,13 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                       font-bold underline border-black border-t-0 \
                       text-red-500 `}
             onClick={(e) => {
-              radio.seekToGlobal(spinTime);
+              radio.seekToGlobal(playerRef.current, spinTime);
               dispatch(setPlayerInSync(true));
             }}
           >
             resync
           </button>
-          {tunePatP === props.our &&
+          {tunePatP === radio.our &&
             <button
               className={`hover:pointer px-4 py-2 \
                         flex-initial outline-none \
@@ -99,7 +110,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
                         text-blue-500 `}
               style={{ whiteSpace:'nowrap' }}
               onClick={(e) => {
-                radio.resyncAll(spinUrl)
+                radio.resyncAll(playerRef.current, tunePatP, spinUrl)
               }}
             >
               resync all
@@ -145,9 +156,6 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
       id='player-wrapper'
     >
       <Navigation
-        our={our}
-        tuneTo={tuneTo}
-        radio={radio}
       />
       <div>
         {!playerReady &&
@@ -162,7 +170,7 @@ export const PlayerColumn: FC<IPlayerColumn> = (props: IPlayerColumn) => {
           }}
         >
           <ReactPlayer
-            ref={radio.playerRef}
+            ref={playerRef}
             url={spinUrl}
             playing={true}
             controls={true}

@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 import { selectChats } from '../features/station/stationSlice';
 
 export const ChatBox: FC = () => {
@@ -9,6 +9,7 @@ export const ChatBox: FC = () => {
   const chatboxId = 'chatbox-radio';
 
   const [chatboxHeight, setChatboxHeight] = useState(0);
+  
 
   useEffect(() => {
     scrollToBottom();
@@ -106,6 +107,7 @@ export const ChatBox: FC = () => {
   const calcChatboxHeight = () => {
     const chatField = document.getElementById('radio-chat-input') as HTMLDivElement;
     const playerWrapper = document.getElementById('player-wrapper') as HTMLDivElement;
+    if(!playerWrapper) return window.innerHeight;
     return window.innerHeight - playerWrapper.getBoundingClientRect().height - chatField.getBoundingClientRect().height;
   }
 
