@@ -1,5 +1,3 @@
-import React, { FC } from 'react';
-import store from './app/store';
 import { Radio } from './lib';
 import {
   setTalkMsg,
@@ -23,6 +21,29 @@ import {
 
 import {isValidPatp} from 'urbit-ob';
 import ReactPlayer from 'react-player';
+
+export function timestampFromTime(time: number) {
+
+  const date = new Date(time * 1000);
+  const minutes = date.getMinutes().toString();
+  const hours = date.getHours().toString();
+  const month = (date.getMonth()+1).toString();
+  const day = date.getDate().toString();
+
+  const oneDayOld = Date.now() - date.getTime() > 1000 * 60 * 60 * 24;
+  return oneDayOld
+    ? `${month.padStart(2,'0')}/${day.padStart(2,'0')}`
+    : `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+}
+export function isOlderThanNMinutes(unixTimestamp: number | undefined, nMinutes : number): boolean {
+  if (!unixTimestamp) return false;
+
+  const NMinutesInMilliseconds = nMinutes * 60 * 1000; 
+  const currentTime = new Date().getTime();
+  const difference = currentTime - (unixTimestamp * 1000); // convert Unix timestamp to milliseconds
+
+  return difference >= NMinutesInMilliseconds;
+}
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);

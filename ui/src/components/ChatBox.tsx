@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useAppSelector } from '../app/hooks';
 import { selectChats } from '../features/station/stationSlice';
+import { timestampFromTime } from '../util';
 
 export const ChatBox: FC = () => {
 
@@ -84,19 +85,7 @@ export const ChatBox: FC = () => {
     );
   }
 
-  const timestampFromTime = (time: number) => {
-    const date = new Date(time * 1000);
-    const minutes = date.getMinutes().toString();
-    const hours = date.getHours().toString();
-    const month = (date.getMonth()+1).toString();
-    const day = date.getDate().toString();
 
-
-    const oneDayOld = Date.now() - date.getTime() > 1000 * 60 * 60 * 24;
-    return oneDayOld
-      ? `${month.padStart(2,'0')}/${day.padStart(2,'0')}`
-      : `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-  }
 
   const scrollToBottom = () => {
     const chatWindow = document.getElementById(chatboxId) as HTMLDivElement; 

@@ -17,6 +17,7 @@
     ?-  -.ent
     %put       (en-minitower +.ent)
     %request   ~
+    %remove    ~
     %response  (map-minitower +.ent)
     ==
   --
@@ -52,6 +53,7 @@
       :~
         [%put de-minitower]
         [%request ul]
+        [%remove patp]
         :: [%response *(set minitower)]
       ==
     ++  de-minitower

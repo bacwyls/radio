@@ -232,15 +232,18 @@
         ~(wyt by viewers)
       ::
       :_  this
-      (poke-greg [%put tow])
+      (poke-greg:hc [%put tow])
       :: ::
+        %remove
+      :_  this
+      (poke-greg:hc ent)
         %request
       :_  this
-      (poke-greg ent)
+      (poke-greg:hc ent)
       :: ::
         %response
       :: assert that its from greg
-      ?.  =(src.bowl greg-ship)
+      ?.  =(src.bowl greg-ship:hc)
         :: ~&  >>>  [%tower %evil %greg %from src.bowl]
         `this
       :: ~&  >>>  [%tower %good %greg %from src.bowl ent]

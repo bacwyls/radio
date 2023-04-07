@@ -28,7 +28,6 @@
 ::
 ++  on-fail   on-fail:def
 ++  on-peek   on-peek:def
-++  on-load   on-load:def
 ++  on-leave  on-leave:def
 ++  on-watch  on-watch:def
 ++  on-agent  on-agent:def
@@ -42,6 +41,12 @@
 ++  on-init
   ^-  (quip card _this)
   `this
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  =/  old  !<(versioned-state old-state)
+  :: ::
+  `this(state old)
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
@@ -60,6 +65,17 @@
     ?-  -.ent
       :: ::
           %response  `this
+      :: ::
+          %remove
+      ?.  ?|  =(src.bowl our.bowl)
+              =(src.bowl ship.ent)
+          ==
+        :: must either be admin or
+        :: removing self
+        `this
+      =.  minitowers
+        (remove minitowers [ship.ent ~])
+      `this
       :: ::
           %put
       =/  tow=minitower:store  +.ent
@@ -99,26 +115,12 @@
           %request
       :: filter out crud
       ::  so we only keep a max of 64
-      ::  and its the 64 with the most viewers
-      ::   this may be over engineered,
-      ::   but it should be relatively future proof
-      =/  stale=(list ship)
-        (get-stale minitowers now.bowl)
-      =/  nerds=(list ship)
-        (get-nerds minitowers)
-      ::
-      :: union stale nerds
-      =/  crud=(list ship)
-        =|  crums=(set ship)
-        =.  crums
-          %-  ~(gas in crums)
-          (weld stale nerds)
-        ~(tap in crums)
-      ::
+      ::  and its the 64 most recent
+      =/  too-old=(list ship)
+        (get-too-old:hc minitowers)
       :: remove a list of ships from the map
       =.  minitowers
-        (remove minitowers crud)
-      ::
+        (remove minitowers too-old)
       :: form the output
       =/  ent=event:store  [%response minitowers]
       :_  this
@@ -149,7 +151,8 @@
 |_  bowl=bowl:gall
 ++  max-description    64
 ++  max-viewers       256
-++  timeout           ~m6  :: TODO pick a thoughtful time depending on put frequency
+++  max-towers         64
+++  timeout           ~m6  :: this is relatively more than the onInterval in the frontend
 ++  poke-tower
   |=  [src=ship ent=event:store]
   :~
@@ -159,53 +162,28 @@
       !>  ent
   ==
 ::
-++  get-nerds
+:: too-old: oldest stations exceeding maximum number of stations
+++  get-too-old
   |=  [tows=(map ship minitower:store)]
   ^-  (list ship)
-  ::
-  =*  max-tows  64
-  ::
-  :: bad DoS problem running a sort every request...
-  :: this is what bans are for
   =/  vows=(list minitower:store)
     ~(val by tows)
   ::
-  ?:  (lte (lent vows) max-tows)  ~
-  :: sort by viewers
+  ?:  (lte (lent vows) max-towers)  ~
+  :: sort by time
   =.  vows
     %+  sort  vows
-    minitower-gte
-  :: get all the biggest nerds
-  ::  nerd: anyone past max-length because they dont have enough viewers
+    minitower-time-gte
   =.  vows
-    (slag max-tows vows)
-  ::
-  :: convert to list ship
+    (scag max-towers vows)
   |-
-  ?~  vows  ~
-  :-  location.i.vows
-  $(vows t.vows)
-++  get-stale
-  |=  [tows=(map ship minitower:store) now=time]
-  ^-  (list ship)
-  ::
-  =/  vows=(list minitower:store)
-    ~(val by tows)
-  ::
-  ?:  =(0 (lent vows))  ~
-  ::
-  :: filter out anything too old
-  |-
-  ?~  vows  ~
-  ?:  (lth time.i.vows `@da`(sub now timeout))
+    ?~  vows  ~
     :-  location.i.vows
     $(vows t.vows)
-  $(vows t.vows)
-++  minitower-gte
+++  minitower-time-gte
   |=  [a=minitower:store b=minitower:store]
-  :: is a > b?
   %+  gte
-  viewers.a  viewers.b
+  time.a  time.b
 ++  remove
   |=  [tows=(map ship minitower:store) stale=(list ship)]
   ^-  (map ship minitower:store)

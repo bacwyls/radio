@@ -4,6 +4,7 @@ import { NavItem } from './NavItem';
 import { selectTunePatP, selectIsPublic, selectHasPublishedStation, setHasPublishedStation, selectOurTowerDescription } from '../features/station/stationSlice';
 import { setNavigationOpen, selectNavigationOpen } from '../features/ui/uiSlice';
 import { Radio } from '../lib';
+import { isOlderThanNMinutes } from '../util';
 
 
 interface IMinitower {
@@ -15,6 +16,15 @@ interface IMinitower {
 
 let radio : Radio = new Radio();
 
+
+function splitMinitowersByAge(minitowers: IMinitower[]): { newTowers: IMinitower[], oldTowers: IMinitower[] } {
+  // Split the Minitowers into two arrays
+  const maxAgeInMinutes = 10
+  const newTowers = minitowers.filter(minitower => !isOlderThanNMinutes(minitower.time, maxAgeInMinutes));
+  const oldTowers = minitowers.filter(minitower => isOlderThanNMinutes(minitower.time, maxAgeInMinutes));
+
+  return { newTowers, oldTowers}
+}
 
 export const Navigation: FC = () => {
 
@@ -38,11 +48,20 @@ export const Navigation: FC = () => {
           console.log('greg update', e)
           if(!e['response']) return;
 
-          let newTowers = e.response;
+          let allTowers = e.response;
+          // split towers into new and old
+          // then sort new by # of viewers and old by most recent
+          let {newTowers, oldTowers} = splitMinitowersByAge(allTowers)
           newTowers.sort(function(a:any, b:any) {
             return b.viewers - a.viewers;
           });
-          setTowers(e.response);
+          oldTowers.sort(function(a:any, b:any) {
+            return b.time - a.time;
+          });
+
+          let sortedTowers : IMinitower[] = [];
+          sortedTowers = sortedTowers.concat(newTowers, oldTowers)
+          setTowers(sortedTowers)
         },
         quit: ()=> alert('(greg) lost connection to your urbit. please refresh'),
         err: (e)=> console.log('radio err', e),
@@ -114,6 +133,10 @@ export const Navigation: FC = () => {
             <div
               className='flex flex-col bg-white border border-black absolute \
               p-2 overflow-scroll z-10 items-start mt-1'
+              style={{
+                maxHeight:'50%',
+                overflowY:'scroll',
+              }}
             >
               {(tunePatP===radio.our && !hasPublishedStation) &&
                   <button
@@ -151,7 +174,9 @@ export const Navigation: FC = () => {
                       key={i}
                       patp={tower.location}
                       flare={tower.viewers.toString()}
-                      description={tower.description} />
+                      description={tower.description}
+                      time={tower.time}
+                      />
               )}
 
             </div>

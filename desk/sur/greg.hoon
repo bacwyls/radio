@@ -12,6 +12,7 @@
 +$  event
   $%
     [%put =minitower]
+    [%remove =ship]
     [%request ~]
     [%response minitowers=(map ship minitower)]
   ==
