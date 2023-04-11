@@ -5,6 +5,7 @@ import { useAppDispatch } from "./app/hooks";
 import { setTunePatP } from "./features/station/stationSlice";
 import { resetPage } from "./util";
 
+const badDJMessage = 'You do not have permission to use that command on this station. Try using your station';
 
 export class Radio {
 
@@ -45,7 +46,26 @@ export class Radio {
             this.api.delete();
           });    
           // tune to hub by default
-          this.tune(this.hub);
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+          const station = urlParams.get('station');
+          if(!station) {
+            this.tune(this.hub);
+            return;
+          }
+          let locationPatP = this.hub;
+          switch(station) {
+            case 'hub':
+              locationPatP=this.hub;
+              break;
+            case 'our':
+              locationPatP=this.our;
+              break;
+            default:
+              locationPatP=station!;
+              break;
+          }
+          this.tune(locationPatP);
           });
       }
 
@@ -95,9 +115,17 @@ export class Radio {
         this.setTime(url, duration-5);
     }
 
-    public isAdmin(hostPatp: string) {
-        return hostPatp === this.our;
+    public isAdmin() {
+        const tunePatP = store.getState().station.tunePatP;
+        return tunePatP === this.our;
     }
+    public canUseDJCommands() {
+        const isPublic = store.getState().station.isPublic;
+        if(isPublic) {
+          return true;
+        }
+        return this.isAdmin();
+      }
 
 
     // api hits
@@ -130,7 +158,12 @@ export class Radio {
             });
     }
 
+
     public spin(playUrl:string) {
+        if(!this.canUseDJCommands()) {
+            alert(badDJMessage)
+            return;
+        }
         if(!this.isValidHttpUrl(playUrl)) return;
         let currentUnixTime = Date.now()
         currentUnixTime = Math.ceil(currentUnixTime);
@@ -163,6 +196,10 @@ export class Radio {
     }
 
     public talk(talkMsg: string) {
+        if(!this.canUseDJCommands()) {
+            alert(badDJMessage)
+            return;
+        }
         this.api.poke({
             app: 'tenna',
             mark: 'radio-action',
