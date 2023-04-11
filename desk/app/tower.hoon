@@ -184,6 +184,10 @@
       :: no spoofing
       =.  from.act  src.bowl
       =.  time.act  now.bowl
+      :: enforce max length
+      =.  message.act
+          %-  crip
+          (scag 2.000 (trip message.act))
       ::
       =/  =chat:store  +.act
       =.  chatlog  [chat chatlog]

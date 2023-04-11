@@ -134,25 +134,6 @@
         (watch new-tune)
       =/  love
         (leave old-tune)
-      ::
-      ::  cant remember why this broke something
-      :: ?:  =(old-tune new-tune)
-      ::   `this
-      :: 
-      :: dont love if not wack
-      :: dont leave if never got the watch ack
-      ::  handles alien and unbooted providers
-      ::  circumvents ames cork crash
-      ::   https://github.com/urbit/urbit/issues/6025
-      =.  love
-          ?:  wack
-            love
-          ~
-      ::
-      =.  wack  |
-      :: watch new AND/OR leave old
-    ::  ~&  >>>  [%watt watt]
-    ::  ~&  >>>  [%love love]
       :_  this
       (weld love watt)
     :: ::
@@ -201,6 +182,7 @@
   ==
 ++  fwd
   |=  [act=action:store]
+  ?~  tune.state  ~
   :~
     %+  poke:pass:agentio
       [(need tune.state) provider]
