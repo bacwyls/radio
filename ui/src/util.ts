@@ -10,7 +10,8 @@ import {
   resetChats,
   setChatsWithChatlog,
   setChatsWithChat,
-  setOurTowerDescription
+  setOurTowerDescription,
+  selectIsPublic
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -21,6 +22,7 @@ import {
 
 import {isValidPatp} from 'urbit-ob';
 import ReactPlayer from 'react-player';
+import store from './app/store';
 
 export function timestampFromTime(time: number) {
 
@@ -120,6 +122,7 @@ export function resetPage(dispatch: any) {
   dispatch(setNavigationOpen(false));
 }
 
+
 // TODO clean this up
 export function handleUserInput(
   radio: Radio,
@@ -181,28 +184,41 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'public':
-      if(!radio.isAdmin(tunePatP)) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.public();
       radio.chat(chat);
       break;
+    case 'party':
+      if(!radio.isAdmin()) {
+        return;
+      }
+      const isPublic = store.getState().station.isPublic;
+      if(isPublic){
+        radio.private();
+      } else {
+        radio.public();
+      }
+
+      radio.chat(chat);
+      break;
     case 'private':
-      if(!radio.isAdmin(tunePatP)) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.private();
       radio.chat(chat);
       break;
     case 'ban':
-      if(!radio.isAdmin(tunePatP)) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.ban(arg);
       radio.chat(chat);
       break;
     case 'unban':
-      if(!radio.isAdmin(tunePatP)) {
+      if(!radio.isAdmin()) {
         return;
       }
       radio.unban(arg);
@@ -220,7 +236,7 @@ export function handleUserInput(
       radio.chat(chat);
       break;
     case 'publish':
-      if (!radio.isAdmin(tunePatP)) {
+      if (!radio.isAdmin()) {
         return;
       }
       radio.gregPut(arg);
@@ -233,7 +249,7 @@ export function handleUserInput(
     case 'qpublish':
       // quiet publish
       // publish without chatting about it
-      if (!radio.isAdmin(tunePatP)) {
+      if (!radio.isAdmin()) {
         return;
       }
       radio.gregPut(arg);

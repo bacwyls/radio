@@ -152,17 +152,23 @@ export const PlayerColumn: FC = () => {
 
   return(
     <div
-      className={isMobile ? '' : 'inline-block mr-4 w-2/3'}
+      className={isMobile ? '' : 'inline-block mr-4 flex flex-col'}
+      style={{
+        flex:isMobile ? '1' : '2',
+        order:'1',
+      }}
       id='player-wrapper'
     >
+      <div className="flex flex-initial">
       <Navigation
       />
-      <div>
+      </div>
         {!playerReady &&
           <p className='text-center'>loading media player ...</p>
         }
 
         <div
+          className="flex flex-1"
           style={{
             width:'100%',
             height:isMobile ? '30vh' : '80vh',
@@ -197,7 +203,7 @@ export const PlayerColumn: FC = () => {
             }}
           />
         </div>
-        <div className='flex flex-row'>
+        <div className='flex flex-initial flex-row'>
           <div
             className='flex-1'
             style={{ overflowX: isMobile ? 'scroll' : 'inherit' }}
@@ -215,34 +221,33 @@ export const PlayerColumn: FC = () => {
                   ? {
                     overflowX: 'scroll',
                     height: '1.5rem',
-                    display: 'flex'
+                    maxHeight: '1.5rem',
+                    display: 'flex',
                   }
-                  : { overflowX: 'inherit' }
+                  : {
+                    // height: '1.5rem',
+                    maxHeight: '6rem',
+                    overflowY:'scroll',
+                  }
               }
             >
               {viewers.map((x, i) =>
                 <span
-                  className='mr-3'
+                  className=''
                   key={i}
                   style={{ whiteSpace: isMobile ? 'nowrap' : 'inherit' }}
                 >
-                  {/* 
-                    https://github.com/tloncorp/landscape-apps/issues/1559
-                    broken since groups 2
-                  <a
-                    href={'/apps/landscape/~profile/'+x}
-                    target='_blank'
-                  > */}
                     {x}
-                  {/* </a> */}
-                  {i < viewers.length - 1 ? ', ' : ''}
+                  <span>
+                    {i < viewers.length - 1 ? ', ' : ''}
+                  </span>
                 </span>
+
               )}
             </div>
           </div>
           {isMobile ? null : buttonRow}
         </div>
       </div>
-    </div>
   );
 }

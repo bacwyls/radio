@@ -23,10 +23,8 @@ export const RadioController: FC = () => {
     }, 1000 * 60 * 3)
   });
 
-
-  const wrapperClass = isMobile
-    ? 'mx-2 md:mx-20 text-xs font-mono'
-    : 'mx-2 md:mx-20 text-xs font-mono flex flex-row';
+  const wrapperClassShared='p-[1vw] lg:p-[10vh] pt-0 lg:pt-0 h-screen text-xs font-mono flex ';
+  const wrapperClass = wrapperClassShared + (isMobile ? 'flex-col' : 'flex-row')
 
   return(
     !userInteracted

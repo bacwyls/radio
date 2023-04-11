@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-interface ChatMessage {
+export interface ChatMessage {
   message: string;
   from: string;
   time: number

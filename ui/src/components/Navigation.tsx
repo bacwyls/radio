@@ -135,6 +135,7 @@ export const Navigation: FC = () => {
               p-2 overflow-scroll z-10 items-start mt-1'
               style={{
                 maxHeight:'50%',
+                maxWidth:'90%',
                 overflowY:'scroll',
               }}
             >
@@ -185,21 +186,17 @@ export const Navigation: FC = () => {
       </div>
 
          {/* tuned to */}
-        <div className="flex-full inline-block"
-        >
-          <span className="text-xl mr-3">
-            📻
-          </span>
-          <span className="">
-            {tunePatP}
-          </span>
-          <span>
-            {' '}{isPublic ? '(public)' : '(private)'}
-          </span>
-        </div>
+         <div className="inline-block flex flex-row items-center">
+  <span className="text-xl mr-3 pb-1 flex-initial">
+    📻 {isPublic ? '🎉' : ''}
+  </span>
 
-
-
+  <div className="flex-1">
+    <span className="">
+      {tunePatP}
+    </span>
+  </div>
+</div>
 
 
       </div>

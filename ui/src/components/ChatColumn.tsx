@@ -52,7 +52,6 @@ export const ChatColumn: FC= () => {
       spinTime,
       spinUrl,
       tunePatP,
-      // window.playerRef, // TODO wtf
     );
   }
 
@@ -62,42 +61,48 @@ export const ChatColumn: FC= () => {
 
   return(
     <div
-      className="flex-1 flex-col flex text-xs font-mono"
-      style={{maxWidth}}
+      className="text-xs font-mono flex flex-col"
+      style={{
+        flex:isMobile ? '2' : '1',
+        order:'1',
+        maxWidth: maxWidth
+      }}
     >
-      <ChatBox/>
-      <div>
-        <hr/>
-        <div className="flex">
-          <input 
-            type="text"
-            ref={inputReference}
-            className="hover:pointer px-4 py-2 inline-block \
-                      flex-1 outline-none border-none placeholder-gray-800 "
-            autoCorrect={'off'}
-            autoCapitalize={'off'}
-            autoComplete={'off'}
-            // autoFocus={false}
-            placeholder="write your message..."
-            id={chatInputId}
-            onKeyDown={(e: any) => {
-              if (e.key == 'Enter'){
-                processInput();
+        {/* flex-1 */}
+        <ChatBox/>
+        <div className="flex-initial">
+          <hr/>
+          <div className="flex">
+            <input 
+              type="text"
+              ref={inputReference}
+              className="hover:pointer px-4 py-2 inline-block \
+                        flex-1 outline-none border-none placeholder-gray-800 "
+              autoCorrect={'off'}
+              autoCapitalize={'off'}
+              autoComplete={'off'}
+              // autoFocus={false}
+              placeholder="write your message..."
+              id={chatInputId}
+              onKeyDown={(e: any) => {
+                if (e.key == 'Enter'){
+                  processInput();
+                }
+              }}
+            />
+            <button 
+              className="hover:pointer px-4 py-2\
+                        flex-initial ml-2 outline-none border-none"
+              style={{ backdropFilter: 'blur(32px)' }}
+              onClick={() => 
+                processInput()
               }
-            }}
-          />
-          <button 
-            className="hover:pointer px-4 py-2\
-                      flex-initial ml-2 outline-none border-none"
-            style={{ backdropFilter: 'blur(32px)' }}
-            onClick={() => 
-              processInput()
-            }
-          >
-            send
-          </button>
-        </div>
+            >
+              send
+            </button>
+          </div>
       </div>
     </div>
+    // </div>
   );
 }
