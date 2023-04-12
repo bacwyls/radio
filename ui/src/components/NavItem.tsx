@@ -1,67 +1,65 @@
-import React, { FC } from 'react';
-import { useAppDispatch } from '../app/hooks';
-import { Radio } from '../lib';
-import { isOlderThanNMinutes, timestampFromTime } from '../util';
+import React, { FC } from "react";
+import { useAppDispatch } from "../app/hooks";
+import { Radio } from "../lib";
+import { isOlderThanNMinutes, timestampFromTime } from "../util";
 
 interface INavItem {
-  patp: string|null,
-  flare?: string,
-  title?: string,
+  patp: string;
+  flare?: string;
+  title?: string;
   // logout?: boolean,
   radio: Radio;
   description?: string;
-  time? : number;
+  time?: number;
 }
 
-
 export const NavItem: FC<INavItem> = (props: INavItem) => {
-
   const dispatch = useAppDispatch();
 
-  const {patp, radio, flare, title, description, time} = props;
+  const { patp, radio, flare, title, description, time } = props;
   const LiveNavItem = () => {
-      return (
+    return (
       <button
-          className="hover:pointer border-black  \
-                    border px-1 text-left inline-block \
-                    flex-initial mr-2 my-1"
-          style={{ whiteSpace:'nowrap' }}
-          onClick={() => radio.tuneTo(dispatch, patp)}
-        >
-          <span>
-            {flare && `${flare} `}
-            {title ? title : patp}
-            {description && ` | ${description}`}
-          </span>
-        </button>
-      )
-  }
+        className="hover:pointer border-black  \
+                   border px-1 text-left inline-block \
+                   flex-initial mr-2 my-1"
+        style={{ whiteSpace: "nowrap" }}
+        onClick={() => radio.tuneAndReset(dispatch, patp)}
+      >
+        <span>
+          {flare && `${flare} `}
+          {title ? title : patp}
+          {description && ` | ${description}`}
+        </span>
+      </button>
+    );
+  };
   const PastNavItem = () => {
     return (
       <button
-          className="hover:pointer \
-                    border px-1 text-left inline-block \
-                    flex-initial mr-2 my-1"
-          style={{
-            whiteSpace:'nowrap',
-            borderColor:'#888',
-            color:'#888'
-          }}
-          onClick={() => radio.tuneTo(dispatch, patp)}
-        >
-          <span>
-            <span className={'mr-2 text-gray-500'}>
-              {timestampFromTime(time!)}
-            </span>
-            {title ? title : patp}
-            {description && ` | ${description}`}
+        className="hover:pointer \
+                   border px-1 text-left inline-block \
+                   flex-initial mr-2 my-1"
+        style={{
+          whiteSpace: "nowrap",
+          borderColor: "#888",
+          color: "#888",
+        }}
+        onClick={() => radio.tuneAndReset(dispatch, patp)}
+      >
+        <span>
+          <span className={"mr-2 text-gray-500"}>
+            {timestampFromTime(time!)}
           </span>
-        </button>
-    )
-  }
+          {title ? title : patp}
+          {description && ` | ${description}`}
+        </span>
+      </button>
+    );
+  };
 
   if (isOlderThanNMinutes(time, 10)) {
-    return PastNavItem()
+    return PastNavItem();
   }
   return LiveNavItem();
 };

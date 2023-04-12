@@ -11,7 +11,7 @@ export const HelpMenu: FC<IHelpMenu> = (props: IHelpMenu) => {
 
   return(
     <div
-      className="p-4 bg-white"
+      className="p-4 bg-white border"
       style={{
         position:'absolute',
         top: top - 30,

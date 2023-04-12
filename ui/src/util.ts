@@ -17,7 +17,8 @@ import {
   setUserInteracted,
   setPlayerReady,
   setNavigationOpen,
-  setPlayerInSync
+  setPlayerInSync,
+  setIsConnecting
 } from './features/ui/uiSlice';
 
 import {isValidPatp} from 'urbit-ob';
@@ -49,10 +50,12 @@ export function isOlderThanNMinutes(unixTimestamp: number | undefined, nMinutes 
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
   console.log("radio update", update);
-  let mark = Object.keys(update)[0];
 
-  // handle updates from tower / radio station
-  switch (mark) {
+  if(Object.keys(update).length !== 0) dispatch(setIsConnecting(false))
+
+  let head = Object.keys(update)[0];
+  // handle updates from tower, remote radio station
+  switch (head) {
     case 'spin':
       var updateSpin = update['spin'];
 
@@ -72,11 +75,23 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
     case 'tune':
       let tune = update['tune'];
       dispatch(setTunePatP(tune));
-      // radio.tunedTo = tune;
+      
+      // Get the current URL and parse its search parameters
+      const url = new URL(window.location.href);
+      const searchParams = new URLSearchParams(url.search);
+
+      // Set a new value for the "param" parameter
+      searchParams.set("station", tune);
+
+      // Replace the search parameters in the URL with the updated ones
+      url.search = searchParams.toString();
+
+      // Update the browser's address bar with the new URL
+      window.history.replaceState(null, "", url.href);
+
+
       if (tune === null) {
-        resetPage(dispatch);
-        dispatch(setUserInteracted(false));
-        // radio.tune(our)
+        radio.tuneAndReset(dispatch, radio.hub)
         // alert('whoops, you left the radio station')
       } else {
         radio.ping();
@@ -165,10 +180,10 @@ export function handleUserInput(
       if (arg === '') arg = radio.our;
       radio.chat(chat);
       if(isValidPatp(arg)) {
-        radio.tuneTo(dispatch, arg);
+        radio.tuneAndReset(dispatch, arg);
       }
       else if(isValidPatp('~'+arg)) {
-        radio.tuneTo(dispatch, '~'+arg);
+        radio.tuneAndReset(dispatch, '~'+arg);
       }
       break;
     case 'time':

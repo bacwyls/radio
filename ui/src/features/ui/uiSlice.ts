@@ -6,6 +6,7 @@ export interface UIState {
   playerReady: boolean;
   playerInSync: boolean;
   navigationOpen: boolean;
+  isConnecting: boolean;
 }
 
 const initialState: UIState = {
@@ -13,6 +14,7 @@ const initialState: UIState = {
   playerReady: false,
   playerInSync: false,
   navigationOpen: false,
+  isConnecting: true,
 };
   
 
@@ -44,6 +46,12 @@ export const uiSlice = createSlice({
         navigationOpen: action.payload,
       }
     },
+    setIsConnecting: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isConnecting: action.payload,
+      }
+    },
   }
 });
 
@@ -52,11 +60,13 @@ export const {
   setPlayerReady,
   setPlayerInSync,
   setNavigationOpen,
+  setIsConnecting,
 } = uiSlice.actions;
 
 export const selectUserInteracted = (state: RootState) => state.ui.userInteracted;
 export const selectPlayerReady = (state: RootState) => state.ui.playerReady;
 export const selectPlayerInSync = (state: RootState) => state.ui.playerInSync;
 export const selectNavigationOpen = (state: RootState) => state.ui.navigationOpen;
+export const selectIsConnecting= (state: RootState) => state.ui.isConnecting;
 
 export default uiSlice.reducer;

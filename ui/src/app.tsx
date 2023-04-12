@@ -1,6 +1,6 @@
 import Urbit from '@urbit/http-api';
 import React, { useEffect, useMemo, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { ChatColumn } from './components/ChatColumn';
 import { RadioController } from './components/RadioController';
@@ -11,9 +11,10 @@ import {
   selectUpdate,
 } from './features/station/stationSlice';
 import { Radio } from './lib';
+import { ChatBox } from './components/ChatBox';
 
 
-let radio : Radio = new Radio();
+let radio: Radio = new Radio();
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ export function App() {
   const [unseenChanges, setUnseenChanges] = useState(0);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener('focus', function (event) {
       setFocus(true);
       setUnseenChanges(0);
@@ -34,9 +35,9 @@ export function App() {
     });
   }, []);
 
-   // initialize subscription
+  // initialize subscription
   useEffect(() => {
-      radio.watchTenna(handleSub)
+    radio.watchTenna(handleSub)
   }, []);
   function handleSub(update: any) {
     dispatch(setUpdate(update));
@@ -48,27 +49,27 @@ export function App() {
     handleUpdate(update, radio, dispatch, true);
     //
     // set notif if got an update when not focused
-    if(!focus) {
-      setUnseenChanges(unseenChanges+1);
+    if (!focus) {
+      setUnseenChanges(unseenChanges + 1);
     }
 
   }, [update]);
 
-  useEffect(()=>{
-    if(unseenChanges===0) {
+  useEffect(() => {
+    if (unseenChanges === 0) {
       document.title = 'radio'
     } else {
-      document.title = 'radio ('+unseenChanges+')'
+      document.title = 'radio (' + unseenChanges + ')'
     }
   }, [unseenChanges])
 
-  const memoizedRadioController = useMemo(() => React.memo(RadioController), []);
-  const memoizedChatColumn = useMemo(() => React.memo(ChatColumn), []);
+  const MemoizedRadioController = useMemo(() => React.memo(RadioController), []);
+  const MemoizedChatBox = useMemo(() => React.memo(ChatBox), []);
   return (
-    <Router>
+    <Router basename="/apps/radio">
       <Routes>
-        <Route path="/apps/radio/" Component={memoizedRadioController} />
-        <Route path="/apps/radio/chat" Component={memoizedChatColumn} />
+        <Route path="/" element={<MemoizedRadioController />} />
+        <Route path="/chat" element={<MemoizedChatBox />} />
       </Routes>
     </Router>
   );
