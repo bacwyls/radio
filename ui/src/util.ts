@@ -38,6 +38,36 @@ export function timestampFromTime(time: number) {
     ? `${month.padStart(2,'0')}/${day.padStart(2,'0')}`
     : `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
 }
+export function formatTime(seconds: number): string {
+  // Check if the input is valid
+  if (!Number.isInteger(seconds) || seconds < 0) {
+    throw new Error("Invalid input: seconds must be a non-negative integer");
+  }
+
+  // Calculate the hours, minutes, and seconds
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  // Build the time string
+  let timeString = "";
+  if (hours > 0) {
+    timeString += `${hours}hr `;
+  }
+  if (minutes > 0) {
+    timeString += `${minutes}min `;
+  }
+  if (remainingSeconds > 0) {
+    timeString += `${remainingSeconds}sec`;
+  }
+  if (timeString === "") {
+    timeString = "0sec";
+  }
+
+  return timeString.trim();
+}
+
+
 export function isOlderThanNMinutes(unixTimestamp: number | undefined, nMinutes : number): boolean {
   if (!unixTimestamp) return false;
 

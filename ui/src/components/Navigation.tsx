@@ -51,7 +51,7 @@ export const Navigation: FC = () => {
   const [towers, setTowers] = useState<Array<IMinitower>>([]);
 
   useEffect(() => {
-    // console.log('subscribing to tower /greg/local from navigation')
+    console.log('subscribing to tower /greg/local from navigation')
     radio.api.subscribe({
       app: "tower",
       path: "/greg/local",
@@ -76,6 +76,11 @@ export const Navigation: FC = () => {
       },
       quit: () => alert("(greg) lost connection to your urbit. please refresh"),
       err: (e) => console.log("radio err", e),
+    }).then((subscriptionId) => {
+      //
+      window.addEventListener("beforeunload", () => {
+        radio.api.unsubscribe(subscriptionId);
+      });
     });
     radio.gregRequest();
   }, []);

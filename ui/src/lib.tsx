@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import store from "./app/store";
 import { useAppDispatch } from "./app/hooks";
 import { setTunePatP } from "./features/station/stationSlice";
-import { resetPage } from "./util";
+import { formatTime, resetPage } from "./util";
 import { setIsConnecting } from "./features/ui/uiSlice";
 
 const badDJMessage =
@@ -87,7 +87,7 @@ export class Radio {
 
         let globalProgress = Math.ceil(currentUnixTime - startedTime) % duration;
 
-        console.log("seeking to :", globalProgress);
+        console.log("seeking to :", formatTime(Math.round(globalProgress)));
         player.seekTo(globalProgress, "seconds");
     }
 
