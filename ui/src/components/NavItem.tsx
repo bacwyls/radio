@@ -1,31 +1,65 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
+import { useAppDispatch } from "../app/hooks";
+import { Radio } from "../lib";
+import { isOlderThanNMinutes, maxTowerAgeInMinutes, timestampFromTime } from "../util";
 
 interface INavItem {
-  patp: string|null,
-  tuneTo: ((patp: string|null) => void);
-  flare?: string,
-  title?: string,
+  patp: string;
+  flare?: string;
+  title?: string;
   // logout?: boolean,
-  description?: string
+  radio: Radio;
+  description?: string;
+  time?: number;
 }
 
 export const NavItem: FC<INavItem> = (props: INavItem) => {
+  const dispatch = useAppDispatch();
 
-  const {patp, tuneTo, flare, title, description} = props;
-  return(
-   
+  const { patp, radio, flare, title, description, time } = props;
+  const LiveNavItem = () => {
+    return (
       <button
-          className="hover:pointer border-black  \
-                    border px-1 text-left inline-block \
-                    flex-initial mr-2 my-1"
-          style={{ whiteSpace:'nowrap' }}
-          onClick={() => tuneTo(patp)}
-        >
-          <span>
-            {flare && `${flare} `}
-            {title ? title : patp}
-            {description && ` | ${description}`}
+        className="hover:pointer border-black  \
+                   border px-1 text-left inline-block \
+                   flex-initial mr-2 my-1"
+        style={{ whiteSpace: "nowrap" }}
+        onClick={() => radio.tuneAndReset(dispatch, patp)}
+      >
+        <span>
+          {flare && `${flare} `}
+          {title ? title : patp}
+          {description && ` | ${description}`}
+        </span>
+      </button>
+    );
+  };
+  const PastNavItem = () => {
+    return (
+      <button
+        className="hover:pointer \
+                   border px-1 text-left inline-block \
+                   flex-initial mr-2 my-1"
+        style={{
+          whiteSpace: "nowrap",
+          borderColor: "#888",
+          color: "#888",
+        }}
+        onClick={() => radio.tuneAndReset(dispatch, patp)}
+      >
+        <span>
+          <span className={"mr-2 text-gray-500"}>
+            {timestampFromTime(time!)}
           </span>
-        </button>
-  )
+          {title ? title : patp}
+          {description && ` | ${description}`}
+        </span>
+      </button>
+    );
+  };
+
+  if (isOlderThanNMinutes(time, maxTowerAgeInMinutes)) {
+    return PastNavItem();
+  }
+  return LiveNavItem();
 };

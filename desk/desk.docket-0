@@ -1,9 +1,9 @@
 :~  title+'radio'
     info+'an app for urbit disc jockeys'
     color+0xff.ffff
-    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/radio%2Fradio_0.0.11_0v4.lcttl.devtu.iub1a.f1rts.svi5c.glob' 0v4.lcttl.devtu.iub1a.f1rts.svi5c]
+    glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/radio/radio-0.1.0--0v1.teakm.2p4rq.b8qjt.b0ci5.3pgbp.glob' 0v1.teakm.2p4rq.b8qjt.b0ci5.3pgbp]
     base+'radio'
-    version+[0 0 11] 
+    version+[0 1 0] 
     image+'https://0x0.st/o4--.png'
     website+'https://github.com/bacwyls/radio'
     license+'MIT'

@@ -17,10 +17,10 @@
 =|  state-0
 =*  state  -
 ^-  agent:gall
-%+  verb  |
-%-  agent:dbug
 %-  %-  agent:vita-client
       [& ~nodmyn-dosrux]
+%+  verb  |
+%-  agent:dbug
 =<
 |_  =bowl:gall
 +*  this  .
@@ -63,19 +63,20 @@
 ++  on-agent
   |=  [=wire =sign:agent:gall]
   ^-  (quip card _this)
-  :: ~&  >>  [%on-agent %tenna wire -.sign]
   ?~  tune.state  `this
   ?.  =(src.bowl (need tune.state))
     `this
-  :: ?+    wire  (on-agent:def wire sign)
-  ::   [%expected %wire ~]
+  ?+    wire  (on-agent:def wire sign)
+      [%radio @ %personal ~]
     ?+    -.sign  (on-agent:def wire sign)
-        %watch-ack
-      =.  wack  &
-      `this
+        %fact
+      :: fwd to client (frontend) subscription
+      :_  this
+      [(fact:io cage.sign ~[/frontend]) ~]
+    ==
+      [%radio @ %global ~]
+    ?+    -.sign  (on-agent:def wire sign)
         %kick
-      ?.  =(wire global)
-        `this
       :_  this
       :~
       (poke-self:pass:io tuneout)
@@ -89,7 +90,7 @@
           (fact:io cage.sign ~[/frontend])
         ==
       ==
-    :: ==
+    ==
   ==
 ++  on-poke
   |=  [=mark =vase]
@@ -106,16 +107,19 @@
     :: ~&  >  [%tenna %on-poke act]
     ?-  -.act
       :: ::
-          %online   `this
-          %public   `this
-          %viewers  `this  :: TODO ugly
-          %chatlog  `this  :: TODO ugly
+          %online       `this
+          %permissions  `this
+          %viewers      `this
+          %chatlog      `this
+          :: %initialize   `this
       :: ::
           %presence
                   :_  this  (fwd act)
           %spin   :_  this  (fwd act)
           %talk   :_  this  (fwd act)
           %chat   :_  this  (fwd act)
+          %description
+                  :_  this  (fwd act)
       :: ::
       :: ::
       :: ::
@@ -131,29 +135,12 @@
       ::
       ::
       =/  watt
-        (watch new-tune)
+        (watch:hc new-tune)
       =/  love
-        (leave old-tune)
-      ::
-      ::  cant remember why this broke something
-      :: ?:  =(old-tune new-tune)
-      ::   `this
-      :: 
-      :: dont love if not wack
-      :: dont leave if never got the watch ack
-      ::  handles alien and unbooted providers
-      ::  circumvents ames cork crash
-      ::   https://github.com/urbit/urbit/issues/6025
-      =.  love
-          ?:  wack
-            love
-          ~
-      ::
-      =.  wack  |
-      :: watch new AND/OR leave old
-    ::  ~&  >>>  [%watt watt]
-    ::  ~&  >>>  [%love love]
+        (leave:hc old-tune)
       :_  this
+      :: watt
+      :: love
       (weld love watt)
     :: ::
     ==
@@ -176,18 +163,28 @@
 :: ::
 |_  bowl=bowl:gall
 ++  provider  %tower
-++  personal
-  [%personal ~]
-++  global
-  [%global ~]
+++  personal-wire
+  |=  =ship
+  ^-  wire
+  [%radio (scot %p ship) %personal ~]
+++  global-wire
+  |=  =ship
+  ^-  wire
+  [%radio (scot %p ship) %global ~]
+++  leave-all-wex
+  ^-  (list card)
+  %+  turn  ~(tap in ~(key by wex.bowl))
+  |=  [=wire =ship =term]
+  [%pass wire %agent [ship term] %leave ~]
 ++  leave
   |=  old-tune=(unit ship)
   ^-  (list card)
-  ?~  old-tune  ~
-  :~
-  [%pass global %agent [u.old-tune provider] %leave ~]
-  [%pass personal %agent [u.old-tune provider] %leave ~]
-  ==
+  leave-all-wex
+  :: ?~  old-tune  ~
+  :: :~
+  :: [%pass (global-wire u.old-tune) %agent [u.old-tune provider] %leave ~]
+  :: [%pass (personal-wire u.old-tune) %agent [u.old-tune provider] %leave ~]
+  :: ==
 ++  watch
   |=  new-tune=(unit ship)
   ^-  (list card)
@@ -196,11 +193,12 @@
       (fact:agentio tuneout ~[/frontend])
     ==
   :~
-  [%pass global %agent [u.new-tune provider] %watch global]
-  [%pass personal %agent [u.new-tune provider] %watch personal]
+  [%pass (global-wire u.new-tune) %agent [u.new-tune provider] %watch /global]
+  [%pass (personal-wire u.new-tune) %agent [u.new-tune provider] %watch /personal]
   ==
 ++  fwd
   |=  [act=action:store]
+  ?~  tune.state  ~
   :~
     %+  poke:pass:agentio
       [(need tune.state) provider]
