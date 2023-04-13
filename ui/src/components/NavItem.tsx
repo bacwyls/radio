@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useAppDispatch } from "../app/hooks";
 import { Radio } from "../lib";
-import { isOlderThanNMinutes, timestampFromTime } from "../util";
+import { isOlderThanNMinutes, maxTowerAgeInMinutes, timestampFromTime } from "../util";
 
 interface INavItem {
   patp: string;
@@ -58,7 +58,7 @@ export const NavItem: FC<INavItem> = (props: INavItem) => {
     );
   };
 
-  if (isOlderThanNMinutes(time, 10)) {
+  if (isOlderThanNMinutes(time, maxTowerAgeInMinutes)) {
     return PastNavItem();
   }
   return LiveNavItem();

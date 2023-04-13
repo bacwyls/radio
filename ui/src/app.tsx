@@ -1,17 +1,11 @@
-import Urbit from '@urbit/http-api';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { ChatColumn } from './components/ChatColumn';
 import { RadioController } from './components/RadioController';
-import { handleUpdate, resetPage } from './util';
-import {
-  setUpdate,
-  selectRadioSub,
-  selectUpdate,
-} from './features/station/stationSlice';
+import { handleUpdate } from './util';
 import { Radio } from './lib';
 import { ChatBox } from './components/ChatBox';
+import { selectUpdate, setUpdate } from './features/ui/uiSlice';
 
 
 let radio: Radio = new Radio();
@@ -19,7 +13,6 @@ let radio: Radio = new Radio();
 export function App() {
   const dispatch = useAppDispatch();
   const update = useAppSelector(selectUpdate);
-  const radioSub = useAppSelector(selectRadioSub);
 
   const [focus, setFocus] = useState(true);
   const [unseenChanges, setUnseenChanges] = useState(0);
@@ -37,7 +30,7 @@ export function App() {
 
   // initialize subscription
   useEffect(() => {
-    radio.watchTenna(handleSub)
+    radio.watchTenna(handleSub, dispatch)
   }, []);
   function handleSub(update: any) {
     dispatch(setUpdate(update));
@@ -62,6 +55,13 @@ export function App() {
       document.title = 'radio (' + unseenChanges + ')'
     }
   }, [unseenChanges])
+
+  useEffect(() => {
+    setInterval(() => {
+      // heartbeat to detect presence
+      radio.ping();
+    }, 1000 * 30 * 6);
+  }, []);
 
   const MemoizedRadioController = useMemo(() => React.memo(RadioController), []);
   const MemoizedChatBox = useMemo(() => React.memo(ChatBox), []);

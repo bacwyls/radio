@@ -3,22 +3,23 @@ import {
   setTalkMsg,
   setSpinUrl,
   setSpinTime,
-  setTunePatP,
-  setIsPublic,
-  setHasPublishedStation,
+  setPermissions,
   setViewers,
   resetChats,
   setChatsWithChatlog,
   setChatsWithChat,
-  setOurTowerDescription,
-  selectIsPublic
+  selectPermissions,
+  setDescription
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
+  setTunePatP,
   setPlayerReady,
   setNavigationOpen,
   setPlayerInSync,
-  setIsConnecting
+  setIsConnecting,
+  setHasPublishedStation,
+  setOurTowerDescription
 } from './features/ui/uiSlice';
 
 import {isValidPatp} from 'urbit-ob';
@@ -68,6 +69,8 @@ export function formatTime(seconds: number): string {
 }
 
 
+export const maxTowerAgeInMinutes = 10;
+
 export function isOlderThanNMinutes(unixTimestamp: number | undefined, nMinutes : number): boolean {
   if (!unixTimestamp) return false;
 
@@ -79,13 +82,25 @@ export function isOlderThanNMinutes(unixTimestamp: number | undefined, nMinutes 
 }
 
 export function handleUpdate(update: any, radio: Radio, dispatch: any, userInteracted: boolean) {
+  if(Object.keys(update).length === 0) {
+    return;
+  }
+  dispatch(setIsConnecting(false))
   console.log("radio update", update);
 
-  if(Object.keys(update).length !== 0) dispatch(setIsConnecting(false))
 
   let head = Object.keys(update)[0];
   // handle updates from tower, remote radio station
   switch (head) {
+    // case 'initialize':
+    //   let tower = update['initialize']
+    //   dispatch(setSpinUrl(tower.spin.url));
+    //   dispatch(setSpinTime(tower.spin.time));
+    //   dispatch(setViewers(tower.viewers));
+    //   dispatch(setPermissions(tower.permissions))
+    //   dispatch(setChatsWithChatlog(tower.chatlog));
+    //   dispatch(setDescription(tower.description));
+    //   break;
     case 'spin':
       var updateSpin = update['spin'];
 
@@ -104,26 +119,24 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       break;
     case 'tune':
       let tune = update['tune'];
-      dispatch(setTunePatP(tune));
-      
-      // Get the current URL and parse its search parameters
-      const url = new URL(window.location.href);
-      const searchParams = new URLSearchParams(url.search);
-
-      // Set a new value for the "param" parameter
-      searchParams.set("station", tune);
-
-      // Replace the search parameters in the URL with the updated ones
-      url.search = searchParams.toString();
-
-      // Update the browser's address bar with the new URL
-      window.history.replaceState(null, "", url.href);
-
-
       if (tune === null) {
-        radio.tuneAndReset(dispatch, radio.hub)
-        // alert('whoops, you left the radio station')
+        radio.tuneAndReset(dispatch, radio.our)
       } else {
+        dispatch(setTunePatP(tune));
+        
+        // Get the current URL and parse its search parameters
+        const url = new URL(window.location.href);
+        const searchParams = new URLSearchParams(url.search);
+
+        // Set a new value for the "param" parameter
+        searchParams.set("station", tune);
+
+        // Replace the search parameters in the URL with the updated ones
+        url.search = searchParams.toString();
+
+        // Update the browser's address bar with the new URL
+        window.history.replaceState(null, "", url.href);
+
         radio.ping();
       }
       break;
@@ -149,24 +162,22 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       */
       dispatch(setViewers(viewers));
       break;
-    case 'public':
-      dispatch(setIsPublic(update['public']))
-      break;
     case 'chatlog':
       let chatlog = update['chatlog']
       dispatch(setChatsWithChatlog(chatlog));
+      break;
+    case 'permissions':
+      let perm = update['permissions']
+      dispatch(setPermissions(perm))
+      break;
+    case 'description':
+      if(radio.isAdmin()) {
+        dispatch(setOurTowerDescription(update['description']))
+      }
+      dispatch(setDescription(update['description']))
+      break;
   }
 };
-
-export function resetPage(dispatch: any) {
-  dispatch(setPlayerReady(false));
-  dispatch(resetChats());
-  dispatch(setTalkMsg(''));
-  dispatch(setViewers([]));
-  dispatch(setSpinUrl(''));
-  dispatch(setNavigationOpen(false));
-}
-
 
 // TODO clean this up
 export function handleUserInput(
@@ -232,18 +243,19 @@ export function handleUserInput(
       if(!radio.isAdmin()) {
         return;
       }
-      radio.public();
+      // radio.public();
+      radio.setPermissions('open');
       radio.chat(chat);
       break;
     case 'party':
       if(!radio.isAdmin()) {
         return;
       }
-      const isPublic = store.getState().station.isPublic;
-      if(isPublic){
-        radio.private();
+      const permissions = store.getState().station.permissions;
+      if(permissions==='open'){
+        radio.setPermissions('closed');
       } else {
-        radio.public();
+        radio.setPermissions('open');
       }
 
       radio.chat(chat);
@@ -252,7 +264,8 @@ export function handleUserInput(
       if(!radio.isAdmin()) {
         return;
       }
-      radio.private();
+      // radio.private();
+      radio.setPermissions('closed')
       radio.chat(chat);
       break;
     case 'ban':
@@ -273,6 +286,15 @@ export function handleUserInput(
       radio.ping();
       // radio.chat(chat);
       break;
+    // case 'wave':
+    //   radio.chat(chat);
+    //   break;
+    // case 'scroll':
+    //   radio.chat(chat);
+    //   break;
+    // case 'typing':
+    //   radio.chat(chat);
+    //   break;
     case 'logout':
       radio.tune(null);
       break;
@@ -287,6 +309,8 @@ export function handleUserInput(
       radio.gregPut(arg);
       radio.chat(chat);
       dispatch(setHasPublishedStation(true));
+      // ourtowerdescription is a local copy in uislice
+      // representing ourtower. description in stationslice is the currently connected towers description
       dispatch(setOurTowerDescription(arg))
       // refresh towers
       radio.gregRequest();

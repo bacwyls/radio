@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 import { useAppSelector } from '../app/hooks';
-import { selectTunePatP } from '../features/station/stationSlice';
+import { selectTunePatP } from '../features/ui/uiSlice';
 
 const initialStatus = 'connecting to remote server'
 

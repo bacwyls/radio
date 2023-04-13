@@ -35,6 +35,8 @@ const renderChatMessage = (message: string) => {
   const words = message.split(" ");
   const elements = [];
   let numImages = 0;
+  let numEmojis = 0;
+
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
     if (checkImageURL(word)) {
@@ -45,7 +47,7 @@ const renderChatMessage = (message: string) => {
     } else if (checkURL(word)) {
       elements.push(
         <a
-          key={i}
+          key={`url-${i}`}
           href={word}
           target="_blank"
           rel="noopener noreferrer"
@@ -54,12 +56,24 @@ const renderChatMessage = (message: string) => {
           {word}
         </a>
       );
+    } else if (isEmoji(word)) {
+      if (numEmojis < 3) {
+        elements.push(
+          <span className="text-2xl">
+            {word}
+          </span>
+        )
+        numEmojis++;
+      } else {
+        elements.push(word + " ");
+      }
     } else {
       elements.push(word + " ");
     }
   }
   return elements;
 };
+
 
 const checkURL = (url: string) => {
   const pattern = new RegExp(
@@ -91,13 +105,22 @@ const chatInnerImg = (src: string) => {
   );
 };
 
+function isEmoji(str: string): boolean {
+  const emojiPattern = /(\p{Emoji}){1,4}/gu;
+  const consecutiveEmojiPattern = /(\p{Emoji}){5}/gu;
+  return emojiPattern.test(str) && !consecutiveEmojiPattern.test(str);
+}
+
+
+
 const checkImageURL = (url: string) => {
   return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
 };
 
 export function ChatBox({ }: {}) {
-  const [chatboxHeight, setChatboxHeight] = useState(0);
+  const [chatboxHeight, setChatboxHeight] = useState(window.innerHeight);
   const chats = useAppSelector(selectChats);
+
   useEffect(() => {
     // Scroll to the bottom of the chat box whenever a new chat message is added
     autoScrollChatBox();
@@ -108,7 +131,18 @@ export function ChatBox({ }: {}) {
     if (chatField) {
       setChatboxHeight(calcChatboxHeight());
     }
+
+    const handleWindowResize = () => {
+      setChatboxHeight(calcChatboxHeight());
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    }
   }, []);
+
 
   const calcChatboxHeight = () => {
     const chatField = document.getElementById(chatInputId) as HTMLDivElement;
@@ -126,14 +160,14 @@ export function ChatBox({ }: {}) {
     return window.innerHeight - chatField.getBoundingClientRect().height;
   };
 
-  const height = `${chatboxHeight.toString()}px`;
+  const height = `${chatboxHeight.toString()}px`
 
   return (
     <div
       className="flex-1 overflow-y-auto flex font-mono"
       style={{
-        height: isMobile ? height : "auto",
-        maxHeight: isMobile ? height : "auto",
+        height: height,
+        maxHeight: height,
         justifyContent: "flex-end",
       }}
     >

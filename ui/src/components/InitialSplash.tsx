@@ -1,21 +1,24 @@
 import React, { FC, useEffect } from 'react';
+import { useAppDispatch } from '../app/hooks';
+import { setUserInteracted } from '../features/ui/uiSlice';
 
-interface ISplash {
-  onClick: () => void;
-}
 
-export const InitialSplash: FC<ISplash> = (props: ISplash) => {
+export const InitialSplash: FC = () => {
 
-  const {onClick} = props;
+  const dispatch = useAppDispatch();
 
-  useEffect(()=>{
+
+  function onClick() {
+    dispatch(setUserInteracted(true))
+  }
+  useEffect(() => {
     document.addEventListener("keydown", onClick, false);
     return () => {
       document.removeEventListener("keydown", onClick, false);
     }
   }, []);
 
-  return(
+  return (
     <main className="flex justify-center overflow-scroll items-center">
       <div className="bg-white mt-2 rounded p-2 lg:w-1/2 mx-6 content-center">
         <h1 className="text-lg font-bold m-2">urbit radio</h1>
@@ -27,7 +30,7 @@ export const InitialSplash: FC<ISplash> = (props: ISplash) => {
             onClick={() => onClick()}
           >
             click here
-          </button> 
+          </button>
         </p>
       </div>
     </main>

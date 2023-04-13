@@ -8,11 +8,11 @@ import { handleUserInput } from "../util";
 import {
   selectSpinUrl,
   selectSpinTime,
-  selectTunePatP,
   selectChats,
   chopChats,
 } from "../features/station/stationSlice";
 import { ChatBox } from "./ChatBox";
+import { selectTunePatP } from "../features/ui/uiSlice";
 
 let radio: Radio = new Radio();
 
@@ -65,7 +65,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
           type="text"
           ref={inputReference}
           className="hover:pointer px-4 py-2 inline-block \
-                        flex-1 outline-none border-none placeholder-gray-800 "
+                  flex-1 outline-none border-none placeholder-gray-800"
           autoCorrect={"off"}
           autoCapitalize={"off"}
           autoComplete={"off"}
@@ -77,16 +77,18 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
               processInput();
             }
           }}
+          style={{ width: "100%", boxSizing: "border-box" }}
         />
         <button
           className="hover:pointer px-4 py-2\
-                        flex-initial ml-2 outline-none border-none"
+                  flex-initial ml-2 outline-none border-none"
           style={{ backdropFilter: "blur(32px)" }}
           onClick={() => processInput()}
         >
           send
         </button>
       </div>
+
     );
   };
 

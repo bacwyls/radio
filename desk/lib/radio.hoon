@@ -49,29 +49,66 @@
     :_  ~
     ^-  [cord json]
     :-  -.act
-    ?+  -.act  !!
-    %chat
-      (enchat +.act)
-    %chatlog
-      :-  %a
-      %+  turn  chatlog.act
-      |=  =chat
-      (enchat chat)
-    %viewers
-      (set-ship viewers.act)
-    %tune
-      (unit-ship tune.act)
-    %spin
-     %-  pairs
-      :~
-      ['url' %s url.act]
-      ['time' (sect time.act)]
+    |^
+      ?+  -.act  !!
+      %chat
+        (en-chat +.act)
+      %chatlog
+        :-  %a
+        %+  turn  chatlog.act
+        |=  =chat
+        (en-chat chat)
+      %viewers
+        (set-ship viewers.act)
+      %tune
+        (unit-ship tune.act)
+      %spin
+      %-  pairs
+        :~
+        ['url' %s url.act]
+        ['time' (sect time.act)]
+        ==
+      %talk
+        [%s talk.act]
+      %permissions
+        [%s p.act]
+      %description
+        [%s description.act]
+      :: %initialize
+      ::   %-  pairs
+      ::   ~&  >  ['encoding init' f.act]
+      ::   :~
+      ::     ['is-online' %b is-online.f.act]
+      ::     ['permissions' %s permissions.f.act]
+      ::     ['talk' %s talk.f.act]
+      ::     :-  'spin'
+      ::       %-  pairs
+      ::       :~
+      ::       ['url' %s url.spin.f.act]
+      ::       ['time' (sect start-time.spin.f.act)]
+      ::       ==
+      ::     ['description' %s description.f.act]
+      ::     ['viewers' (set-ship ~(key by viewers.f.act))]
+      ::     ['banned' (set-ship banned.f.act)]
+      ::     ['promoted' (set-ship promoted.f.act)]
+      ::     :-  'chatlog'
+      ::       :-  %a
+      ::       %+  turn  (flop chatlog.f.act)
+      ::       |=  =chat
+      ::       (en-chat chat)
+      ::     ==
       ==
-    %talk
-      [%s talk.act]
-    %public
-      [%b public.act]
-    ==
+    :: |^
+    ++  en-chat
+      |=  [=chat]
+      ^-  json
+      %-  pairs:enjs
+      :~
+      ['message' %s message.chat]
+      ['from' %s (scot %p from.chat)]
+      ['time' (sect:enjs time.chat)]
+      ==
+    --
   --
 ++  unit-ship
     |=  who=(unit @p)
@@ -87,15 +124,7 @@
     ~(tap in ships)
     |=  her=@p
     [%s (scot %p her)]
-++  enchat
-  |=  [=chat]
-  ^-  json
-  %-  pairs:enjs
-  :~
-  ['message' %s message.chat]
-  ['from' %s (scot %p from.chat)]
-  ['time' (sect:enjs time.chat)]
-  ==
+
 ::
 ++  dejs
   =,  dejs:format
@@ -128,9 +157,20 @@
         :: [%view so]
         [%chat chat]
         [%tune (mu patp)]
-        [%public bo]
+        [%permissions de-permissions]
         [%presence ul]
+        [%description so]
+        :: [%initialize ul]
       ==
+    ++  de-permissions
+      |=  =json
+      ^-  permissions
+      ?>  ?=(%s -.json)
+      ?:  =('open' p.json)
+        %open
+      ?:  =('closed' p.json)
+        %closed
+      !!
     ++  chat
       %-  ot
       :~  

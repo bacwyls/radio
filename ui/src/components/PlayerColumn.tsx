@@ -9,7 +9,6 @@ import { useAppSelector, useAppDispatch } from "../app/hooks";
 import {
   selectSpinUrl,
   selectSpinTime,
-  selectTunePatP,
   selectViewers,
 } from "../features/station/stationSlice";
 import {
@@ -18,6 +17,7 @@ import {
   selectPlayerInSync,
   selectPlayerReady,
   selectIsConnecting,
+  selectTunePatP,
   // setPlayerRef
 } from "../features/ui/uiSlice";
 

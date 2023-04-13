@@ -7,38 +7,34 @@ export interface ChatMessage {
   time: number
 }
 
+
 export interface StationState {
   talkMsg: string;
   spinUrl: string;
   spinTime: number;
-  tunePatP: string;
-  radioSub: number;
-  isPublic: boolean;
-  hasPublishedStation: boolean;
-  ourTowerDescription: string;
+  permissions: 'open' | 'closed';
   viewers: string[];
   chats: ChatMessage[];
-  update: any;
+  description: string;
 }
 
 const initialState: StationState = {
   talkMsg: '',
   spinUrl: '',
   spinTime: 0,
-  tunePatP: '',
-  radioSub: 0,
-  isPublic: false,
-  hasPublishedStation: false,
-  ourTowerDescription: '',
+  permissions: 'closed',
   viewers: Array<string>(),
   chats: Array<ChatMessage>(),
-  update: Object()
+  description: '',
 };
 
 export const stationSlice = createSlice({
   name: 'station',
   initialState,
   reducers: {
+    resetStation: (state) => {
+      return initialState
+    },
     setTalkMsg: (state, action: PayloadAction<string>) => {
       return {
         ...state,
@@ -51,40 +47,23 @@ export const stationSlice = createSlice({
         spinUrl: action.payload
       }
     },
+    setDescription: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        description: action.payload
+      }
+    },
     setSpinTime: (state, action: PayloadAction<number>) => {
       return {
         ...state,
         spinTime: action.payload
       }
     },
-    setTunePatP: (state, action: PayloadAction<string>) => {
+   
+    setPermissions: (state, action: PayloadAction<'open' | 'closed'>) => {
       return {
         ...state,
-        tunePatP: action.payload
-      }
-    },
-    setRadioSub: (state, action: PayloadAction<number>) => {
-      return {
-        ...state,
-        radioSub: action.payload
-      }
-    },
-    setIsPublic: (state, action: PayloadAction<boolean>) => {
-      return {
-        ...state,
-        isPublic: action.payload
-      }
-    },
-    setHasPublishedStation: (state, action: PayloadAction<boolean>) => {
-      return {
-        ...state,
-        hasPublishedStation: action.payload
-      }
-    },
-    setOurTowerDescription: (state, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        ourTowerDescription: action.payload
+        permissions: action.payload
       }
     },
     setViewers: (state, action: PayloadAction<string[]>) => {
@@ -117,12 +96,6 @@ export const stationSlice = createSlice({
         chats: state.chats.concat([action.payload])
       }
     },
-    setUpdate: (state, action: PayloadAction<ChatMessage>) => {
-      return {
-        ...state,
-        update: action.payload
-      }
-    }
   }
 });
 
@@ -130,29 +103,22 @@ export const {
   setTalkMsg,
   setSpinUrl,
   setSpinTime,
-  setTunePatP,
-  setRadioSub,
-  setIsPublic,
-  setHasPublishedStation,
-  setOurTowerDescription,
+  setPermissions,
+  setDescription,
   setViewers,
   resetChats,
   setChatsWithChatlog,
   chopChats,
   setChatsWithChat,
-  setUpdate
+  resetStation,
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
 export const selectSpinUrl = (state: RootState) => state.station.spinUrl;
 export const selectSpinTime = (state: RootState) => state.station.spinTime;
-export const selectTunePatP = (state: RootState) => state.station.tunePatP;
-export const selectRadioSub = (state: RootState) => state.station.radioSub;
-export const selectIsPublic = (state: RootState) => state.station.isPublic;
-export const selectHasPublishedStation = (state: RootState) => state.station.hasPublishedStation;
-export const selectOurTowerDescription = (state: RootState) => state.station.ourTowerDescription;
+export const selectPermissions = (state: RootState) => state.station.permissions;
+export const selectDescription = (state: RootState) => state.station.description;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
-export const selectUpdate = (state: RootState) => state.station.update;
 
 export default stationSlice.reducer;

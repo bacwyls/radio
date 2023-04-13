@@ -7,6 +7,7 @@
 +$  versioned-state
   $%  state-0
       state-1
+      state-2
   ==
 +$  state-0  $:
   %0
@@ -20,9 +21,10 @@
   banned=(set ship)
   ==
 +$  state-1  $:
-  %1
+  %1 :: nothing changed from 0, just mishandled 0 so needed a nuke. see onload
+  :: tower-1:store
   talk=_'welcome to urbit radio'
-  spin=_'https://youtu.be/XGC80iRS7tw' :: classical music
+  spin=_'https://youtu.be/XGC80iRS7tw' :: classical 
   :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
   ::
   ::  set to a time near the present
@@ -36,11 +38,15 @@
   chatlog=(list chat:store)
   banned=(set ship)
   ==
++$  state-2  $:
+  %2
+  tower-2:store
+  ==
 +$  card     card:agent:gall
 --
 %+  verb  &
 %-  agent:dbug
-=|  state-1
+=|  state-2
 =*  state  -
 ^-  agent:gall
 =<
@@ -88,13 +94,28 @@
   ?-  -.old
     %0
       `this
-    %1  `this(state old)
+    %1
+    :: isonline
+    :: permissions
+    =.  talk  talk.old
+    =.  url.spin  spin.old
+    =.  start-time.spin  spin-time.old
+    :: description
+    =.  viewers   viewers.old
+    =.  banned    banned.old
+    :: promoted
+    =.  chatlog   chatlog.old
+    `this
+    %2  `this(state old)
   ==
 ++  on-leave
   |=  [=path]
   ?:  =(path /greg/local)
     :: potentially fixes #16 host-kicked bug?
     `this
+  :: ~&  >>>  ['tower on-leave' src.bowl path]
+  :: so this is just unreliable as f
+  :: `this
   =.  viewers
     (~(del by viewers) src.bowl)
   =/  ships=(set ship)
@@ -104,7 +125,6 @@
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
-  :: ~&  >>  [%tower %poke src.bowl]
   ?:  (is-banned:rib bowl banned)
     :: ~&  >>>  [%tower %poke-from-banned src.bowl]
     `this
@@ -115,18 +135,21 @@
     :: :: radio
       %radio-action
     =/  act  !<(action:store vase)
+  :: ~&  >>  [%tower %poke src.bowl act]
     :: ~&  >>  [%on-poke-tower act]
     ?-  -.act
       :: ::
-          %tune     `this
-          %viewers  `this
-          %chatlog  `this
+          %tune        `this
+          %viewers     `this
+          %chatlog     `this
+          :: %initialize  `this
       :: ::
-          %public
+          %permissions
+      ::
       ?.  =(src.bowl our.bowl)
         !!
-      =.  public.state
-          public.act
+      =.  permissions
+          p.act
       :_  this
       (transmit act)
       :: ::
@@ -136,19 +159,19 @@
       =/  kik=(list card)
         :: going online or going offline
         :: kick everyone
-        ?.  =(online.state online.act)
+        ?.  =(is-online.state online.act)
           :~
             (kick:io ~[/global /personal])
           ==
         ~
       =.  viewers
-        ?.  =(online.state online.act)
+        ?.  =(is-online.state online.act)
           *(map ship time)
         viewers
       =.  chatlog
         *(list chat:store)
-      =.  online.state
-          online.act
+      =.  is-online.state
+          is-online
       :_  this
         kik
       :: ::
@@ -163,15 +186,29 @@
           talk.act
       :_  this
       (transmit act)
+      %description
+      ?.  permitted:hc
+        :: permission denied
+        `this
+      =.  description.act
+          :: enfore maximum description
+          (crip (scag 64 (trip description.act)))
+      =.  description.state
+          description.act
+      :_  this
+      (transmit act)
       :: ::
           %spin
       ?.  permitted:hc
         :: permission denied
         `this
-      =.  spin.state
+      ?:  (gth (lent (trip url.act)) 999)
+        :: no stupidly long urls
+        `this
+      =.  url.spin.state
           url.act
       ::
-      =.  spin-time.state
+      =.  start-time.spin.state
           time.act
       :_  this
       (transmit act)
@@ -179,7 +216,7 @@
 
           %chat
       :: ?.  permitted:hc  !!
-      ?.  online  !!
+      ?.  is-online  !!
       ::
       :: no spoofing
       =.  from.act  src.bowl
@@ -215,6 +252,7 @@
       :-  (transmit-card [%viewers ~(key by viewers)])
       %+  turn  stale
       |=  =ship
+      :: ~&  >>>  ['kicking stale' ship]
       (kick-only:io ship ~[/global /personal])
     ==
     ::
@@ -235,8 +273,16 @@
       =.  viewers.tow
         ~(wyt by viewers)
       ::
+      =/  maybe-transmit-description=(list card)
+        ?:  =(description description.tow)
+          ~
+        (transmit [%description description.tow])
+      =.  description
+        description.tow
       :_  this
-      (poke-greg:hc [%put tow])
+      %+  weld
+        (poke-greg:hc [%put tow])
+        maybe-transmit-description
       :: ::
         %remove
       :_  this
@@ -253,7 +299,7 @@
       :: ~&  >>>  [%tower %good %greg %from src.bowl ent]
       :_  this
       :~
-        (fact:agentio greg-event+!>(ent) ~[/greg/local])
+        (fact:io greg-event+!>(ent) ~[/greg/local])
       ==
     ==
     ::
@@ -286,8 +332,10 @@
   ^-  (quip card _this)
   ?:  (is-banned:rib bowl banned)
     :: ~&  >>>  [%tower %watch-from-banned src.bowl]
-    `this
-  ?.  online
+    :_  this
+    :~  (kick-only:io src.bowl ~[/personal /global])
+    ==
+  ?.  is-online
     :_  this
     :: kick everyone
     :~  (kick:io ~[/global /personal])
@@ -319,12 +367,22 @@
         ::  or at least junk up the code in some way
         ::  i think there is much room for improvement, and a refactor for this purpose
         ::  will be in order soon
+        ::   ::
+        ::   :: (later)
+        ::   hmmm, I tried adding an %initialize radio-action, with the full tower state inside.
+        ::   I got some very buggy behavior that I was totally unable to track down for 8 hours.
+        ::      I verified that I was sending out a fact %initialize with all of the correct data,
+        ::      but somehow, on the other end, some fields were bunted.
+        ::      I dug a few layers deep into gall to try to find the issue, but no dice.
+        ::   giving up, returning to tradition. just sending a flurry of initial facts instead of one chunk of state.
+        ::   still want to fix this eventually but it will probably have to come with a near full rewrite of radio.
         ::
-        (init-fact [%spin spin spin-time])
-        (init-fact [%public public])
+        (init-fact [%spin spin])
+        (init-fact [%permissions permissions])
         (init-fact [%tune `our.bowl])
         (init-fact [%viewers ships])
         (init-fact [%chatlog (flop chatlog)])
+        (init-fact [%description description])
         ::
         (kick-only:io src.bowl ~[/personal])
       ==
@@ -340,13 +398,13 @@
   ?:  =(src.bowl our.bowl)
     & :: admin
   ::
-  ?.  online
+  ?.  is-online
     | :: tower must be online
   ::
   ?.  (~(has by viewers) src.bowl)
     | :: src must be in viewers
   ::
-  public
+  =(permissions %open)
 ::
 ++  init-fact
   |=  act=action:store
@@ -376,6 +434,7 @@
   $(vil t.vil)
 ++  remove-viw
   |=  [viw=(map ship time) stale=(list ship)]
+  :: ~&  >>>  ['tower removing stale viewers' stale]
   ^-  (map ship time)
   =.  viw
   |-

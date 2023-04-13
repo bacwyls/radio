@@ -2,9 +2,9 @@ import Urbit from "@urbit/http-api";
 import ReactPlayer from "react-player";
 import store from "./app/store";
 import { useAppDispatch } from "./app/hooks";
-import { setTunePatP } from "./features/station/stationSlice";
-import { formatTime, resetPage } from "./util";
-import { setIsConnecting } from "./features/ui/uiSlice";
+import { formatTime } from "./util";
+import { setIsConnecting, setNavigationOpen, setPlayerReady, setTunePatP } from "./features/ui/uiSlice";
+import { resetStation } from "./features/station/stationSlice";
 
 const badDJMessage =
     "You do not have permission to use that command on this station. Try using your station";
@@ -30,7 +30,7 @@ export class Radio {
         // }
     }
 
-    public watchTenna(handleSub: any) {
+    public watchTenna(handleSub: any, dispatch: any) {
         this.api
             .subscribe({
                 app: "tenna",
@@ -51,6 +51,7 @@ export class Radio {
                 const urlParams = new URLSearchParams(queryString);
                 const station = urlParams.get("station");
                 if (!station) {
+                    dispatch(setTunePatP(this.hub))
                     this.tune(this.hub);
                     return;
                 }
@@ -66,6 +67,7 @@ export class Radio {
                         locationPatP = station!;
                         break;
                 }
+                dispatch(setTunePatP(locationPatP))
                 this.tune(locationPatP);
             });
     }
@@ -116,12 +118,12 @@ export class Radio {
     }
 
     public isAdmin() {
-        const tunePatP = store.getState().station.tunePatP;
+        const tunePatP = store.getState().ui.tunePatP;
         return tunePatP === this.our;
     }
     public canUseDJCommands() {
-        const isPublic = store.getState().station.isPublic;
-        if (isPublic) {
+        const permissions = store.getState().station.permissions;
+        if (permissions === 'open') {
             return true;
         }
         return this.isAdmin();
@@ -142,6 +144,13 @@ export class Radio {
         });
     }
 
+    public setPermissions(p: 'open' | 'closed') {
+        this.api.poke({
+            app: "tower",
+            mark: "radio-action",
+            json: { permissions: p },
+        });
+    }
     public public() {
         this.api.poke({
             app: "tower",
@@ -332,6 +341,8 @@ export class Radio {
         // this.tunedTo = null;
         dispatch(setTunePatP(patp));
         dispatch(setIsConnecting(true));
-        resetPage(dispatch);
+        dispatch(resetStation());
+        dispatch(setPlayerReady(false));
+        dispatch(setNavigationOpen(false));
     }
 }

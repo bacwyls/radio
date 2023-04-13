@@ -7,3 +7,6 @@
 ::-webkit-scrollbar {
     display: none;
 }
+input[type="text"]{
+    background-color: rgba(0,0,0,0);
+  }

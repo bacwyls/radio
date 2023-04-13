@@ -2,18 +2,19 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { NavItem } from "./NavItem";
 import {
-  selectTunePatP,
-  selectIsPublic,
-  selectHasPublishedStation,
-  setHasPublishedStation,
-  selectOurTowerDescription,
+  selectDescription,
+  selectPermissions,
 } from "../features/station/stationSlice";
 import {
   setNavigationOpen,
   selectNavigationOpen,
+  selectHasPublishedStation,
+  selectOurTowerDescription,
+  setHasPublishedStation,
+  selectTunePatP,
 } from "../features/ui/uiSlice";
 import { Radio } from "../lib";
-import { isOlderThanNMinutes } from "../util";
+import { isOlderThanNMinutes, maxTowerAgeInMinutes, timestampFromTime } from "../util";
 
 interface IMinitower {
   location: string;
@@ -29,12 +30,11 @@ function splitMinitowersByAge(minitowers: IMinitower[]): {
   oldTowers: IMinitower[];
 } {
   // Split the Minitowers into two arrays
-  const maxAgeInMinutes = 10;
   const newTowers = minitowers.filter(
-    (minitower) => !isOlderThanNMinutes(minitower.time, maxAgeInMinutes)
+    (minitower) => !isOlderThanNMinutes(minitower.time, maxTowerAgeInMinutes)
   );
   const oldTowers = minitowers.filter((minitower) =>
-    isOlderThanNMinutes(minitower.time, maxAgeInMinutes)
+    isOlderThanNMinutes(minitower.time, maxTowerAgeInMinutes)
   );
 
   return { newTowers, oldTowers };
@@ -42,9 +42,10 @@ function splitMinitowersByAge(minitowers: IMinitower[]): {
 
 export const Navigation: FC = () => {
   const tunePatP = useAppSelector(selectTunePatP);
-  const isPublic = useAppSelector(selectIsPublic);
+  const permissions = useAppSelector(selectPermissions);
   const hasPublishedStation = useAppSelector(selectHasPublishedStation);
   const ourTowerDescription = useAppSelector(selectOurTowerDescription);
+  const description = useAppSelector(selectDescription);
   const navigationOpen = useAppSelector(selectNavigationOpen);
   const dispatch = useAppDispatch();
 
@@ -85,6 +86,15 @@ export const Navigation: FC = () => {
     radio.gregRequest();
   }, []);
 
+  const [currentTime, setCurrentTime] = useState(new Date().getTime() / 1000);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date().getTime() / 1000);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   useInterval(() => {
     if (!hasPublishedStation) return;
 
@@ -115,10 +125,10 @@ export const Navigation: FC = () => {
   }
 
   return (
-    <div>
+    <>
       <div className="flex flex-row my-2 w-full h-8">
         <div
-          className="flex flex-col mr-3"
+          className="flex-initial flex flex-col mr-3"
           style={{
             justifyContent: "center",
           }}
@@ -158,7 +168,7 @@ export const Navigation: FC = () => {
                             flex-initial mr-2 my-1"
                     style={{ whiteSpace: "nowrap" }}
                     onClick={() => {
-                      radio.gregPut("");
+                      radio.gregPut(description);
                       dispatch(setHasPublishedStation(true));
                       radio.gregRequest();
                     }}
@@ -194,16 +204,34 @@ export const Navigation: FC = () => {
         </div>
 
         {/* tuned to */}
-        <div className="inline-block flex flex-row items-center">
+        <div className="flex-1 w-full inline-block flex flex-row items-center">
           <span className="text-xl mr-3 pb-1 flex-initial">
-            📻 {isPublic ? "🎉" : ""}
+            📻 {permissions === 'open' ? "🎉" : ""}
           </span>
 
-          <div className="flex-1">
-            <span className="">{tunePatP}</span>
+          <div className="flex-1 flex flex-row h-8">
+            <div className="flex-1 flex flex-col">
+              <div className="flex h-full items-center">
+                <span className="font-semibold text-center">{tunePatP}</span>
+              </div>
+              {description !== '' &&
+                <div className="flex-1 text-gray-600 overflow-x-none"
+                  style={{
+                    fontSize: '0.65rem'
+                  }}
+                >
+                  {description}
+                </div>
+              }
+            </div>
           </div>
+
         </div>
+        <div className="flex flex-col items-center justify-center">
+          <span className="text-center text-gray-700">{timestampFromTime(currentTime)}</span>
+        </div>
+
       </div>
-    </div>
+    </>
   );
 };
