@@ -1,20 +1,9 @@
 import React, { FC, useEffect, useRef } from "react";
 import { isMobile } from "react-device-detect";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../app/hooks";
+import { ChatBox } from "./ChatBox";
 import { Radio } from "../lib";
 
-import { handleUserInput } from "../util";
-// import { ChatBox } from './ChatBox';
-import {
-  selectSpinUrl,
-  selectSpinTime,
-  selectChats,
-  chopChats,
-} from "../features/station/stationSlice";
-import { ChatBox } from "./ChatBox";
-import { selectTunePatP } from "../features/ui/uiSlice";
-
-let radio: Radio = new Radio();
 
 interface IChatColumn {
   fullscreen?: boolean;
@@ -23,13 +12,11 @@ interface IChatColumn {
 export const chatInputId = "radio-chat-input";
 
 export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
-  const spinUrl = useAppSelector(selectSpinUrl);
-  const chats = useAppSelector(selectChats);
-  const spinTime = useAppSelector(selectSpinTime);
-  const tunePatP = useAppSelector(selectTunePatP);
   const dispatch = useAppDispatch();
 
   const inputReference = useRef<HTMLInputElement>(null);
+
+  const radio = new Radio();
 
   const fullscreen = props.fullscreen;
   let maxWidth = isMobile ? "100%" : "33%";
@@ -46,16 +33,10 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
     }, 1000);
   }, []);
 
-  const maxChats = 100;
-  useEffect(() => {
-    // maximum chats
-    if (chats.length > maxChats) {
-      dispatch(chopChats(chats));
-    }
-  }, [chats]);
+
 
   function processInput() {
-    handleUserInput(radio, dispatch, chatInputId, spinTime, spinUrl, tunePatP);
+    radio.handleUserInput(dispatch);
   }
 
   const InputBox = () => {
@@ -69,7 +50,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
           autoCorrect={"off"}
           autoCapitalize={"off"}
           autoComplete={"off"}
-          autoFocus={true}
+          // autoFocus={true}
           placeholder="write your message..."
           id={chatInputId}
           onKeyDown={(e: any) => {
@@ -82,7 +63,6 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
         <button
           className="hover:pointer px-4 py-2\
                   flex-initial ml-2 outline-none border-none"
-          style={{ backdropFilter: "blur(32px)" }}
           onClick={() => processInput()}
         >
           send

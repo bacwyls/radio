@@ -1,13 +1,74 @@
 import { useRef, useEffect, useState } from "react";
-import { ChatMessage, selectChats } from "../features/station/stationSlice";
-import { useAppSelector } from "../app/hooks";
+import { ChatMessage, chopChats, selectChats } from "../features/station/stationSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import React from "react";
 import { timestampFromTime } from "../util";
 import { isMobile } from "react-device-detect";
 import { chatInputId } from "./ChatColumn";
 import { playerColumnId } from "./PlayerColumn";
+import DOMPurify from 'dompurify';
+
 
 export const chatboxId = "radio-chatbox";
+
+
+
+type ChatInnerMessageProps = {
+  message: string;
+
+};
+
+const ChatInnerMessage: React.FC<ChatInnerMessageProps> = ({ message }) => {
+  const linkRegex = /^https?:\/\/\S+$/i;
+  const imageRegex = /^https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)$/i;
+  // const emojiRegex = /^\p{Emoji}+$/u;
+  const playRegex = /^!play /;
+
+  if (linkRegex.test(message)) {
+    let sanitizedUrl = sanitize(message);
+    if (imageRegex.test(sanitizedUrl)) {
+      return chatInnerImg(sanitizedUrl);
+    } else {
+      return (
+        safeLinkTag(sanitizedUrl)
+      );
+    }
+    // this is torture
+    // } else if (emojiRegex.test(message)) {
+    //   return <span style={{ fontSize: '2em' }}>{message.substring(0, 24)}</span>;
+  } else if (playRegex.test(message)) {
+    // special case for !play links because thats useful
+    let url = message.substring(6);
+    return (
+      <>
+        {"!play "}
+        {safeLinkTag(url)}
+      </>
+    )
+  } else {
+    return <>{message}</>;
+  }
+};
+
+function sanitize(rawURL: string) {
+  const sanitizedUrl = DOMPurify.sanitize(rawURL, {
+    ALLOWED_TAGS: [], // disallow any HTML tags
+    ALLOWED_ATTR: [], // disallow any HTML attributes
+    ALLOW_DATA_ATTR: false, // disallow data: URLs
+    ALLOWED_URI_REGEXP: /^https?:\/\//i, // allow only HTTP(S) URLs
+  });
+  return sanitizedUrl;
+}
+function safeLinkTag(rawURL: string) {
+  let sanitizedUrl = sanitize(rawURL);
+  return (
+    <a href={sanitizedUrl} target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-800 hover:underline">
+      {sanitizedUrl}
+    </a>
+  )
+}
 
 function autoScrollChatBox() {
   const chatbox = document.getElementById(chatboxId);
@@ -26,67 +87,12 @@ const chatToHTML = (key: number, chat: ChatMessage) => {
         {chat.from}
         {":"}
       </span>
-      {renderChatMessage(chat.message)}
+      <ChatInnerMessage message={chat.message}
+      />
     </p>
   );
 };
 
-const renderChatMessage = (message: string) => {
-  const words = message.split(" ");
-  const elements = [];
-  let numImages = 0;
-  let numEmojis = 0;
-
-  for (let i = 0; i < words.length; i++) {
-    const word = words[i];
-    if (checkImageURL(word)) {
-      if (numImages < 1) {
-        elements.push(chatInnerImg(word));
-        numImages++;
-      }
-    } else if (checkURL(word)) {
-      elements.push(
-        <a
-          key={`url-${i}`}
-          href={word}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          {word}
-        </a>
-      );
-    } else if (isEmoji(word)) {
-      if (numEmojis < 3) {
-        elements.push(
-          <span className="text-2xl">
-            {word}
-          </span>
-        )
-        numEmojis++;
-      } else {
-        elements.push(word + " ");
-      }
-    } else {
-      elements.push(word + " ");
-    }
-  }
-  return elements;
-};
-
-
-const checkURL = (url: string) => {
-  const pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // ip (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + //port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-    "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // fragment locator
-  return pattern.test(url);
-};
 
 const chatInnerImg = (src: string) => {
   return (
@@ -98,28 +104,17 @@ const chatInnerImg = (src: string) => {
         height: "100%",
         maxHeight: "12vh",
         objectFit: "cover",
-        // display:'inline-block'
       }}
       onLoad={() => autoScrollChatBox()}
     />
   );
 };
 
-function isEmoji(str: string): boolean {
-  const emojiPattern = /(\p{Emoji}){1,4}/gu;
-  const consecutiveEmojiPattern = /(\p{Emoji}){5}/gu;
-  return emojiPattern.test(str) && !consecutiveEmojiPattern.test(str);
-}
-
-
-
-const checkImageURL = (url: string) => {
-  return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
-};
-
 export function ChatBox({ }: {}) {
   const [chatboxHeight, setChatboxHeight] = useState(window.innerHeight);
   const chats = useAppSelector(selectChats);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Scroll to the bottom of the chat box whenever a new chat message is added
@@ -134,6 +129,7 @@ export function ChatBox({ }: {}) {
 
     const handleWindowResize = () => {
       setChatboxHeight(calcChatboxHeight());
+      autoScrollChatBox();
     }
 
     window.addEventListener('resize', handleWindowResize);
@@ -142,6 +138,14 @@ export function ChatBox({ }: {}) {
       window.removeEventListener('resize', handleWindowResize);
     }
   }, []);
+
+  const maxChats = 100;
+  useEffect(() => {
+    // maximum chats
+    if (chats.length > maxChats) {
+      dispatch(chopChats(chats));
+    }
+  }, [chats]);
 
 
   const calcChatboxHeight = () => {
@@ -176,6 +180,7 @@ export function ChatBox({ }: {}) {
         style={{
           verticalAlign: "bottom",
           justifyContent: "flex-end",
+          wordBreak: 'break-word',
           overflowWrap: "break-word",
         }}
       >

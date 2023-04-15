@@ -228,7 +228,7 @@ export const Navigation: FC = () => {
 
         </div>
         <div className="flex flex-col items-center justify-center">
-          <span className="text-center text-gray-700">{timestampFromTime(currentTime)}</span>
+          <span className="text-center text-gray-900">{timestampFromTime(currentTime)}</span>
         </div>
 
       </div>

@@ -120,34 +120,38 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
     case 'tune':
       let tune = update['tune'];
       if (tune === null) {
-        radio.tuneAndReset(dispatch, radio.our)
-      } else {
-        dispatch(setTunePatP(tune));
-        
-        // Get the current URL and parse its search parameters
-        const url = new URL(window.location.href);
-        const searchParams = new URLSearchParams(url.search);
-
-        // Set a new value for the "param" parameter
-        searchParams.set("station", tune);
-
-        // Replace the search parameters in the URL with the updated ones
-        url.search = searchParams.toString();
-
-        // Update the browser's address bar with the new URL
-        window.history.replaceState(null, "", url.href);
-
-        radio.ping();
+        // we dont really handle null, so just nav to your station.
+        // this can happen if multiple frontends are open for one ship, and one closes.
+        // or if you are kicked from the station for whatever reason.
+        tune = radio.our
       }
+      dispatch(setTunePatP(tune));
+      
+      // Get the current URL and parse its search parameters
+      const url = new URL(window.location.href);
+      const searchParams = new URLSearchParams(url.search);
+
+      // Set a new value for the "param" parameter
+      searchParams.set("station", tune);
+
+      // Replace the search parameters in the URL with the updated ones
+      url.search = searchParams.toString();
+
+      // Update the browser's address bar with the new URL
+      window.history.replaceState(null, "", url.href);
+
+      radio.ping();
       break;
     case 'chat':
       let chat = update['chat'];
       dispatch(setChatsWithChat(chat));
       // lol
-       if(chat.message==='BRAP') {
-         let audio = new Audio(radio.soundUrls.fart)
-         audio.play()
-       }
+      // this was fun, but turning it off because it breaks some actual usecases
+      // no more farting on stream
+      //  if(chat.message==='BRAP') {
+      //    let audio = new Audio(radio.soundUrls.fart)
+      //    audio.play()
+      //  }
       break;
     case 'viewers':
       let viewers = update['viewers'];
@@ -179,222 +183,4 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
   }
 };
 
-// TODO clean this up
-export function handleUserInput(
-  radio: Radio,
-  dispatch: any,
-  chatInputId: string,
-  spinTime: number,
-  spinUrl: string,
-  tunePatP: string,
-) {
-  let input = document.getElementById(chatInputId) as HTMLInputElement;
-  // @ts-ignore
-  let player:any = !window.playerRef ? null : window.playerRef.current
 
-  let chat = input.value;
-  input.value = '';
-
-  if (chat === '') return;
-
-  // check for commands
-  let got = getCommandArg(chat);
-  if (!got) {
-    // just a regular chat message
-    radio.chat(chat);
-    return;
-  }
-
-  // interpreting message as a command
-  let command = got.command;
-  let arg = got.arg;
-  switch (command) {
-    case 'talk':
-      radio.chat(chat);
-      radio.talk(arg);
-      break;
-    case 'play':
-      radio.spin(arg);
-      radio.chat(chat);
-      break;
-    case 'tune':
-      if (arg === '') arg = radio.our;
-      radio.chat(chat);
-      if(isValidPatp(arg)) {
-        radio.tuneAndReset(dispatch, arg);
-      }
-      else if(isValidPatp('~'+arg)) {
-        radio.tuneAndReset(dispatch, '~'+arg);
-      }
-      break;
-    case 'time':
-      dispatch(setPlayerInSync(true));
-      radio.seekToGlobal(player, spinTime);
-      radio.chat(chat);
-      break;
-    case 'set-time':
-      // if(!radio.isAdmin())) {
-      //   return;
-      // }
-      radio.resyncAll(player, tunePatP, spinUrl);
-      radio.chat(chat);
-      break;
-    case 'public':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      // radio.public();
-      radio.setPermissions('open');
-      radio.chat(chat);
-      break;
-    case 'party':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      const permissions = store.getState().station.permissions;
-      if(permissions==='open'){
-        radio.setPermissions('closed');
-      } else {
-        radio.setPermissions('open');
-      }
-
-      radio.chat(chat);
-      break;
-    case 'private':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      // radio.private();
-      radio.setPermissions('closed')
-      radio.chat(chat);
-      break;
-    case 'ban':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      radio.ban(arg);
-      radio.chat(chat);
-      break;
-    case 'unban':
-      if(!radio.isAdmin()) {
-        return;
-      }
-      radio.unban(arg);
-      radio.chat(chat);
-      break;
-    case 'ping':
-      radio.ping();
-      // radio.chat(chat);
-      break;
-    // case 'wave':
-    //   radio.chat(chat);
-    //   break;
-    // case 'scroll':
-    //   radio.chat(chat);
-    //   break;
-    // case 'typing':
-    //   radio.chat(chat);
-    //   break;
-    case 'logout':
-      radio.tune(null);
-      break;
-    case 'live':
-      radio.syncLive(player, tunePatP, spinUrl);
-      radio.chat(chat);
-      break;
-    case 'publish':
-      if (!radio.isAdmin()) {
-        return;
-      }
-      radio.gregPut(arg);
-      radio.chat(chat);
-      dispatch(setHasPublishedStation(true));
-      // ourtowerdescription is a local copy in uislice
-      // representing ourtower. description in stationslice is the currently connected towers description
-      dispatch(setOurTowerDescription(arg))
-      // refresh towers
-      radio.gregRequest();
-      break;
-    case 'qpublish':
-      // quiet publish
-      // publish without chatting about it
-      if (!radio.isAdmin()) {
-        return;
-      }
-      radio.gregPut(arg);
-      dispatch(setHasPublishedStation(true));
-      dispatch(setOurTowerDescription(arg))
-      // refresh towers
-      radio.gregRequest();
-      break;
-    case 'basket':
-      // composable AF
-      // fetch an image from basket, if installed
-      async function handleBasketImages() {
-
-        let basketImages : any;
-        try {
-          basketImages = await getBasketImages(radio);
-        } catch(e) {
-          radio.chat("🧺 I dont have basket installed")
-          return;
-        }
-                                    
-        if(basketImages.length===0) {
-          radio.chat("🧺 My basket is empty")
-          return;
-        }
-    
-        function getRandomBasketImage(images:any) {
-          return images[Math.floor(Math.random() * images.length)];
-        }
-    
-        const selectImageToSend = () => {
-          if (!arg) {
-            return getRandomBasketImage(basketImages);
-          }
-    
-          // @ts-ignore
-          const matchingImages = basketImages.filter(image => image.meta.tags.includes(arg));
-    
-          if (matchingImages.length === 0) {
-            return getRandomBasketImage(basketImages);
-          }
-    
-          return getRandomBasketImage(matchingImages);
-        };
-    
-        const selectedImage = selectImageToSend();
-        radio.chat(selectedImage.url);
-      }
-    
-      handleBasketImages();
-      break;
-    //
-    // image commands
-    default:
-      radio.chatImage(command);
-      break;
-    //
-  }
-}
-
-async function getBasketImages(radio:Radio) {
-    let gotImages = await radio.api.scry({
-      app: 'basket',
-      path: '/images'
-    });
-    return gotImages
-}
-
-  // parse from user input
-function getCommandArg(chat: string) {
-  // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
-  if (!(chat[0] === '!')) return;
-
-  let splitIdx = chat.indexOf(' ');
-  if (splitIdx === -1) return {'command': chat.slice(1), 'arg': ''};
-  let command = chat.slice(1, splitIdx);
-  let arg = chat.slice(splitIdx + 1);
-  return {'command': command, 'arg': arg};
-}

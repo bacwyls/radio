@@ -50,7 +50,7 @@ export const PlayerColumn: FC = () => {
   useEffect(() => {
     radio.seekToGlobal(playerRef.current, spinTime);
     dispatch(setPlayerInSync(true));
-  }, [playerReady]);
+  }, [spinTime, playerReady])
 
   function handleProgress(progress: any) {
     // turn on scrub buttons if out of sync
@@ -92,7 +92,7 @@ export const PlayerColumn: FC = () => {
             className={`hover:pointer px-4 py-2 \
                       flex-initial outline-none \
                       font-bold underline border-black border-t-0 \
-                      text-red-500 `}
+                        text-gray-500 `}
             onClick={(e) => {
               radio.seekToGlobal(playerRef.current, spinTime);
               dispatch(setPlayerInSync(true));
@@ -105,7 +105,7 @@ export const PlayerColumn: FC = () => {
               className={`hover:pointer px-4 py-2 \
                         flex-initial outline-none \
                         font-bold underline border-black border-t-0 \
-                        text-blue-500 `}
+                        text-gray-500 `}
               style={{ whiteSpace: "nowrap" }}
               onClick={(e) => {
                 radio.resyncAll(playerRef.current, tunePatP, spinUrl);

@@ -1,10 +1,11 @@
 import Urbit from "@urbit/http-api";
 import ReactPlayer from "react-player";
 import store from "./app/store";
-import { useAppDispatch } from "./app/hooks";
+import { isValidPatp } from 'urbit-ob';
 import { formatTime } from "./util";
-import { setIsConnecting, setNavigationOpen, setPlayerReady, setTunePatP } from "./features/ui/uiSlice";
+import { setHasPublishedStation, setIsConnecting, setNavigationOpen, setOurTowerDescription, setPlayerInSync, setPlayerReady, setTunePatP } from "./features/ui/uiSlice";
 import { resetStation } from "./features/station/stationSlice";
+import { chatInputId } from "./components/ChatColumn";
 
 const badDJMessage =
     "You do not have permission to use that command on this station. Try using your station";
@@ -345,4 +346,220 @@ export class Radio {
         dispatch(setPlayerReady(false));
         dispatch(setNavigationOpen(false));
     }
+
+    public handleUserInput(dispatch: any) {
+        let input = document.getElementById(chatInputId) as HTMLInputElement;
+        const tunePatP = store.getState().ui.tunePatP;
+        const spinTime = store.getState().station.spinTime;
+        const spinUrl = store.getState().station.spinUrl;
+        // @ts-ignore
+        let player: any = !window.playerRef ? null : window.playerRef.current
+
+        let chat = input.value;
+        input.value = '';
+
+        if (chat === '') return;
+
+        // check for commands
+        let got = this.getCommandArg(chat);
+        if (!got) {
+            // just a regular chat message
+            this.chat(chat);
+            return;
+        }
+
+        // interpreting message as a command
+        let command = got.command;
+        let arg = got.arg;
+        switch (command) {
+            case 'talk':
+                this.chat(chat);
+                this.talk(arg);
+                break;
+            case 'play':
+                this.spin(arg);
+                this.chat(chat);
+                break;
+            case 'tune':
+                if (arg === '') arg = this.our;
+                this.chat(chat);
+                if (isValidPatp(arg)) {
+                    this.tuneAndReset(dispatch, arg);
+                }
+                else if (isValidPatp('~' + arg)) {
+                    this.tuneAndReset(dispatch, '~' + arg);
+                }
+                break;
+            case 'time':
+                dispatch(setPlayerInSync(true));
+                this.seekToGlobal(player, spinTime);
+                this.chat(chat);
+                break;
+            case 'set-time':
+                // if(!this.isAdmin())) {
+                //   return;
+                // }
+                this.resyncAll(player, tunePatP, spinUrl);
+                this.chat(chat);
+                break;
+            case 'public':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                // this.public();
+                this.setPermissions('open');
+                this.chat(chat);
+                break;
+            case 'party':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                const permissions = store.getState().station.permissions;
+                if (permissions === 'open') {
+                    this.setPermissions('closed');
+                } else {
+                    this.setPermissions('open');
+                }
+
+                this.chat(chat);
+                break;
+            case 'private':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                // this.private();
+                this.setPermissions('closed')
+                this.chat(chat);
+                break;
+            case 'ban':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.ban(arg);
+                this.chat(chat);
+                break;
+            case 'unban':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.unban(arg);
+                this.chat(chat);
+                break;
+            case 'ping':
+                this.ping();
+                // this.chat(chat);
+                break;
+            // case 'wave':
+            //   this.chat(chat);
+            //   break;
+            // case 'scroll':
+            //   this.chat(chat);
+            //   break;
+            // case 'typing':
+            //   this.chat(chat);
+            //   break;
+            case 'logout':
+                this.tune(null);
+                break;
+            case 'live':
+                this.syncLive(player, tunePatP, spinUrl);
+                this.chat(chat);
+                break;
+            case 'publish':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.gregPut(arg);
+                this.chat(chat);
+                dispatch(setHasPublishedStation(true));
+                // ourtowerdescription is a local copy in uislice
+                // representing ourtower. description in stationslice is the currently connected towers description
+                dispatch(setOurTowerDescription(arg))
+                // refresh towers
+                this.gregRequest();
+                break;
+            case 'qpublish':
+                // quiet publish
+                // publish without chatting about it
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.gregPut(arg);
+                dispatch(setHasPublishedStation(true));
+                dispatch(setOurTowerDescription(arg))
+                // refresh towers
+                this.gregRequest();
+                break;
+            case 'basket':
+                // composable AF
+                // fetch an image from basket, if installed
+                const handleBasketImages = async () => {
+
+                    let basketImages: any;
+                    try {
+                        basketImages = await this.getBasketImages();
+                    } catch (e) {
+                        this.chat("🧺 I dont have basket installed")
+                        return;
+                    }
+
+                    if (basketImages.length === 0) {
+                        this.chat("🧺 My basket is empty")
+                        return;
+                    }
+
+                    function getRandomBasketImage(images: any) {
+                        return images[Math.floor(Math.random() * images.length)];
+                    }
+
+                    const selectImageToSend = () => {
+                        if (!arg) {
+                            return getRandomBasketImage(basketImages);
+                        }
+
+                        // @ts-ignore
+                        const matchingImages = basketImages.filter(image => image.meta.tags.includes(arg));
+
+                        if (matchingImages.length === 0) {
+                            return getRandomBasketImage(basketImages);
+                        }
+
+                        return getRandomBasketImage(matchingImages);
+                    };
+
+                    const selectedImage = selectImageToSend();
+                    this.chat(selectedImage.url);
+                }
+
+                handleBasketImages();
+                break;
+            //
+            // image commands
+            default:
+                this.chatImage(command);
+                break;
+            //
+        }
+    }
+    // parse from user input
+    private getCommandArg(chat: string) {
+        // if(!(chat[0] === '!' || chat[0] === '|' || chat[0] === '+' || chat[0] === ':')) return;
+        if (!(chat[0] === '!')) return;
+
+        let splitIdx = chat.indexOf(' ');
+        if (splitIdx === -1) return { 'command': chat.slice(1), 'arg': '' };
+        let command = chat.slice(1, splitIdx);
+        let arg = chat.slice(splitIdx + 1);
+        return { 'command': command, 'arg': arg };
+    }
+    public async getBasketImages() {
+        let gotImages = await this.api.scry({
+            app: 'basket',
+            path: '/images'
+        });
+        return gotImages
+    }
+
+
+
 }
