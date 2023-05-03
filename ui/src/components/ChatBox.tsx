@@ -73,7 +73,8 @@ function safeLinkTag(rawURL: string) {
 function autoScrollChatBox() {
   const chatbox = document.getElementById(chatboxId);
   if (chatbox?.lastChild instanceof Element) {
-    chatbox.lastChild.scrollIntoView({ behavior: "smooth" });
+    // chatbox.lastChild.scrollIntoView({ behavior: "smooth" });
+    chatbox.lastChild.scrollIntoView();
   }
 }
 

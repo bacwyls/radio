@@ -51,7 +51,7 @@ export const IsConnectingOverlay: React.FC = () => {
             clearInterval(dotsInterval);
             clearInterval(statusInterval);
         };
-    }, [isIncreasing]);
+    }, [isIncreasing, tunePatP]);
 
     return createPortal(
         <div

@@ -13,7 +13,6 @@ import {
   setHasPublishedStation,
   selectTunePatP,
 } from "../features/ui/uiSlice";
-import { Radio } from "../lib";
 import { isOlderThanNMinutes, maxTowerAgeInMinutes, timestampFromTime } from "../util";
 
 interface IMinitower {
@@ -23,7 +22,6 @@ interface IMinitower {
   viewers: number;
 }
 
-let radio: Radio = new Radio();
 
 function splitMinitowersByAge(minitowers: IMinitower[]): {
   newTowers: IMinitower[];
@@ -41,6 +39,8 @@ function splitMinitowersByAge(minitowers: IMinitower[]): {
 }
 
 export const Navigation: FC = () => {
+  const radio = window.radio;
+
   const tunePatP = useAppSelector(selectTunePatP);
   const permissions = useAppSelector(selectPermissions);
   const hasPublishedStation = useAppSelector(selectHasPublishedStation);
@@ -79,6 +79,7 @@ export const Navigation: FC = () => {
       err: (e) => console.log("radio err", e),
     }).then((subscriptionId) => {
       //
+      console.log('greg subscription successful')
       window.addEventListener("beforeunload", () => {
         radio.api.unsubscribe(subscriptionId);
       });

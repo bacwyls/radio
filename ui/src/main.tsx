@@ -1,16 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
 import { App } from './app';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import './index.css';
+import { Radio } from './lib';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('app')
-);
+
+export async function initializeApi(): Promise<Radio> {
+  const radio = new Radio;
+  return radio;
+}
+
+initializeApi().then(radio => {
+  window.radio = radio;
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('app')
+  );
+
+})

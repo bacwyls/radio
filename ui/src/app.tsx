@@ -8,9 +8,10 @@ import { ChatBox } from './components/ChatBox';
 import { selectUpdate, setUpdate } from './features/ui/uiSlice';
 
 
-let radio: Radio = new Radio();
 
 export function App() {
+  const radio = window.radio;
+
   const dispatch = useAppDispatch();
   const update = useAppSelector(selectUpdate);
 
