@@ -257,6 +257,14 @@ export class Radio {
         });
     }
 
+    public gregRemove(patp: string) {
+        this.api.poke({
+            app: "tower",
+            mark: "greg-event",
+            json: { remove: patp },
+        });
+    }
+
     public gregPut(description: string) {
         this.api.poke({
             app: "tower",
@@ -376,9 +384,17 @@ export class Radio {
                 this.chat(chat);
                 this.talk(arg);
                 break;
+            case 'qtalk':
+                if (!this.isAdmin()) return;
+                this.talk(arg);
+                break;
             case 'play':
                 this.spin(arg);
                 this.chat(chat);
+                break;
+            case 'qplay':
+                if (!this.isAdmin()) return;
+                this.spin(arg);
                 break;
             case 'tune':
                 if (arg === '') arg = this.our;
@@ -488,6 +504,13 @@ export class Radio {
                 dispatch(setHasPublishedStation(true));
                 dispatch(setOurTowerDescription(arg))
                 // refresh towers
+                this.gregRequest();
+                break;
+            case 'unpublish':
+                if (!this.isAdmin()) return;
+                this.gregRemove(this.our);
+                this.chat(chat);
+                dispatch(setHasPublishedStation(false));
                 this.gregRequest();
                 break;
             case 'basket':
