@@ -51,7 +51,6 @@
   |=  [=mark =vase]
   ^-  (quip card _this)
   ?:  (is-banned:rib bowl banned)
-    :: ~&  >>>  [%greg %poke-from-banned src.bowl]
     `this
   ?+  mark  (on-poke:def mark vase)
       %noun
@@ -61,7 +60,6 @@
       %greg-event
       :: `this
     =/  ent  !<(event:store vase)
-    :: ~&  >  [%greg %poke ent]
     ?-  -.ent
       :: ::
           %response  `this

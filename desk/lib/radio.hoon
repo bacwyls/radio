@@ -76,7 +76,6 @@
         [%s description.act]
       :: %initialize
       ::   %-  pairs
-      ::   ~&  >  ['encoding init' f.act]
       ::   :~
       ::     ['is-online' %b is-online.f.act]
       ::     ['permissions' %s permissions.f.act]

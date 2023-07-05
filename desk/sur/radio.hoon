@@ -1,3 +1,4 @@
+/-  greg
 |%
 ::
 :: ::
@@ -34,7 +35,7 @@
 +$  tower-2
   $:
   is-online=_&
-  =permissions  :: open = "party mode" anyone can DJ
+  =permissions
   talk=_'welcome to urbit radio'
   =spin
   description=_''
@@ -42,6 +43,20 @@
   banned=(set ship)   
   promoted=(set ship)
   chatlog=(list chat)
+  ==
++$  tower-3
+  $:
+  is-online=_&
+  =permissions
+  talk=_'welcome to urbit radio'
+  =spin
+  description=_''
+  viewers=(map ship time)
+  banned=(set ship)   
+  promoted=(set ship)
+  chatlog=(list chat)
+  greg-cache=[age=@da tows=(map ship minitower:greg)]
+  spin-history=(set cord)
   ==
 ::
 :: action or event?

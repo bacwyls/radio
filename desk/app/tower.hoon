@@ -8,6 +8,7 @@
   $%  state-0
       state-1
       state-2
+      state-3
   ==
 +$  state-0  $:
   %0
@@ -22,16 +23,9 @@
   ==
 +$  state-1  $:
   %1 :: nothing changed from 0, just mishandled 0 so needed a nuke. see onload
-  :: tower-1:store
   talk=_'welcome to urbit radio'
-  spin=_'https://youtu.be/XGC80iRS7tw' :: classical 
-  :: spin=_'https://youtu.be/ubFq-wV3Eic' :: tv static
-  ::
-  ::  set to a time near the present
-  ::  *time is too long ago and causes
-  ::  the frontend syncing to bug out
+  spin=_'https://youtu.be/XGC80iRS7tw'
   spin-time=_~2022.10.3..20.40.15..7021
-  :: view=_'' :: https://0x0.st/oS_V.png  :: alpha marble texture
   online=_&
   public=_|
   viewers=(map ship time)
@@ -42,11 +36,15 @@
   %2
   tower-2:store
   ==
++$  state-3  $:
+  %3
+  tower-3:store
+  ==
 +$  card     card:agent:gall
 --
-%+  verb  &
+%+  verb  |
 %-  agent:dbug
-=|  state-2
+=|  state-3
 =*  state  -
 ^-  agent:gall
 =<
@@ -58,20 +56,8 @@
 ::
 ++  on-fail   on-fail:def
 ++  on-peek   on-peek:def
-++  on-agent
-  |=  [=wire =sign:agent:gall]
-  ^-  (quip card _this)
-  ?+    -.sign  (on-agent:def wire sign)
-      :: had a really bad bug related to this
-      :: arvo pot hole?
-      ::  https://github.com/urbit/urbit/issues/6025
-    %poke-ack
-    `this
-  ==
-++  on-arvo
-  |=  [=wire =sign-arvo]
-  ^-  (quip card _this)
-  `this
+++  on-agent  on-agent:def
+++  on-arvo   on-arvo:def
 ++  on-save
   ^-  vase
   !>(state)
@@ -92,30 +78,29 @@
   :: regular support for further upgrades
   =/  old  !<(versioned-state old-state)
   ?-  -.old
-    %0
-      `this
-    %1
-    :: isonline
-    :: permissions
+      %0
+    `this
+      %1
     =.  talk  talk.old
     =.  url.spin  spin.old
     =.  start-time.spin  spin-time.old
-    :: description
     =.  viewers   viewers.old
     =.  banned    banned.old
-    :: promoted
     =.  chatlog   chatlog.old
     `this
-    %2  `this(state old)
+      %2
+    =.  talk  talk.old
+    =.  spin  spin.old
+    =.  viewers   viewers.old
+    =.  banned    banned.old
+    =.  chatlog   chatlog.old
+    `this
+      %3  `this(state old)
   ==
 ++  on-leave
   |=  [=path]
   ?:  =(path /greg/local)
-    :: potentially fixes #16 host-kicked bug?
     `this
-  :: ~&  >>>  ['tower on-leave' src.bowl path]
-  :: so this is just unreliable as f
-  :: `this
   =.  viewers
     (~(del by viewers) src.bowl)
   =/  ships=(set ship)
@@ -126,23 +111,17 @@
   |=  [=mark =vase]
   ^-  (quip card _this)
   ?:  (is-banned:rib bowl banned)
-    :: ~&  >>>  [%tower %poke-from-banned src.bowl]
     `this
   ?+  mark  (on-poke:def mark vase)
       %noun
     `this
-    ::
-    :: :: radio
       %radio-action
     =/  act  !<(action:store vase)
-  :: ~&  >>  [%tower %poke src.bowl act]
-    :: ~&  >>  [%on-poke-tower act]
     ?-  -.act
       :: ::
           %tune        `this
           %viewers     `this
           %chatlog     `this
-          :: %initialize  `this
       :: ::
           %permissions
       ::
@@ -205,6 +184,11 @@
       ?:  (gth (lent (trip url.act)) 999)
         :: no stupidly long urls
         `this
+      :: accept and process
+      ::
+      =.  spin-history
+        (~(put in spin-history) url.act)
+      ::
       =.  url.spin.state
           url.act
       ::
@@ -213,15 +197,16 @@
       :_  this
       (transmit act)
       :: ::
-
           %chat
-      :: ?.  permitted:hc  !!
+      ?:  (is-banned:rib bowl banned)
+        `this
       ?.  is-online  !!
-      ::
       :: no spoofing
+      ::
       =.  from.act  src.bowl
       =.  time.act  now.bowl
       :: enforce max length
+      ::
       =.  message.act
           %-  crip
           (scag 2.000 (trip message.act))
@@ -236,10 +221,6 @@
       (transmit act)
       :: ::
           %presence
-      :: ~&  >  %presence
-      ?.  (~(has by viewers) src.bowl)
-        `this
-      ::
       =.  viewers
         (~(put by viewers) src.bowl now.bowl)
       =/  stale=(list ship)
@@ -252,14 +233,15 @@
       :-  (transmit-card [%viewers ~(key by viewers)])
       %+  turn  stale
       |=  =ship
-      :: ~&  >>>  ['kicking stale' ship]
       (kick-only:io ship ~[/global /personal])
     ==
-    ::
     :: :: greg
+    :: in retrospect, an unfortunate name.
+    :: greg is the central agent for the discovery index
+    :: here we handle comms with the greg agent
+    ::
       %greg-event
     =/  ent  !<(event:gore vase)
-    :: ~&  >  [%tower %greg %event ent]
     ?-  -.ent
         %put
       ?.  =(src.bowl our.bowl)
@@ -270,6 +252,7 @@
       :: if you want to spoof your viewer count,
       :: you can take this =. out
       ::  but you will be banned from the discovery pool :)
+      ::
       =.  viewers.tow
         ~(wyt by viewers)
       ::
@@ -288,37 +271,47 @@
       :_  this
       (poke-greg:hc ent)
         %request
+      :: more than two minutes have passed since our last response
+      ::
+      ?.  (gth (sub now.bowl age.greg-cache) ~m2)
+        `this
       :_  this
       (poke-greg:hc ent)
       :: ::
         %response
       :: assert that its from greg
       ?.  =(src.bowl greg-ship:hc)
-        :: ~&  >>>  [%tower %evil %greg %from src.bowl]
         `this
-      :: ~&  >>>  [%tower %good %greg %from src.bowl ent]
+      =.  greg-cache  [now.bowl +.ent]
       :_  this
       :~
         (fact:io greg-event+!>(ent) ~[/greg/local])
       ==
     ==
-    ::
     :: :: radio admin
-    :: banning stuff
+    :: ban handling
+    ::
       %radio-admin
     ?.  =(src.bowl our.bowl)
       :: only admin
+      ::
       `this
     ::
     =/  adi  !<(admin:rib vase)
     ?:  =(src.bowl ship.adi)
       :: dont ban yourself lol
+      ::
       `this
+    :: update banned list
+    ::
     =.  banned
     (set-banned:rib adi banned)
     ?:  =(%unban -.adi)
+      :: unban already processed, no further action
+      ::
       `this
-    :: %ban
+    :: create kick effect for a ban
+    ::
     =.  viewers
         (~(del by viewers) ship.adi)
     :_  this
@@ -331,29 +324,32 @@
   |=  =path
   ^-  (quip card _this)
   ?:  (is-banned:rib bowl banned)
-    :: ~&  >>>  [%tower %watch-from-banned src.bowl]
     :_  this
     :~  (kick-only:io src.bowl ~[/personal /global])
     ==
   ?.  is-online
     :_  this
     :: kick everyone
+    ::
     :~  (kick:io ~[/global /personal])
     ==
   ?+    path
     (on-watch:def path)
       [%greg %local ~]
     ?>  =(src.bowl our.bowl)
-    `this
-      [%global ~]
+    :_  this
+    :~
+      (fact:io greg-event+!>([%response tows.greg-cache]) ~[/greg/local])
+    ==
+      [%global ~]  :: waves
     :: no initial updates on the group path
+    ::
     `this
-      [%personal ~]
+      [%personal ~] :: rock
     =.  viewers
       (~(put by viewers) src.bowl now.bowl)
     =/  ships
       ~(key by viewers)
-    :: ~&  >  [%tower %personal viewers]
     :_  this
       :~
         (transmit-card [%viewers ships])
@@ -414,12 +410,11 @@
   (fact:agentio radio-action+!>(act) ~[/global])
 ++  transmit
   |=  act=action:store
-  :: ~&  >>>  [%tower-transmitting act]
   :~
     (fact:agentio radio-action+!>(act) ~[/global])
   ==
+:: presence heartbeat
 ::
-:: presence heartbeat stuff
 ++  stale-timeout  ~m6
 ++  get-stale
   |=  [viw=(map ship time) now=time]
@@ -434,7 +429,6 @@
   $(vil t.vil)
 ++  remove-viw
   |=  [viw=(map ship time) stale=(list ship)]
-  :: ~&  >>>  ['tower removing stale viewers' stale]
   ^-  (map ship time)
   =.  viw
   |-
@@ -443,8 +437,8 @@
     (~(del by viw) i.stale)
     $(stale t.stale)
   viw
+:: greg
 ::
-:: greg stuff
 ++  greg-ship  ~nodmyn-dosrux
 ++  poke-greg
   |=  [ent=event:gore]

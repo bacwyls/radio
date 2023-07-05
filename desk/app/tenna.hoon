@@ -6,15 +6,21 @@
 |%
 +$  versioned-state
   $%  state-0
+      state-1
   ==
 +$  state-0  $:
   %0
   tune=(unit ship)
   wack=_|
   ==
++$  state-1  $:
+  %1
+  tune=(unit ship)
+  spin-history=(set cord)
+  ==
 +$  card     card:agent:gall
 --
-=|  state-0
+=|  state-1
 =*  state  -
 ^-  agent:gall
 %-  %-  agent:vita-client
@@ -30,7 +36,23 @@
 ::
 ++  on-fail   on-fail:def
 ++  on-peek   on-peek:def
-++  on-load   on-load:def
+++  on-load
+  |=  old-state=vase
+  ^-  (quip card _this)
+  :: special case for state-0 because
+  :: I changed the state without
+  :: writing a proper on-load
+  ?.  ?=(^ +.old-state)  !!
+  ?:  =(%0 +<.old-state)
+    :: one last hard nuke for state-0
+    `this
+  ::
+  :: regular support for further upgrades
+  =/  old  !<(versioned-state old-state)
+  ?-  -.old
+      %0  `this
+      %1  `this
+  ==
 ++  on-arvo
   |=  [=wire =sign-arvo]
   ^-  (quip card _this)
@@ -40,12 +62,9 @@
   !>(state)
 ++  on-init
   ^-  (quip card _this)
-  :: =.  tune
-  :: [~ our.bowl]  :: DEFAULT PROVIDER
   `this
 ++  on-leave
   |=  [=path]
-  :: ~&  >>>  [%tenna %on-leave src.bowl]
   `this
   ::
   ::  actually... this breaks everything
@@ -70,9 +89,17 @@
       [%radio @ %personal ~]
     ?+    -.sign  (on-agent:def wire sign)
         %fact
-      :: fwd to client (frontend) subscription
-      :_  this
-      [(fact:io cage.sign ~[/frontend]) ~]
+      ?+    p.cage.sign  (on-agent:def wire sign)
+          %radio-action
+        :-  [(fact:io cage.sign ~[/frontend]) ~] 
+        =/  act  !<(action:store q.cage.sign)
+        ?+  -.act  this
+            %spin
+          =.  spin-history
+            (~(put in spin-history) url.act)
+          this
+        ==
+      ==
     ==
       [%radio @ %global ~]
     ?+    -.sign  (on-agent:def wire sign)
@@ -84,11 +111,18 @@
         %fact
       ?+    p.cage.sign  (on-agent:def wire sign)
           %radio-action
-        :_  this
-        :~
-          :: fwd to client (frontend) subscription
-          (fact:io cage.sign ~[/frontend])
+        :: WET: write everything twice!
+        :: the same exact code as /personal
+        :: intentionally violating DRY in favor of WET
+        :-  [(fact:io cage.sign ~[/frontend]) ~] 
+        =/  act  !<(action:store q.cage.sign)
+        ?+  -.act  this
+            %spin
+          =.  spin-history
+            (~(put in spin-history) url.act)
+          this
         ==
+        :: /WET
       ==
     ==
   ==
@@ -104,7 +138,6 @@
     ?.  =(src.bowl our.bowl)
       `this
     =/  act  !<(action:store vase)
-    :: ~&  >  [%tenna %on-poke act]
     ?-  -.act
       :: ::
           %online       `this
@@ -148,7 +181,6 @@
 ++  on-watch
   |=  =path
   ::
-  :: ~&  >  [%tenna %on-watch path]
   ^-  (quip card _this)
   ?+    path
     (on-watch:def path)
