@@ -151,21 +151,24 @@ export function ChatBox({ }: {}) {
 
   const calcChatboxHeight = () => {
     const chatField = document.getElementById(chatInputId) as HTMLDivElement;
-    if (isMobile) {
-      const playerWrapper = document.getElementById(
-        playerColumnId
-      ) as HTMLDivElement;
-      if (!playerWrapper) return window.innerHeight;
-      return (
-        window.innerHeight -
-        playerWrapper.getBoundingClientRect().height -
-        chatField.getBoundingClientRect().height
-      );
+    if (!isMobile) {
+      return window.innerHeight - chatField.getBoundingClientRect().height;
     }
-    return window.innerHeight - chatField.getBoundingClientRect().height;
+    const playerWrapper = document.getElementById(
+      playerColumnId
+    ) as HTMLDivElement;
+    if (!playerWrapper) return window.innerHeight;
+    return (
+      window.innerHeight -
+      playerWrapper.getBoundingClientRect().height -
+      chatField.getBoundingClientRect().height
+    );
   };
 
-  const height = `${chatboxHeight.toString()}px`
+  let height = '100%';
+  if (isMobile) {
+    height = `${chatboxHeight.toString()}px`
+  }
 
   return (
     <div
