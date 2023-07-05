@@ -12,13 +12,16 @@ export const IsConnectingOverlay: React.FC = () => {
     const [isIncreasing, setIsIncreasing] = useState<boolean>(true);
     const tunePatP = useAppSelector(selectTunePatP);
 
-    // const startTime = Date.now();
-    const startTimeRef = useRef<number>(Date.now());
+    const [startTime, setStartTime] = useState<number>(Date.now());
+
+    useEffect(() => {
+        setStartTime(Date.now());
+    }, [tunePatP])
 
 
     useEffect(() => {
         const statusInterval = setInterval(() => {
-            const elapsedTime = Math.round((Date.now() - startTimeRef.current) / 1000);
+            const elapsedTime = Math.round((Date.now() - startTime) / 1000);
 
 
             if (elapsedTime < 10) {
