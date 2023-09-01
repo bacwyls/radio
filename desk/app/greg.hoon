@@ -82,10 +82,6 @@
       ?:  =(%pawn (clan:title src.bowl))
         `this
       ::
-      :: no 0 viewer B.S.
-      :: ?:  =(0 viewers.tow)
-      ::   `this
-      ::
       =.  description.tow
         ::  truncate description
         %-  crip
@@ -111,18 +107,8 @@
       `this
       :: ::
           %request
-      :: filter out crud
-      ::  so we only keep a max of 64
-      ::  and its the 64 most recent
-      =/  too-old=(list ship)
-        (get-too-old:hc minitowers)
-      :: remove a list of ships from the map
-      =.  minitowers
-        (remove minitowers too-old)
-      :: form the output
-      =/  ent=event:store  [%response minitowers]
       :_  this
-      (poke-tower src.bowl ent)
+      (poke-tower src.bowl [%response minitowers])
     ==
     ::
     :: :: radio admin
@@ -149,7 +135,6 @@
 |_  bowl=bowl:gall
 ++  max-description    64
 ++  max-viewers       256
-++  max-towers         64
 ++  timeout           ~m6  :: this is relatively more than the onInterval in the frontend
 ++  poke-tower
   |=  [src=ship ent=event:store]
@@ -159,29 +144,6 @@
       :-  %greg-event
       !>  ent
   ==
-::
-:: too-old: oldest stations exceeding maximum number of stations
-++  get-too-old
-  |=  [tows=(map ship minitower:store)]
-  ^-  (list ship)
-  =/  vows=(list minitower:store)
-    ~(val by tows)
-  ::
-  ?:  (lte (lent vows) max-towers)  ~
-  :: sort by time
-  =.  vows
-    %+  sort  vows
-    minitower-time-gte
-  =.  vows
-    (scag max-towers vows)
-  |-
-    ?~  vows  ~
-    :-  location.i.vows
-    $(vows t.vows)
-++  minitower-time-gte
-  |=  [a=minitower:store b=minitower:store]
-  %+  gte
-  time.a  time.b
 ++  remove
   |=  [tows=(map ship minitower:store) stale=(list ship)]
   ^-  (map ship minitower:store)
