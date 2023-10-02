@@ -4,7 +4,7 @@
     glob-http+['https://bwyl.nyc3.digitaloceanspaces.com/radio/radio-0.1.3-0v4.2oemv.17qcb.9umhs.qngk4.p74ik.glob' 0v4.2oemv.17qcb.9umhs.qngk4.p74ik]
     base+'radio'
     version+[0 1 3] 
-    image+'https://0x0.st/o4--.png'
+    image+'https://bwyl.nyc3.digitaloceanspaces.com/radio/radio.png'
     website+'https://github.com/bacwyls/radio'
     license+'MIT'
 ==
