@@ -27,18 +27,26 @@ import ReactPlayer from 'react-player';
 import store from './app/store';
 
 export function timestampFromTime(time: number) {
-
   const date = new Date(time * 1000);
-  const minutes = date.getMinutes().toString();
-  const hours = date.getHours().toString();
-  const month = (date.getMonth()+1).toString();
-  const day = date.getDate().toString();
+  const currentYear = new Date().getFullYear();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const year = date.getFullYear();
 
-  const oneDayOld = Date.now() - date.getTime() > 1000 * 60 * 60 * 24;
-  return oneDayOld
-    ? `${month.padStart(2,'0')}/${day.padStart(2,'0')}`
-    : `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  const isToday = new Date().toDateString() === date.toDateString();
+  const isDifferentYear = year !== currentYear;
+
+  if (isDifferentYear) {
+    return `${month}/${day}/${year}`;
+  } else if (!isToday) {
+    return `${month}/${day}`;
+  } else {
+    return `${hours}:${minutes}`;
+  }
 }
+
 export function formatTime(seconds: number): string {
   // Check if the input is valid
   if (!Number.isInteger(seconds) || seconds < 0) {
@@ -182,5 +190,3 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       break;
   }
 };
-
-

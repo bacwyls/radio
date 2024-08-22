@@ -68,17 +68,6 @@ export const PlayerColumn: FC = () => {
 
     let outOfSync = Math.abs(localProgress - globalProgress);
 
-    // stupid way to detect livestreams
-    // just dont autoscrub if the duration and played seconds are close
-    // because that tends to be the case for live streams...
-    //
-    // NOTE: this has bad edge cases. it was dumb anyways but im leaving commented for later
-    //
-    // ...(later) yeah, the duration is different for each user. everyone has a
-    //  static duration from when they first loaded the live stream. so this logic
-    //  will never work.
-    // let maybeLive = Math.abs(duration - globalProgress) < 3 || globalProgress < 3;
-
     if (outOfSync > 2) {
       dispatch(setPlayerInSync(false));
       return;
@@ -98,6 +87,9 @@ export const PlayerColumn: FC = () => {
               radio.seekToGlobal(playerRef.current, spinTime);
               dispatch(setPlayerInSync(true));
             }}
+            style={{
+              userSelect:"none"
+            }}
           >
             resync
           </button>
@@ -107,9 +99,12 @@ export const PlayerColumn: FC = () => {
                         flex-initial outline-none \
                         font-bold underline border-black border-t-0 \
                         text-gray-500 `}
-              style={{ whiteSpace: "nowrap" }}
               onClick={(e) => {
                 radio.resyncAll(playerRef.current, tunePatP, spinUrl);
+              }}
+              style={{
+                whiteSpace: "nowrap",
+                userSelect:"none"
               }}
             >
               resync all
@@ -128,6 +123,9 @@ export const PlayerColumn: FC = () => {
             setHelpMenuTop(isMobile ? window.innerHeight : e.clientY);
             setHelpMenuOpen(!helpMenuOpen);
           }}
+          style={{
+            userSelect:"none"
+          }}
         >
           help
         </button>
@@ -136,33 +134,26 @@ export const PlayerColumn: FC = () => {
     </div>
   );
 
-  const viewersCountLabel = (
-    <p
-      className="mt-2"
-      style={{ paddingTop: isMobile ? "0.25rem" : "inherit" }}
-    >
-      {viewers.length === 1
-        ? `${viewers.length} viewer:`
-        : `${viewers.length} viewers:`}
-    </p>
-  );
+  const viewersCountText = () => {
+      if (viewers.length === 1) {
+        return `${viewers.length} viewer`
+      }
+      return `${viewers.length} viewers`
+    }
+
+  // const mockViewers = Array.from({ length: 200 }, (_, i) => `Viewer${i + 1}`);
 
   return (
     <div
-      className={isMobile ? "" : "inline-block mr-4 flex flex-col"}
+      className={isMobile ? "" : "inline-block flex flex-col h-full"}
       style={{
         flex: isMobile ? "1" : "2",
-        order: "1",
       }}
       id={playerColumnId}
     >
-      <div className="flex flex-initial">
-        <Navigation />
-      </div>
       <div
         className="flex flex-1"
         style={{
-          width: "100%",
           height: isMobile ? "30vh" : "80vh",
           backgroundColor: "black",
         }}
@@ -177,7 +168,6 @@ export const PlayerColumn: FC = () => {
           height="100%"
           loop={true}
           onReady={() => dispatch(setPlayerReady(true))}
-          // onSeek={e => console.log('onSeek', e)}
           onProgress={(e) => handleProgress(e)}
           style={{
             display: "flex",
@@ -186,7 +176,6 @@ export const PlayerColumn: FC = () => {
           }}
           config={{
             file: {
-              // makes the audio player look nice
               attributes: {
                 style: {
                   height: "default",
@@ -198,48 +187,32 @@ export const PlayerColumn: FC = () => {
           }}
         />
       </div>
-      <div className="flex flex-initial flex-row">
-        <div
-          className="flex-1"
-          style={{ overflowX: isMobile ? "scroll" : "inherit" }}
-        >
-          {isMobile ? (
-            <div style={{ display: "flex" }}>
-              {viewersCountLabel}
-              {buttonRow}
-            </div>
-          ) : (
-            viewersCountLabel
-          )}
-          <div
-            style={
-              isMobile
-                ? {
-                  overflowX: "scroll",
-                  height: "1.5rem",
-                  maxHeight: "1.5rem",
-                  display: "flex",
-                }
-                : {
-                  // height: '1.5rem',
-                  maxHeight: "6rem",
-                  overflowY: "scroll",
-                }
-            }
-          >
-            {viewers.map((x, i) => (
-              <span
-                className=""
-                key={i}
-                style={{ whiteSpace: isMobile ? "nowrap" : "inherit" }}
-              >
-                {x}
-                <span>{i < viewers.length - 1 ? ", " : ""}</span>
-              </span>
-            ))}
+      <div className="">
+        <div className="flex items-center justify-between">
+          <div className="flex-initial">
+            {viewersCountText()}
+          </div>
+          <div className="flex-grow" />
+          <div className="flex">
+            {buttonRow}
           </div>
         </div>
-        {isMobile ? null : buttonRow}
+
+        <div
+          style={{
+            maxHeight: isMobile ? "2rem" : "6rem",
+            overflowY: "auto",
+          }}
+        >
+          {viewers.map((x, i) => (
+            <React.Fragment key={i}>
+              <span className="inline-block">
+                {x}
+              </span>
+              {i < viewers.length - 1 && <span>,&nbsp;</span>}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

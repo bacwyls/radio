@@ -8,13 +8,15 @@ export const InitialSplash: FC = () => {
   const dispatch = useAppDispatch();
 
 
-  function onClick() {
+  function onInteraction() {
     dispatch(setUserInteracted(true))
   }
   useEffect(() => {
-    document.addEventListener("keydown", onClick, false);
+    document.addEventListener("keydown", onInteraction);
+    document.addEventListener("click", onInteraction);
     return () => {
-      document.removeEventListener("keydown", onClick, false);
+      document.removeEventListener("keydown", onInteraction);
+      document.removeEventListener("click", onInteraction);
     }
   }, []);
 
@@ -27,7 +29,7 @@ export const InitialSplash: FC = () => {
           press any key to continue, or
           <button
             className="button border-black border p-1 text-center m-2"
-            onClick={() => onClick()}
+            onClick={() => onInteraction()}
           >
             click here
           </button>

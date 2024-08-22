@@ -17,7 +17,7 @@ export class Radio {
     // window.speechSynthesizer
     synth: any;
 
-    hub: string = "~nodmyn-dosrux";
+    hub: string = "~dyl";
 
     constructor() {
         this.our = "~" + window.ship;
@@ -330,6 +330,8 @@ export class Radio {
         cow: "https://media.tenor.com/9egJp0qwy_UAAAAi/polish-cow-polish.gif",
         milady:
             "https://f8n-production.s3.us-east-2.amazonaws.com/collections/9ynz3s9hx-IMG_2052.GIF",
+        groove:
+            "https://media1.tenor.com/m/gXMtMCZ5WccAAAAd/cat-head-bump-cat-nodding.gif",
     };
 
     // util
@@ -555,6 +557,9 @@ export class Radio {
                 }
 
                 handleBasketImages();
+                break;
+            case 'hi':
+                this.chat("|hi ~sorreg-namtyv");
                 break;
             //
             // image commands

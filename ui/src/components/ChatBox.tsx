@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMessage, chopChats, selectChats } from "../features/station/stationSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import React from "react";
@@ -15,19 +15,27 @@ export const chatboxId = "radio-chatbox";
 
 type ChatInnerMessageProps = {
   message: string;
-
+  maybeAutoScrollChatBox: () => void;
 };
 
-const ChatInnerMessage: React.FC<ChatInnerMessageProps> = ({ message }) => {
+const ChatInnerMessage: React.FC<ChatInnerMessageProps> = ({ message, maybeAutoScrollChatBox }) => {
   const linkRegex = /^https?:\/\/\S+$/i;
   const imageRegex = /^https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)$/i;
   // const emojiRegex = /^\p{Emoji}+$/u;
   const playRegex = /^!play /;
 
+  if (message === "|hi ~sorreg-namtyv") {
+    return (
+      <span className="glowing-animation">
+        {message}
+      </span>
+    )
+  }
+
   if (linkRegex.test(message)) {
     let sanitizedUrl = sanitize(message);
     if (imageRegex.test(sanitizedUrl)) {
-      return chatInnerImg(sanitizedUrl);
+      return chatInnerImg(sanitizedUrl, maybeAutoScrollChatBox);
     } else {
       return (
         safeLinkTag(sanitizedUrl)
@@ -78,7 +86,7 @@ function autoScrollChatBox() {
   }
 }
 
-const chatToHTML = (key: number, chat: ChatMessage) => {
+const chatToHTML = (key: number, chat: ChatMessage, maybeAutoScrollChatBox: any) => {
   return (
     <p key={key} className="p-1 hover:bg-gray-100 mb-1">
       <span className={"mr-2 text-gray-500"}>
@@ -88,14 +96,16 @@ const chatToHTML = (key: number, chat: ChatMessage) => {
         {chat.from}
         {":"}
       </span>
-      <ChatInnerMessage message={chat.message}
+      <ChatInnerMessage 
+        message={chat.message}
+        maybeAutoScrollChatBox={maybeAutoScrollChatBox}
       />
     </p>
   );
 };
 
 
-const chatInnerImg = (src: string) => {
+const chatInnerImg = (src: string, maybeAutoScrollChatBox: () => void) => {
   return (
     <img
       key={src}
@@ -106,39 +116,32 @@ const chatInnerImg = (src: string) => {
         maxHeight: "12vh",
         objectFit: "cover",
       }}
-      onLoad={() => autoScrollChatBox()}
+      onLoad={maybeAutoScrollChatBox}
     />
   );
 };
 
 export function ChatBox({ }: {}) {
-  const [chatboxHeight, setChatboxHeight] = useState(window.innerHeight);
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
+  const chatboxRef = useRef<HTMLDivElement>(null);
   const chats = useAppSelector(selectChats);
 
   const dispatch = useAppDispatch();
 
+  const [unseenNewMessagesCount, setUnseenNewMessagesCount] = useState(0);
+
   useEffect(() => {
-    // Scroll to the bottom of the chat box whenever a new chat message is added
-    autoScrollChatBox();
+    if (isScrolledUp) {
+      setUnseenNewMessagesCount(prev => prev + 1);
+    }
   }, [chats]);
 
   useEffect(() => {
-    const chatField = document.getElementById(chatInputId) as HTMLDivElement;
-    if (chatField) {
-      setChatboxHeight(calcChatboxHeight());
-    }
-
-    const handleWindowResize = () => {
-      setChatboxHeight(calcChatboxHeight());
+    // Only auto-scroll if not scrolled up
+    if (!isScrolledUp) {
       autoScrollChatBox();
     }
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    }
-  }, []);
+  }, [chats, isScrolledUp]);
 
   const maxChats = 100;
   useEffect(() => {
@@ -149,33 +152,36 @@ export function ChatBox({ }: {}) {
   }, [chats]);
 
 
-  const calcChatboxHeight = () => {
-    const chatField = document.getElementById(chatInputId) as HTMLDivElement;
-    if (!isMobile) {
-      return window.innerHeight - chatField.getBoundingClientRect().height;
+  const handleScroll = () => {
+    if (chatboxRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatboxRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight - 10;
+      setIsScrolledUp(!isScrolledToBottom);
+      
+      if (isScrolledToBottom) {
+        setUnseenNewMessagesCount(0);
+      }
     }
-    const playerWrapper = document.getElementById(
-      playerColumnId
-    ) as HTMLDivElement;
-    if (!playerWrapper) return window.innerHeight;
-    return (
-      window.innerHeight -
-      playerWrapper.getBoundingClientRect().height -
-      chatField.getBoundingClientRect().height
-    );
   };
 
-  let height = '100%';
-  if (isMobile) {
-    height = `${chatboxHeight.toString()}px`
-  }
+  const scrollToBottom = () => {
+    if (chatboxRef.current) {
+      chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
+      setIsScrolledUp(false);
+      setUnseenNewMessagesCount(0);
+    }
+  };
+
+  const maybeAutoScrollChatBox = useCallback(() => {
+    if (!isScrolledUp) {
+      autoScrollChatBox();
+    }
+  }, [isScrolledUp]);
 
   return (
     <div
-      className="flex-1 overflow-y-auto flex font-mono"
+      className="flex-1 h-full overflow-y-auto flex font-mono relative"
       style={{
-        height: height,
-        maxHeight: height,
         justifyContent: "flex-end",
       }}
     >
@@ -188,10 +194,29 @@ export function ChatBox({ }: {}) {
           overflowWrap: "break-word",
         }}
       >
-        <div id={chatboxId} className="overflow-y-scroll">
-          {chats.map((x: any, i: any) => chatToHTML(i, chats[i]))}
+        <div 
+          id={chatboxId} 
+          className="overflow-y-auto"
+          style={{
+          }}
+          ref={chatboxRef}
+          onScroll={handleScroll}
+        >
+          {chats.map((x: any, i: any) => chatToHTML(i, chats[i], maybeAutoScrollChatBox))}
         </div>
       </div>
+      {(isScrolledUp) &&(
+        <button
+          className="absolute bottom-0 right-0 border border-gray-400 text-gray-700 bg-white px-3 py-1 shadow-md hover:bg-gray-100 transition-colors duration-200"
+          onClick={scrollToBottom}
+          style={{
+            userSelect:"none",
+          }}
+        >
+          {unseenNewMessagesCount > 0 ? `${unseenNewMessagesCount} new ${unseenNewMessagesCount === 1 ? 'message' : 'messages'}`
+            : 'latest'}
+        </button>
+      )}
     </div>
   );
 }

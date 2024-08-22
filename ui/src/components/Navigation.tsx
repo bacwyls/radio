@@ -138,7 +138,7 @@ export const Navigation: FC = () => {
             className={`hover:pointer button border-black \
                     border p-1 text-center\
                     ${navigationOpen ? "font-bold" : ""}`}
-            style={{ whiteSpace: "nowrap" }}
+            style={{ whiteSpace: "nowrap", userSelect: "none",}}
             onClick={() => {
               if (!navigationOpen) {
                 radio.gregRequest();
@@ -206,7 +206,11 @@ export const Navigation: FC = () => {
 
         {/* tuned to */}
         <div className="flex-1 w-full inline-block flex flex-row items-center">
-          <span className="text-xl mr-3 pb-1 flex-initial">
+          <span className="text-xl mr-3 pb-1 flex-initial cursor-default"
+            style={{
+              userSelect: "none",
+            }}
+          >
             📻 {permissions === 'open' ? "🎉" : ""}
           </span>
 

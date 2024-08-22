@@ -215,7 +215,7 @@
       =.  chatlog  [chat chatlog]
       =.  chatlog
         ?:  (gth (lent chatlog) 16)
-          (snip chatlog)
+          (scag 16 chatlog)
         chatlog
       :_  this
       (transmit act)
