@@ -214,8 +214,8 @@
       =/  =chat:store  +.act
       =.  chatlog  [chat chatlog]
       =.  chatlog
-        ?:  (gth (lent chatlog) 16)
-          (scag 16 chatlog)
+        ?:  (gth (lent chatlog) 90)
+          (scag 90 chatlog)
         chatlog
       :_  this
       (transmit act)
