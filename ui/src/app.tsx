@@ -33,6 +33,8 @@ export function App() {
   useEffect(() => {
     radio.watchTenna(handleSub, dispatch)
   }, []);
+
+
   function handleSub(update: any) {
     dispatch(setUpdate(update));
   }
@@ -59,10 +61,18 @@ export function App() {
 
   useEffect(() => {
     setInterval(() => {
+      
       // heartbeat to detect presence
       radio.ping();
     }, 1000 * 30 * 6);
   }, []);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     console.log('timer')
+  //     radio.api.onError = () => {console.log('onError')}
+  //   }, 10000)
+  // },[]);
 
   const MemoizedRadioController = useMemo(() => React.memo(RadioController), []);
   const MemoizedChatBox = useMemo(() => React.memo(ChatBox), []);

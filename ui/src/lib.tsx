@@ -46,6 +46,7 @@ export class Radio {
                     this.tune(null);
                     this.api.unsubscribe(subscriptionId);
                     this.api.delete();
+                    // console.log("beforeunload")
                 });
                 // tune to hub by default
                 const queryString = window.location.search;
