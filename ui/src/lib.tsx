@@ -38,7 +38,7 @@ export class Radio {
                 app: "tenna",
                 path: "/frontend",
                 event: handleSub,
-                quit: () => console.log("lost connection to your urbit. please refresh"), //alert("lost connection to your urbit. please refresh"),
+                quit: () => alert("lost connection to your urbit. please refresh"),
                 err: (e) => console.log("radio err", e),
             })
             .then((subscriptionId) => {
