@@ -24,6 +24,7 @@ export class Radio {
         this.api = new Urbit("", "", window.desk);
         this.api.ship = window.ship;
         this.synth = window.speechSynthesis;
+        this.api.onOpen = () => {console.log('connection established')}
         // this.synth.onvoiceschanged = (v: any) => {
         //     console.log('radio voices', v)
         //     // TODO check if voices is empty
@@ -37,7 +38,7 @@ export class Radio {
                 app: "tenna",
                 path: "/frontend",
                 event: handleSub,
-                quit: () => alert("lost connection to your urbit. please refresh"),
+                quit: () => console.log("lost connection to your urbit. please refresh"), //alert("lost connection to your urbit. please refresh"),
                 err: (e) => console.log("radio err", e),
             })
             .then((subscriptionId) => {
@@ -46,7 +47,6 @@ export class Radio {
                     this.tune(null);
                     this.api.unsubscribe(subscriptionId);
                     this.api.delete();
-                    // console.log("beforeunload")
                 });
                 // tune to hub by default
                 const queryString = window.location.search;
