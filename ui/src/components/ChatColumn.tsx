@@ -98,8 +98,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
           </button>
         </div>
         <div className="flex-initial h-10 flex items-center" style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
-          {['!hi', '!pepe', '!wojak', '!groove']
-            .filter(item => item !== '!hi' || currentDate < cutoffDate)
+          {['!urbit', '!athens', '!groove', '!cabbit']
             .map((item, index) => (
               <div
                 key={index}
@@ -110,7 +109,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
                 }}
                 onClick={() => handleQuickMessage(item)}
               >
-                {item === '!hi' ? '🎉 !hi 🎉' : item}
+                 {item}
               </div>
             ))}
         </div>
@@ -141,7 +140,7 @@ export const ChatColumn: FC<IChatColumn> = (props: IChatColumn) => {
           overflow:"auto"
         }}
       >
-        <div className="flex-grow">
+        <div className="flex-grow overflow-x-hidden">
           <ChatBox />
         </div>
         <div className="flex-initial">
