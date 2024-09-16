@@ -24,6 +24,7 @@ export class Radio {
         this.api = new Urbit("", "", window.desk);
         this.api.ship = window.ship;
         this.synth = window.speechSynthesis;
+        this.api.onOpen = () => {console.log('connection established')}
         // this.synth.onvoiceschanged = (v: any) => {
         //     console.log('radio voices', v)
         //     // TODO check if voices is empty

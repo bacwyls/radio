@@ -146,7 +146,7 @@ export function ChatBox({ }: {}) {
   const maxChats = 100;
   useEffect(() => {
     // maximum chats
-    if (chats.length > maxChats) {
+    if (!isScrolledUp && chats.length > maxChats) {
       dispatch(chopChats(chats));
     }
   }, [chats]);
@@ -160,6 +160,9 @@ export function ChatBox({ }: {}) {
       
       if (isScrolledToBottom) {
         setUnseenNewMessagesCount(0);
+        if(chats.length > maxChats) {
+          dispatch(chopChats(chats));
+        }
       }
     }
   };

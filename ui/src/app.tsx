@@ -33,6 +33,8 @@ export function App() {
   useEffect(() => {
     radio.watchTenna(handleSub, dispatch)
   }, []);
+
+
   function handleSub(update: any) {
     dispatch(setUpdate(update));
   }
@@ -63,6 +65,7 @@ export function App() {
       radio.ping();
     }, 1000 * 30 * 6);
   }, []);
+
 
   const MemoizedRadioController = useMemo(() => React.memo(RadioController), []);
   const MemoizedChatBox = useMemo(() => React.memo(ChatBox), []);
