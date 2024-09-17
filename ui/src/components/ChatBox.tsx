@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMessage, chopChats, selectChats } from "../features/station/stationSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import React from "react";
-import { timestampFromTime } from "../util";
+import { getRecencyText, timestampFromTime } from "../util";
 import { isMobile } from "react-device-detect";
 import { chatInputId } from "./ChatColumn";
 import { playerColumnId } from "./PlayerColumn";
@@ -23,14 +23,6 @@ const ChatInnerMessage: React.FC<ChatInnerMessageProps> = ({ message, maybeAutoS
   const imageRegex = /^https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)$/i;
   // const emojiRegex = /^\p{Emoji}+$/u;
   const playRegex = /^!play /;
-
-  if (message === "|hi ~sorreg-namtyv") {
-    return (
-      <span className="glowing-animation">
-        {message}
-      </span>
-    )
-  }
 
   if (linkRegex.test(message)) {
     let sanitizedUrl = sanitize(message);
@@ -54,7 +46,9 @@ const ChatInnerMessage: React.FC<ChatInnerMessageProps> = ({ message, maybeAutoS
       </>
     )
   } else {
-    return <>{message}</>;
+    return (
+    <>{message}</>
+    )
   }
 };
 
@@ -86,23 +80,6 @@ function autoScrollChatBox() {
   }
 }
 
-const chatToHTML = (key: number, chat: ChatMessage, maybeAutoScrollChatBox: any) => {
-  return (
-    <p key={key} className="p-1 hover:bg-gray-100 mb-1">
-      <span className={"mr-2 text-gray-500"}>
-        {timestampFromTime(chat.time)}
-      </span>
-      <span className={"font-bold mr-1"}>
-        {chat.from}
-        {":"}
-      </span>
-      <ChatInnerMessage 
-        message={chat.message}
-        maybeAutoScrollChatBox={maybeAutoScrollChatBox}
-      />
-    </p>
-  );
-};
 
 
 const chatInnerImg = (src: string, maybeAutoScrollChatBox: () => void) => {
@@ -129,6 +106,15 @@ export function ChatBox({ }: {}) {
   const dispatch = useAppDispatch();
 
   const [unseenNewMessagesCount, setUnseenNewMessagesCount] = useState(0);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     if (isScrolledUp) {
@@ -150,7 +136,6 @@ export function ChatBox({ }: {}) {
       dispatch(chopChats(chats));
     }
   }, [chats]);
-
 
   const handleScroll = () => {
     if (chatboxRef.current) {
@@ -181,9 +166,29 @@ export function ChatBox({ }: {}) {
     }
   }, [isScrolledUp]);
 
+  const chatToHTML = useCallback((key: number, chat: ChatMessage) => {
+    return (
+      <div key={key} className="p-1 hover:bg-gray-100 mb-2 text-[0.7rem]">
+        <div className="block">
+          <span className={"font-bold mr-1"}>
+            {chat.from}
+            {":"}
+          </span>
+          <span className={"mr-2 text-gray-500 text-[0.6rem]"}>
+            {getRecencyText(currentTime - (chat.time * 1000))}
+          </span>
+        </div>
+        <ChatInnerMessage 
+          message={chat.message}
+          maybeAutoScrollChatBox={maybeAutoScrollChatBox}
+        />
+      </div>
+    );
+  }, [currentTime, maybeAutoScrollChatBox]);
+
   return (
     <div
-      className="flex-1 h-full overflow-y-auto flex font-mono relative"
+      className="flex-1 h-full overflow-y-auto overflow-x-hidden flex font-mono relative"
       style={{
         justifyContent: "flex-end",
       }}
@@ -199,13 +204,13 @@ export function ChatBox({ }: {}) {
       >
         <div 
           id={chatboxId} 
-          className="overflow-y-auto"
+          className="overflow-y-auto overflow-x-hidden"
           style={{
           }}
           ref={chatboxRef}
           onScroll={handleScroll}
         >
-          {chats.map((x: any, i: any) => chatToHTML(i, chats[i], maybeAutoScrollChatBox))}
+          {chats.map((chat, i) => chatToHTML(i, chat))}
         </div>
       </div>
       {(isScrolledUp) &&(

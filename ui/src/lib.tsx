@@ -2,7 +2,7 @@ import Urbit from "@urbit/http-api";
 import ReactPlayer from "react-player";
 import store from "./app/store";
 import { isValidPatp } from 'urbit-ob';
-import { formatTime } from "./util";
+import { formatTimestamp } from "./util";
 import { setHasPublishedStation, setIsConnecting, setNavigationOpen, setOurTowerDescription, setPlayerInSync, setPlayerReady, setTunePatP } from "./features/ui/uiSlice";
 import { resetStation } from "./features/station/stationSlice";
 import { chatInputId } from "./components/ChatColumn";
@@ -91,7 +91,7 @@ export class Radio {
 
         let globalProgress = Math.ceil(currentUnixTime - startedTime) % duration;
 
-        console.log("seeking to :", formatTime(Math.round(globalProgress)));
+        console.log("seeking to :", formatTimestamp(Math.round(globalProgress)));
         player.seekTo(globalProgress, "seconds");
     }
 
@@ -295,44 +295,10 @@ export class Radio {
     };
 
     public imgUrls = {
-        datboi: "https://i.giphy.com/media/vc5L6VoTB6tnW/giphy.webp",
-        pepe: "https://i.imgur.com/IGaYzV6.gif",
-        wojak: "https://i.imgur.com/gsTARXr.gif",
-        poo: "https://media3.giphy.com/media/Uowdj8xg3XZ7bKlA1N/giphy.gif",
-        sadpepe:
-            "https://media.tenor.com/5aF7np_zPEgAAAAd/pepe-why-pepe-the-frog.gif",
-        terry:
-            "https://media.tenor.com/WIqvnT_7Vj8AAAAi/terry-a-davis-terry-davis.gif",
-        fortnite: "https://0x0.st/otwj.gif",
-        bong: "https://0x0.st/otw2.gif",
-        hoon: "https://media.tenor.com/qCy4QpqawcIAAAAi/twitch-chatting.gif",
-        band: "https://0x0.st/otwe.gif",
-        cozy: "https://media.tenor.com/L8uQHgpI1aYAAAAC/reikouwu2.gif",
-        war: "https://media.tenor.com/Vc3qJRBT_AUAAAAM/alex-jones.gif",
-        retard:
-            "https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif%20https://c.tenor.com/MfhZ1AT2th0AAAAC/peepo-dance-happy.gif",
-        cheese:
-            "https://image.noelshack.com/fichiers/2020/12/7/1584917989-ezgif-3-c96706d84527.gif",
-        diddy:
-            "https://www.latercera.com/resizer/ieO4j6CeHEOxbQ3zAA4F9guWt7E=/800x0/smart/arc-anglerfish-arc2-prod-copesa.s3.amazonaws.com/public/QMTMIODRIFC43OBIND2WMDJMNY.gif",
-        batman: "https://i.warosu.org/data/lit/img/0122/86/1545778952553.gif",
-        jizz: "https://cdn.discordapp.com/emojis/693519541279391897.gif",
-        butterfly: "https://media3.giphy.com/media/LbN93tzk3P4gL03LXi/giphy.gif",
-        penguin:
-            "https://media.tenor.com/hyRFiIX7e1sAAAAC/gif-club-penguin-dance.gif",
-        spongebob:
-            "https://media.tenor.com/0pO-d7FH3QgAAAAi/spongebob-meme-spongebob.gif",
-        strawberry: "https://media.tenor.com/MsnbSzWd_yMAAAAj/crazy-fruit.gif",
-        mario: "https://media.tenor.com/c1ljnEruxwYAAAAi/smg4-smg4dancing.gif",
-        baldi: "https://media.tenor.com/Ru81f5Z4K-YAAAAi/baldi-rickroll.gif",
-        snake: "https://media.tenor.com/OGH7rOXh5YIAAAAi/solid-snake-mgs.gif",
-        yoshi: "https://media.tenor.com/K2cU8bfy97gAAAAi/yoshi-tiptoe.gif",
-        cringe: "https://media.tenor.com/pbderXHkWfUAAAAi/cringe-0000000.gif",
-        cow: "https://media.tenor.com/9egJp0qwy_UAAAAi/polish-cow-polish.gif",
-        milady:
-            "https://f8n-production.s3.us-east-2.amazonaws.com/collections/9ynz3s9hx-IMG_2052.GIF",
-        groove:
-            "https://media1.tenor.com/m/gXMtMCZ5WccAAAAd/cat-head-bump-cat-nodding.gif",
+        athens: "https://bwyl.nyc3.digitaloceanspaces.com/radio/chat_images/athens.gif",
+        urbit: "https://bwyl.nyc3.digitaloceanspaces.com/radio/chat_images/urbit.png",
+        groove: "https://bwyl.nyc3.digitaloceanspaces.com/radio/chat_images/groove.gif",
+        cabbit: "https://bwyl.nyc3.digitaloceanspaces.com/radio/chat_images/cabbit.gif",
     };
 
     // util
@@ -516,53 +482,6 @@ export class Radio {
                 dispatch(setHasPublishedStation(false));
                 this.gregRequest();
                 break;
-            case 'basket':
-                // composable AF
-                // fetch an image from basket, if installed
-                const handleBasketImages = async () => {
-
-                    let basketImages: any;
-                    try {
-                        basketImages = await this.getBasketImages();
-                    } catch (e) {
-                        this.chat("🧺 I dont have basket installed")
-                        return;
-                    }
-
-                    if (basketImages.length === 0) {
-                        this.chat("🧺 My basket is empty")
-                        return;
-                    }
-
-                    function getRandomBasketImage(images: any) {
-                        return images[Math.floor(Math.random() * images.length)];
-                    }
-
-                    const selectImageToSend = () => {
-                        if (!arg) {
-                            return getRandomBasketImage(basketImages);
-                        }
-
-                        // @ts-ignore
-                        const matchingImages = basketImages.filter(image => image.meta.tags.includes(arg));
-
-                        if (matchingImages.length === 0) {
-                            return getRandomBasketImage(basketImages);
-                        }
-
-                        return getRandomBasketImage(matchingImages);
-                    };
-
-                    const selectedImage = selectImageToSend();
-                    this.chat(selectedImage.url);
-                }
-
-                handleBasketImages();
-                break;
-            case 'hi':
-                this.chat("|hi ~sorreg-namtyv");
-                break;
-            //
             // image commands
             default:
                 this.chatImage(command);

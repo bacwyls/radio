@@ -47,35 +47,50 @@ export function timestampFromTime(time: number) {
   }
 }
 
-export function formatTime(seconds: number): string {
-  // Check if the input is valid
-  if (!Number.isInteger(seconds) || seconds < 0) {
-    throw new Error("Invalid input: seconds must be a non-negative integer");
+export function getRecencyText(diff:number) {
+  if (diff < 60000) {
+    return "now";
   }
-
-  // Calculate the hours, minutes, and seconds
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
-  // Build the time string
-  let timeString = "";
-  if (hours > 0) {
-    timeString += `${hours}hr `;
+  if (diff < 3600000) {
+    const mins = Math.floor(diff / 60000);
+    return `${mins} ${mins === 1 ? 'min' : 'mins'} ago`;
   }
-  if (minutes > 0) {
-    timeString += `${minutes}min `;
+  if (diff < 86400000) {
+    const hrs = Math.floor(diff / 3600000);
+    return `${hrs} ${hrs === 1 ? 'hr' : 'hrs'} ago`;
   }
-  if (remainingSeconds > 0) {
-    timeString += `${remainingSeconds}sec`;
+  if (diff > 7307200000) {
+    const years = Math.floor(diff / 31536000000);
+    const months = Math.floor((diff % 31536000000) / 2592000000);
+    return `${years} ${years === 1 ? 'yr' : 'yrs'} ${months} ${months === 1 ? 'month' : 'months'} ago`;
   }
-  if (timeString === "") {
-    timeString = "0sec";
-  }
-
-  return timeString.trim();
+  const days = Math.floor(diff / 86400000);
+  return days === 1 ? "1 day ago" : `${days} days ago`;
 }
 
+export function formatTimestamp(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  const now = new Date();
+  const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  if (date < oneWeekAgo) {
+    return date.toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    }).replace(',', '');
+  } else {
+    const isToday = date.toDateString() === now.toDateString();
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+    const day = isToday ? 'Today' : isYesterday ? 'Yesterday' : date.toLocaleDateString('en-US', { weekday: 'short' });
+    const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    return `${day} ${time}`;
+  }
+}
 
 export const maxTowerAgeInMinutes = 10;
 

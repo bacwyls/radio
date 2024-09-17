@@ -232,8 +232,8 @@ export const Navigation: FC = () => {
           </div>
 
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <span className="text-center text-gray-900">{timestampFromTime(currentTime)}</span>
+        <div className="flex flex-col items-center justify-center text-[0.6rem]">
+          <span className="text-center text-gray-900">{new Date(currentTime*1000).toLocaleTimeString()}</span>
         </div>
 
       </div>

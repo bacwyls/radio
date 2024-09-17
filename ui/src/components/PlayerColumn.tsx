@@ -187,7 +187,7 @@ export const PlayerColumn: FC = () => {
           }}
         />
       </div>
-      <div className="">
+      <div className="text-[0.6rem]">
         <div className="flex items-center justify-between">
           <div className="flex-initial">
             {viewersCountText()}
@@ -199,6 +199,7 @@ export const PlayerColumn: FC = () => {
         </div>
 
         <div
+          className="text-[0.6rem]"
           style={{
             maxHeight: isMobile ? "2rem" : "6rem",
             overflowY: "auto",
@@ -208,8 +209,12 @@ export const PlayerColumn: FC = () => {
             <React.Fragment key={i}>
               <span className="inline-block">
                 {x}
+                {i < viewers.length - 1 && (
+                  <>
+                    {','}&nbsp;
+                  </>
+                )}
               </span>
-              {i < viewers.length - 1 && <span>,&nbsp;</span>}
             </React.Fragment>
           ))}
         </div>
