@@ -167,8 +167,9 @@ export function ChatBox({ }: {}) {
   }, [isScrolledUp]);
 
   const chatToHTML = useCallback((key: number, chat: ChatMessage) => {
+    const isAdmin = window.radio.isAdmin();
     return (
-      <div key={key} className="p-1 hover:bg-gray-100 mb-2 text-[0.7rem]">
+      <div key={key} className="p-1 hover:bg-gray-100 pb-0 text-[0.7rem] group">
         <div className="block">
           <span className={"font-bold mr-1"}>
             {chat.from}
@@ -182,6 +183,18 @@ export function ChatBox({ }: {}) {
           message={chat.message}
           maybeAutoScrollChatBox={maybeAutoScrollChatBox}
         />
+        <div className="text-[0.6rem] flex justify-end">
+          <div 
+            className={`text-red-500 cursor-pointer inline-block ${isAdmin ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
+            onClick={(e) => {
+              // Your delete logic here
+              console.log("deleting chat")
+              window.radio.deleteChat(chat.from, chat.time*1000)
+            }}
+          >
+            delete
+          </div>
+        </div>
       </div>
     );
   }, [currentTime, maybeAutoScrollChatBox]);

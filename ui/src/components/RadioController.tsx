@@ -3,7 +3,6 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 
-import { Radio } from "../lib";
 import { InitialSplash } from "./InitialSplash";
 import { PlayerColumn } from "./PlayerColumn";
 import { ChatColumn } from "./ChatColumn";

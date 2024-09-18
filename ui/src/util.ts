@@ -9,7 +9,8 @@ import {
   setChatsWithChatlog,
   setChatsWithChat,
   selectPermissions,
-  setDescription
+  setDescription,
+  deleteChatMessage
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -111,19 +112,18 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
   dispatch(setIsConnecting(false))
   console.log("radio update", update);
 
-
   let head = Object.keys(update)[0];
   // handle updates from tower, remote radio station
   switch (head) {
-    // case 'initialize':
-    //   let tower = update['initialize']
-    //   dispatch(setSpinUrl(tower.spin.url));
-    //   dispatch(setSpinTime(tower.spin.time));
-    //   dispatch(setViewers(tower.viewers));
-    //   dispatch(setPermissions(tower.permissions))
-    //   dispatch(setChatsWithChatlog(tower.chatlog));
-    //   dispatch(setDescription(tower.description));
-    //   break;
+    case 'tower-update':
+      let tower = update['tower-update']
+      dispatch(setSpinUrl(tower.spin.url));
+      dispatch(setSpinTime(tower.spin.time));
+      dispatch(setViewers(tower.viewers));
+      dispatch(setPermissions(tower.permissions))
+      dispatch(setChatsWithChatlog(tower.chatlog));
+      dispatch(setDescription(tower.description));
+      break;
     case 'spin':
       var updateSpin = update['spin'];
 
@@ -202,6 +202,10 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
         dispatch(setOurTowerDescription(update['description']))
       }
       dispatch(setDescription(update['description']))
+      break;
+    case 'delete-chat':
+      let deleteChat = update['delete-chat'];
+      dispatch(deleteChatMessage(deleteChat));
       break;
   }
 };

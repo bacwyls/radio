@@ -119,9 +119,10 @@
     =/  act  !<(action:store vase)
     ?-  -.act
       :: ::
-          %tune        `this
-          %viewers     `this
-          %chatlog     `this
+          %tune          `this
+          %viewers       `this
+          %chatlog       `this
+          %tower-update  `this
       :: ::
           %permissions
       ::
@@ -165,7 +166,8 @@
           talk.act
       :_  this
       (transmit act)
-      %description
+      :: ::
+        %description
       ?.  permitted:hc
         :: permission denied
         `this
@@ -234,6 +236,25 @@
       %+  turn  stale
       |=  =ship
       (kick-only:io ship ~[/global /personal])
+      :: ::
+          %delete-chat
+      =/  target-yore  (yore time.act)
+      =/  target-ship=@p  from.act
+      =.  chatlog
+        %+  skip  chatlog
+        |=  =chat:store
+        =/  chat-yore  (yore time.chat)
+        ?&  =(from.chat target-ship)
+            =(a.target-yore a.chat-yore)
+            =(y.target-yore y.chat-yore)
+            =(m.target-yore m.chat-yore)
+            =(d.t.target-yore d.t.chat-yore)
+            =(h.t.target-yore h.t.chat-yore)
+            =(m.t.target-yore m.t.chat-yore)
+            =(s.t.target-yore s.t.chat-yore)
+        ==
+      :_  this
+      (transmit act)
     ==
     :: :: greg
     :: in retrospect, an unfortunate name.
@@ -298,26 +319,36 @@
       `this
     ::
     =/  adi  !<(admin:rib vase)
-    ?:  =(src.bowl ship.adi)
-      :: dont ban yourself lol
+    ?-  -.adi
+        %unban
+      :: update banned list
       ::
+      =.  banned
+        (set-banned:rib adi banned)
       `this
-    :: update banned list
-    ::
-    =.  banned
-    (set-banned:rib adi banned)
-    ?:  =(%unban -.adi)
-      :: unban already processed, no further action
       ::
-      `this
-    :: create kick effect for a ban
-    ::
-    =.  viewers
-        (~(del by viewers) ship.adi)
-    :_  this
-    :~
-      (kick-only:io ship.adi ~[/personal /global])
-      (transmit-card [%viewers ~(key by viewers)])
+        %ban
+      ?:  =(src.bowl ship.adi)
+        :: dont ban yourself lol
+        ::
+        `this
+      :: update banned list
+      ::
+      =.  banned
+        (set-banned:rib adi banned)
+      ?:  =(%unban -.adi)
+        :: unban already processed, no further action
+        ::
+        `this
+      :: create kick effect for a ban
+      ::
+      =.  viewers
+          (~(del by viewers) ship.adi)
+      :_  this
+      :~
+        (kick-only:io ship.adi ~[/personal /global])
+        (transmit-card [%viewers ~(key by viewers)])
+      ==
     ==
   ==
 ++  on-watch
@@ -350,6 +381,19 @@
       (~(put by viewers) src.bowl now.bowl)
     =/  ships
       ~(key by viewers)
+    =/  tower-update
+      :*
+        is-online
+        permissions
+        talk
+        spin
+        description
+        viewers
+        banned
+        promoted
+        chatlog
+      ==
+      
     :_  this
       :~
         (transmit-card [%viewers ships])
@@ -373,12 +417,7 @@
         ::   giving up, returning to tradition. just sending a flurry of initial facts instead of one chunk of state.
         ::   still want to fix this eventually but it will probably have to come with a near full rewrite of radio.
         ::
-        (init-fact [%spin spin])
-        (init-fact [%permissions permissions])
-        (init-fact [%tune `our.bowl])
-        (init-fact [%viewers ships])
-        (init-fact [%chatlog (flop chatlog)])
-        (init-fact [%description description])
+        (init-fact [%tower-update tower-update])
         ::
         (kick-only:io src.bowl ~[/personal])
       ==

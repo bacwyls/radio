@@ -91,13 +91,22 @@
         %fact
       ?+    p.cage.sign  (on-agent:def wire sign)
           %radio-action
-        :-  [(fact:io cage.sign ~[/frontend]) ~] 
+        =/  to-frontend  (fact:io cage.sign ~[/frontend])
         =/  act  !<(action:store q.cage.sign)
-        ?+  -.act  this
+        ?+  -.act  [[to-frontend ~] this]
             %spin
           =.  spin-history
             (~(put in spin-history) url.act)
-          this
+          [[to-frontend ~] this]
+            %tower-update
+          :_  this
+          =/  tune-act
+            :-  %radio-action
+            !>([%tune `src.bowl])
+          :~
+            to-frontend
+            (fact:io tune-act ~[/frontend])
+          ==
         ==
       ==
     ==
@@ -114,13 +123,13 @@
         :: WET: write everything twice!
         :: the same exact code as /personal
         :: intentionally violating DRY in favor of WET
-        :-  [(fact:io cage.sign ~[/frontend]) ~] 
         =/  act  !<(action:store q.cage.sign)
-        ?+  -.act  this
+        =/  to-frontend  (fact:io cage.sign ~[/frontend])
+        ?+  -.act  [[to-frontend ~] this]
             %spin
           =.  spin-history
             (~(put in spin-history) url.act)
-          this
+          [[to-frontend ~] this]
         ==
         :: /WET
       ==
@@ -140,12 +149,15 @@
     =/  act  !<(action:store vase)
     ?-  -.act
       :: ::
-          %online       `this
-          %permissions  `this
-          %viewers      `this
-          %chatlog      `this
+          %online        `this
+          %permissions   `this
+          %viewers       `this
+          %chatlog       `this
+          %tower-update  `this
           :: %initialize   `this
       :: ::
+          %delete-chat
+                  :_  this  (fwd act)
           %presence
                   :_  this  (fwd act)
           %spin   :_  this  (fwd act)

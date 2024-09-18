@@ -15,9 +15,9 @@
 ::
 +$  chat
   $:
-  message=cord
-  from=ship
-  time=@da
+    message=cord
+    from=ship
+    time=@da
   ==
 ::
 +$  admin
@@ -29,34 +29,46 @@
   ?(%open %closed)
 +$  spin
   $:
-  url=_'https://youtu.be/XGC80iRS7tw'    :: classical music
-  start-time=_~2022.10.3..20.40.15..7021 :: just *time makes ReactPlayer confused, too old
+    url=_'https://youtu.be/XGC80iRS7tw'    :: classical music
+    start-time=_~2022.10.3..20.40.15..7021 :: just *time makes ReactPlayer confused, too old
   ==
 +$  tower-2
   $:
-  is-online=_&
-  =permissions
-  talk=_'welcome to urbit radio'
-  =spin
-  description=_''
-  viewers=(map ship time)
-  banned=(set ship)   
-  promoted=(set ship)
-  chatlog=(list chat)
+    is-online=_&
+    =permissions
+    talk=_'welcome to urbit radio'
+    =spin
+    description=_''
+    viewers=(map ship time)
+    banned=(set ship)   
+    promoted=(set ship)
+    chatlog=(list chat)
   ==
 +$  tower-3
   $:
-  is-online=_&
-  =permissions
-  talk=_'welcome to urbit radio'
-  =spin
-  description=_''
-  viewers=(map ship time)
-  banned=(set ship)   
-  promoted=(set ship)
-  chatlog=(list chat)
-  greg-cache=[age=@da tows=(map ship minitower:greg)]
-  spin-history=(set cord)
+    is-online=_&
+    =permissions
+    talk=_'welcome to urbit radio'
+    =spin
+    description=_''
+    viewers=(map ship time)
+    banned=(set ship)   
+    promoted=(set ship)
+    chatlog=(list chat)
+    greg-cache=[age=@da tows=(map ship minitower:greg)]
+    spin-history=(set cord)
+  ==
++$  tower-3-update
+  $:
+    is-online=_&
+    =permissions
+    talk=_'welcome to urbit radio'
+    =spin
+    description=_''
+    viewers=(map ship time)
+    banned=(set ship)   
+    promoted=(set ship)
+    chatlog=(list chat)
   ==
 ::
 :: action or event?
@@ -83,5 +95,7 @@
     [%chatlog chatlog=(list chat)]
     [%presence ~]
     [%description description=cord]
+    [%tower-update tow=tower-3-update]
+    [%delete-chat from=ship time=@da]
   ==
 --

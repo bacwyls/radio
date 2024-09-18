@@ -25,6 +25,12 @@ export class Radio {
         this.api.ship = window.ship;
         this.synth = window.speechSynthesis;
         this.api.onOpen = () => {console.log('connection established')}
+        this.api.onError= (e) => {
+            console.log("api onError", e)
+        }
+        this.api.onReconnect = () => {
+            console.log("api onReconnect??")
+        }
         // this.synth.onvoiceschanged = (v: any) => {
         //     console.log('radio voices', v)
         //     // TODO check if voices is empty
@@ -247,6 +253,17 @@ export class Radio {
             app: "tower",
             mark: "radio-admin",
             json: { unban: her },
+        });
+    }
+
+    public deleteChat(from: string, time:number) {
+        this.api.poke({
+            app: "tenna",
+            mark: "radio-action",
+            json: { 'delete-chat': {
+                from: from,
+                time: time
+            } },
         });
     }
 

@@ -74,30 +74,15 @@
         [%s p.act]
       %description
         [%s description.act]
-      :: %initialize
-      ::   %-  pairs
-      ::   :~
-      ::     ['is-online' %b is-online.f.act]
-      ::     ['permissions' %s permissions.f.act]
-      ::     ['talk' %s talk.f.act]
-      ::     :-  'spin'
-      ::       %-  pairs
-      ::       :~
-      ::       ['url' %s url.spin.f.act]
-      ::       ['time' (sect start-time.spin.f.act)]
-      ::       ==
-      ::     ['description' %s description.f.act]
-      ::     ['viewers' (set-ship ~(key by viewers.f.act))]
-      ::     ['banned' (set-ship banned.f.act)]
-      ::     ['promoted' (set-ship promoted.f.act)]
-      ::     :-  'chatlog'
-      ::       :-  %a
-      ::       %+  turn  (flop chatlog.f.act)
-      ::       |=  =chat
-      ::       (en-chat chat)
-      ::     ==
+      %tower-update
+        (tower-update-json tow.act)
+      %delete-chat
+        %-  pairs
+        :~
+          ['from' s+(scot %p from.act)]
+          ['time' (sect time.act)]
+        ==
       ==
-    :: |^
     ++  en-chat
       |=  [=chat]
       ^-  json
@@ -107,23 +92,43 @@
       ['from' %s (scot %p from.chat)]
       ['time' (sect:enjs time.chat)]
       ==
+    ++  tower-update-json
+      |=  tow=tower-3-update
+      ^-  json
+      %-  pairs:enjs
+      :: ~
+      :~
+        ['is-online' b+is-online.tow]
+        ['permissions' s+permissions.tow]
+        ['talk' s+talk.tow]
+        ['description' s+description.tow]
+        ['viewers' (set-ship ~(key by viewers.tow))]
+        ['banned' (set-ship banned.tow)]
+        ['promoted' (set-ship promoted.tow)]
+        ['chatlog' a+(turn (flop chatlog.tow) en-chat)]
+        :-  'spin'
+          %-  pairs
+          :~
+          ['url' %s url.spin.tow]
+          ['time' (sect start-time.spin.tow)]
+          ==
+      ==
     --
-  --
-++  unit-ship
+  ++  unit-ship
     |=  who=(unit @p)
     ^-  json
     ?~  who
       ~
     [%s (scot %p u.who)]
-++  set-ship
-  |=  ships=(set @p)
-  ^-  json
-  :-  %a
-  %+  turn
-    ~(tap in ships)
-    |=  her=@p
-    [%s (scot %p her)]
-
+  ++  set-ship
+    |=  ships=(set @p)
+    ^-  json
+    :-  %a
+    %+  turn
+      ~(tap in ships)
+      |=  her=@p
+      [%s (scot %p her)]
+  --
 ::
 ++  dejs
   =,  dejs:format
@@ -160,6 +165,7 @@
         [%presence ul]
         [%description so]
         :: [%initialize ul]
+        [%delete-chat delete-chat]
       ==
     ++  de-permissions
       |=  =json
@@ -173,15 +179,21 @@
     ++  chat
       %-  ot
       :~  
-          [%message so]
-          [%from patp]
-          [%time di]
+        [%message so]
+        [%from patp]
+        [%time di]
       ==
     ++  spin
       %-  ot
       :~  
-          [%url so]
-          [%time di]
+        [%url so]
+        [%time di]
+      ==
+    ++  delete-chat
+      %-  ot
+      :~  
+        [%from patp]
+        [%time di]
       ==
     ::
     --

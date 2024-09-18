@@ -96,6 +96,14 @@ export const stationSlice = createSlice({
         chats: state.chats.concat([action.payload])
       }
     },
+    deleteChatMessage: (state, action: PayloadAction<{ from: string, time: number }>) => {
+      return {
+        ...state,
+        chats: state.chats.filter(chat => 
+          !(chat.from === action.payload.from && chat.time === action.payload.time)
+        )
+      }
+    },
   }
 });
 
@@ -111,6 +119,7 @@ export const {
   chopChats,
   setChatsWithChat,
   resetStation,
+  deleteChatMessage,
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
