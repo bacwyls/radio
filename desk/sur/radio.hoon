@@ -60,11 +60,11 @@
   ==
 +$  tower-3-update
   $:
-    is-online=_&
+    is-online=?
     =permissions
-    talk=_'welcome to urbit radio'
-    =spin
-    description=_''
+    talk=cord
+    spin=[url=cord start-time=@da]
+    description=cord
     viewers=(map ship time)
     banned=(set ship)   
     promoted=(set ship)

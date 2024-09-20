@@ -416,6 +416,10 @@
         ::      I dug a few layers deep into gall to try to find the issue, but no dice.
         ::   giving up, returning to tradition. just sending a flurry of initial facts instead of one chunk of state.
         ::   still want to fix this eventually but it will probably have to come with a near full rewrite of radio.
+        ::   ::
+        ::   :: (later again)
+        ::   lol the above issue was using e.g. face=_'special bunt' instead of face=cord for the mold of the update type.
+        ::   just breaks something somewhere in the gall/clay/ames pipeline on the way to the subscriber
         ::
         (init-fact [%tower-update tower-update])
         ::
