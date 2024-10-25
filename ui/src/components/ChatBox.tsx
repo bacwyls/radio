@@ -1,17 +1,14 @@
 import { useRef, useEffect, useState, useCallback } from "react";
-import { ChatMessage, chopChats, selectChats } from "../features/station/stationSlice";
+import { ChatMessage, chopChats, selectChats, selectBanned, selectPromoted } from "../features/station/stationSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import React from "react";
-import { getRecencyText, timestampFromTime } from "../util";
-import { isMobile } from "react-device-detect";
+import { getRecencyText } from "../util";
+import { FaBars } from 'react-icons/fa';
 import { chatInputId } from "./ChatColumn";
-import { playerColumnId } from "./PlayerColumn";
 import DOMPurify from 'dompurify';
-
+import { selectTunePatP } from "../features/ui/uiSlice";
 
 export const chatboxId = "radio-chatbox";
-
-
 
 type ChatInnerMessageProps = {
   message: string;
@@ -80,8 +77,6 @@ function autoScrollChatBox() {
   }
 }
 
-
-
 const chatInnerImg = (src: string, maybeAutoScrollChatBox: () => void) => {
   return (
     <img
@@ -102,11 +97,13 @@ export function ChatBox({ }: {}) {
   const [isScrolledUp, setIsScrolledUp] = useState(false);
   const chatboxRef = useRef<HTMLDivElement>(null);
   const chats = useAppSelector(selectChats);
+  const tunePatP = useAppSelector(selectTunePatP);
 
   const dispatch = useAppDispatch();
 
   const [unseenNewMessagesCount, setUnseenNewMessagesCount] = useState(0);
   const [currentTime, setCurrentTime] = useState(Date.now());
+  const [chatUpdatesSinceLastTune, setChatUpdatesSinceLastTune] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -117,19 +114,20 @@ export function ChatBox({ }: {}) {
   }, []);
 
   useEffect(() => {
-    if (isScrolledUp) {
-      setUnseenNewMessagesCount(prev => prev + 1);
+    setChatUpdatesSinceLastTune(0);
+  }, [tunePatP]);
+
+  useEffect(() => {
+    setChatUpdatesSinceLastTune(prev => prev + 1);
+    
+    if (chatUpdatesSinceLastTune < 3) {
+      autoScrollChatBox();
+    } else if (!isScrolledUp) {
+      autoScrollChatBox();
     }
   }, [chats]);
 
-  useEffect(() => {
-    // Only auto-scroll if not scrolled up
-    if (!isScrolledUp) {
-      autoScrollChatBox();
-    }
-  }, [chats, isScrolledUp]);
-
-  const maxChats = 100;
+  const maxChats = 200;
   useEffect(() => {
     // maximum chats
     if (!isScrolledUp && chats.length > maxChats) {
@@ -167,7 +165,7 @@ export function ChatBox({ }: {}) {
   }, [isScrolledUp]);
 
   const chatToHTML = useCallback((key: number, chat: ChatMessage) => {
-    const isAdmin = window.radio.isAdmin();
+    const isAdminOrPromoted = window.radio.isAdminOrPromoted();
     return (
       <div key={key} className="p-1 hover:bg-gray-100 pb-0 text-[0.7rem] group">
         <div className="block">
@@ -183,21 +181,40 @@ export function ChatBox({ }: {}) {
           message={chat.message}
           maybeAutoScrollChatBox={maybeAutoScrollChatBox}
         />
-        <div className="text-[0.6rem] flex justify-end">
+        <div className="text-[0.6rem] flex justify-end gap-3">
           <div 
-            className={`text-red-500 cursor-pointer inline-block ${isAdmin ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
+            className={`text-red-500 cursor-pointer inline-block ${isAdminOrPromoted ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
             onClick={(e) => {
-              // Your delete logic here
-              console.log("deleting chat")
               window.radio.deleteChat(chat.from, chat.time*1000)
             }}
           >
             delete
           </div>
+          <div 
+            className={`text-red-500 cursor-pointer inline-block ${isAdminOrPromoted ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
+            onClick={(e) => {
+              if (window.confirm(`Are you sure you want to ban ${chat.from}?`)) {
+                window.radio.ban(chat.from)
+              }
+            }}
+          >
+            ban
+          </div>
         </div>
       </div>
     );
   }, [currentTime, maybeAutoScrollChatBox]);
+
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const banned = useAppSelector(selectBanned);
+  const promoted = useAppSelector(selectPromoted);
+
+  const togglePanel = () => {
+    setIsPanelOpen(!isPanelOpen);
+  };
+
+  const [banInput, setBanInput] = useState('');
+  const [modInput, setModInput] = useState('');
 
   return (
     <div
@@ -206,6 +223,113 @@ export function ChatBox({ }: {}) {
         justifyContent: "flex-end",
       }}
     >
+      {window.radio.isAdminOrPromoted() && (
+        <div className="absolute top-0 left-0 right-0 p-2 border border-gray-200 bg-white flex justify-between items-center z-10"
+        >
+          <span>Admin Panel</span>
+          <FaBars className="cursor-pointer" onClick={togglePanel} />
+        </div>
+      )}
+      {isPanelOpen && (
+        <div className="absolute top-10 left-0 right-0 bottom-0 bg-white z-20 overflow-y-auto border border-gray-200 p-2">
+          <div className="mb-4">
+            <h3 className="font-bold">Banned Users:</h3>
+            <div className="text-[0.6rem] mb-2">
+              {banned.map((user, i) => (
+                <React.Fragment key={i}>
+                  <span className="inline-block">
+                    {user}
+                    {i < banned.length - 1 && (
+                      <>
+                        {','}&nbsp;
+                      </>
+                    )}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={banInput}
+                onChange={(e) => setBanInput(e.target.value)}
+                className="border border-gray-300 px-2 py-1 text-sm mr-2"
+                placeholder="~sampel"
+              />
+              <button
+                onClick={() => {
+                  if (banInput && window.confirm(`Are you sure you want to ban ${banInput}?`)) {
+                    window.radio.ban(banInput);
+                    setBanInput('');
+                  }
+                }}
+                className="border border-gray-300 px-2 py-1 text-sm mr-2  hover:bg-gray-100"
+              >
+                ban
+              </button>
+              <button
+                onClick={() => {
+                  if (banInput && window.confirm(`Are you sure you want to unban ${banInput}?`)) {
+                    window.radio.unban(banInput);
+                    setBanInput('');
+                  }
+                }}
+                className="border border-gray-300 px-2 py-1 text-sm hover:bg-gray-100"
+              >
+                unban
+              </button>
+            </div>
+          </div>
+          <div>
+            <h3 className="font-bold">Promoted Users:</h3>
+            <div className="text-[0.6rem] mb-2">
+              {promoted.map((user, i) => (
+                <React.Fragment key={i}>
+                  <span className="inline-block">
+                    {user}
+                    {i < promoted.length - 1 && (
+                      <>
+                        {','}&nbsp;
+                      </>
+                    )}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={modInput}
+                onChange={(e) => setModInput(e.target.value)}
+                className="border border-gray-300 px-2 py-1 text-sm mr-2"
+                placeholder="~sampel"
+              />
+              <button
+                onClick={() => {
+                  if (modInput && window.confirm(`Are you sure you want to promote ${modInput} to moderator?`)) {
+                    window.radio.mod(modInput);
+                    setModInput('');
+                  }
+                }}
+                className="border border-gray-300 px-2 py-1 text-sm mr-2 hover:bg-gray-100"
+              >
+                mod
+              </button>
+              <button
+                onClick={() => {
+                  if (modInput && window.confirm(`Are you sure you want to demote ${modInput} from moderator?`)) {
+                    window.radio.unmod(modInput);
+                    setModInput('');
+                  }
+                }}
+                className="border border-gray-300 px-2 py-1 text-sm hover:bg-gray-100"
+              >
+                unmod
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className="flex-1 flex flex-col h-full"
         style={{
@@ -219,6 +343,7 @@ export function ChatBox({ }: {}) {
           id={chatboxId} 
           className="overflow-y-auto overflow-x-hidden"
           style={{
+            paddingTop: window.radio.isAdminOrPromoted() ? "40px" : "0",
           }}
           ref={chatboxRef}
           onScroll={handleScroll}

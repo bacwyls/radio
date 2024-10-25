@@ -16,6 +16,8 @@ export interface StationState {
   viewers: string[];
   chats: ChatMessage[];
   description: string;
+  promoted: string[];
+  banned: string[];
 }
 
 const initialState: StationState = {
@@ -23,9 +25,11 @@ const initialState: StationState = {
   spinUrl: '',
   spinTime: 0,
   permissions: 'closed',
-  viewers: Array<string>(),
-  chats: Array<ChatMessage>(),
+  viewers: [],
+  chats: [],
   description: '',
+  promoted: [],
+  banned: [],
 };
 
 export const stationSlice = createSlice({
@@ -104,6 +108,18 @@ export const stationSlice = createSlice({
         )
       }
     },
+    setPromoted: (state, action: PayloadAction<string[]>) => {
+      return {
+        ...state,
+        promoted: action.payload
+      }
+    },
+    setBanned: (state, action: PayloadAction<string[]>) => {
+      return {
+        ...state,
+        banned: action.payload
+      }
+    },
   }
 });
 
@@ -120,6 +136,8 @@ export const {
   setChatsWithChat,
   resetStation,
   deleteChatMessage,
+  setPromoted,
+  setBanned,
 } = stationSlice.actions;
 
 export const selectTalkMsg = (state: RootState) => state.station.talkMsg;
@@ -129,5 +147,7 @@ export const selectPermissions = (state: RootState) => state.station.permissions
 export const selectDescription = (state: RootState) => state.station.description;
 export const selectViewers = (state: RootState) => state.station.viewers;
 export const selectChats = (state: RootState) => state.station.chats;
+export const selectPromoted = (state: RootState) => state.station.promoted;
+export const selectBanned = (state: RootState) => state.station.banned;
 
 export default stationSlice.reducer;

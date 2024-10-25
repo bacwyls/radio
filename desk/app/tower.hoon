@@ -313,14 +313,16 @@
     :: ban handling
     ::
       %radio-admin
-    ?.  =(src.bowl our.bowl)
-      :: only admin
-      ::
-      `this
     ::
     =/  adi  !<(admin:rib vase)
     ?-  -.adi
         %unban
+      ?.  ?|  =(src.bowl our.bowl)
+              (~(has in promoted) src.bowl)
+          ==
+        :: only admin
+        ::
+        `this
       :: update banned list
       ::
       =.  banned
@@ -328,8 +330,17 @@
       `this
       ::
         %ban
+      ?.  ?|  =(src.bowl our.bowl)
+              (~(has in promoted) src.bowl)
+          ==
+        ~&  ['failed to ban!']
+        `this
       ?:  =(src.bowl ship.adi)
         :: dont ban yourself lol
+        ::
+        `this
+      ?:  (~(has in promoted) ship.adi)
+        :: dont ban a mod
         ::
         `this
       :: update banned list
@@ -348,6 +359,54 @@
       :~
         (kick-only:io ship.adi ~[/personal /global])
         (transmit-card [%viewers ~(key by viewers)])
+      ==
+      ::
+        %mod
+      ?.  =(src.bowl our.bowl)
+        :: only admin
+        ::
+        `this
+      =.  promoted
+        (~(put in promoted) ship.adi)
+      =/  tower-update
+        :*
+          is-online
+          permissions
+          talk
+          spin
+          description
+          viewers
+          banned
+          promoted
+          chatlog
+        ==
+      :_  this
+      :~
+        (transmit-card [%tower-update tower-update])
+      ==
+      ::
+        %unmod
+      ?.  =(src.bowl our.bowl)
+        :: only admin
+        ::
+        `this
+      =.  promoted
+        (~(del in promoted) ship.adi)
+      =/  tower-update
+        :*
+          is-online
+          permissions
+          talk
+          spin
+          description
+          viewers
+          banned
+          promoted
+          chatlog
+        ==
+      :_  this
+      :~
+        (transmit-card [%tower-update tower-update])
       ==
     ==
   ==
@@ -436,6 +495,8 @@
   ^-  ?
   ?:  =(src.bowl our.bowl)
     & :: admin
+  ?:  (~(has in promoted) src.bowl)
+    & :: moderator
   ::
   ?.  is-online
     | :: tower must be online
@@ -492,3 +553,4 @@
       !>  ent
   ==
 -- 
+

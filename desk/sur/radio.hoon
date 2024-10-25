@@ -24,6 +24,8 @@
   $%
     [%ban =ship]
     [%unban =ship]
+    [%mod =ship]
+    [%unmod =ship]
   ==
 +$  permissions
   ?(%open %closed)

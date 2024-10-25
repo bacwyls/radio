@@ -129,6 +129,16 @@ export class Radio {
         const tunePatP = store.getState().ui.tunePatP;
         return tunePatP === this.our;
     }
+
+    public isPromoted() {
+        const promoted = store.getState().station.promoted;
+        return promoted.includes(this.our);
+    }
+
+    public isAdminOrPromoted() {
+        return this.isAdmin() || this.isPromoted();
+    }
+
     public canUseDJCommands() {
         const permissions = store.getState().station.permissions;
         if (permissions === 'open') {
@@ -176,9 +186,11 @@ export class Radio {
     }
 
     public spin(playUrl: string) {
-        if (!this.canUseDJCommands()) {
-            alert(badDJMessage);
-            return;
+        if (!this.isAdminOrPromoted()) {
+            if (!this.canUseDJCommands()) {
+                alert(badDJMessage);
+                return;
+            }
         }
         if (!this.isValidHttpUrl(playUrl)) return;
         let currentUnixTime = Date.now();
@@ -212,9 +224,11 @@ export class Radio {
     }
 
     public talk(talkMsg: string) {
-        if (!this.canUseDJCommands()) {
-            alert(badDJMessage);
-            return;
+        if (!this.isAdminOrPromoted()) {
+            if (!this.canUseDJCommands()) {
+                alert(badDJMessage);
+                return;
+            }
         }
         this.api.poke({
             app: "tenna",
@@ -242,7 +256,7 @@ export class Radio {
 
     public ban(her: string) {
         this.api.poke({
-            app: "tower",
+            app: "tenna",
             mark: "radio-admin",
             json: { ban: her },
         });
@@ -250,9 +264,25 @@ export class Radio {
 
     public unban(her: string) {
         this.api.poke({
-            app: "tower",
+            app: "tenna",
             mark: "radio-admin",
             json: { unban: her },
+        });
+    }
+
+    public mod(her: string) {
+        this.api.poke({
+            app: "tenna",
+            mark: "radio-admin",
+            json: { mod: her },
+        });
+    }
+
+    public unmod(her: string) {
+        this.api.poke({
+            app: "tenna",
+            mark: "radio-admin",
+            json: { unmod: her },
         });
     }
 
@@ -367,19 +397,27 @@ export class Radio {
         let arg = got.arg;
         switch (command) {
             case 'talk':
+                if (!this.isAdminOrPromoted()) {
+                    alert(badDJMessage);
+                    return;
+                }
                 this.chat(chat);
                 this.talk(arg);
                 break;
             case 'qtalk':
-                if (!this.isAdmin()) return;
+                if (!this.isAdminOrPromoted()) return;
                 this.talk(arg);
                 break;
             case 'play':
+                if (!this.isAdminOrPromoted()) {
+                    alert(badDJMessage);
+                    return;
+                }
                 this.spin(arg);
                 this.chat(chat);
                 break;
             case 'qplay':
-                if (!this.isAdmin()) return;
+                if (!this.isAdminOrPromoted()) return;
                 this.spin(arg);
                 break;
             case 'tune':
@@ -408,7 +446,6 @@ export class Radio {
                 if (!this.isAdmin()) {
                     return;
                 }
-                // this.public();
                 this.setPermissions('open');
                 this.chat(chat);
                 break;
@@ -422,30 +459,40 @@ export class Radio {
                 } else {
                     this.setPermissions('open');
                 }
-
                 this.chat(chat);
                 break;
             case 'private':
                 if (!this.isAdmin()) {
                     return;
                 }
-                // this.private();
                 this.setPermissions('closed')
                 this.chat(chat);
                 break;
             case 'ban':
-                if (!this.isAdmin()) {
+                if (!this.isAdminOrPromoted()) {
                     return;
                 }
                 this.ban(arg);
                 this.chat(chat);
                 break;
             case 'unban':
-                if (!this.isAdmin()) {
+                if (!this.isAdminOrPromoted()) {
                     return;
                 }
                 this.unban(arg);
                 this.chat(chat);
+                break;
+            case 'mod':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.mod(arg);
+                break;
+            case 'unmod':
+                if (!this.isAdmin()) {
+                    return;
+                }
+                this.unmod(arg);
                 break;
             case 'ping':
                 this.ping();
@@ -468,32 +515,26 @@ export class Radio {
                 this.chat(chat);
                 break;
             case 'publish':
-                if (!this.isAdmin()) {
+                if (!this.canUseDJCommands()) {
                     return;
                 }
                 this.gregPut(arg);
                 this.chat(chat);
                 dispatch(setHasPublishedStation(true));
-                // ourtowerdescription is a local copy in uislice
-                // representing ourtower. description in stationslice is the currently connected towers description
                 dispatch(setOurTowerDescription(arg))
-                // refresh towers
                 this.gregRequest();
                 break;
             case 'qpublish':
-                // quiet publish
-                // publish without chatting about it
-                if (!this.isAdmin()) {
+                if (!this.canUseDJCommands()) {
                     return;
                 }
                 this.gregPut(arg);
                 dispatch(setHasPublishedStation(true));
                 dispatch(setOurTowerDescription(arg))
-                // refresh towers
                 this.gregRequest();
                 break;
             case 'unpublish':
-                if (!this.isAdmin()) return;
+                if (!this.canUseDJCommands()) return;
                 this.gregRemove(this.our);
                 this.chat(chat);
                 dispatch(setHasPublishedStation(false));
@@ -528,3 +569,4 @@ export class Radio {
 
 
 }
+

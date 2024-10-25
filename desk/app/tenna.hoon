@@ -187,7 +187,19 @@
       :: watt
       :: love
       (weld love watt)
-    :: ::
+    ==
+    ::
+      %radio-admin
+    ?.  =(src.bowl our.bowl)
+      `this
+    =/  adi  !<(admin:radio vase)
+    ?~  tune.state
+      `this
+    :_  this
+    :~
+      %+  poke:pass:agentio
+        [(need tune.state) %tower]
+        radio-admin+!>(adi)
     ==
   ==
 ++  on-watch

@@ -19,7 +19,7 @@
   ==
 ++  set-banned
   |=  [adi=admin banned=(set ship)]
-  ?-  -.adi
+  ?+  -.adi  banned
       %ban
     (~(put in banned) ship.adi)
       %unban
@@ -40,6 +40,10 @@
     %ban
       [%s (scot %p ship.adi)]
     %unban
+      [%s (scot %p ship.adi)]
+    %mod
+      [%s (scot %p ship.adi)]
+    %unmod
       [%s (scot %p ship.adi)]
     ==
   ++  action
@@ -145,6 +149,8 @@
       :~
         [%ban patp]
         [%unban patp]
+        [%mod patp]
+        [%unmod patp]
       ==
     --
   ++  action

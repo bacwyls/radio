@@ -10,7 +10,9 @@ import {
   setChatsWithChat,
   selectPermissions,
   setDescription,
-  deleteChatMessage
+  deleteChatMessage,
+  setPromoted,
+  setBanned
 } from './features/station/stationSlice';
 import {
   setUserInteracted,
@@ -123,6 +125,8 @@ export function handleUpdate(update: any, radio: Radio, dispatch: any, userInter
       dispatch(setPermissions(tower.permissions))
       dispatch(setChatsWithChatlog(tower.chatlog));
       dispatch(setDescription(tower.description));
+      dispatch(setPromoted(tower.promoted));
+      dispatch(setBanned(tower.banned));
       break;
     case 'spin':
       var updateSpin = update['spin'];
