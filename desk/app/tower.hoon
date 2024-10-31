@@ -333,7 +333,6 @@
       ?.  ?|  =(src.bowl our.bowl)
               (~(has in promoted) src.bowl)
           ==
-        ~&  ['failed to ban!']
         `this
       ?:  =(src.bowl ship.adi)
         :: dont ban yourself lol
@@ -347,10 +346,6 @@
       ::
       =.  banned
         (set-banned:rib adi banned)
-      ?:  =(%unban -.adi)
-        :: unban already processed, no further action
-        ::
-        `this
       :: create kick effect for a ban
       ::
       =.  viewers
