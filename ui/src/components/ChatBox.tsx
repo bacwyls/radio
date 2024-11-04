@@ -108,7 +108,7 @@ export function ChatBox({ }: {}) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(Date.now());
-    }, 60000); // Update every minute
+    }, 60000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -121,7 +121,17 @@ export function ChatBox({ }: {}) {
     setChatUpdatesSinceLastTune(prev => prev + 1);
     
     if (chatUpdatesSinceLastTune < 3) {
-      autoScrollChatBox();
+      // Create an interval that forces scroll for 1 second
+      const intervalId = setInterval(() => {
+        autoScrollChatBox();
+      }, 300);
+
+      // Clean up interval after 1 second
+      setTimeout(() => {
+        clearInterval(intervalId);
+      }, 1000);
+
+      return () => clearInterval(intervalId);
     } else if (!isScrolledUp) {
       autoScrollChatBox();
     }
